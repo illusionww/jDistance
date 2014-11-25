@@ -22,9 +22,13 @@ public class CustomUtils {
         int dimension = m.getRowDimension();
         double[][] tempArr = new double[dimension][dimension];
         for (int i = 0; i < m.getColumnDimension(); i++) {
+            double sum = 0;
+            for (int j = 0; j < m.getColumnDimension(); j++) {
+                sum += m.getEntry(i, j);
+            }
             for (int j = 0; j < m.getColumnDimension(); j++) {
                 if (i == j) {
-                    tempArr[i][j] = m.getEntry(i, j);
+                    tempArr[i][j] = sum;
                 }
             }
         }

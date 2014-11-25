@@ -61,7 +61,7 @@ public enum Distances {
         public RealMatrix getD(RealMatrix L, RealMatrix A, double lambda) {
             // TODO: choose parameters
             RealMatrix Ds = Distances.LOGARITHMIC_FOREST.getD(L, A, 0);
-            RealMatrix Dr = Distances.LOGARITHMIC_FOREST.getD(L, A, 1);
+            RealMatrix Dr = Distances.LOGARITHMIC_FOREST.getD(L, A, 10000);
             return Ds.scalarMultiply(1 - lambda).add(Dr.scalarMultiply(lambda));
         }
     },
