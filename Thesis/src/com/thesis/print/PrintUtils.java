@@ -1,14 +1,20 @@
 package com.thesis.print;
 
-import org.apache.commons.math3.linear.RealMatrix;
+import org.jblas.FloatMatrix;
 
 import java.util.Arrays;
 
 public class PrintUtils {
-    public static void printArray(RealMatrix m) {
-        String s = Arrays.deepToString(m.getData());
+    public static void printArray(FloatMatrix m, String name) {
+        System.out.println(name + ":");
+        printArray(m);
+    }
+
+    public static void printArray(FloatMatrix m) {
+        String s = Arrays.deepToString(m.toArray2());
         String o = s.replaceAll("\\], \\[", "]\n[").replaceAll("\\[\\[", "[")
                 .replaceAll("\\]\\]", "]").replaceAll(", ", ",\t");
         System.out.println(o);
+        System.out.println();
     }
 }

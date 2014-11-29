@@ -1,43 +1,48 @@
 package com.thesis.metric;
 
-import com.thesis.matrix.CustomUtils;
-import com.thesis.matrix.ElementWise;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
+import org.jblas.FloatMatrix;
+import org.jblas.MatrixFunctions;
+import org.jblas.Solve;
 
 public class DistancesBuilder {
 
-    // H0 = (I - tA)^(-1)
-    public static RealMatrix getH0Walk(RealMatrix A, double t) {
-        int dimension = A.getColumnDimension();
-        RealMatrix I = MatrixUtils.createRealIdentityMatrix(dimension);
-        return MatrixUtils.inverse(I.subtract(A.scalarMultiply(t)));
+    // H = (L + J)^{-1}
+    public static FloatMatrix getHResistance(FloatMatrix L) {
+        int d = L.getColumns();
+        float j = (float)1.0/d;
+        FloatMatrix J = FloatMatrix.ones(d, d).mul(j);
+        return Solve.pinv(L.add(J));
     }
 
-    // H0 = (I + tL)^(-1)
-    public static RealMatrix getH0Forest(RealMatrix L, double t) {
-        int dimension = L.getColumnDimension();
-        RealMatrix I = MatrixUtils.createRealIdentityMatrix(dimension);
-        return MatrixUtils.inverse(I.add(L.scalarMultiply(t)));
+    // H0 = (I - tA)^{-1}
+    public static FloatMatrix getH0Walk(FloatMatrix A, float t) {
+        int d = A.getColumns();
+        FloatMatrix I = FloatMatrix.eye(d);
+        return Solve.pinv(I.sub(A.mul(t)));
+    }
+
+    // H0 = (I + tL)^{-1}
+    public static FloatMatrix getH0Forest(FloatMatrix L, float t) {
+        int d = L.getColumns();
+        FloatMatrix I = FloatMatrix.eye(d);
+        return Solve.pinv(I.add(L.mul(t)));
     }
 
     // H0 = exp(tA)
-    public static RealMatrix getH0Communicability(RealMatrix A, double t) {
-        return ElementWise.exp(A.scalarMultiply(t));
+    public static FloatMatrix getH0Communicability(FloatMatrix A, float t) {
+        return MatrixFunctions.expm(A.mul(t));
     }
 
     // H = log(H0)
-    public static RealMatrix H0toH(RealMatrix H0) {
-        return ElementWise.ln(H0);
+    public static FloatMatrix H0toH(FloatMatrix H0) {
+        return MatrixFunctions.log(H0);
     }
 
-    // D = (h*1^(-1) + 1*h^(-1) - H - H^T)/2
-    public static RealMatrix getD(RealMatrix H) {
-        int dimension = H.getColumnDimension();
-        RealMatrix h = CustomUtils.vectorToMatrix(CustomUtils.getMainDiagonal(H));
-        RealMatrix i = CustomUtils.vectorToMatrix(new ArrayRealVector(dimension, 1.0));
-        return h.multiply(i.transpose()).subtract(i.multiply(h.transpose()))
-                .subtract(H).subtract(H.transpose()).scalarMultiply(0.5);
+    // D = (h*1^{-1} + 1*h^{-1} - H - H^T)/2
+    public static FloatMatrix getD(FloatMatrix H) {
+        int d = H.getColumns();
+        FloatMatrix h = H.diag();
+        FloatMatrix i = FloatMatrix.ones(d, 1);
+        return h.mmul(i.transpose()).add(i.mmul(h.transpose())).sub(H).sub(H.transpose()).div(2);
     }
 }

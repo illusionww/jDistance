@@ -1,27 +1,27 @@
 package com.thesis;
 
-import com.thesis.matrix.CustomUtils;
+import com.thesis.matrix.MatrixUtils;
 import com.thesis.metric.Distances;
 import com.thesis.print.PrintUtils;
-import org.apache.commons.math3.linear.MatrixUtils;
-import org.apache.commons.math3.linear.RealMatrix;
+import org.jblas.FloatMatrix;
 
 public class Main {
 
     public static void main(String[] args) {
-	    double[][] aSrc = {{0, 1, 0, 0},
+	    float[][] aSrc = {{0, 1, 0, 0},
                            {1, 0, 0, 1},
                            {1, 1, 0, 0},
                            {1, 0, 1, 0}};
 
-        RealMatrix A = MatrixUtils.createRealMatrix(aSrc);
-        RealMatrix L = CustomUtils.getL(A);
+        FloatMatrix A = new FloatMatrix(aSrc);
+        PrintUtils.printArray(A, "A");
+
+        FloatMatrix L = MatrixUtils.getL(A);
+        PrintUtils.printArray(L, "L");
 
         for (Distances item : Distances.values()) {
-            RealMatrix D = item.getD(L, A, 0.5);
-            System.out.println(item.getName());
-            PrintUtils.printArray(D);
-            System.out.println();
+            FloatMatrix D = item.getD(L, A, (float)0.5);
+            PrintUtils.printArray(D, item.getName());
         }
     }
 }
