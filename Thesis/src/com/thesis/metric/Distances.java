@@ -1,6 +1,6 @@
 package com.thesis.metric;
 
-import com.thesis.matrix.ElementWise;
+import com.thesis.matrix.MatrixUtils;
 import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 import org.jblas.Solve;
@@ -59,9 +59,9 @@ public enum Distances {
     COMBINATIONS("Convex combination of the shortest path and resistance metrics") {
         @Override
         public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float lambda) {
-            // TODO: choose parameters
-            FloatMatrix Ds = Distances.LOGARITHMIC_FOREST.getD(L, A, 0);
-            FloatMatrix Dr = Distances.LOGARITHMIC_FOREST.getD(L, A, 10000);
+            FloatMatrix Ds = DistancesBuilder.getDShortestPath(A);
+            FloatMatrix H = DistancesBuilder.getHResistance(L);
+            FloatMatrix Dr = DistancesBuilder.getD(H);
             return Ds.mul(1 - lambda).add(Dr.mul(lambda));
         }
     },
@@ -69,7 +69,7 @@ public enum Distances {
         @Override
         public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float beta) {
             int d = A.getColumns();
-            FloatMatrix Pref = ElementWise.Pref(A);
+            FloatMatrix Pref = MatrixUtils.Pref(A);
             FloatMatrix C = MatrixFunctions.powi(A, -1);
             FloatMatrix W = Pref.mmul(MatrixFunctions.expm(C.mul(-beta)));
             FloatMatrix I = FloatMatrix.eye(d);

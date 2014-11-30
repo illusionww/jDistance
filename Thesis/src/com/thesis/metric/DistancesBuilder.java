@@ -1,5 +1,6 @@
 package com.thesis.metric;
 
+import com.thesis.adapter.JohnsonsAlgorithm;
 import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 import org.jblas.Solve;
@@ -44,5 +45,10 @@ public class DistancesBuilder {
         FloatMatrix h = H.diag();
         FloatMatrix i = FloatMatrix.ones(d, 1);
         return h.mmul(i.transpose()).add(i.mmul(h.transpose())).sub(H).sub(H.transpose()).div(2);
+    }
+
+    // Johnson's Algorithm
+    public static FloatMatrix getDShortestPath(FloatMatrix A) {
+        return JohnsonsAlgorithm.getAllShortestPaths(A);
     }
 }
