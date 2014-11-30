@@ -8,10 +8,10 @@ import org.jblas.FloatMatrix;
 public class Main {
 
     public static void main(String[] args) {
-	    float[][] aSrc = {{0, 1, 0, 0},
+	    float[][] aSrc = {{0, 2, 0, 0},
                            {1, 0, 0, 1},
-                           {1, 1, 0, 0},
-                           {1, 0, 1, 0}};
+                           {0, 1, 0, 0},
+                           {0, 0, 1, 0}};
 
         FloatMatrix A = new FloatMatrix(aSrc);
         PrintUtils.printArray(A, "A");

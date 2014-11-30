@@ -1,6 +1,6 @@
 package com.thesis.metric;
 
-import com.thesis.adapter.JohnsonsAlgorithm;
+import com.thesis.algorithm.johnsons.JohnsonsAlgorithm;
 import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 import org.jblas.Solve;

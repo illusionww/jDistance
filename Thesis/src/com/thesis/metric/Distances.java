@@ -1,6 +1,8 @@
 package com.thesis.metric;
 
+import com.thesis.algorithm.johnsons.JohnsonsAlgorithm;
 import com.thesis.matrix.MatrixUtils;
+import com.thesis.print.PrintUtils;
 import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 import org.jblas.Solve;
@@ -60,6 +62,7 @@ public enum Distances {
         @Override
         public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float lambda) {
             FloatMatrix Ds = DistancesBuilder.getDShortestPath(A);
+            PrintUtils.printArray(Ds, "Shortest path");
             FloatMatrix H = DistancesBuilder.getHResistance(L);
             FloatMatrix Dr = DistancesBuilder.getD(H);
             return Ds.mul(1 - lambda).add(Dr.mul(lambda));
@@ -69,13 +72,32 @@ public enum Distances {
         @Override
         public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float beta) {
             int d = A.getColumns();
-            FloatMatrix Pref = MatrixUtils.Pref(A);
-            FloatMatrix C = MatrixFunctions.powi(A, -1);
-            FloatMatrix W = Pref.mmul(MatrixFunctions.expm(C.mul(-beta)));
+
+            // P^{ref} = D^{-1}*A, D = Diag(A*e)
+            FloatMatrix e = FloatMatrix.ones(d);
+            FloatMatrix Pref = FloatMatrix.diag(A.mmul(e));
+            PrintUtils.printArray(Pref, "Pref");
+
+            // W = P^{ref} *(element-wise) exp (-βC)
+            FloatMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
+            FloatMatrix W = Pref.mul(MatrixFunctions.exp(C.mul(-beta)));
+            PrintUtils.printArray(W, "W");
+
+            // Z = (I - W)^{-1}
             FloatMatrix I = FloatMatrix.eye(d);
             FloatMatrix Z = Solve.pinv(I.sub(W));
-            FloatMatrix Zh = Z.mul(FloatMatrix.diag(Z.diag()));
-            FloatMatrix F = MatrixFunctions.log(Zh).mul(-1 / beta);
+            PrintUtils.printArray(Z, "Z");
+
+            // Z^h = Z * D_h^{-1}, D_h = Diag(Z)
+            FloatMatrix Dh = FloatMatrix.diag(Z.diag());
+            FloatMatrix Zh = Z.mul(Solve.pinv(Dh));
+            PrintUtils.printArray(Zh, "Zh");
+
+            // Φ = -1/β * log(Z^h)
+            FloatMatrix F = MatrixFunctions.log(Zh).div(-beta);
+            PrintUtils.printArray(F, "Φ");
+
+            // Δ_FE = (Φ + Φ^T)/2
             return F.add(F.transpose()).div(2);
         }
     };
