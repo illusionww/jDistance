@@ -58,7 +58,7 @@ public class Classifier {
                     predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights)));
                 }
                 else{
-                    predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights.subList(0, k - 1))));
+                    predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights.subList(0, k))));
                 }
             }
         }
