@@ -20,8 +20,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-public class GraphMLParser {
-    public static Graph parse(String path) throws ParserConfigurationException, IOException, SAXException {
+public class GraphMLParser implements Parser {
+    @Override
+    public Graph parse(String path) throws ParserConfigurationException, IOException, SAXException {
         File file = new File(path);
         LinkedList<NodeData> linkedList = new LinkedList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

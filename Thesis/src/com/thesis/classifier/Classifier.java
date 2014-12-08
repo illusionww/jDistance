@@ -46,7 +46,7 @@ public class Classifier {
                 }
             }
             if (!flag){
-                ArrayList<DataForClassifier> weights= new ArrayList<DataForClassifier>();
+                ArrayList<DataForClassifier> weights= new ArrayList<>();
                 for (SimpleNodeData coloredNode : coloredNodes) {
                     if (matrixWithWeights[i][order.get(coloredNode.getName())] != 0) {
                         weights.add(new DataForClassifier(coloredNode.getName(), matrixWithWeights[i][order.get(coloredNode.getName())], coloredNode.getLabel()));
