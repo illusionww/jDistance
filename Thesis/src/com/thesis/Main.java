@@ -4,7 +4,6 @@ import com.thesis.classifier.Classifier;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.Distances;
-import com.thesis.parser.GraphMLParser;
 import com.thesis.parser.Parser;
 import com.thesis.parser.SimpleGraphParser;
 import org.jblas.FloatMatrix;
@@ -19,11 +18,9 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        // Parser parser = new GraphMLParser();
-        // Graph graph = parser.parse("myRandomGraphn100k5pin0_3pout0_02_graphml.graphml");
-
-        Parser parser = new SimpleGraphParser();
-        Graph graph = parser.parse("swing.simplegraph");
+        // Parser parser = new GraphMLParser("myRandomGraphn100k5pin0_3pout0_02_graphml.graphml");
+        Parser parser = new SimpleGraphParser("swing.simplegraph");
+        Graph graph = parser.parse();
 
         System.out.println("parser done");
 
