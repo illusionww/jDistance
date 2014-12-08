@@ -1,4 +1,4 @@
-package com.thesis.matrix;
+package com.thesis.utils;
 
 import org.jblas.FloatMatrix;
 

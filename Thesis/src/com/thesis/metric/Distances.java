@@ -1,8 +1,8 @@
 package com.thesis.metric;
 
 import com.thesis.algorithm.johnsons.JohnsonsAlgorithm;
-import com.thesis.matrix.MatrixUtils;
-import com.thesis.print.PrintUtils;
+import com.thesis.utils.MatrixUtils;
+import com.thesis.utils.PrintUtils;
 import org.jblas.FloatMatrix;
 import org.jblas.MatrixFunctions;
 import org.jblas.Solve;
@@ -12,7 +12,7 @@ public enum Distances {
     //TODO: Check t < ρ and so on
     WALK("Walk distances") {
         @Override
-        public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float t) {
+        public FloatMatrix getD(FloatMatrix A, float t) {
             FloatMatrix H0 = DistancesBuilder.getH0Walk(A, t);
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
@@ -20,7 +20,8 @@ public enum Distances {
     },
     LOGARITHMIC_FOREST("Logarithmic Forest Distances") {
         @Override
-        public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float t) {
+        public FloatMatrix getD(FloatMatrix A, float t) {
+            FloatMatrix L = MatrixUtils.getL(A);
             FloatMatrix H0 = DistancesBuilder.getH0Forest(L, t);
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
@@ -28,7 +29,8 @@ public enum Distances {
     },
     PLAIN_FOREST("[\"Plain\"] Forest Distances") {
         @Override
-        public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float t) {
+        public FloatMatrix getD(FloatMatrix A, float t) {
+            FloatMatrix L = MatrixUtils.getL(A);
             FloatMatrix H0 = DistancesBuilder.getH0Forest(L, t);
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
@@ -36,7 +38,7 @@ public enum Distances {
     },
     PLAIN_WALK("\"Plain\" Walk Distances") {
         @Override
-        public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float t) {
+        public FloatMatrix getD(FloatMatrix A, float t) {
             FloatMatrix H0 = DistancesBuilder.getH0Walk(A, t);
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
@@ -44,14 +46,14 @@ public enum Distances {
     },
     COMMUNICABILITY("Communicability Distances") {
         @Override
-        public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float t) {
+        public FloatMatrix getD(FloatMatrix A, float t) {
             FloatMatrix H = DistancesBuilder.getH0Communicability(A, t);
             return DistancesBuilder.getD(H);
         }
     },
     LOGARITHMIC_COMMUNICABILITY("Logarithmic Communicability Distances") {
         @Override
-        public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float t) {
+        public FloatMatrix getD(FloatMatrix A, float t) {
             // TODO: add loops
             FloatMatrix H0 = DistancesBuilder.getH0Communicability(A, t);
             FloatMatrix H = DistancesBuilder.H0toH(H0);
@@ -60,7 +62,8 @@ public enum Distances {
     },
     COMBINATIONS("Convex combination of the shortest path and resistance metrics") {
         @Override
-        public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float lambda) {
+        public FloatMatrix getD(FloatMatrix A, float lambda) {
+            FloatMatrix L = MatrixUtils.getL(A);
             FloatMatrix Ds = DistancesBuilder.getDShortestPath(A);
             PrintUtils.printArray(Ds, "Shortest path");
             FloatMatrix H = DistancesBuilder.getHResistance(L);
@@ -70,7 +73,7 @@ public enum Distances {
     },
     HELMHOLTZ_FREE_ENERGY("Helmholtz Free Energy Distances") {
         @Override
-        public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float beta) {
+        public FloatMatrix getD(FloatMatrix A, float beta) {
             int d = A.getColumns();
 
             // P^{ref} = D^{-1}*A, D = Diag(A*e)
@@ -112,7 +115,7 @@ public enum Distances {
         return name;
     }
 
-    public FloatMatrix getD(FloatMatrix L, FloatMatrix A, float t) {
+    public FloatMatrix getD(FloatMatrix A, float t) {
         return null;
     }
 }

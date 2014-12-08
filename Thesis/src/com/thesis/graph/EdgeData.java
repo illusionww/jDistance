@@ -1,8 +1,5 @@
 package com.thesis.graph;
 
-/**
- * Created by 111 on 17.11.2014.
- */
 public class EdgeData {
     String source;
     String target;

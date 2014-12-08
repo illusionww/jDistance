@@ -1,13 +1,10 @@
 package com.thesis.graph;
 
-/**
- * Created by 111 on 05.12.2014.
- */
-public class SimpleNodeData implements Comparable<SimpleNodeData>{
+public class SimpleNodeData implements Comparable<SimpleNodeData> {
     String name;
     String label; //color
 
-    SimpleNodeData(String name, String label){
+    public SimpleNodeData(String name, String label) {
         this.name = name;
         this.label = label;
     }
@@ -21,7 +18,6 @@ public class SimpleNodeData implements Comparable<SimpleNodeData>{
     }
 
     public String getName() {
-
         return name;
     }
 
@@ -29,11 +25,14 @@ public class SimpleNodeData implements Comparable<SimpleNodeData>{
         this.name = name;
     }
 
-
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SimpleNodeData)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof SimpleNodeData)) {
+            return false;
+        }
 
         SimpleNodeData that = (SimpleNodeData) o;
 
@@ -47,7 +46,6 @@ public class SimpleNodeData implements Comparable<SimpleNodeData>{
     public int compareTo(SimpleNodeData o) {
         if (this.getLabel() != null) {
             return this.getLabel().compareTo(o.getLabel());
-        }
-        else return 0;
+        } else return 0;
     }
 }

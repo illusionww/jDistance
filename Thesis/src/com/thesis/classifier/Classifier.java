@@ -8,11 +8,9 @@ import java.util.*;
 public class Classifier {
 
     private ArrayList<SimpleNodeData> realData; //  name and cluster
+    private float[][] matrixWithWeights;
 
-    private Float[][] matrixWithWeights;
-
-
-    Classifier (Float[][] matrixWithWeights, ArrayList<SimpleNodeData> realData){
+    public Classifier(float[][] matrixWithWeights, ArrayList<SimpleNodeData> realData){
         this.matrixWithWeights = matrixWithWeights;
 
         //Collections.sort(realData);
@@ -25,7 +23,7 @@ public class Classifier {
         HashMap<String, Integer> order = new HashMap<String, Integer>();
 
         for (int i = 0; i < realData.size(); ++i){
-            order.put(realData.get(i).getName(), new Integer(i));
+            order.put(realData.get(i).getName(), i);
         }
 
         //выбираем вершины о которых будем знать их принадлежность к опеределенному классу
@@ -40,8 +38,8 @@ public class Classifier {
         ArrayList<SimpleNodeData> predictedDatas = new ArrayList<SimpleNodeData>();
         for (int i = 0; i < realData.size(); ++i){
             boolean flag = false;
-            for (int j = 0; j < coloredNodes.size(); ++j){
-                if (realData.get(i).getName().equals(coloredNodes.get(j).getName())){
+            for (SimpleNodeData coloredNode : coloredNodes) {
+                if (realData.get(i).getName().equals(coloredNode.getName())) {
                     predictedDatas.add(realData.get(i));
                     flag = true;
                     break;
@@ -49,11 +47,11 @@ public class Classifier {
             }
             if (!flag){
                 ArrayList<DataForClassifier> weights= new ArrayList<DataForClassifier>();
-                for (int q = 0; q < coloredNodes.size(); ++q){
-                    if (matrixWithWeights[i][order.get(coloredNodes.get(q).getName())] != null){
-                        weights.add(new DataForClassifier(coloredNodes.get(q).getName(), matrixWithWeights[i][order.get(coloredNodes.get(q).getName())], coloredNodes.get(q).getLabel()));
-                    }
-                    else weights.add(new DataForClassifier(coloredNodes.get(q).getName(), Float.MAX_VALUE, coloredNodes.get(q).getLabel()));
+                for (SimpleNodeData coloredNode : coloredNodes) {
+                    if (matrixWithWeights[i][order.get(coloredNode.getName())] != 0) {
+                        weights.add(new DataForClassifier(coloredNode.getName(), matrixWithWeights[i][order.get(coloredNode.getName())], coloredNode.getLabel()));
+                    } else
+                        weights.add(new DataForClassifier(coloredNode.getName(), Float.MAX_VALUE, coloredNode.getLabel()));
                 }
                 Collections.sort(weights);
                 if (k > weights.size()){
@@ -101,10 +99,10 @@ public class Classifier {
             for (int i = 0; i < sortedRealDatas.size(); ++i){
                 if (!label.equals(sortedRealDatas.get(i).getLabel())){
                     label = sortedRealDatas.get(i).getLabel();
-                    endLabel.add(new Integer(i - 1));
+                    endLabel.add(i - 1);
                     }
                 }
-        endLabel.add(new Integer(sortedRealDatas.size()));
+        endLabel.add(sortedRealDatas.size());
             for (int i = 0; i < endLabel.size() - 1; ++i) {
             if (i > 0) {
                 for (int k = endLabel.get(i - 1); k < endLabel.get(i - 1) + (endLabel.get(i) - endLabel.get(i - 1)) * p; ++k) {   //TODO будет лучше если брать с каждого класса одинаковое количество элементов

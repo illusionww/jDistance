@@ -2,9 +2,6 @@ package com.thesis.graph;
 
 import java.util.LinkedList;
 
-/**
- * Created by 111 on 17.11.2014.
- */
 public class NodeData implements Comparable<NodeData>{
     private String idNode;
     private String color;
