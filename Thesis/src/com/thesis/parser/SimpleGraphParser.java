@@ -72,6 +72,7 @@ public class SimpleGraphParser implements Parser {
                     sparseM[from][to] = 1;
                     br.readLine();
                     br.readLine();
+                    br.readLine();
                     line = br.readLine();
                 } else {
                     throw new ParsingException("no matches edge with: " + line);
