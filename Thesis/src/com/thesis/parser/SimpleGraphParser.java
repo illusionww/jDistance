@@ -70,6 +70,7 @@ public class SimpleGraphParser implements Parser {
                     int from = Integer.parseInt(m.group(1));
                     int to = Integer.parseInt(m.group(2));
                     sparseM[from][to] = 1;
+                    sparseM[to][from] = 1;
                     br.readLine();
                     br.readLine();
                     br.readLine();
