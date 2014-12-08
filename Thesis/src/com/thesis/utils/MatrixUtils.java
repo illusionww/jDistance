@@ -1,6 +1,8 @@
 package com.thesis.utils;
 
+import org.jblas.Decompose;
 import org.jblas.FloatMatrix;
+import org.jblas.Solve;
 
 import java.util.Collection;
 
@@ -19,5 +21,11 @@ public class MatrixUtils {
             rowSums[i] = rowSum;
         }
         return FloatMatrix.diag(new FloatMatrix(rowSums)).sub(A);
+    }
+
+    public static FloatMatrix inverse(FloatMatrix m) {
+        int d = m.getColumns();
+        FloatMatrix I = FloatMatrix.eye(d);
+        return Solve.solve(m, I);
     }
 }

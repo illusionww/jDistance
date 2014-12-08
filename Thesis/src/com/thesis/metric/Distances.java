@@ -14,6 +14,7 @@ public enum Distances {
         @Override
         public FloatMatrix getD(FloatMatrix A, float t) {
             FloatMatrix H0 = DistancesBuilder.getH0Walk(A, t);
+            PrintUtils.printArray(H0, "H0");
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
         }
@@ -74,34 +75,7 @@ public enum Distances {
     HELMHOLTZ_FREE_ENERGY("Helmholtz Free Energy Distances") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float beta) {
-            int d = A.getColumns();
-
-            // P^{ref} = D^{-1}*A, D = Diag(A*e)
-            FloatMatrix e = FloatMatrix.ones(d);
-            FloatMatrix Pref = FloatMatrix.diag(A.mmul(e));
-            PrintUtils.printArray(Pref, "Pref");
-
-            // W = P^{ref} *(element-wise) exp (-βC)
-            FloatMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
-            FloatMatrix W = Pref.mul(MatrixFunctions.exp(C.mul(-beta)));
-            PrintUtils.printArray(W, "W");
-
-            // Z = (I - W)^{-1}
-            FloatMatrix I = FloatMatrix.eye(d);
-            FloatMatrix Z = Solve.pinv(I.sub(W));
-            PrintUtils.printArray(Z, "Z");
-
-            // Z^h = Z * D_h^{-1}, D_h = Diag(Z)
-            FloatMatrix Dh = FloatMatrix.diag(Z.diag());
-            FloatMatrix Zh = Z.mul(Solve.pinv(Dh));
-            PrintUtils.printArray(Zh, "Zh");
-
-            // Φ = -1/β * log(Z^h)
-            FloatMatrix F = MatrixFunctions.log(Zh).div(-beta);
-            PrintUtils.printArray(F, "Φ");
-
-            // Δ_FE = (Φ + Φ^T)/2
-            return F.add(F.transpose()).div(2);
+            return DistancesBuilder.getDFreeEnergy(A, beta);
         }
     };
 

@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleGraphParser implements Parser {
-    final Pattern label = Pattern.compile("vertex (\\d+):.*");
+    final Pattern label = Pattern.compile("^vertex (\\d+):.*");
     final Pattern color = Pattern.compile("^color (\\d+).*");
     final Pattern edge = Pattern.compile("^(\\d+) -> (\\d+).*");
 

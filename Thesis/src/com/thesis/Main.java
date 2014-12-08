@@ -4,8 +4,10 @@ import com.thesis.classifier.Classifier;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.Distances;
+import com.thesis.parser.GraphMLParser;
 import com.thesis.parser.Parser;
 import com.thesis.parser.SimpleGraphParser;
+import com.thesis.utils.PrintUtils;
 import org.jblas.FloatMatrix;
 import org.xml.sax.SAXException;
 
@@ -18,17 +20,16 @@ import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        // Parser parser = new GraphMLParser("myRandomGraphn100k5pin0_3pout0_02_graphml.graphml");
-        Parser parser = new SimpleGraphParser("swing.simplegraph");
+        Parser parser = new GraphMLParser("myRandomGraphn100k5pin0_3pout0_02_graphml.graphml");
+        // Parser parser = new SimpleGraphParser("swing.simplegraph");
         Graph graph = parser.parse();
-
-        System.out.println("parser done");
 
         float[][] sparseM = graph.getSparseM();
         ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
 
         FloatMatrix A = new FloatMatrix(sparseM);
-        float[][] D = Distances.WALK.getD(A, (float) 0.5).toArray2();
+        float[][] D = Distances.LOGARITHMIC_COMMUNICABILITY.getD(A, (float) 0.5).toArray2();
+        PrintUtils.printArray(D, "D");
 
         Classifier classifier = new Classifier(D, simpleNodeData);
 
