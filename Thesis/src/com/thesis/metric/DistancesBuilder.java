@@ -26,7 +26,8 @@ public class DistancesBuilder {
 
         int d = A.getColumns();
         FloatMatrix I = FloatMatrix.eye(d);
-        return Solve.pinv(I.sub(A.mul(t)));
+        FloatMatrix ins = I.sub(A.mul(t));
+        return Solve.pinv(ins);
     }
 
     // H0 = (I + tL)^{-1}
