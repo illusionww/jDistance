@@ -3,9 +3,7 @@ package com.thesis.metric;
 import com.thesis.algorithm.johnsons.JohnsonsAlgorithm;
 import com.thesis.utils.MatrixUtils;
 import com.thesis.utils.PrintUtils;
-import org.jblas.FloatMatrix;
-import org.jblas.MatrixFunctions;
-import org.jblas.Solve;
+import org.jblas.*;
 
 public class DistancesBuilder {
 
@@ -18,7 +16,14 @@ public class DistancesBuilder {
     }
 
     // H0 = (I - tA)^{-1}
-    public static FloatMatrix getH0Walk(FloatMatrix A, float t) {
+    public static FloatMatrix getH0Walk(FloatMatrix A, float alpha) {
+        float ro = 0;
+        ComplexFloatMatrix cfm = Eigen.eigenvalues(A);
+        for (ComplexFloat[] row : cfm.toArray2()) {
+            ro = row[0].abs() > ro ? row[0].abs() : ro;
+        }
+        float t = (float)1.0/((float)1.0/alpha + ro);
+
         int d = A.getColumns();
         FloatMatrix I = FloatMatrix.eye(d);
         return Solve.pinv(I.sub(A.mul(t)));

@@ -14,7 +14,6 @@ public enum Distances {
         @Override
         public FloatMatrix getD(FloatMatrix A, float t) {
             FloatMatrix H0 = DistancesBuilder.getH0Walk(A, t);
-            PrintUtils.printArray(H0, "H0");
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
         }
@@ -40,8 +39,7 @@ public enum Distances {
     PLAIN_WALK("\"Plain\" Walk Distances") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float t) {
-            FloatMatrix H0 = DistancesBuilder.getH0Walk(A, t);
-            FloatMatrix H = DistancesBuilder.H0toH(H0);
+            FloatMatrix H = DistancesBuilder.getH0Walk(A, t);
             return DistancesBuilder.getD(H);
         }
     },
@@ -55,7 +53,6 @@ public enum Distances {
     LOGARITHMIC_COMMUNICABILITY("Logarithmic Communicability Distances") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float t) {
-            // TODO: add loops
             FloatMatrix H0 = DistancesBuilder.getH0Communicability(A, t);
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
