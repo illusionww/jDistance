@@ -9,7 +9,6 @@ import org.jblas.Solve;
 
 public enum Distances {
 
-    //TODO: Check t < ρ and so on
     WALK("Walk distances") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float t) {
@@ -61,6 +60,8 @@ public enum Distances {
     COMBINATIONS("Convex combination of the shortest path and resistance metrics") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float lambda) {
+            assert lambda >= 0 && lambda <= 1;
+
             FloatMatrix L = MatrixUtils.getL(A);
             FloatMatrix Ds = DistancesBuilder.getDShortestPath(A);
             PrintUtils.printArray(Ds, "Shortest path");
