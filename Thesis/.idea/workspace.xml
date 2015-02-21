@@ -2,23 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8d38d350-0497-4360-a2df-735b9267c49b" name="Default" comment="">
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\algorithm\johnsons\BellmanFord.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/algorithm/johnsons/BellmanFord.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\algorithm\johnsons\Dijkstra.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/algorithm/johnsons/Dijkstra.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\algorithm\johnsons\DirectedGraph.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/algorithm/johnsons/DirectedGraph.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\algorithm\johnsons\FibonacciHeap.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/algorithm/johnsons/FibonacciHeap.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\algorithm\johnsons\Johnson.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/algorithm/johnsons/Johnson.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\algorithm\johnsons\JohnsonsAlgorithm.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/algorithm/johnsons/JohnsonsAlgorithm.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\metric\Distances.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/Distance.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\utils\MatrixUtils.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/hepler/MatrixHelper.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\utils\PrintUtils.java" afterPath="$PROJECT_DIR$/tests/com/thesis/helper/PrintUtils.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thesis/metric/DistancesBuilder.java" afterPath="$PROJECT_DIR$/src/com/thesis/metric/DistancesBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thesis/parser/GraphMLParser.java" afterPath="$PROJECT_DIR$/src/com/thesis/parser/GraphMLParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thesis/Main.java" afterPath="$PROJECT_DIR$/src/com/thesis/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/thesis/parser/SimpleGraphParser.java" afterPath="$PROJECT_DIR$/src/com/thesis/parser/SimpleGraphParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Thesis.iml" afterPath="$PROJECT_DIR$/Thesis.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/org_apache_commons_commons_math3_3_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/org_apache_commons_commons_math3_3_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/org_jblas_jblas_1_2_3.xml" afterPath="$PROJECT_DIR$/.idea/libraries/org_jblas_jblas_1_2_3.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\metric\Distances.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\src\com\thesis\utils\PrintUtils.java" afterPath="" />
     </list>
     <ignored path="Thesis.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -44,11 +29,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Distance.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Distance.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/thesis/metric/Distance.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.38636363" vertical-offset="0" max-vertical-offset="1615">
-              <caret line="6" column="24" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1615">
+              <caret line="10" column="9" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2889#2890#0" expanded="true" />
@@ -62,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DistancesTest.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="DistancesTest.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/tests/com/thesis/DistancesTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="1020">
-              <caret line="42" column="75" selection-start-line="42" selection-start-column="75" selection-end-line="42" selection-end-column="75" />
+            <state vertical-scroll-proportion="-0.32505643" vertical-offset="569" max-vertical-offset="1020">
+              <caret line="25" column="64" selection-start-line="0" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -103,7 +88,7 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/thesis/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="470" max-vertical-offset="1258">
+            <state vertical-scroll-proportion="0.0" vertical-offset="776" max-vertical-offset="1258">
               <caret line="35" column="47" selection-start-line="35" selection-start-column="47" selection-end-line="35" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -115,7 +100,7 @@
       <file leaf-file-name="DistancesBuilder.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/thesis/metric/DistancesBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="354" max-vertical-offset="1649">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1649">
               <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -397,32 +382,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="metric" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Thesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Thesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="thesis" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="metric" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="hepler" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -801,15 +760,15 @@
       <workItem from="1417292023566" duration="27033000" />
       <workItem from="1417985689593" duration="4875000" />
       <workItem from="1418040876348" duration="17600000" />
-      <workItem from="1424532803177" duration="9001000" />
+      <workItem from="1424532803177" duration="9208000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="79645000" />
+    <option name="totallyTimeSpent" value="79852000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -832,7 +791,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.5096463" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22186495" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1333,17 +1292,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/com/thesis/helper/PrintUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
-          <caret line="6" column="45" selection-start-line="6" selection-start-column="45" selection-end-line="6" selection-end-column="45" />
-          <folding>
-            <element signature="e#145#146#0" expanded="true" />
-            <element signature="e#199#200#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/thesis/parser/SimpleGraphParser.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="118" max-vertical-offset="1598">
@@ -1356,22 +1304,29 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tests/com/thesis/DistancesTest.java">
+    <entry file="file://$PROJECT_DIR$/tests/com/thesis/helper/PrintUtils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="1020">
-          <caret line="42" column="75" selection-start-line="42" selection-start-column="75" selection-end-line="42" selection-end-column="75" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="357">
+          <caret line="6" column="45" selection-start-line="6" selection-start-column="45" selection-end-line="6" selection-end-column="45" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#145#146#0" expanded="true" />
+            <element signature="e#199#200#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thesis/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/com/thesis/metric/Distance.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="470" max-vertical-offset="1258">
-          <caret line="35" column="47" selection-start-line="35" selection-start-column="47" selection-end-line="35" selection-end-column="47" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1615">
+          <caret line="10" column="9" selection-start-line="10" selection-start-column="9" selection-end-line="10" selection-end-column="9" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#2889#2890#0" expanded="true" />
+            <element signature="e#2960#2961#0" expanded="true" />
+            <element signature="e#3022#3023#0" expanded="true" />
+            <element signature="e#3054#3055#0" expanded="true" />
+            <element signature="e#3085#3086#0" expanded="true" />
+            <element signature="e#3112#3113#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -1392,18 +1347,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/thesis/metric/Distance.java">
+    <entry file="file://$PROJECT_DIR$/src/com/thesis/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.38636363" vertical-offset="0" max-vertical-offset="1615">
-          <caret line="6" column="24" selection-start-line="6" selection-start-column="10" selection-end-line="6" selection-end-column="24" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="470" max-vertical-offset="1258">
+          <caret line="35" column="47" selection-start-line="35" selection-start-column="47" selection-end-line="35" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2889#2890#0" expanded="true" />
-            <element signature="e#2960#2961#0" expanded="true" />
-            <element signature="e#3022#3023#0" expanded="true" />
-            <element signature="e#3054#3055#0" expanded="true" />
-            <element signature="e#3085#3086#0" expanded="true" />
-            <element signature="e#3112#3113#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tests/com/thesis/DistancesTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.32505643" vertical-offset="569" max-vertical-offset="1020">
+          <caret line="25" column="64" selection-start-line="0" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
