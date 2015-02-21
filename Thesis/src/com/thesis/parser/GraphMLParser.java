@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 public class GraphMLParser implements Parser {
     private String path;
 
+    private GraphMLParser() {}
+
     public GraphMLParser(String path) {
         this.path = path;
     }

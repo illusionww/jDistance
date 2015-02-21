@@ -20,6 +20,8 @@ public class SimpleGraphParser implements Parser {
 
     private String path;
 
+    private SimpleGraphParser() {}
+
     public SimpleGraphParser(String path) {
         this.path = path;
     }

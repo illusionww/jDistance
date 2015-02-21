@@ -1,4 +1,4 @@
-package com.thesis.algorithm.johnsons;
+package com.thesis.metric.algorithm.johnsons;
 
 /*****************************************************************************
  * File: DirectedGraph.java

@@ -3,11 +3,9 @@ package com.thesis;
 import com.thesis.classifier.Classifier;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
-import com.thesis.metric.Distances;
+import com.thesis.metric.Distance;
 import com.thesis.parser.GraphMLParser;
 import com.thesis.parser.Parser;
-import com.thesis.parser.SimpleGraphParser;
-import com.thesis.utils.PrintUtils;
 import org.jblas.FloatMatrix;
 import org.xml.sax.SAXException;
 
@@ -32,10 +30,10 @@ public class Main {
         Map<Float, Float> result = new TreeMap<>();
 
         Date start = new Date();
-        IntStream.range(0, 101).boxed().collect(Collectors.toList()).parallelStream().forEach(idx -> {
+        IntStream.range(1, 101).boxed().collect(Collectors.toList()).parallelStream().forEach(idx -> {
             float i = idx / 20f + 0.0001f;
             FloatMatrix A = new FloatMatrix(sparseM);
-            float[][] D = Distances.COMMUNICABILITY.getD(A, i).toArray2();
+            float[][] D = Distance.COMBINATIONS.getD(A, i).toArray2();
 
             Classifier classifier = new Classifier(D, simpleNodeData);
 

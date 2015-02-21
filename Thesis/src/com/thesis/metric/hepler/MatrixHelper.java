@@ -1,13 +1,10 @@
-package com.thesis.utils;
+package com.thesis.metric.hepler;
 
-import org.jblas.Decompose;
 import org.jblas.FloatMatrix;
 import org.jblas.Solve;
 
-import java.util.Collection;
-
-public class MatrixUtils {
-    private MatrixUtils() {}
+public class MatrixHelper {
+    private MatrixHelper() {}
 
     public static FloatMatrix getL(FloatMatrix A) {
         int rowsAmount = A.getRows();
