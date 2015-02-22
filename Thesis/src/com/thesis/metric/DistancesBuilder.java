@@ -1,7 +1,6 @@
 package com.thesis.metric;
 
 import com.thesis.metric.algorithm.johnsons.JohnsonsAlgorithm;
-import com.thesis.metric.hepler.MatrixHelper;
 import org.jblas.*;
 
 public class DistancesBuilder {
@@ -65,7 +64,7 @@ public class DistancesBuilder {
     public static FloatMatrix getH0Forest(FloatMatrix L, float t) {
         int d = L.getColumns();
         FloatMatrix I = FloatMatrix.eye(d);
-        return MatrixHelper.inverse(I.add(L.mul(t)));
+        return Solve.pinv(I.add(L.mul(t)));
     }
 
     // H0 = exp(tA)

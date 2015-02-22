@@ -56,41 +56,50 @@ public class DistancesTest {
     public void testWalkDistance() {
         Distance distance = Distance.WALK;
         FloatMatrix D = distance.getD(exampleMatrix, (float) 1.0);
-        assertTrue("distances not equal: 1.025 != " + D.get(0, 1), D.get(0, 1) == 1.025);
-        assertTrue("distances not equal: 0.95 != " + D.get(1, 2), D.get(1, 2) == 0.95);
+        float multiplier = (float)1.025/D.get(0, 1);
+        assertTrue("distances not equal: 1.025 != " + multiplier * D.get(0, 1), equalFloat(multiplier * D.get(0, 1), (float)1.025));
+        assertTrue("distances not equal: 0.950 != " + multiplier * D.get(1, 2), equalFloat(multiplier * D.get(1, 2), (float)0.950));
     }
 
     @Test
     public void testLogarithmicForestDistance() {
         Distance distance = Distance.LOGARITHMIC_FOREST;
         FloatMatrix D = distance.getD(exampleMatrix, (float) 2.0);
-        assertTrue("distances not equal: 0.959 != " + D.get(0, 1), D.get(0, 1) == 0.959);
-        assertTrue("distances not equal: 1.081 != " + D.get(1, 2), D.get(1, 2) == 1.081);
+        float multiplier = (float)0.959/D.get(0, 1);
+        assertTrue("distances not equal: 0.959 != " + multiplier * D.get(0, 1), equalFloat(multiplier * D.get(0, 1), (float)0.959));
+        assertTrue("distances not equal: 1.081 != " + multiplier * D.get(1, 2), equalFloat(multiplier * D.get(1, 2), (float)1.081));
     }
 
     @Test
     public void testPlainWalkDistance() {
         Distance distance = Distance.PLAIN_WALK;
         FloatMatrix D = distance.getD(exampleMatrix, (float) 4.5);
-        assertTrue("distances not equal: 1.025 != " + D.get(0, 1), D.get(0, 1) == 1.025);
-        assertTrue("distances not equal: 0.95 != " + D.get(1, 2), D.get(1, 2) == 0.95);
-        assertTrue("distances not equal: 1.541 != " + D.get(0, 2), D.get(0, 2) == 1.541);
-        assertTrue("distances not equal: 1.466 != " + D.get(0, 3), D.get(0, 3) == 1.466);
+        float multiplier = (float)1.025/D.get(0, 1);
+        assertTrue("distances not equal: 1.025 != " + multiplier * D.get(0, 1), equalFloat(multiplier * D.get(0, 1), (float)1.025));
+        assertTrue("distances not equal: 0.950 != " + multiplier * D.get(1, 2), equalFloat(multiplier * D.get(1, 2), (float)0.950));
+        assertTrue("distances not equal: 1.541 != " + multiplier * D.get(0, 2), equalFloat(multiplier * D.get(0, 2), (float)1.541));
+        assertTrue("distances not equal: 1.466 != " + multiplier * D.get(0, 3), equalFloat(multiplier * D.get(0, 3), (float)1.466));
 
         D = distance.getD(exampleMatrix, (float) 1.0);
-        assertTrue("distances not equal: 0.988 != " + D.get(0, 1), D.get(0, 1) == 0.988);
-        assertTrue("distances not equal: 1.025 != " + D.get(1, 2), D.get(1, 2) == 1.025);
-        assertTrue("distances not equal: 1.379 != " + D.get(0, 2), D.get(0, 2) == 1.379);
-        assertTrue("distances not equal: 1.416 != " + D.get(0, 3), D.get(0, 3) == 1.416);
+        multiplier = (float)0.988/D.get(0, 1);
+        assertTrue("distances not equal: 0.988 != " + multiplier * D.get(0, 1), equalFloat(multiplier * D.get(0, 1), (float)0.988));
+        assertTrue("distances not equal: 1.025 != " + multiplier * D.get(1, 2), equalFloat(multiplier * D.get(1, 2), (float)1.025));
+        assertTrue("distances not equal: 1.379 != " + multiplier * D.get(0, 2), equalFloat(multiplier * D.get(0, 2), (float)1.379));
+        assertTrue("distances not equal: 1.416 != " + multiplier * D.get(0, 3), equalFloat(multiplier * D.get(0, 3), (float)1.416));
     }
 
     @Test
     public void testCommunicabilityDistance() {
         Distance distance = Distance.COMMUNICABILITY;
         FloatMatrix D = distance.getD(exampleMatrix, (float) 1.0);
-        assertTrue("distances not equal: 0.964 != " + D.get(0, 1), D.get(0, 1) == 0.964);
-        assertTrue("distances not equal: 1.072 != " + D.get(1, 2), D.get(1, 2) == 1.072);
-        assertTrue("distances not equal: 1.492 != " + D.get(0, 2), D.get(0, 2) == 1.492);
-        assertTrue("distances not equal: 1.546 != " + D.get(0, 3), D.get(0, 3) == 1.546);
+        float multiplier = (float)0.964/D.get(0, 1);
+        assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), equalFloat(multiplier * D.get(0, 1), (float)0.964));
+        assertTrue("distances not equal: 1.072 != " + multiplier * D.get(1, 2), equalFloat(multiplier * D.get(1, 2), (float)1.072));
+        assertTrue("distances not equal: 1.492 != " + multiplier * D.get(0, 2), equalFloat(multiplier * D.get(0, 2), (float)1.492));
+        assertTrue("distances not equal: 1.546 != " + multiplier * D.get(0, 3), equalFloat(multiplier * D.get(0, 3), (float)1.546));
+    }
+
+    public boolean equalFloat(float a, float b) {
+        return Math.abs(a - b) < 0.002;
     }
 }
