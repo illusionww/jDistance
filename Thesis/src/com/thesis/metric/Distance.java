@@ -25,8 +25,7 @@ public enum Distance {
         @Override
         public FloatMatrix getD(FloatMatrix A, float t) {
             FloatMatrix L = DistancesBuilder.getL(A);
-            FloatMatrix H0 = DistancesBuilder.getH0Forest(L, t);
-            FloatMatrix H = DistancesBuilder.H0toH(H0);
+            FloatMatrix H = DistancesBuilder.getH0Forest(L, t);
             return DistancesBuilder.getD(H);
         }
     },
@@ -66,13 +65,13 @@ public enum Distance {
             FloatMatrix Dr = DistancesBuilder.getD(H);
             return Ds.mul(1 - lambda).add(Dr.mul(lambda));
         }
-    },/*
+    },
     HELMHOLTZ_FREE_ENERGY("Helmholtz Free Energy Distances") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float beta) {
             return DistancesBuilder.getDFreeEnergy(A, beta);
         }
-    }*/;
+    };
 
     private String name;
 
