@@ -107,14 +107,14 @@ public class GraphMLParser implements Parser {
             order.put('n' + activeNodeData.get(i).getIdNode(), i);
         }
 
-        float[][] sparseM = new float[activeNodeData.size()][activeNodeData.size()];
+        double[][] sparseM = new double[activeNodeData.size()][activeNodeData.size()];
         for (EdgeData aActiveEdgeData : activeEdgeData) {
             String source = aActiveEdgeData.getSource();
             String target = aActiveEdgeData.getTarget();
             Integer intSource = order.get(source);
             Integer intTarget = order.get(target);
-            sparseM[intSource][intTarget] = (float) 1;
-            sparseM[intTarget][intSource] = (float) 1;
+            sparseM[intSource][intTarget] = (double) 1;
+            sparseM[intTarget][intSource] = (double) 1;
         }
 
         ArrayList<SimpleNodeData> simpleNodeData = new ArrayList<>();

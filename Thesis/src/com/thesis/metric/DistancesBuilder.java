@@ -4,102 +4,106 @@ import com.thesis.metric.algorithm.johnsons.JohnsonsAlgorithm;
 import org.jblas.*;
 
 public class DistancesBuilder {
-    private DistancesBuilder() {}
+    private DistancesBuilder() {
+    }
 
     // α > 0 -> 0 < t < ρ^{-1}
-    public static float alphaToT(FloatMatrix A, float alpha) {
-        float ro = 0;
-        ComplexFloatMatrix cfm = Eigen.eigenvalues(A);
-        for (ComplexFloat[] row : cfm.toArray2()) {
+    public static double alphaToT(DoubleMatrix A, double alpha) {
+        double ro = 0;
+        ComplexDoubleMatrix cfm = Eigen.eigenvalues(A);
+        for (ComplexDouble[] row : cfm.toArray2()) {
             ro = row[0].abs() > ro ? row[0].abs() : ro;
         }
-        return (float)1.0/((float)1.0/alpha + ro);
+        return 1.0 / (1.0 / alpha + ro);
     }
 
 
-    public static FloatMatrix getL(FloatMatrix A) {
+    public static DoubleMatrix getL(DoubleMatrix A) {
         int d = A.getRows();
-        float[][] a = A.toArray2();
-        float[] rowSums = new float[d];
+        double[][] a = A.toArray2();
+        double[] rowSums = new double[d];
         for (int i = 0; i < d; i++) {
-            float rowSum = 0;
-            for (float element : a[i]) {
+            double rowSum = 0;
+            for (double element : a[i]) {
                 rowSum += element;
             }
             rowSums[i] = rowSum;
         }
-        return FloatMatrix.diag(new FloatMatrix(rowSums)).sub(A);
+        return DoubleMatrix.diag(new DoubleMatrix(rowSums)).sub(A);
     }
 
     // H = log(H0)
-    public static FloatMatrix H0toH(FloatMatrix H0) {
+    public static DoubleMatrix H0toH(DoubleMatrix H0) {
         return MatrixFunctions.logi(H0);
     }
 
     // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
-    public static FloatMatrix getD(FloatMatrix H) {
+    public static DoubleMatrix getD(DoubleMatrix H) {
         int d = H.getColumns();
-        FloatMatrix h = H.diag();
-        FloatMatrix i = FloatMatrix.ones(d, 1);
+        DoubleMatrix h = H.diag();
+        DoubleMatrix i = DoubleMatrix.ones(d, 1);
         return h.mmul(i.transpose()).add(i.mmul(h.transpose())).sub(H).sub(H.transpose()).div(2);
     }
 
     // H = (L + J)^{-1}
-    public static FloatMatrix getHResistance(FloatMatrix L) {
+    public static DoubleMatrix getHResistance(DoubleMatrix L) {
         int d = L.getColumns();
-        float j = (float)1.0/d;
-        FloatMatrix J = FloatMatrix.ones(d, d).mul(j);
+        double j = 1.0 / d;
+        DoubleMatrix J = DoubleMatrix.ones(d, d).mul(j);
         return Solve.pinv(L.add(J));
     }
 
     // H0 = (I - tA)^{-1}
-    public static FloatMatrix getH0Walk(FloatMatrix A, float t) {
+    public static DoubleMatrix getH0Walk(DoubleMatrix A, double t) {
         int d = A.getColumns();
-        FloatMatrix I = FloatMatrix.eye(d);
-        FloatMatrix ins = I.sub(A.mul(t));
+        DoubleMatrix I = DoubleMatrix.eye(d);
+        DoubleMatrix ins = I.sub(A.mul(t));
         return Solve.pinv(ins);
     }
 
     // H0 = (I + tL)^{-1}
-    public static FloatMatrix getH0Forest(FloatMatrix L, float t) {
+    public static DoubleMatrix getH0Forest(DoubleMatrix L, double t) {
         int d = L.getColumns();
-        FloatMatrix I = FloatMatrix.eye(d);
+        DoubleMatrix I = DoubleMatrix.eye(d);
         return Solve.pinv(I.add(L.mul(t)));
     }
 
     // H0 = exp(tA)
-    public static FloatMatrix getH0Communicability(FloatMatrix A, float t) {
+    public static DoubleMatrix getH0Communicability(DoubleMatrix A, double t) {
         return MatrixFunctions.expm(A.mul(t));
     }
 
     // Johnson's Algorithm
-    public static FloatMatrix getDShortestPath(FloatMatrix A) {
+    public static DoubleMatrix getDShortestPath(DoubleMatrix A) {
         return JohnsonsAlgorithm.getAllShortestPaths(A);
     }
 
-    public static FloatMatrix getDFreeEnergy(FloatMatrix A, float beta) {
+    public static DoubleMatrix getDFreeEnergy(DoubleMatrix A, double beta) {
         int d = A.getColumns();
 
         // P^{ref} = D^{-1}*A, D = Diag(A*e)
-        FloatMatrix e = FloatMatrix.ones(d);
-        FloatMatrix Pref = FloatMatrix.diag(A.mmul(e));
+        DoubleMatrix e = DoubleMatrix.ones(d);
+        DoubleMatrix D = DoubleMatrix.diag(A.mmul(e));
+        DoubleMatrix Pref = Solve.pinv(D).mmul(A);
 
-        // W = P^{ref} *(element-wise) exp (-βC)
-        FloatMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
-        FloatMatrix W = Pref.mul(MatrixFunctions.exp(C.mul(-beta)));
+        // W = P^{ref} (element-wise)* exp(-βC)
+        DoubleMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
+        DoubleMatrix W = Pref.mul(MatrixFunctions.exp(C.mul(-beta)));
 
         // Z = (I - W)^{-1}
-        FloatMatrix I = FloatMatrix.eye(d);
-        FloatMatrix Z = Solve.pinv(I.sub(W));
+        DoubleMatrix I = DoubleMatrix.eye(d);
+        DoubleMatrix Z = Solve.pinv(I.sub(W));
 
         // Z^h = Z * D_h^{-1}, D_h = Diag(Z)
-        FloatMatrix Dh = FloatMatrix.diag(Z.diag());
-        FloatMatrix Zh = Z.mul(Solve.pinv(Dh));
+        DoubleMatrix Dh = DoubleMatrix.diag(Z.diag());
+        DoubleMatrix Zh = Z.mmul(Solve.pinv(Dh));
 
         // Φ = -1/β * log(Z^h)
-        FloatMatrix F = MatrixFunctions.log(Zh).div(-beta);
+        DoubleMatrix F = MatrixFunctions.log(Zh).div(-beta);
 
         // Δ_FE = (Φ + Φ^T)/2
-        return F.add(F.transpose()).div(2);
+        DoubleMatrix FE = F.add(F.transpose()).div(2);
+
+        return FE.sub(DoubleMatrix.diag(FE.diag()));
     }
 }

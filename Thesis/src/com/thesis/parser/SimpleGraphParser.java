@@ -62,7 +62,7 @@ public class SimpleGraphParser implements Parser {
             }
 
             int d = simpleNodeData.size();
-            float[][] sparseM = new float[d][d];
+            double[][] sparseM = new double[d][d];
 
             assert "begin edges".equals(br.readLine());
             line = br.readLine();

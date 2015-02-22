@@ -1,9 +1,9 @@
 package com.thesis.metric.algorithm.johnsons;
 
-import org.jblas.FloatMatrix;
+import org.jblas.DoubleMatrix;
 
 public class JohnsonsAlgorithm {
-    public static FloatMatrix getAllShortestPaths(FloatMatrix A) {
+    public static DoubleMatrix getAllShortestPaths(DoubleMatrix A) {
         int d = A.getColumns();
         DirectedGraph<Integer> graph = new DirectedGraph<>();
         for (int i = 0; i < d; i++) {
@@ -19,7 +19,7 @@ public class JohnsonsAlgorithm {
 
         DirectedGraph<Integer> out = Johnson.shortestPaths(graph);
 
-        FloatMatrix D = new FloatMatrix(d, d);
+        DoubleMatrix D = new DoubleMatrix(d, d);
         for (int i = 0; i < d; i++) {
             int from = i;
             out.edgesFrom(from).forEach((to, cost) -> {

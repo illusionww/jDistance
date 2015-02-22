@@ -4,9 +4,9 @@ import com.thesis.classifier.Classifier;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
-import com.thesis.parser.GraphMLParser;
 import com.thesis.parser.Parser;
-import org.jblas.FloatMatrix;
+import com.thesis.parser.SimpleGraphParser;
+import org.jblas.DoubleMatrix;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,24 +21,24 @@ import java.util.stream.IntStream;
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         //Parser parser = new GraphMLParser("myRandomGraphn100k5pin0_3pout0_02_graphml.graphml");
-        //Parser parser = new SimpleGraphParser("swing.simplegraph");
-        Parser parser = new GraphMLParser("dcrGraph_n500k5pin03pout015.graphml");
+        Parser parser = new SimpleGraphParser("swing.simplegraph");
+        //Parser parser = new GraphMLParser("dcrGraph_n500k5pin03pout015.graphml");
         Graph graph = parser.parse();
 
-        float[][] sparseM = graph.getSparseM();
+        double[][] sparseM = graph.getSparseM();
         ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
-        Map<Float, Float> result = new TreeMap<>();
+        Map<Double, Double> result = new TreeMap<>();
 
         Date start = new Date();
         IntStream.range(1, 101).boxed().collect(Collectors.toList()).parallelStream().forEach(idx -> {
-            float i = idx / 20f + 0.0001f;
-            FloatMatrix A = new FloatMatrix(sparseM);
-            float[][] D = Distance.COMBINATIONS.getD(A, i).toArray2();
+            double i = idx / 20 + 0.0001;
+            DoubleMatrix A = new DoubleMatrix(sparseM);
+            double[][] D = Distance.COMBINATIONS.getD(A, i).toArray2();
 
             Classifier classifier = new Classifier(D, simpleNodeData);
 
             Integer k = 10;
-            Float p = 0.4f;
+            Double p = 0.4;
             ArrayList<SimpleNodeData> data = classifier.predictLabel(k, p);
 
             Integer countErrors = 0;
@@ -46,7 +46,7 @@ public class Main {
                 if (!simpleNodeData.get(q).getLabel().equals(data.get(q).getLabel()) && simpleNodeData.get(q).getName().equals(data.get(q).getName()))
                     countErrors += 1;
             }
-            result.put(i, (float) countErrors / data.size());
+            result.put(i, (double) countErrors / data.size());
         });
 
         Date finish = new Date();

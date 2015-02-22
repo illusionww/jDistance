@@ -8,9 +8,9 @@ import java.util.*;
 public class Classifier {
 
     private ArrayList<SimpleNodeData> realData; //  name and cluster
-    private float[][] matrixWithWeights;
+    private double[][] matrixWithWeights;
 
-    public Classifier(float[][] matrixWithWeights, ArrayList<SimpleNodeData> realData){
+    public Classifier(double[][] matrixWithWeights, ArrayList<SimpleNodeData> realData){
         this.matrixWithWeights = matrixWithWeights;
 
         //Collections.sort(realData);
@@ -18,7 +18,7 @@ public class Classifier {
     }
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
-    public ArrayList<SimpleNodeData> predictLabel(Integer k, Float p){
+    public ArrayList<SimpleNodeData> predictLabel(Integer k, Double p){
 
         HashMap<String, Integer> order = new HashMap<String, Integer>();
 
@@ -51,7 +51,7 @@ public class Classifier {
                     if (matrixWithWeights[i][order.get(coloredNode.getName())] != 0) {
                         weights.add(new DataForClassifier(coloredNode.getName(), matrixWithWeights[i][order.get(coloredNode.getName())], coloredNode.getLabel()));
                     } else
-                        weights.add(new DataForClassifier(coloredNode.getName(), Float.MAX_VALUE, coloredNode.getLabel()));
+                        weights.add(new DataForClassifier(coloredNode.getName(), Double.MAX_VALUE, coloredNode.getLabel()));
                 }
                 Collections.sort(weights);
                 if (k > weights.size()){
@@ -90,7 +90,7 @@ public class Classifier {
         return label;
     }
 
-    private ArrayList<SimpleNodeData> choiceOfVertices(Float p){  //независимо от размеров класстеров выбираем из каждого одинаковое количество
+    private ArrayList<SimpleNodeData> choiceOfVertices(Double p){  //независимо от размеров класстеров выбираем из каждого одинаковое количество
         ArrayList<SimpleNodeData> sortedRealDatas = realData;
         Collections.sort(sortedRealDatas);
         String label = sortedRealDatas.get(0).getLabel();
@@ -128,9 +128,9 @@ public class Classifier {
     private class DataForClassifier implements Comparable<DataForClassifier>{  //TODO appropriate class name
         String name;
         String label;
-        Float value;
+        Double value;
 
-        DataForClassifier(String name, Float value, String label){
+        DataForClassifier(String name, Double value, String label){
             this.name = name;
             this.value = value;
             this.label = label;
@@ -144,11 +144,11 @@ public class Classifier {
             this.label = label;
         }
 
-        public Float getValue() {
+        public Double getValue() {
             return value;
         }
 
-        public void setValue(Float value) {
+        public void setValue(Double value) {
             this.value = value;
         }
 
