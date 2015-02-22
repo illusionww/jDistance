@@ -1,6 +1,5 @@
 package com.thesis.metric;
 
-import com.thesis.metric.hepler.MatrixHelper;
 import org.jblas.FloatMatrix;
 
 public enum Distance {
@@ -16,7 +15,7 @@ public enum Distance {
     LOGARITHMIC_FOREST("Logarithmic Forest Distances") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float t) {
-            FloatMatrix L = MatrixHelper.getL(A);
+            FloatMatrix L = DistancesBuilder.getL(A);
             FloatMatrix H0 = DistancesBuilder.getH0Forest(L, t);
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
@@ -25,7 +24,7 @@ public enum Distance {
     PLAIN_FOREST("[\"Plain\"] Forest Distances") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float t) {
-            FloatMatrix L = MatrixHelper.getL(A);
+            FloatMatrix L = DistancesBuilder.getL(A);
             FloatMatrix H0 = DistancesBuilder.getH0Forest(L, t);
             FloatMatrix H = DistancesBuilder.H0toH(H0);
             return DistancesBuilder.getD(H);
@@ -61,19 +60,19 @@ public enum Distance {
                 throw new RuntimeException("lambda should be in [0, 1], lambda = " + lambda);
             }
 
-            FloatMatrix L = MatrixHelper.getL(A);
+            FloatMatrix L = DistancesBuilder.getL(A);
             FloatMatrix Ds = DistancesBuilder.getDShortestPath(A);
             FloatMatrix H = DistancesBuilder.getHResistance(L);
             FloatMatrix Dr = DistancesBuilder.getD(H);
             return Ds.mul(1 - lambda).add(Dr.mul(lambda));
         }
-    },
+    },/*
     HELMHOLTZ_FREE_ENERGY("Helmholtz Free Energy Distances") {
         @Override
         public FloatMatrix getD(FloatMatrix A, float beta) {
             return DistancesBuilder.getDFreeEnergy(A, beta);
         }
-    };
+    }*/;
 
     private String name;
 

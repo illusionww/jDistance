@@ -17,6 +17,21 @@ public class DistancesBuilder {
         return (float)1.0/((float)1.0/alpha + ro);
     }
 
+
+    public static FloatMatrix getL(FloatMatrix A) {
+        int d = A.getRows();
+        float[][] a = A.toArray2();
+        float[] rowSums = new float[d];
+        for (int i = 0; i < d; i++) {
+            float rowSum = 0;
+            for (float element : a[i]) {
+                rowSum += element;
+            }
+            rowSums[i] = rowSum;
+        }
+        return FloatMatrix.diag(new FloatMatrix(rowSums)).sub(A);
+    }
+
     // H = log(H0)
     public static FloatMatrix H0toH(FloatMatrix H0) {
         return MatrixFunctions.logi(H0);
