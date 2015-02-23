@@ -32,7 +32,12 @@ public class Main {
         List<Plot> plots = new ArrayList<>();
         plots.add(newPlot(Distance.WALK, 0.001, 1.0, 0.05, NamedPlotColor.RED));
         plots.add(newPlot(Distance.LOGARITHMIC_FOREST, 0.001, 3.0, 0.05, NamedPlotColor.GREEN));
-        plots.add(newPlot(Distance.HELMHOLTZ_FREE_ENERGY, 0.001, 3.0, 0.05, NamedPlotColor.BLUE));
+        plots.add(newPlot(Distance.PLAIN_FOREST, 0.001, 3.0, 0.05, NamedPlotColor.BLUE));
+        plots.add(newPlot(Distance.PLAIN_WALK, 0.001, 1.0, 0.05, NamedPlotColor.YELLOW));
+        plots.add(newPlot(Distance.COMMUNICABILITY, 0.001, 3.0, 0.05, NamedPlotColor.GREY));
+        plots.add(newPlot(Distance.LOGARITHMIC_COMMUNICABILITY, 0.001, 3.0, 0.05, NamedPlotColor.BLACK));
+        plots.add(newPlot(Distance.COMBINATIONS, 0.001, 1.0, 0.05, NamedPlotColor.ORANGE));
+        plots.add(newPlot(Distance.HELMHOLTZ_FREE_ENERGY, 0.001, 3.0, 0.05, NamedPlotColor.VIOLET));
 
         GNUPlotAdapter ga = new GNUPlotAdapter(Constants.GNUPLOT_PATH);
         ga.drawData(imgTitle, plots, Constants.PNG_OUTPUT_PATH);

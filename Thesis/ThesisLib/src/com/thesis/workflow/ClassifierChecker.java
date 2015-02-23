@@ -70,6 +70,6 @@ public class ClassifierChecker {
             }
         }
         System.out.println(parameter + ": " + (double) countErrors / (double) data.size());
-        return (double) countErrors / (double) data.size();
+        return 1 - (double) countErrors / (double) data.size();
     }
 }
