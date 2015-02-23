@@ -4,10 +4,12 @@ import com.thesis.classifier.Classifier;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
-import com.thesis.utils.ArrayUtils;
 import org.jblas.DoubleMatrix;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -53,13 +55,7 @@ public class ClassifierChecker {
     }
 
     public Double classifierTest(Distance distance, Double parameter) {
-        ArrayList<SimpleNodeData> simpleNodeData;
-        try {
-            simpleNodeData = ArrayUtils.deepCopy(graph.getSimpleNodeData());
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
-            simpleNodeData = graph.getSimpleNodeData();
-        }
+        ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
 
         final DoubleMatrix A = new DoubleMatrix(graph.getSparseM());
         final double[][] D = distance.getD(A, parameter).toArray2();
