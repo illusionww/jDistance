@@ -19,6 +19,11 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
+    public List<Graph> getGraphs() {
+        return graphs;
+    }
+
+    @Override
     protected Integer roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 

@@ -18,7 +18,7 @@ public class Main {
         graphsClust100init.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_1));
         graphsClust100init.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_2));
         graphsClust100init.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_3));
-        Scenarios.drawClustererCapabilityAllMetricsInRange(graphsClust100init, 100, 5, 0.0001, 3.0, 0.2);
+        Scenarios.drawClustererCapabilityAllMetricsInRange(graphsClust100init, 1000, 5, 0.0001, 3.0, 0.2);
 
         List<Graph> graphsClust100 = new ArrayList<>();
         graphsClust100.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_1));

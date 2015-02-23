@@ -10,11 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public abstract class Checker {
-    List<Graph> graphs;
-
-    public void setGraph(List<Graph> graphs) {
-        this.graphs = graphs;
-    }
+    public abstract List<Graph> getGraphs();
 
     public Map<Double, Double> seriesOfTests(Distance distance, final Double from, final Double to, final Double step) {
         double border = Math.min(to, distance.getMaxParam());
@@ -40,7 +36,7 @@ public abstract class Checker {
         Integer total = 0;
         Integer countErrors = 0;
 
-        for (Graph graph : graphs) {
+        for (Graph graph : getGraphs()) {
             ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
 
             DoubleMatrix A = new DoubleMatrix(graph.getSparseM());
