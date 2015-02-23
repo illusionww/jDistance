@@ -7,5 +7,5 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
 public interface Parser {
-    public Graph parse() throws ParserConfigurationException, IOException, SAXException;
+    public Graph parse(String path) throws ParserConfigurationException, IOException, SAXException;
 }

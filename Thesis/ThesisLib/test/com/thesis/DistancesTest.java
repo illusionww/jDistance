@@ -150,9 +150,9 @@ public class DistancesTest {
 
     @Test
     public void testCommunicabilityDistance() {
-        Distance distance = Distance.COMMUNICABILITY;
+        Distance distance = Distance.LOGARITHMIC_COMMUNICABILITY;
         DoubleMatrix D = distance.getD(exampleMatrix, 1.0);
-        double multiplier = 1.072 / D.get(1, 2);
+        double multiplier = 0.964 / D.get(0, 1);
         assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.964));
         assertTrue("distances not equal: 1.072 != " + multiplier * D.get(1, 2), equalDouble(multiplier * D.get(1, 2), 1.072));
         assertTrue("distances not equal: 1.492 != " + multiplier * D.get(0, 2), equalDouble(multiplier * D.get(0, 2), 1.492));

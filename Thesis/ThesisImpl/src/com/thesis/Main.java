@@ -1,54 +1,63 @@
 package com.thesis;
 
-import com.panayotis.gnuplot.dataset.Point;
-import com.panayotis.gnuplot.dataset.PointDataSet;
-import com.panayotis.gnuplot.style.NamedPlotColor;
-import com.panayotis.gnuplot.style.PlotColor;
-import com.thesis.adapter.gnuplot.GNUPlotAdapter;
-import com.thesis.adapter.gnuplot.Plot;
 import com.thesis.adapter.parser.GraphMLParser;
 import com.thesis.adapter.parser.Parser;
 import com.thesis.graph.Graph;
-import com.thesis.metric.Distance;
-import com.thesis.utils.ArrayUtils;
-import com.thesis.workflow.ClassifierChecker;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class Main {
-    static ClassifierChecker checker;
-
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        Parser parser = new GraphMLParser(Constants.GRAPHML_EXAMPLE2);
-        Graph graph = parser.parse();
+        Parser parser = new GraphMLParser();
 
-        String imgTitle = "Plot";
-        checker = new ClassifierChecker(graph, 10, 0.4);
-        List<Plot> plots = new ArrayList<>();
-        plots.add(newPlot(Distance.WALK, 0.001, 1.0, 0.05, NamedPlotColor.RED));
-        plots.add(newPlot(Distance.LOGARITHMIC_FOREST, 0.001, 3.0, 0.05, NamedPlotColor.GREEN));
-        plots.add(newPlot(Distance.PLAIN_FOREST, 0.001, 3.0, 0.05, NamedPlotColor.BLUE));
-        plots.add(newPlot(Distance.PLAIN_WALK, 0.001, 1.0, 0.05, NamedPlotColor.YELLOW));
-        plots.add(newPlot(Distance.COMMUNICABILITY, 0.001, 3.0, 0.05, NamedPlotColor.GREY));
-        plots.add(newPlot(Distance.LOGARITHMIC_COMMUNICABILITY, 0.001, 3.0, 0.05, NamedPlotColor.BLACK));
-        plots.add(newPlot(Distance.COMBINATIONS, 0.001, 1.0, 0.05, NamedPlotColor.ORANGE));
-        plots.add(newPlot(Distance.HELMHOLTZ_FREE_ENERGY, 0.001, 3.0, 0.05, NamedPlotColor.VIOLET));
+        List<Graph> graphsClust100init = new ArrayList<>();
+        graphsClust100init.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_1));
+        graphsClust100init.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_2));
+        graphsClust100init.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_3));
+        Scenarios.drawClustererCapabilityAllMetricsInRange(graphsClust100init, 100, 5, 0.0001, 3.0, 0.2);
 
-        GNUPlotAdapter ga = new GNUPlotAdapter(Constants.GNUPLOT_PATH);
-        ga.drawData(imgTitle, plots, Constants.PNG_OUTPUT_PATH);
+        List<Graph> graphsClust100 = new ArrayList<>();
+        graphsClust100.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_1));
+        graphsClust100.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_2));
+        graphsClust100.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_3));
+        Scenarios.drawClustererCapabilityAllMetricsInRange(graphsClust100, 100, 5, 0.0001, 3.0, 0.02);
+
+
+        List<Graph> graphsClust500 = new ArrayList<>();
+        graphsClust500.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_1));
+        graphsClust500.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_2));
+        graphsClust500.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_3));
+        Scenarios.drawClustererCapabilityAllMetricsInRange(graphsClust500, 500, 5, 0.0001, 3.0, 0.02);
+
+        List<Graph> graphsClass100_1start = new ArrayList<>();
+        graphsClass100_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_1));
+        graphsClass100_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_2));
+        graphsClass100_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_3));
+        Scenarios.drawClassifierCapabilityAllMetricsInRange(graphsClass100_1start, 100, 1, 0.3, 0.0001, 0.4, 0.01);
+
+        List<Graph> graphsClass100_10start = new ArrayList<>();
+        graphsClass100_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_1));
+        graphsClass100_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_2));
+        graphsClass100_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_3));
+        Scenarios.drawClassifierCapabilityAllMetricsInRange(graphsClass100_10start, 100, 10, 0.3, 0.0001, 0.4, 0.01);
+
+        List<Graph> graphsClass500_1start = new ArrayList<>();
+        graphsClass500_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_1));
+        graphsClass500_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_2));
+        graphsClass500_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_3));
+        Scenarios.drawClassifierCapabilityAllMetricsInRange(graphsClass500_1start, 500, 1, 0.3, 0.0001, 0.4, 0.01);
+
+        List<Graph> graphsClass500_10start = new ArrayList<>();
+        graphsClass500_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_1));
+        graphsClass500_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_2));
+        graphsClass500_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_3));
+        Scenarios.drawClassifierCapabilityAllMetricsInRange(graphsClass500_10start, 500, 10, 0.3, 0.0001, 0.4, 0.01);
     }
 
-    public static Plot newPlot(Distance distance, Double from, Double to, Double step, PlotColor color) {
-        String plotTitle = distance.getName();
-        Map<Double, Double> results = checker.seriesOfTests(distance, from, to, step);
-        List<Point<Double>> plotPoints = ArrayUtils.mapToPoints(results);
-        PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
-        return new Plot(plotTitle, color, plotPointsSet);
-    }
+
 }
 

@@ -21,16 +21,9 @@ import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 public class GraphMLParser implements Parser {
-    private String path;
-
-    private GraphMLParser() {}
-
-    public GraphMLParser(String path) {
-        this.path = path;
-    }
 
     @Override
-    public Graph parse() throws ParserConfigurationException, IOException, SAXException {
+    public Graph parse(String path) throws ParserConfigurationException, IOException, SAXException {
         File file = new File(path);
         LinkedList<NodeData> linkedList = new LinkedList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

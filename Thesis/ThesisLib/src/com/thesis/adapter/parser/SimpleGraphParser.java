@@ -18,16 +18,8 @@ public class SimpleGraphParser implements Parser {
     final Pattern color = Pattern.compile("^color (\\d+).*");
     final Pattern edge = Pattern.compile("^(\\d+) -> (\\d+).*");
 
-    private String path;
-
-    private SimpleGraphParser() {}
-
-    public SimpleGraphParser(String path) {
-        this.path = path;
-    }
-
     @Override
-    public Graph parse() throws ParserConfigurationException, IOException, SAXException {
+    public Graph parse(String path) throws ParserConfigurationException, IOException, SAXException {
         ArrayList<SimpleNodeData> simpleNodeData = new ArrayList<>();
 
         try(BufferedReader br = new BufferedReader(new FileReader(path))) {
