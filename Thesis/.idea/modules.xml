@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Thesis.iml" filepath="$PROJECT_DIR$/Thesis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" filepath="$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ThesisLib/ThesisLib.iml" filepath="$PROJECT_DIR$/ThesisLib/ThesisLib.iml" />
     </modules>
   </component>
 </project>

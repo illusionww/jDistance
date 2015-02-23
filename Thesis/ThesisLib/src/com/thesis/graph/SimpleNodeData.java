@@ -1,6 +1,8 @@
 package com.thesis.graph;
 
-public class SimpleNodeData implements Comparable<SimpleNodeData> {
+import com.thesis.utils.CloneableInterface;
+
+public class SimpleNodeData implements Comparable<SimpleNodeData>, CloneableInterface<SimpleNodeData> {
     String name;
     String label; //color
 
@@ -47,5 +49,11 @@ public class SimpleNodeData implements Comparable<SimpleNodeData> {
         if (this.getLabel() != null) {
             return this.getLabel().compareTo(o.getLabel());
         } else return 0;
+    }
+
+    @Override
+    public SimpleNodeData clone() throws CloneNotSupportedException {
+        super.clone();
+        return new SimpleNodeData(this.name, this.label);
     }
 }

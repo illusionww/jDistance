@@ -1,4 +1,4 @@
-package com.thesis.parser;
+package com.thesis.adapter.parser;
 
 import com.thesis.graph.Graph;
 import org.xml.sax.SAXException;

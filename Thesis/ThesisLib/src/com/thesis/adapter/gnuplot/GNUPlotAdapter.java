@@ -1,0 +1,57 @@
+package com.thesis.adapter.gnuplot;
+
+import com.panayotis.gnuplot.JavaPlot;
+import com.panayotis.gnuplot.plot.DataSetPlot;
+import com.panayotis.gnuplot.style.PlotStyle;
+import com.panayotis.gnuplot.style.Style;
+import com.panayotis.gnuplot.terminal.ImageTerminal;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.List;
+
+public class GNUPlotAdapter {
+    private String gnuplotPath;
+
+    public GNUPlotAdapter(String gnuplotPath) {
+        this.gnuplotPath = gnuplotPath;
+    }
+
+    public void drawData(String title, List<Plot> data, String outputPath) {
+        ImageTerminal png = new ImageTerminal();
+        File file = new File(outputPath);
+        try {
+            file.createNewFile();
+            png.processOutput(new FileInputStream(file));
+        } catch (IOException ex) {
+            System.err.print(ex);
+        }
+
+        JavaPlot gnuplot = new JavaPlot(gnuplotPath);
+        gnuplot.setTerminal(png);
+
+        for(Plot plot : data) {
+            PlotStyle plotStyle = new PlotStyle();
+            plotStyle.setStyle(Style.LINES);
+            plotStyle.setLineType(plot.getColor());
+            plotStyle.setLineWidth(1);
+
+            DataSetPlot dataSetPlot = new DataSetPlot(plot.getData());
+            dataSetPlot.setPlotStyle(plotStyle);
+            dataSetPlot.setTitle(plot.getName());
+
+            gnuplot.addPlot(dataSetPlot);
+        }
+
+        gnuplot.setTitle(title);
+        gnuplot.plot();
+
+        try {
+            ImageIO.write(png.getImage(), "png", file);
+        } catch (IOException ex) {
+            System.err.print(ex);
+        }
+    }
+}
