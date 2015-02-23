@@ -41,10 +41,10 @@ public abstract class Checker {
 
             DoubleMatrix A = new DoubleMatrix(graph.getSparseM());
             double[][] D = distance.getD(A, parameter).toArray2();
-            Integer roundErrors = roundErrors(D, simpleNodeData);
+            Integer[] result = roundErrors(D, simpleNodeData);
 
-            total += simpleNodeData.size();
-            countErrors += roundErrors;
+            total += result[0];
+            countErrors += result[1];
         }
 
         Double rate = 1 - (double) countErrors / (double) total;
@@ -53,5 +53,5 @@ public abstract class Checker {
         return rate;
     };
 
-    protected abstract Integer roundErrors(final double[][] D, ArrayList<SimpleNodeData> simpleNodeData);
+    protected abstract Integer[] roundErrors(final double[][] D, ArrayList<SimpleNodeData> simpleNodeData);
 }

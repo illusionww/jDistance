@@ -24,7 +24,7 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    protected Integer roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected Integer[] roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Classifier classifier = new Classifier(D, simpleNodeData);
@@ -38,6 +38,6 @@ public class ClassifierChecker extends Checker {
             }
         }
 
-        return countErrors;
+        return new Integer[] {data.size(), countErrors};
     }
 }

@@ -24,7 +24,7 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
-    protected Integer roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected Integer[] roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Clusterer clusterer = new Clusterer(D);
@@ -38,6 +38,7 @@ public class ClustererChecker extends Checker {
             }
         }
 
-        return countErrors;
+        Integer total = (int) Math.round(Math.floor((double) (data.size()*data.size()-data.size())/2.0));
+        return new Integer[] {total, countErrors};
     }
 }
