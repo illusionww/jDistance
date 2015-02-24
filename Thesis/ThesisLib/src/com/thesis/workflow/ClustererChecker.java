@@ -32,7 +32,7 @@ public class ClustererChecker extends Checker {
 
         for (int i = 0; i < data.size(); ++i) {
             for (int j = i + 1; j < data.size(); ++j) {
-                if (data.get(j).equals(data.get(k)) == simpleNodeData.get(j).getLabel().equals(simpleNodeData.get(k).getLabel())) {
+                if (data.get(i).equals(data.get(j)) == simpleNodeData.get(i).getLabel().equals(simpleNodeData.get(j).getLabel())) {
                     countErrors += 1;
                 }
             }

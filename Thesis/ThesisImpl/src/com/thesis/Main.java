@@ -13,7 +13,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         Parser parser = new GraphMLParser();
-/*
+
         List<Graph> graphsClust100init = new ArrayList<>();
         graphsClust100init.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_1));
         graphsClust100init.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_1_2));
@@ -32,19 +32,12 @@ public class Main {
         graphsClust500.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_2));
         graphsClust500.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_3));
         Scenarios.drawClustererCapabilityAllMetricsInRange(graphsClust500, 500, 5, 0.0001, 3.0, 0.02);
-*/
 
-        List<Graph> graphsClass500_1start = new ArrayList<>();
-        graphsClass500_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_1));
-        graphsClass500_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_2));
-        graphsClass500_1start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_3));
-        Scenarios.drawClassifierCapabilityAllMetricsInRange(graphsClass500_1start, 500, 1, 0.3, 0.0001, 0.4, 0.01);
-
-        List<Graph> graphsClass500_10start = new ArrayList<>();
-        graphsClass500_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_1));
-        graphsClass500_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_2));
-        graphsClass500_10start.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_3));
-        Scenarios.drawClassifierCapabilityAllMetricsInRange(graphsClass500_10start, 500, 10, 0.3, 0.0001, 0.4, 0.01);
+        List<Graph> graphsClass500_10 = new ArrayList<>();
+        graphsClass500_10.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_1));
+        graphsClass500_10.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_2));
+        graphsClass500_10.add(parser.parse(Constants.GRAPH_FOLDER + Constants.SIMPLEGRAPH_2_3));
+        Scenarios.drawClassifierCapabilityAllMetricsInRange(graphsClass500_10, 500, 10, 0.3, 0.0001, 0.4, 0.02);
     }
 
 
