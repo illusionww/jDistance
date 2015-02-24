@@ -88,7 +88,7 @@ public class Clusterer {
                 while (!stack.empty()) {
                     Integer index = stack.pop();
                     for (int i = 0; i < sparseMatrix.length; ++i) {
-                        if (!index.equals(new Integer(i)) && ! new Float(0).equals(sparseMatrix[index][i]) && !set.contains(new Integer(i))) {
+                        if (!index.equals(new Integer(i)) && ! new Double(0).equals(sparseMatrix[index][i]) && !set.contains(new Integer(i))) {
                             stack.push(i);
                             predictCluster.put(i, countCluster);
                             set.add(i);
