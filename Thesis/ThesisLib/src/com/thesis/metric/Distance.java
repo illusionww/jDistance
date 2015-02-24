@@ -3,7 +3,7 @@ package com.thesis.metric;
 import org.jblas.DoubleMatrix;
 
 public enum Distance {
-    WALK("Walk distances", 1.0) {
+    WALK("Walk", 1.0) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double alpha) {
             double t = DistancesBuilder.alphaToT(A, alpha);
@@ -12,7 +12,7 @@ public enum Distance {
             return DistancesBuilder.getD(H);
         }
     },
-    LOGARITHMIC_FOREST("Logarithmic Forest Distances", Double.MAX_VALUE) {
+    LOGARITHMIC_FOREST("Logarithmic Forest", Double.MAX_VALUE) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double t) {
             DoubleMatrix L = DistancesBuilder.getL(A);
@@ -21,7 +21,7 @@ public enum Distance {
             return DistancesBuilder.getD(H);
         }
     },
-    PLAIN_FOREST("[\"Plain\"] Forest Distances", Double.MAX_VALUE) {
+    PLAIN_FOREST("[\"Plain\"] Forest", Double.MAX_VALUE) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double t) {
             DoubleMatrix L = DistancesBuilder.getL(A);
@@ -29,7 +29,7 @@ public enum Distance {
             return DistancesBuilder.getD(H);
         }
     },
-    PLAIN_WALK("\"Plain\" Walk Distances", 1.0) {
+    PLAIN_WALK("\"Plain\" Walk", 1.0) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double alpha) {
             double t = DistancesBuilder.alphaToT(A, alpha);
@@ -37,14 +37,14 @@ public enum Distance {
             return DistancesBuilder.getD(H);
         }
     },
-    COMMUNICABILITY("Communicability Distances", Double.MAX_VALUE) {
+    COMMUNICABILITY("Communicability", Double.MAX_VALUE) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double t) {
             DoubleMatrix H = DistancesBuilder.getH0Communicability(A, t);
             return DistancesBuilder.getD(H);
         }
     },
-    LOGARITHMIC_COMMUNICABILITY("Logarithmic Communicability Distances", Double.MAX_VALUE) {
+    LOGARITHMIC_COMMUNICABILITY("Logarithmic Communicability", Double.MAX_VALUE) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double t) {
             DoubleMatrix H0 = DistancesBuilder.getH0Communicability(A, t);
@@ -52,7 +52,7 @@ public enum Distance {
             return DistancesBuilder.getD(H);
         }
     },
-    COMBINATIONS("Convex combination of the shortest path and resistance metrics", 1.0) {
+    COMBINATIONS("Combination", 1.0) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double lambda) {
             if (lambda <= 0 || lambda >= 1) {
@@ -66,7 +66,7 @@ public enum Distance {
             return Ds.mul(1 - lambda).add(Dr.mul(lambda));
         }
     },
-    HELMHOLTZ_FREE_ENERGY("Helmholtz Free Energy Distances", Double.MAX_VALUE) {
+    HELMHOLTZ_FREE_ENERGY("Helmholtz Free Energy", Double.MAX_VALUE) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double beta) {
             return DistancesBuilder.getDFreeEnergy(A, beta);
