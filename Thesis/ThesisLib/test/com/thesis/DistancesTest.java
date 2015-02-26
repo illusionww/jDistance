@@ -158,9 +158,11 @@ public class DistancesTest {
     public void testTriangleGraphSP_CTDistance() {
         Distance distance = Distance.COMBINATIONS;
         DoubleMatrix D = distance.getD(triangleGraph, 0);
-        assertTrue("SP distance attitude not equal 1.0: " + D.get(0, 1) + "/" + D.get(1, 2), equalDouble(D.get(0, 1) / D.get(1, 2), 1.0));
+        assertTrue("SP distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDouble(D.get(0, 1) / D.get(1, 2), 1.0));
+        D = distance.getD(triangleGraph, 0.5);
+        assertTrue("(SP + CT)/2 distance attitude not equal 1.25: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.25));
         D = distance.getD(triangleGraph, 1);
-        assertTrue("CT distance attitude not equal 1.5: " + D.get(0, 1) + "/" + D.get(1, 2), equalDouble(D.get(0, 1) / D.get(1, 2), 1.5));
+        assertTrue("CT distance attitude not equal 1.5: " + D.get(0, 1) / D.get(1, 2), equalDouble(D.get(0, 1) / D.get(1, 2), 1.5));
     }
 
     @Test

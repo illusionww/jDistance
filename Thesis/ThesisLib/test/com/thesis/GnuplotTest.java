@@ -5,11 +5,16 @@ import com.panayotis.gnuplot.dataset.PointDataSet;
 import com.panayotis.gnuplot.style.NamedPlotColor;
 import com.thesis.adapter.gnuplot.GNUPlotAdapter;
 import com.thesis.adapter.gnuplot.Plot;
+import com.thesis.helper.MetricTask;
+import com.thesis.metric.Distance;
+import com.thesis.workflow.Environment;
+import com.thesis.workflow.TaskChain;
 import org.jblas.DoubleMatrix;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import static com.thesis.helper.DistancesHelper.*;
 
 public class GnuplotTest {
     DoubleMatrix exampleMatrix = new DoubleMatrix(new double[][]{
@@ -46,5 +51,12 @@ public class GnuplotTest {
         plots.add(plot2);
 
         ga.drawData(imgTitle, plots, "C:\\output.png");
+    }
+
+    @Test
+    public void drawSP_CTAttitude() {
+        Environment.GNUPLOT_PATH = "C:\\cygwin64\\bin\\gnuplot.exe";
+        Environment.IMG_FOLDER = "C:\\";
+        new TaskChain(new MetricTask(Distance.COMBINATIONS, triangleGraph, 0.01)).execute().draw("SP-CT");
     }
 }
