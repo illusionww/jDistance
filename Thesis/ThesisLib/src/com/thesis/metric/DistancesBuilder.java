@@ -36,14 +36,6 @@ public class DistancesBuilder {
         return MatrixFunctions.logi(H0);
     }
 
-    // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
-    public static DoubleMatrix getD(DoubleMatrix H) {
-        int d = H.getColumns();
-        DoubleMatrix h = H.diag();
-        DoubleMatrix i = DoubleMatrix.ones(d, 1);
-        return h.mmul(i.transpose()).add(i.mmul(h.transpose())).sub(H).sub(H.transpose()).div(2);
-    }
-
     // H = (L + J)^{-1}
     public static DoubleMatrix getHResistance(DoubleMatrix L) {
         int d = L.getColumns();
@@ -69,8 +61,15 @@ public class DistancesBuilder {
 
     // H0 = exp(tA)
     public static DoubleMatrix getH0Communicability(DoubleMatrix A, double t) {
-        DoubleMatrix exp = MatrixFunctions.expm(A.mul(t));
-        return MatrixFunctions.sqrt(exp);
+        return MatrixFunctions.expm(A.mul(t));
+    }
+
+    // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
+    public static DoubleMatrix getD(DoubleMatrix H) {
+        int d = H.getColumns();
+        DoubleMatrix h = H.diag();
+        DoubleMatrix i = DoubleMatrix.ones(d, 1);
+        return h.mmul(i.transpose()).add(i.mmul(h.transpose())).sub(H).sub(H.transpose()).div(2);
     }
 
     // Johnson's Algorithm
@@ -105,5 +104,9 @@ public class DistancesBuilder {
         DoubleMatrix FE = F.add(F.transpose()).div(2);
 
         return FE.sub(DoubleMatrix.diag(FE.diag()));
+    }
+
+    public static DoubleMatrix sqrtD(DoubleMatrix D) {
+        return MatrixFunctions.sqrt(D);
     }
 }

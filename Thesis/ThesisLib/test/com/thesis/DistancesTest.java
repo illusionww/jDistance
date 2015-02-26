@@ -15,7 +15,7 @@ import static com.thesis.helper.DistancesHelper.*;
 public class DistancesTest {
 
     @Test
-    public void testAllDistancesItemsMoreThanZero() {
+    public void testChainGraphAllDistancesItemsMoreThanZero() {
         Distance values[] = Distance.values();
         for (Distance distance : values) {
             int multiplier = distance.equals(Distance.COMBINATIONS) ? 1 : 10;
@@ -34,7 +34,7 @@ public class DistancesTest {
     }
 
     @Test
-    public void testAllDistancesSymmetryMatrix() {
+    public void testChainGraphAllDistancesSymmetryMatrix() {
         Distance values[] = Distance.values();
         for (Distance distance : values) {
             int multiplier = distance.equals(Distance.COMBINATIONS) ? 1 : 10;
@@ -54,7 +54,7 @@ public class DistancesTest {
     }
 
     @Test
-    public void testAllDistancesMainDiagonalZero() {
+    public void testChainGraphAllDistancesMainDiagonalZero() {
         Distance values[] = Distance.values();
         for (Distance distance : values) {
             int multiplier = distance.equals(Distance.COMBINATIONS) ? 1 : 10;
@@ -71,7 +71,7 @@ public class DistancesTest {
     }
 
     @Test
-    public void testShortestPathDistance() {
+    public void testChainGraphShortestPathDistance() {
         DoubleMatrix D = DistancesBuilder.getDShortestPath(chainGraph);
         double multiplier = 1.0 / D.get(0, 1);
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.000));
@@ -81,7 +81,7 @@ public class DistancesTest {
     }
 
     @Test
-    public void testResistanceDistance() {
+    public void testChainGraphResistanceDistance() {
         DoubleMatrix L = DistancesBuilder.getL(chainGraph);
         DoubleMatrix H = DistancesBuilder.getHResistance(L);
         DoubleMatrix D = DistancesBuilder.getD(H);
@@ -93,7 +93,7 @@ public class DistancesTest {
     }
 
     @Test
-    public void testWalkDistance() {
+    public void testChainGraphWalkDistance() {
         Distance distance = Distance.WALK;
         DoubleMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 1.025 / D.get(0, 1);
@@ -104,7 +104,7 @@ public class DistancesTest {
     }
 
     @Test
-    public void testLogarithmicForestDistance() {
+    public void testChainGraphLogarithmicForestDistance() {
         Distance distance = Distance.LOGARITHMIC_FOREST;
         DoubleMatrix D = distance.getD(chainGraph, 2.0);
         double multiplier = 0.959 / D.get(0, 1);
@@ -115,7 +115,7 @@ public class DistancesTest {
     }
 
     @Test
-    public void testPlainForestDistance() {
+    public void testChainGraphPlainForestDistance() {
         Distance distance = Distance.PLAIN_FOREST;
         DoubleMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 1.026 / D.get(0, 1);
@@ -126,7 +126,7 @@ public class DistancesTest {
     }
 
     @Test
-    public void testPlainWalkDistance() {
+    public void testChainGraphPlainWalkDistance() {
         Distance distance = Distance.PLAIN_WALK;
         DoubleMatrix D = distance.getD(chainGraph, 4.5);
         double multiplier = 1.025 / D.get(0, 1);
@@ -144,23 +144,14 @@ public class DistancesTest {
     }
 
     @Test
-    public void testCommunicabilityDistance() {
+    public void testChainGraphCommunicabilityDistance() {
         Distance distance = Distance.COMMUNICABILITY;
         DoubleMatrix D = distance.getD(chainGraph, 1.0);
-        System.out.println(D.get(0, 1));
-        System.out.println(D.get(1, 2));
-        System.out.println(D.get(0, 2));
-        System.out.println(D.get(0, 3));
-
         double multiplier = 0.964 / D.get(0, 1);
-        System.out.println(multiplier * D.get(0, 1));
-        System.out.println(multiplier * D.get(1, 2));
-        System.out.println(multiplier * D.get(0, 2));
-        System.out.println(multiplier * D.get(0, 3));
         assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.964));
         assertTrue("distances not equal: 1.072 != " + multiplier * D.get(1, 2), equalDouble(multiplier * D.get(1, 2), 1.072));
         assertTrue("distances not equal: 1.492 != " + multiplier * D.get(0, 2), equalDouble(multiplier * D.get(0, 2), 1.492));
-        assertTrue("distances not equal: 1.546 != " + multiplier * D.get(0, 3), equalDouble(multiplier * D.get(0, 3), 1.546));
+        assertTrue("distances not equal: 1.564 != " + multiplier * D.get(0, 3), equalDouble(multiplier * D.get(0, 3), 1.564));
     }
 
     @Test
@@ -173,14 +164,18 @@ public class DistancesTest {
     }
 
     @Test
-    public void testTriangleGraphLogForAndFEDistances() {
+    public void testTriangleGraphLogarithmicForestDistance() {
         Distance distance = Distance.LOGARITHMIC_FOREST;
         DoubleMatrix D = distance.getD(triangleGraph, 0.01);
         assertTrue("Logarithmic Forest distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.0));
         D = distance.getD(triangleGraph, 500.0);
         assertTrue("Logarithmic Forest distance attitude not equal 1.5: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.5));
-        distance = Distance.HELMHOLTZ_FREE_ENERGY;
-        D = distance.getD(triangleGraph, 0.0001);
+    }
+
+    @Test
+    public void testTriangleGraphFEDistance() {
+        Distance distance = Distance.HELMHOLTZ_FREE_ENERGY;
+        DoubleMatrix D = distance.getD(triangleGraph, 0.0001);
         assertTrue("Free Energy distance attitude not equal 1.5: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.5));
         D = distance.getD(triangleGraph, 30.0);
         assertTrue("Free Energy distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.0));

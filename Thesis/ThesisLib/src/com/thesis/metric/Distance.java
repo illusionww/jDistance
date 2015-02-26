@@ -42,7 +42,8 @@ public enum Distance {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double t) {
             DoubleMatrix H = DistancesBuilder.getH0Communicability(A, t);
-            return DistancesBuilder.getD(H);
+            DoubleMatrix D = DistancesBuilder.getD(H);
+            return DistancesBuilder.sqrtD(D);
         }
     },
     LOGARITHMIC_COMMUNICABILITY("Logarithmic Communicability", "logComm", Scale.LOG1) {
