@@ -1,10 +1,10 @@
 package com.thesis.adapter.parser;
 
 
-import com.thesis.graph.EdgeData;
-import com.thesis.graph.Graph;
-import com.thesis.graph.NodeData;
-import com.thesis.graph.SimpleNodeData;
+import com.thesis.adapter.parser.graph.EdgeData;
+import com.thesis.adapter.parser.graph.Graph;
+import com.thesis.adapter.parser.graph.NodeData;
+import com.thesis.adapter.parser.graph.SimpleNodeData;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;

@@ -6,22 +6,21 @@ public class Clusterer {
 
     private double[][] matrixWithWeights;
 
-    public Clusterer(double[][] matrixWithWeights){
+    public Clusterer(double[][] matrixWithWeights) {
         this.matrixWithWeights = matrixWithWeights;
     }
 
-
     //k количество кластеров
-    public HashMap<Integer, Integer> predictClusterer(Integer k){
+    public HashMap<Integer, Integer> predictClusterer(Integer k) {
         double minWeight = Double.MAX_VALUE;
         int to = 0;
         int from = 0;
         HashMap<Integer, Integer> predictCluster = new HashMap<>();
         double[][] sparseMatrix = new double[matrixWithWeights.length][matrixWithWeights.length];
 
-        for (int i = 0; i < matrixWithWeights.length; ++i){
-            for (int j = i + 1; j < matrixWithWeights.length; ++j){
-                if (minWeight > matrixWithWeights[i][j]){
+        for (int i = 0; i < matrixWithWeights.length; ++i) {
+            for (int j = i + 1; j < matrixWithWeights.length; ++j) {
+                if (minWeight > matrixWithWeights[i][j]) {
                     minWeight = matrixWithWeights[i][j];
                     from = i;
                     to = j;
@@ -36,7 +35,7 @@ public class Clusterer {
         set.add(from);
         set.add(to);
 
-        while (set.size() < matrixWithWeights.length){
+        while (set.size() < matrixWithWeights.length) {
             minWeight = Double.MAX_VALUE;
 
             Iterator<Integer> iterator = set.iterator();
@@ -59,11 +58,11 @@ public class Clusterer {
         }
 
         double maxWeight;
-        for (int i = 0; i < k-1; ++i){
+        for (int i = 0; i < k - 1; ++i) {
             maxWeight = Double.MIN_VALUE;
             for (int j = 0; j < sparseMatrix.length; ++j)
-                for (int s = j + 1; s < sparseMatrix.length; ++s){
-                    if (maxWeight < sparseMatrix[j][s]){
+                for (int s = j + 1; s < sparseMatrix.length; ++s) {
+                    if (maxWeight < sparseMatrix[j][s]) {
                         maxWeight = sparseMatrix[j][s];
                         from = j;
                         to = s;
@@ -76,7 +75,7 @@ public class Clusterer {
         int countCluster = 0;
         Stack<Integer> stack = new Stack();
         set.clear();
-        while(set.size() < sparseMatrix.length) {
+        while (set.size() < sparseMatrix.length) {
             for (int j = 0; j < sparseMatrix.length; j++) {
                 if (stack.empty() && !set.contains(j)) {
                     countCluster++;
@@ -88,7 +87,7 @@ public class Clusterer {
                 while (!stack.empty()) {
                     Integer index = stack.pop();
                     for (int i = 0; i < sparseMatrix.length; ++i) {
-                        if (!index.equals(new Integer(i)) && ! new Double(0).equals(sparseMatrix[index][i]) && !set.contains(new Integer(i))) {
+                        if (!index.equals(new Integer(i)) && !new Double(0).equals(sparseMatrix[index][i]) && !set.contains(new Integer(i))) {
                             stack.push(i);
                             predictCluster.put(i, countCluster);
                             set.add(i);
@@ -107,5 +106,4 @@ public class Clusterer {
     public void setMatrixWithWeights(double[][] matrixWithWeights) {
         this.matrixWithWeights = matrixWithWeights;
     }
-
 }

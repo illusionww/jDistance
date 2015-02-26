@@ -17,7 +17,6 @@ public class DistancesBuilder {
         return 1.0 / (1.0 / alpha + ro);
     }
 
-
     public static DoubleMatrix getL(DoubleMatrix A) {
         int d = A.getRows();
         double[][] a = A.toArray2();
@@ -70,7 +69,8 @@ public class DistancesBuilder {
 
     // H0 = exp(tA)
     public static DoubleMatrix getH0Communicability(DoubleMatrix A, double t) {
-        return MatrixFunctions.expm(A.mul(t));
+        DoubleMatrix exp = MatrixFunctions.expm(A.mul(t));
+        return MatrixFunctions.sqrt(exp);
     }
 
     // Johnson's Algorithm

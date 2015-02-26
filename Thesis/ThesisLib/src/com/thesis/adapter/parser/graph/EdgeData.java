@@ -1,4 +1,4 @@
-package com.thesis.graph;
+package com.thesis.adapter.parser.graph;
 
 public class EdgeData {
     String source;

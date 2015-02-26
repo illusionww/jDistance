@@ -1,6 +1,6 @@
 package com.thesis.adapter.parser;
 
-import com.thesis.graph.Graph;
+import com.thesis.adapter.parser.graph.Graph;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;

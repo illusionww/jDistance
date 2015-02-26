@@ -1,7 +1,7 @@
 package com.thesis.adapter.parser;
 
-import com.thesis.graph.Graph;
-import com.thesis.graph.SimpleNodeData;
+import com.thesis.adapter.parser.graph.Graph;
+import com.thesis.adapter.parser.graph.SimpleNodeData;
 import org.xml.sax.SAXException;
 import sun.security.pkcs.ParsingException;
 

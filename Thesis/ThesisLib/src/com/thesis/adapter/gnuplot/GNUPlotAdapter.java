@@ -2,6 +2,8 @@ package com.thesis.adapter.gnuplot;
 
 import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.plot.DataSetPlot;
+import com.panayotis.gnuplot.style.NamedPlotColor;
+import com.panayotis.gnuplot.style.PlotColor;
 import com.panayotis.gnuplot.style.PlotStyle;
 import com.panayotis.gnuplot.style.Style;
 import com.panayotis.gnuplot.terminal.ImageTerminal;
@@ -14,6 +16,17 @@ import java.util.List;
 
 public class GNUPlotAdapter {
     private String gnuplotPath;
+
+    public static final PlotColor[] colors = {
+            NamedPlotColor.RED,
+            NamedPlotColor.GREEN,
+            NamedPlotColor.BLUE,
+            NamedPlotColor.YELLOW,
+            NamedPlotColor.GREY,
+            NamedPlotColor.BLACK,
+            NamedPlotColor.ORANGE,
+            NamedPlotColor.VIOLET
+    };
 
     public GNUPlotAdapter(String gnuplotPath) {
         this.gnuplotPath = gnuplotPath;
