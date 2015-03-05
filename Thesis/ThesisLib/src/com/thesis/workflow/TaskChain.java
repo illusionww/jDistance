@@ -8,15 +8,15 @@ import com.thesis.adapter.gnuplot.Plot;
 import com.thesis.metric.Distance;
 import com.thesis.utils.ArrayUtils;
 import com.thesis.workflow.task.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.*;
 
 public class TaskChain {
+    private static final Logger log = LoggerFactory.getLogger(TaskChain.class);
     List<Task> tasks;
-
-    public TaskChain() {
-    }
 
     public TaskChain(Task task) {
         tasks = new ArrayList<>();
@@ -36,9 +36,13 @@ public class TaskChain {
         return this;
     }
 
-    public TaskChain execute() {
-        tasks.forEach(Task::execute);
-
+    public TaskChain execute(boolean parallel) {
+        Date start = new Date();
+        log.info("Start task chain");
+        tasks.forEach((task) -> task.execute(parallel));
+        Date finish = new Date();
+        long diff = finish.getTime() - start.getTime();
+        log.info("Task chain done. Time: " + diff);
         return this;
     }
 
@@ -60,5 +64,11 @@ public class TaskChain {
         ga.drawData(imgTitle, plots, Environment.IMG_FOLDER + File.separator + imgTitle + ".png");
 
         return this;
+    }
+
+    public Map<Task, Map<Distance, Map<Double, Double>>> getData() {
+        Map<Task, Map<Distance, Map<Double, Double>>> result = new HashMap<>();
+        tasks.forEach(task -> result.put(task, task.getResults()));
+        return result;
     }
 }

@@ -30,10 +30,17 @@ public class CustomTask implements Task {
     }
 
     @Override
-    public Task execute() {
-        for (Distance distance : distances) {
-            Map<Double, Double> distanceResult = checker.seriesOfTests(distance, from, to, step, Scale.LINEAR);
-            result.put(distance, distanceResult);
+    public Task execute(boolean parallel) {
+        if (parallel) {
+            distances.parallelStream().forEach(distance -> {
+                Map<Double, Double> distanceResult = checker.seriesOfTests(distance, from, to, step, Scale.LINEAR);
+                result.put(distance, distanceResult);
+            });
+        } else {
+            distances.forEach(distance -> {
+                Map<Double, Double> distanceResult = checker.seriesOfTests(distance, from, to, step, Scale.LINEAR);
+                result.put(distance, distanceResult);
+            });
         }
         return this;
     }

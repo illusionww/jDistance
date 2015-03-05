@@ -46,4 +46,9 @@ public class ClustererChecker extends Checker {
     protected Double rate(Double countErrors, Double total) {
         return 1 - countErrors / total;
     }
+
+    @Override
+    public ClustererChecker clone() {
+        return new ClustererChecker(graphs, k);
+    }
 }

@@ -37,7 +37,7 @@ public class MetricTask implements Task {
     }
 
     @Override
-    public Task execute() {
+    public Task execute(boolean parallel) {
         distances.forEach(distance -> {
             int countOfPoints = (int) Math.round(Math.floor(1 / step) + 1);
             Map<Double, Double> results = new HashMap<>();

@@ -1,4 +1,4 @@
-package com.thesis;
+package com.thesis.helper;
 
 public class Constants {
     public static final String GNUPLOT_PATH = "C:\\cygwin64\\bin\\gnuplot.exe";
@@ -7,6 +7,6 @@ public class Constants {
 
     public static final String FOLDER1 = "n100pin03pout01k5";
     public static final String FOLDER1_NAME = "classifier n=100 pin=03 pout=01 k=5";
-    public static final String FOLDER2 = "n100pin03pout002k5";
-    public static final String FOLDER2_NAME = "classifier n=100 pin=03 pout=002 k=5";
+
+    public static final String GRAPHML_EXAMPLE1 = "myRandomGraphn100k5pin0_3pout0_02_graphml.graphml";
 }

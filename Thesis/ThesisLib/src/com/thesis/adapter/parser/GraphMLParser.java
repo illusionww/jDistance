@@ -20,7 +20,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-public class GraphMLParser implements Parser {
+public class GraphMLParser extends Parser {
 
     @Override
     public Graph parse(String path) throws ParserConfigurationException, IOException, SAXException {

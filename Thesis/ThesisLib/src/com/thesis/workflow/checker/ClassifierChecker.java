@@ -19,12 +19,12 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    public List<Graph> getGraphs() {
+    public synchronized List<Graph> getGraphs() {
         return graphs;
     }
 
     @Override
-    protected Integer[] roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected synchronized Integer[] roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Classifier classifier = new Classifier(D, simpleNodeData);
@@ -42,9 +42,12 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    protected Double rate(Double countErrors, Double total) {
+    protected synchronized Double rate(Double countErrors, Double total) {
         return 1 - p - countErrors / ((1 - p) * total);
     }
 
-
+    @Override
+    public synchronized ClassifierChecker clone() {
+        return new ClassifierChecker(graphs, k, p);
+    }
 }

@@ -57,6 +57,6 @@ public class GnuplotTest {
     public void drawSP_CTAttitude() {
         Environment.GNUPLOT_PATH = "C:\\cygwin64\\bin\\gnuplot.exe";
         Environment.IMG_FOLDER = "C:\\";
-        new TaskChain(new MetricTask(Distance.COMBINATIONS, triangleGraph, 0.01)).execute().draw("SP-CT");
+        new TaskChain(new MetricTask(Distance.COMBINATIONS, triangleGraph, 0.01)).execute(false).draw("SP-CT");
     }
 }

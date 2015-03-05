@@ -52,8 +52,7 @@ public class SimpleNodeData implements Comparable<SimpleNodeData>, CloneableInte
     }
 
     @Override
-    public SimpleNodeData clone() throws CloneNotSupportedException {
-        super.clone();
+    public SimpleNodeData clone() {
         return new SimpleNodeData(this.name, this.label);
     }
 }

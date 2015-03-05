@@ -4,11 +4,8 @@ import com.thesis.metric.algorithm.johnsons.JohnsonsAlgorithm;
 import org.jblas.*;
 
 public class DistancesBuilder {
-    private DistancesBuilder() {
-    }
-
     // α > 0 -> 0 < t < ρ^{-1}
-    public static double alphaToT(DoubleMatrix A, double alpha) {
+    public synchronized double alphaToT(DoubleMatrix A, double alpha) {
         double ro = 0;
         ComplexDoubleMatrix cfm = Eigen.eigenvalues(A);
         for (ComplexDouble[] row : cfm.toArray2()) {
@@ -17,7 +14,7 @@ public class DistancesBuilder {
         return 1.0 / (1.0 / alpha + ro);
     }
 
-    public static DoubleMatrix getL(DoubleMatrix A) {
+    public synchronized DoubleMatrix getL(DoubleMatrix A) {
         int d = A.getRows();
         double[][] a = A.toArray2();
         double[] rowSums = new double[d];
@@ -32,12 +29,12 @@ public class DistancesBuilder {
     }
 
     // H = log(H0)
-    public static DoubleMatrix H0toH(DoubleMatrix H0) {
+    public synchronized DoubleMatrix H0toH(DoubleMatrix H0) {
         return MatrixFunctions.logi(H0);
     }
 
     // H = (L + J)^{-1}
-    public static DoubleMatrix getHResistance(DoubleMatrix L) {
+    public synchronized DoubleMatrix getHResistance(DoubleMatrix L) {
         int d = L.getColumns();
         double j = 1.0 / d;
         DoubleMatrix J = DoubleMatrix.ones(d, d).mul(j);
@@ -45,7 +42,7 @@ public class DistancesBuilder {
     }
 
     // H0 = (I - tA)^{-1}
-    public static DoubleMatrix getH0Walk(DoubleMatrix A, double t) {
+    public synchronized DoubleMatrix getH0Walk(DoubleMatrix A, double t) {
         int d = A.getColumns();
         DoubleMatrix I = DoubleMatrix.eye(d);
         DoubleMatrix ins = I.sub(A.mul(t));
@@ -53,19 +50,19 @@ public class DistancesBuilder {
     }
 
     // H0 = (I + tL)^{-1}
-    public static DoubleMatrix getH0Forest(DoubleMatrix L, double t) {
+    public synchronized DoubleMatrix getH0Forest(DoubleMatrix L, double t) {
         int d = L.getColumns();
         DoubleMatrix I = DoubleMatrix.eye(d);
         return Solve.pinv(I.add(L.mul(t)));
     }
 
     // H0 = exp(tA)
-    public static DoubleMatrix getH0Communicability(DoubleMatrix A, double t) {
+    public synchronized DoubleMatrix getH0Communicability(DoubleMatrix A, double t) {
         return MatrixFunctions.expm(A.mul(t));
     }
 
     // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
-    public static DoubleMatrix getD(DoubleMatrix H) {
+    public synchronized DoubleMatrix getD(DoubleMatrix H) {
         int d = H.getColumns();
         DoubleMatrix h = H.diag();
         DoubleMatrix i = DoubleMatrix.ones(d, 1);
@@ -73,11 +70,11 @@ public class DistancesBuilder {
     }
 
     // Johnson's Algorithm
-    public static DoubleMatrix getDShortestPath(DoubleMatrix A) {
+    public synchronized DoubleMatrix getDShortestPath(DoubleMatrix A) {
         return JohnsonsAlgorithm.getAllShortestPaths(A);
     }
 
-    public static DoubleMatrix getDFreeEnergy(DoubleMatrix A, double beta) {
+    public synchronized DoubleMatrix getDFreeEnergy(DoubleMatrix A, double beta) {
         int d = A.getColumns();
 
         // P^{ref} = D^{-1}*A, D = Diag(A*e)
@@ -106,7 +103,7 @@ public class DistancesBuilder {
         return FE.sub(DoubleMatrix.diag(FE.diag()));
     }
 
-    public static DoubleMatrix sqrtD(DoubleMatrix D) {
+    public synchronized DoubleMatrix sqrtD(DoubleMatrix D) {
         return MatrixFunctions.sqrt(D);
     }
 }

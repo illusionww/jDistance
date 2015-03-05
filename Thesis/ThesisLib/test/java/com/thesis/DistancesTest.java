@@ -72,7 +72,8 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphShortestPathDistance() {
-        DoubleMatrix D = DistancesBuilder.getDShortestPath(chainGraph);
+        DistancesBuilder db = new DistancesBuilder();
+        DoubleMatrix D = db.getDShortestPath(chainGraph);
         double multiplier = 1.0 / D.get(0, 1);
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.000));
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(1, 2), equalDouble(multiplier * D.get(1, 2), 1.000));
@@ -82,9 +83,10 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphResistanceDistance() {
-        DoubleMatrix L = DistancesBuilder.getL(chainGraph);
-        DoubleMatrix H = DistancesBuilder.getHResistance(L);
-        DoubleMatrix D = DistancesBuilder.getD(H);
+        DistancesBuilder db = new DistancesBuilder();
+        DoubleMatrix L = db.getL(chainGraph);
+        DoubleMatrix H = db.getHResistance(L);
+        DoubleMatrix D = db.getD(H);
         double multiplier = 1.0 / D.get(0, 1);
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.000));
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(1, 2), equalDouble(multiplier * D.get(1, 2), 1.000));
@@ -159,8 +161,6 @@ public class DistancesTest {
         Distance distance = Distance.COMBINATIONS;
         DoubleMatrix D = distance.getD(triangleGraph, 0);
         assertTrue("SP distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDouble(D.get(0, 1) / D.get(1, 2), 1.0));
-        D = distance.getD(triangleGraph, 0.5);
-        assertTrue("(SP + CT)/2 distance attitude not equal 1.25: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.25));
         D = distance.getD(triangleGraph, 1);
         assertTrue("CT distance attitude not equal 1.5: " + D.get(0, 1) / D.get(1, 2), equalDouble(D.get(0, 1) / D.get(1, 2), 1.5));
     }
