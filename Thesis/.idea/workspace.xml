@@ -2,48 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8d38d350-0497-4360-a2df-735b9267c49b" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\ThesisLib\test\com\thesis\DistancesTest.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\ThesisLib\test\com\thesis\GnuplotTest.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\ThesisLib\test\com\thesis\helper\DistancesHelper.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\ThesisLib\test\com\thesis\helper\MetricTask.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v01.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v02.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v03.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v04.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v05.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v06.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v07.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v08.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v09.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout002k5v10.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v01.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v02.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v03.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v04.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v05.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v06.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v07.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v08.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v09.graphml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\graphEx\n100pin03pout01k5v10.graphml" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/Cloneable.java" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\Thesis\ThesisLib\src\com\thesis\utils\CloneableInterface.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/ArrayUtils.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/ArrayUtils.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/Checker.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/Checker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/classifier/Classifier.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/classifier/Classifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClassifierChecker.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClassifierChecker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/CloneableInterface.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/CloneableInterface.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClustererChecker.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClustererChecker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Constants.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/CustomTask.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/CustomTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/DefaultTask.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/DefaultTask.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/GraphMLParser.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/GraphMLParser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/Parser.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/Parser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/SimpleGraphParser.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/SimpleGraphParser.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/Graph.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/Graph.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/ParallelTest.java" afterPath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/ParallelTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/SimpleNodeData.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/SimpleNodeData.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/Task.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/Task.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/TaskChain.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/TaskChain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/ThesisLib.iml" afterPath="$PROJECT_DIR$/ThesisLib/ThesisLib.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Thesis.iws" />
@@ -76,90 +42,83 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="DefaultTask.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/DefaultTask.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="503" max-vertical-offset="969">
-              <caret line="45" column="67" selection-start-line="45" selection-start-column="67" selection-end-line="45" selection-end-column="67" />
-              <folding>
-                <element signature="e#969#970#0" expanded="true" />
-                <element signature="e#999#1000#0" expanded="true" />
-                <element signature="e#1675#1676#0" expanded="true" />
-                <element signature="e#1704#1705#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Checker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/Checker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="556" max-vertical-offset="1173">
-              <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GraphMLParser.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/GraphMLParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="1853">
-              <caret line="33" column="4" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Parser.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/Parser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.71428573" vertical-offset="0" max-vertical-offset="595">
-              <caret line="35" column="1" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NativeBlas.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/jblas/jblas/1.2.3/jblas-1.2.3-sources.jar!/org/jblas/NativeBlas.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="6464" max-vertical-offset="8024">
-              <caret line="419" column="27" selection-start-line="419" selection-start-column="27" selection-end-line="419" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Classifier.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/classifier/Classifier.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="803" max-vertical-offset="2618">
-              <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="962" max-vertical-offset="1326">
+              <caret line="66" column="33" selection-start-line="66" selection-start-column="33" selection-end-line="66" selection-end-column="33" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5878#5879#0" expanded="true" />
-                <element signature="e#5914#5915#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="HashMap.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/java/util/HashMap.java">
+      <file leaf-file-name="Graph.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/Graph.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="5082" max-vertical-offset="39338">
-              <caret line="337" column="0" selection-start-line="337" selection-start-column="0" selection-end-line="337" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="86" max-vertical-offset="493">
+              <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DistancesBuilder.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Cloneable.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/Cloneable.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
+              <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ParallelTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/ParallelTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="516" max-vertical-offset="1037">
+              <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DistancesHelper.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/helper/DistancesHelper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="527">
+              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Distance.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1404" max-vertical-offset="1955">
+              <caret line="85" column="21" selection-start-line="85" selection-start-column="21" selection-end-line="85" selection-end-column="21" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3664#3665#0" expanded="true" />
+                <element signature="e#3691#3692#0" expanded="true" />
+                <element signature="e#3740#3741#0" expanded="true" />
+                <element signature="e#3772#3773#0" expanded="true" />
+                <element signature="e#3816#3817#0" expanded="true" />
+                <element signature="e#3844#3845#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DistancesBuilder.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="68" max-vertical-offset="1938">
-              <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+            <state vertical-scroll-proportion="2.2884614" vertical-offset="0" max-vertical-offset="1938">
+              <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
               <folding>
                 <element signature="e#1018#1019#0" expanded="true" />
                 <element signature="e#1065#1066#0" expanded="true" />
@@ -170,20 +129,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Distance.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java">
+      <file leaf-file-name="MatrixFunctions.java" pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/org/jblas/jblas/1.2.3/jblas-1.2.3-sources.jar!/org/jblas/MatrixFunctions.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1591" max-vertical-offset="1955">
-              <caret line="107" column="10" selection-start-line="107" selection-start-column="10" selection-end-line="107" selection-end-column="10" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#3637#3638#0" expanded="true" />
-                <element signature="e#3664#3665#0" expanded="true" />
-                <element signature="e#3713#3714#0" expanded="true" />
-                <element signature="e#3745#3746#0" expanded="true" />
-                <element signature="e#3789#3790#0" expanded="true" />
-                <element signature="e#3817#3818#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="83" max-vertical-offset="14637">
+              <caret line="46" column="13" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GnuplotTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/GnuplotTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="554" max-vertical-offset="918">
+              <caret line="59" column="95" selection-start-line="59" selection-start-column="95" selection-end-line="59" selection-end-column="95" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -191,13 +152,9 @@
       <file leaf-file-name="ClassifierChecker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClassifierChecker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="395" max-vertical-offset="969">
-              <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#1502#1503#0" expanded="true" />
-                <element signature="e#1560#1561#0" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="0.0" vertical-offset="287" max-vertical-offset="1003">
+              <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -210,8 +167,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenaries.java" />
-        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/Checker.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/ClassifierChecker.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/ClustererChecker.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenarios.java" />
@@ -242,7 +197,6 @@
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/Task.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/TaskChain.java" />
         <option value="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/GnuplotTest.java" />
-        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/GraphMLParser.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/SimpleGraphParser.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/ParserWrapper.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Constants.java" />
@@ -254,13 +208,16 @@
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/CloneableInterface.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClustererChecker.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/SimpleNodeData.java" />
-        <option value="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/ParallelTest.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/DefaultTask.java" />
-        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/classifier/Classifier.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/Cloneable.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/Graph.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/Checker.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClassifierChecker.java" />
-        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/Checker.java" />
-        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/classifier/Classifier.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/GraphMLParser.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/ParallelTest.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" />
       </list>
     </option>
   </component>
@@ -301,8 +258,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -645,6 +600,8 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -1136,11 +1093,12 @@
       <workItem from="1425484410656" duration="5201000" />
       <workItem from="1425502720942" duration="8965000" />
       <workItem from="1425587769989" duration="29000" />
+      <workItem from="1425648545952" duration="6055000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="188389000" />
+    <option name="totallyTimeSpent" value="194444000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -1148,6 +1106,7 @@
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46463022" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="IDEtalk" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1155,25 +1114,24 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3697749" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22692889" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="IDEtalk Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4067524" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5401929" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Dependency Viewer" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.5401929" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.46463022" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3697749" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4067524" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -1234,14 +1192,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/jblas/jblas/1.2.3/jblas-1.2.3-sources.jar!/org/jblas/DoubleMatrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="5046" max-vertical-offset="52003">
-          <caret line="368" column="11" selection-start-line="368" selection-start-column="11" selection-end-line="368" selection-end-column="11" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/ThesisLib/lib/JavaPlot.jar!/com/panayotis/gnuplot/GNUPlot.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.20895523" vertical-offset="1875" max-vertical-offset="2244">
@@ -1285,13 +1235,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/Graph.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="425">
-          <caret line="13" column="22" selection-start-line="13" selection-start-column="22" selection-end-line="13" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/clusterer/Clusterer.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1485" max-vertical-offset="1836">
@@ -1318,13 +1261,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="204">
           <caret line="4" column="18" selection-start-line="4" selection-start-column="18" selection-end-line="4" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/jblas/jblas/1.2.3/jblas-1.2.3-sources.jar!/org/jblas/MatrixFunctions.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="5486" max-vertical-offset="14637">
-          <caret line="366" column="31" selection-start-line="366" selection-start-column="31" selection-end-line="366" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -1397,13 +1333,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/helper/DistancesHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="527">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/helper/Constants.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="289">
@@ -1433,31 +1362,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/GnuplotTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="614" max-vertical-offset="918">
-          <caret line="59" column="95" selection-start-line="59" selection-start-column="95" selection-end-line="59" selection-end-column="95" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/CloneableInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
-          <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/SimpleNodeData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="952">
-          <caret line="46" column="13" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
-          <folding>
-            <element signature="e#1306#1307#0" expanded="true" />
-            <element signature="e#1370#1371#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/Scale.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="205" max-vertical-offset="510">
@@ -1483,13 +1387,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="87" max-vertical-offset="561">
           <caret line="12" column="50" selection-start-line="12" selection-start-column="50" selection-end-line="12" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/ParallelTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="663">
-          <caret line="40" column="114" selection-start-line="40" selection-start-column="114" selection-end-line="40" selection-end-column="114" />
         </state>
       </provider>
     </entry>
@@ -1524,35 +1421,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1938">
-          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
-          <folding>
-            <element signature="e#1018#1019#0" expanded="true" />
-            <element signature="e#1065#1066#0" expanded="true" />
-            <element signature="e#3537#3538#0" expanded="true" />
-            <element signature="e#3583#3584#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1591" max-vertical-offset="1955">
-          <caret line="107" column="10" selection-start-line="107" selection-start-column="10" selection-end-line="107" selection-end-column="10" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#3637#3638#0" expanded="true" />
-            <element signature="e#3664#3665#0" expanded="true" />
-            <element signature="e#3713#3714#0" expanded="true" />
-            <element signature="e#3745#3746#0" expanded="true" />
-            <element signature="e#3789#3790#0" expanded="true" />
-            <element signature="e#3817#3818#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/task/DefaultTask.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="503" max-vertical-offset="969">
@@ -1573,26 +1441,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClassifierChecker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="390" max-vertical-offset="969">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1502#1503#0" expanded="true" />
-            <element signature="e#1560#1561#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/classifier/Classifier.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="803" max-vertical-offset="2618">
           <caret line="52" column="0" selection-start-line="52" selection-start-column="0" selection-end-line="52" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#5878#5879#0" expanded="true" />
-            <element signature="e#5914#5915#0" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1613,27 +1467,137 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/Checker.java">
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/Parser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="556" max-vertical-offset="1173">
-          <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="544">
+          <caret line="35" column="1" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/SimpleNodeData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="918">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/Cloneable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="187">
+          <caret line="3" column="20" selection-start-line="3" selection-start-column="20" selection-end-line="3" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/ClassifierChecker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="287" max-vertical-offset="935">
+          <caret line="19" column="0" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/graph/Graph.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="86" max-vertical-offset="459">
+          <caret line="10" column="18" selection-start-line="10" selection-start-column="18" selection-end-line="10" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/GraphMLParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="1853">
-          <caret line="33" column="4" selection-start-line="33" selection-start-column="4" selection-end-line="33" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.7912088" vertical-offset="1548" max-vertical-offset="2142">
+          <caret line="108" column="46" selection-start-line="108" selection-start-column="46" selection-end-line="108" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/workflow/checker/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="775" max-vertical-offset="1139">
+          <caret line="66" column="33" selection-start-line="66" selection-start-column="33" selection-end-line="66" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1404" max-vertical-offset="1853">
+          <caret line="85" column="21" selection-start-line="85" selection-start-column="21" selection-end-line="85" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3664#3665#0" expanded="true" />
+            <element signature="e#3691#3692#0" expanded="true" />
+            <element signature="e#3740#3741#0" expanded="true" />
+            <element signature="e#3772#3773#0" expanded="true" />
+            <element signature="e#3816#3817#0" expanded="true" />
+            <element signature="e#3844#3845#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/ParallelTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="516" max-vertical-offset="1037">
+          <caret line="45" column="0" selection-start-line="45" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/helper/DistancesHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="527">
+          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/parser/Parser.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/org/jblas/jblas/1.2.3/jblas-1.2.3-sources.jar!/org/jblas/DoubleMatrix.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.71428573" vertical-offset="0" max-vertical-offset="595">
-          <caret line="35" column="1" selection-start-line="35" selection-start-column="1" selection-end-line="35" selection-end-column="1" />
+        <state vertical-scroll-proportion="0.33241758" vertical-offset="7274" max-vertical-offset="52037">
+          <caret line="509" column="18" selection-start-line="509" selection-start-column="18" selection-end-line="509" selection-end-column="30" />
+          <folding>
+            <element signature="e#91465#91466#0" expanded="true" />
+            <element signature="e#91528#91529#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/GnuplotTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="554" max-vertical-offset="918">
+          <caret line="59" column="95" selection-start-line="59" selection-start-column="95" selection-end-line="59" selection-end-column="95" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/jblas/jblas/1.2.3/jblas-1.2.3-sources.jar!/org/jblas/MatrixFunctions.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="83" max-vertical-offset="14637">
+          <caret line="46" column="13" selection-start-line="46" selection-start-column="13" selection-end-line="46" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="2.2884614" vertical-offset="0" max-vertical-offset="1938">
+          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding>
+            <element signature="e#1018#1019#0" expanded="true" />
+            <element signature="e#1065#1066#0" expanded="true" />
+            <element signature="e#3537#3538#0" expanded="true" />
+            <element signature="e#3583#3584#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

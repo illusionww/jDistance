@@ -3,7 +3,7 @@ package com.thesis.workflow.checker;
 import com.thesis.adapter.parser.graph.Graph;
 import com.thesis.adapter.parser.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
-import com.thesis.utils.CloneableInterface;
+import com.thesis.utils.Cloneable;
 import org.jblas.DoubleMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,15 +13,15 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public abstract class Checker implements CloneableInterface {
+public abstract class Checker implements Cloneable {
     private static final Logger log = LoggerFactory.getLogger(Checker.class);
 
     public abstract List<Graph> getGraphs();
 
-    public synchronized Map<Double, Double> seriesOfTests(Distance distance, Double from, Double to, Double step, Scale scale) {
+    public synchronized Map<Double, Double> seriesOfTests(final Distance distance, Double from, Double to, Double step, Scale scale) {
         int countOfPoints = (int) Math.round(Math.floor((to - from) / step) + 1);
 
-        Map<Double, Double> results = new ConcurrentHashMap<>();
+        final Map<Double, Double> results = new ConcurrentHashMap<>();
 
         Date start = new Date();
         log.info("Start {}", distance.getName());
@@ -41,8 +41,6 @@ public abstract class Checker implements CloneableInterface {
         return results;
     }
 
-    ;
-
     public synchronized Double test(Distance distance, Double parameter) {
         Integer total = 0;
         Integer countErrors = 0;
@@ -50,7 +48,7 @@ public abstract class Checker implements CloneableInterface {
         for (Graph graph : getGraphs()) {
             ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
 
-            DoubleMatrix A = new DoubleMatrix(graph.getSparseM());
+            DoubleMatrix A = graph.getSparseMatrix();
             double[][] D = distance.getD(A, parameter).toArray2();
             Integer[] result = roundErrors(D, simpleNodeData);
 

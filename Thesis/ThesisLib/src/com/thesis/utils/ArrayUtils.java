@@ -5,7 +5,7 @@ import com.panayotis.gnuplot.dataset.Point;
 import java.util.*;
 
 public class ArrayUtils {
-    public static <T extends CloneableInterface<T>> ArrayList<T> deepCopy(ArrayList<T> original) throws CloneNotSupportedException {
+    public static <T extends Cloneable<T>> ArrayList<T> deepCopy(ArrayList<T> original) throws CloneNotSupportedException {
         if (original == null) {
             return null;
         }

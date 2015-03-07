@@ -16,10 +16,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 
@@ -37,8 +34,12 @@ public class ParallelTest {
 
     @Test
     public void testParallelDistances() {
-        Task task1 = new DefaultTask(new ClassifierChecker(graphs, 10, 0.3), Arrays.asList(Distance.values()), 0.1);
-        Task task2 = new DefaultTask(new ClassifierChecker(graphs, 10, 0.3), Arrays.asList(Distance.values()), 0.1);
+        List<Distance> distances = new ArrayList<>();
+        distances.add(Distance.WALK);
+        distances.add(Distance.COMBINATIONS);
+
+        Task task1 = new DefaultTask(new ClassifierChecker(graphs, 10, 0.3), distances, 0.1);
+        Task task2 = new DefaultTask(new ClassifierChecker(graphs, 10, 0.3), distances, 0.1);
 
         Map<Distance, Map<Double, Double>> notParallel = new TaskChain(task1).execute(false).draw("notParallel").getData().get(task1);
         Map<Distance, Map<Double, Double>> parallel = new TaskChain(task2).execute(true).draw("parallel").getData().get(task2);

@@ -1,17 +1,19 @@
 package com.thesis.adapter.parser.graph;
 
+import org.jblas.DoubleMatrix;
+
 import java.util.ArrayList;
 
 public class Graph {
-    private double[][] sparseM;
+    private DoubleMatrix sparseM;
     private ArrayList<SimpleNodeData> simpleNodeData;
 
     public Graph(double[][] sparseM, ArrayList<SimpleNodeData> simpleNodeData) {
-        this.sparseM = sparseM;
+        this.sparseM = new DoubleMatrix(sparseM);
         this.simpleNodeData = simpleNodeData;
     }
 
-    public double[][] getSparseM() {
+    public synchronized DoubleMatrix getSparseMatrix() {
         return sparseM;
     }
 

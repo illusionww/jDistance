@@ -83,9 +83,9 @@ public enum Distance {
         }
     };
 
-    private String name;
-    private String shortName;
-    private Scale scale;
+    private volatile String name;
+    private volatile String shortName;
+    private volatile Scale scale;
 
     Distance(String name, String shortName, Scale scale) {
         this.name = name;

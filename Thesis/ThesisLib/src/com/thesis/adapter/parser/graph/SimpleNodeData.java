@@ -1,8 +1,8 @@
 package com.thesis.adapter.parser.graph;
 
-import com.thesis.utils.CloneableInterface;
+import com.thesis.utils.Cloneable;
 
-public class SimpleNodeData implements Comparable<SimpleNodeData>, CloneableInterface<SimpleNodeData> {
+public class SimpleNodeData implements Comparable<SimpleNodeData>, Cloneable<SimpleNodeData> {
     String name;
     String label; //color
 
