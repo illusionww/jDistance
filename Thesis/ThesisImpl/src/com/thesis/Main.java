@@ -36,8 +36,8 @@ public class Main {
         distances.add(Distance.COMBINATIONS);
         distances.add(Distance.HELMHOLTZ_FREE_ENERGY);
 
-        new TaskChain(new DefaultTask(new ClassifierChecker(graphs2, 1, 0.3), distances, 0.01))
-                .execute().draw("classifier_new(k=1, p=0.3) " + Constants.FOLDER2_NAME);
+        new TaskChain(new DefaultTask(new ClustererChecker(graphs2, 5), distances, 0.01))
+                .execute().draw("clusterer_new(k=5) " + Constants.FOLDER2_NAME);
     }
 
     public static void initEnvironment() {

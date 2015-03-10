@@ -13,7 +13,7 @@ public enum Distance {
             return db.getD(H);
         }
     },
-    LOGARITHMIC_FOREST("Logarithmic Forest", "logFor", Scale.LOG3) {
+    LOGARITHMIC_FOREST("Logarithmic Forest", "logFor", Scale.LOG1) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double t) {
             DistancesBuilder db = new DistancesBuilder();
@@ -41,7 +41,7 @@ public enum Distance {
             return db.getD(H);
         }
     },
-    COMMUNICABILITY("Communicability Distances", "Comm", Scale.LOG3) {
+    COMMUNICABILITY("Communicability Distances", "Comm", Scale.LOG1) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double t) {
             DistancesBuilder db = new DistancesBuilder();
@@ -50,7 +50,7 @@ public enum Distance {
             return db.sqrtD(D);
         }
     },
-    LOGARITHMIC_COMMUNICABILITY("Logarithmic Communicability", "logComm", Scale.LOG3) {
+    LOGARITHMIC_COMMUNICABILITY("Logarithmic Communicability", "logComm", Scale.LOG1) {
         @Override
         public DoubleMatrix getD(DoubleMatrix A, double t) {
             DistancesBuilder db = new DistancesBuilder();

@@ -15,13 +15,6 @@ public enum Scale {
             return Math.exp(idx);
         }
     },
-    LOG3 { // from 10^-4 to 40
-        @Override
-        public Double calc(Double i) {
-            Double idx = -4.6 + (4.6 + 3.5) * i;
-            return Math.exp(idx);
-        }
-    },
     LINEAR {
         @Override
         public Double calc(Double i) {
