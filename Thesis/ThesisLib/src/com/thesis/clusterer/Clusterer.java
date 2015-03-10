@@ -53,7 +53,7 @@ public class Clusterer {
             }
             set.add(to);
             sparseMatrix[to][from] = minWeight;
-            sparseMatrix[from][to] = minWeight;
+            sparseMatrix[from][to] = minWeight; 
             matrixWithWeights[to][from] = Double.MAX_VALUE;
             matrixWithWeights[from][to] = Double.MAX_VALUE;
         }

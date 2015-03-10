@@ -1,6 +1,5 @@
 package com.thesis.metric;
 
-import com.thesis.workflow.checker.Scale;
 import org.jblas.DoubleMatrix;
 
 public enum Distance {

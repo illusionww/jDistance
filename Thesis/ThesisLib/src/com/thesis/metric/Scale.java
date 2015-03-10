@@ -1,4 +1,4 @@
-package com.thesis.workflow.checker;
+package com.thesis.metric;
 
 public enum Scale {
     LOG1 { // from 10^-2 to 500

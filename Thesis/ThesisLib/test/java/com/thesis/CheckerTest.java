@@ -13,8 +13,11 @@ import com.thesis.workflow.task.DefaultTask;
 import com.thesis.workflow.task.Task;
 import org.junit.Before;
 import org.junit.Test;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.*;
 
 import static org.junit.Assert.assertTrue;
@@ -24,14 +27,17 @@ public class CheckerTest {
     private List<Distance> distances;
 
     @Before
-    public void prepare() throws IOException {
+    public void prepare() throws IOException, ParserConfigurationException, SAXException {
         Environment.GNUPLOT_PATH = Constants.GNUPLOT_PATH;
         Environment.IMG_FOLDER = Constants.IMG_FOLDER;
 
         distances = Arrays.asList(Distance.values());
 
         Parser parser = new ParserWrapper();
-        graphs = parser.parseInDirectory(Constants.GRAPH_FOLDER + Constants.FOLDER1);
+        graphs = new ArrayList<>();
+
+        URL url = Thread.currentThread().getContextClassLoader().getResource(Constants.GRAPHML_EXAMPLE1);
+        graphs.add(parser.parse(url.getPath()));
     }
 
     @Test

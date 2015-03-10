@@ -39,7 +39,8 @@ public class DefaultTask implements Task {
     public Task execute() {
         if (Environment.PARALLEL) {
             distances.parallelStream().forEach(distance -> {
-                    result.put(distance, checker.clone().seriesOfTests(distance, 0.0, 1.0, step, distance.getScale()));
+                Map<Double, Double> distanceResult = checker.clone().seriesOfTests(distance, 0.0, 1.0, step, distance.getScale());
+                result.put(distance, distanceResult);
             });
             return this;
         } else {

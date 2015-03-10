@@ -2,7 +2,7 @@ package com.thesis.workflow.task;
 
 import com.thesis.workflow.Environment;
 import com.thesis.workflow.checker.Checker;
-import com.thesis.workflow.checker.Scale;
+import com.thesis.metric.Scale;
 import com.thesis.metric.Distance;
 
 import java.util.HashMap;

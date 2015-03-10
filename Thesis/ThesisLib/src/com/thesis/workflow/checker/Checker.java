@@ -3,6 +3,7 @@ package com.thesis.workflow.checker;
 import com.thesis.adapter.parser.graph.Graph;
 import com.thesis.adapter.parser.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
+import com.thesis.metric.Scale;
 import com.thesis.utils.Cloneable;
 import org.jblas.DoubleMatrix;
 import org.slf4j.Logger;
