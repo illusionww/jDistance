@@ -4,14 +4,15 @@ package com.thesis.workflow.checker;
 import com.thesis.clusterer.Clusterer;
 import com.thesis.adapter.parser.graph.Graph;
 import com.thesis.adapter.parser.graph.SimpleNodeData;
+import org.jblas.DoubleMatrix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ClustererChecker extends Checker {
-    List<Graph> graphs;
-    Integer k;
+    private List<Graph> graphs;
+    private Integer k;
 
     public ClustererChecker(List<Graph> graphs, Integer k) {
         this.graphs = graphs;
@@ -24,7 +25,7 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
-    protected Integer[] roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected Integer[] roundErrors(DoubleMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Clusterer clusterer = new Clusterer(D);

@@ -18,6 +18,10 @@ public class TaskChain {
     private static final Logger log = LoggerFactory.getLogger(TaskChain.class);
     List<Task> tasks;
 
+    public TaskChain() {
+        tasks = new ArrayList<>();
+    }
+
     public TaskChain(Task task) {
         tasks = new ArrayList<>();
         tasks.add(task);
@@ -36,10 +40,10 @@ public class TaskChain {
         return this;
     }
 
-    public TaskChain execute(boolean parallel) {
+    public TaskChain execute() {
         Date start = new Date();
         log.info("Start task chain");
-        tasks.forEach((task) -> task.execute(parallel));
+        tasks.forEach(Task::execute);
         Date finish = new Date();
         long diff = finish.getTime() - start.getTime();
         log.info("Task chain done. Time: " + diff);

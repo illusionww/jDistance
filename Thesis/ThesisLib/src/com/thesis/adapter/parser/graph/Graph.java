@@ -13,7 +13,7 @@ public class Graph {
         this.simpleNodeData = simpleNodeData;
     }
 
-    public synchronized DoubleMatrix getSparseMatrix() {
+    public DoubleMatrix getSparseMatrix() {
         return sparseM;
     }
 

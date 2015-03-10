@@ -1,6 +1,7 @@
 package com.thesis.workflow.task;
 
 import com.thesis.metric.Distance;
+import com.thesis.workflow.Environment;
 import com.thesis.workflow.checker.Checker;
 
 import java.util.ArrayList;
@@ -35,8 +36,8 @@ public class DefaultTask implements Task {
     }
 
     @Override
-    public Task execute(boolean parallel) {
-        if (parallel) {
+    public Task execute() {
+        if (Environment.PARALLEL) {
             distances.parallelStream().forEach(distance -> {
                     result.put(distance, checker.clone().seriesOfTests(distance, 0.0, 1.0, step, distance.getScale()));
             });

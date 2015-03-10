@@ -3,6 +3,7 @@ package com.thesis.workflow.checker;
 import com.thesis.classifier.Classifier;
 import com.thesis.adapter.parser.graph.Graph;
 import com.thesis.adapter.parser.graph.SimpleNodeData;
+import org.jblas.DoubleMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,12 +20,12 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    public synchronized List<Graph> getGraphs() {
+    public List<Graph> getGraphs() {
         return graphs;
     }
 
     @Override
-    protected synchronized Integer[] roundErrors(double[][] D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected Integer[] roundErrors(DoubleMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Classifier classifier = new Classifier(D, simpleNodeData);
@@ -38,16 +39,16 @@ public class ClassifierChecker extends Checker {
             }
         }
 
-        return new Integer[] {data.size(), countErrors};
+        return new Integer[]{data.size(), countErrors};
     }
 
     @Override
-    protected synchronized Double rate(Double countErrors, Double total) {
+    protected Double rate(Double countErrors, Double total) {
         return 1 - p - countErrors / ((1 - p) * total);
     }
 
     @Override
-    public synchronized ClassifierChecker clone() {
+    public ClassifierChecker clone() {
         return new ClassifierChecker(graphs, k, p);
     }
 }

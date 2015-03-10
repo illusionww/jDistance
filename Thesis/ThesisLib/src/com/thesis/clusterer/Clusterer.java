@@ -1,13 +1,14 @@
 package com.thesis.clusterer;
 
+import org.jblas.DoubleMatrix;
+
 import java.util.*;
 
 public class Clusterer {
-
     private double[][] matrixWithWeights;
 
-    public Clusterer(double[][] matrixWithWeights) {
-        this.matrixWithWeights = matrixWithWeights;
+    public Clusterer(DoubleMatrix matrixWithWeights) {
+        this.matrixWithWeights = matrixWithWeights.toArray2();
     }
 
     //k количество кластеров
@@ -73,7 +74,7 @@ public class Clusterer {
         }
 
         int countCluster = 0;
-        Stack<Integer> stack = new Stack();
+        Stack<Integer> stack = new Stack<>();
         set.clear();
         while (set.size() < sparseMatrix.length) {
             for (int j = 0; j < sparseMatrix.length; j++) {
@@ -87,7 +88,7 @@ public class Clusterer {
                 while (!stack.empty()) {
                     Integer index = stack.pop();
                     for (int i = 0; i < sparseMatrix.length; ++i) {
-                        if (!index.equals(new Integer(i)) && !new Double(0).equals(sparseMatrix[index][i]) && !set.contains(new Integer(i))) {
+                        if (index != i && !new Double(0).equals(sparseMatrix[index][i]) && !set.contains(i)) {
                             stack.push(i);
                             predictCluster.put(i, countCluster);
                             set.add(i);

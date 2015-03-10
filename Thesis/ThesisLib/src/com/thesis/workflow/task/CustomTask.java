@@ -1,5 +1,6 @@
 package com.thesis.workflow.task;
 
+import com.thesis.workflow.Environment;
 import com.thesis.workflow.checker.Checker;
 import com.thesis.workflow.checker.Scale;
 import com.thesis.metric.Distance;
@@ -30,8 +31,8 @@ public class CustomTask implements Task {
     }
 
     @Override
-    public Task execute(boolean parallel) {
-        if (parallel) {
+    public Task execute() {
+        if (Environment.PARALLEL) {
             distances.parallelStream().forEach(distance -> {
                 Map<Double, Double> distanceResult = checker.seriesOfTests(distance, from, to, step, Scale.LINEAR);
                 result.put(distance, distanceResult);

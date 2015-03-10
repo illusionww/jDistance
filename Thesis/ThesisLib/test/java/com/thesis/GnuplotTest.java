@@ -14,6 +14,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import static com.thesis.helper.DistancesHelper.*;
 
 public class GnuplotTest {
@@ -57,6 +58,11 @@ public class GnuplotTest {
     public void drawSP_CTAttitude() {
         Environment.GNUPLOT_PATH = "C:\\cygwin64\\bin\\gnuplot.exe";
         Environment.IMG_FOLDER = "C:\\";
-        new TaskChain(new MetricTask(Distance.COMBINATIONS, triangleGraph, 0.01)).execute(false).draw("SP-CT");
+        Environment.PARALLEL = false;
+        new TaskChain()
+                .addTask(new MetricTask(Distance.COMBINATIONS, triangleGraph, 0.01))
+                .addTask(new MetricTask(Distance.LOGARITHMIC_FOREST, triangleGraph, 0.01))
+                .addTask(new MetricTask(Distance.HELMHOLTZ_FREE_ENERGY, triangleGraph, 0.01))
+                .execute().draw("SP-CT");
     }
 }

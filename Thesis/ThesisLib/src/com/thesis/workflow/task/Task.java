@@ -8,7 +8,7 @@ import java.util.Map;
 public interface Task {
     public Checker getChecker();
 
-    public Task execute(boolean parallel);
+    public Task execute();
 
     public Map<Distance, Map<Double, Double>> getResults();
 }

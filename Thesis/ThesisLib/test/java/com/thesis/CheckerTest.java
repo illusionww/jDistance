@@ -8,43 +8,43 @@ import com.thesis.metric.Distance;
 import com.thesis.workflow.Environment;
 import com.thesis.workflow.TaskChain;
 import com.thesis.workflow.checker.ClassifierChecker;
+import com.thesis.workflow.checker.ClustererChecker;
 import com.thesis.workflow.task.DefaultTask;
 import com.thesis.workflow.task.Task;
 import org.junit.Before;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.*;
 
 import static org.junit.Assert.assertTrue;
 
-public class ParallelTest {
-    List<Graph> graphs;
+public class CheckerTest {
+    private List<Graph> graphs;
+    private List<Distance> distances;
 
     @Before
-    public void prepareGraph() throws IOException, SAXException, ParserConfigurationException {
+    public void prepare() throws IOException {
         Environment.GNUPLOT_PATH = Constants.GNUPLOT_PATH;
         Environment.IMG_FOLDER = Constants.IMG_FOLDER;
+
+        distances = Arrays.asList(Distance.values());
 
         Parser parser = new ParserWrapper();
         graphs = parser.parseInDirectory(Constants.GRAPH_FOLDER + Constants.FOLDER1);
     }
 
     @Test
-    public void testParallelDistances() {
-        List<Distance> distances = new ArrayList<>();
-        distances.add(Distance.WALK);
-        distances.add(Distance.COMBINATIONS);
+    public void testClassifierParallel() {
+        Task task1 = new DefaultTask(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
+        Task task2 = new DefaultTask(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
 
-        Task task1 = new DefaultTask(new ClassifierChecker(graphs, 10, 0.3), distances, 0.1);
-        Task task2 = new DefaultTask(new ClassifierChecker(graphs, 10, 0.3), distances, 0.1);
+        Environment.PARALLEL = false;
+        Map<Distance, Map<Double, Double>> notParallel = new TaskChain(task1).execute().draw("notParallel").getData().get(task1);
+        Environment.PARALLEL = true;
+        Map<Distance, Map<Double, Double>> parallel = new TaskChain(task2).execute().draw("parallel").getData().get(task2);
 
-        Map<Distance, Map<Double, Double>> notParallel = new TaskChain(task1).execute(false).draw("notParallel").getData().get(task1);
-        Map<Distance, Map<Double, Double>> parallel = new TaskChain(task2).execute(true).draw("parallel").getData().get(task2);
-
-        Arrays.asList(Distance.values()).forEach(distance -> {
+        distances.forEach(distance -> {
             Map<Double, Double> notParallelPoints = notParallel.get(distance);
             Map<Double, Double> parallelPoints = parallel.get(distance);
 

@@ -1,6 +1,8 @@
 package com.thesis.classifier;
 
 import com.thesis.adapter.parser.graph.SimpleNodeData;
+import org.jblas.DoubleMatrix;
+
 import java.util.*;
 
 public class Classifier {
@@ -8,8 +10,8 @@ public class Classifier {
     private ArrayList<SimpleNodeData> realData; //  name and cluster
     private double[][] matrixWithWeights;
 
-    public Classifier(double[][] matrixWithWeights, ArrayList<SimpleNodeData> realData) {
-        this.matrixWithWeights = matrixWithWeights;
+    public Classifier(DoubleMatrix matrixWithWeights, ArrayList<SimpleNodeData> realData) {
+        this.matrixWithWeights = matrixWithWeights.toArray2();
 
         //Collections.sort(realData);
         this.realData = realData;
