@@ -9,12 +9,13 @@ public class Classifier {
 
     private ArrayList<SimpleNodeData> realData; //  name and cluster
     private double[][] matrixWithWeights;
+    private int countColoredNodes;
+
 
     public Classifier(DoubleMatrix matrixWithWeights, ArrayList<SimpleNodeData> realData) {
         this.matrixWithWeights = matrixWithWeights.toArray2();
-
-        //Collections.sort(realData);
         this.realData = new ArrayList<>(realData);
+        countColoredNodes = 0;
     }
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
@@ -89,27 +90,29 @@ public class Classifier {
 
     private ArrayList<SimpleNodeData> choiceOfVertices(Double p) {  //независимо от размеров класстеров выбираем из каждого одинаковое количество
         ArrayList<SimpleNodeData> sortedRealDatas = realData;
-        Collections.sort(sortedRealDatas);
-        String label = sortedRealDatas.get(0).getLabel();
-        ArrayList<SimpleNodeData> result = new ArrayList<SimpleNodeData>();
-        ArrayList<Integer> endLabel = new ArrayList<Integer>();
-        for (int i = 0; i < sortedRealDatas.size(); ++i) {
-            if (!label.equals(sortedRealDatas.get(i).getLabel())) {
-                label = sortedRealDatas.get(i).getLabel();
-                endLabel.add(i - 1);
-            }
-        }
-        endLabel.add(sortedRealDatas.size());
-        for (int i = 0; i < endLabel.size() - 1; ++i) {
-            if (i > 0) {
-                for (int k = endLabel.get(i - 1); k < endLabel.get(i - 1) + (endLabel.get(i) - endLabel.get(i - 1)) * p; ++k) {   //TODO будет лучше если брать с каждого класса одинаковое количество элементов
-                    result.add(sortedRealDatas.get(k + 1));   //TODO брать элементы рандомно, а не по порядку
-                }
-            } else {
-                for (int k = 0; k <= endLabel.get(i) * p; ++k) {
-                    result.add(sortedRealDatas.get(k));
+            Collections.sort(sortedRealDatas);
+            String label = sortedRealDatas.get(0).getLabel();
+            ArrayList<SimpleNodeData> result = new ArrayList<SimpleNodeData>();
+            ArrayList<Integer> endLabel = new ArrayList<Integer>();
+            for (int i = 0; i < sortedRealDatas.size(); ++i) {
+                if (!label.equals(sortedRealDatas.get(i).getLabel())) {
+                    label = sortedRealDatas.get(i).getLabel();
+                    endLabel.add(i - 1);
                 }
             }
+            endLabel.add(sortedRealDatas.size());
+            for (int i = 0; i < endLabel.size() - 1; ++i) {
+                if (i > 0) {
+                    countColoredNodes += (endLabel.get(i - 1) + (endLabel.get(i) - endLabel.get(i - 1)) * p) - endLabel.get(i - 1);
+                    for (int k = endLabel.get(i - 1); k < endLabel.get(i - 1) + (endLabel.get(i) - endLabel.get(i - 1)) * p; ++k) {   //TODO будет лучше если брать с каждого класса одинаковое количество элементов
+                        result.add(sortedRealDatas.get(k + 1));   //TODO брать элементы рандомно, а не по порядку
+                    }
+                } else {
+                    countColoredNodes += endLabel.get(i) * p;
+                    for (int k = 0; k <= endLabel.get(i) * p; ++k) {
+                        result.add(sortedRealDatas.get(k));
+                    }
+                }
         }
         if (endLabel.size() > 1) {
             for (int k = endLabel.get(endLabel.size() - 2) + 1; k < sortedRealDatas.size(); ++k) {
@@ -159,4 +162,13 @@ public class Classifier {
             return this.value.compareTo(o.getValue());
         }
     }
+
+    public int getCountColoredNodes() {
+        return countColoredNodes;
+    }
+
+    public void setCountColoredNodes(int countColoredNodes) {
+        this.countColoredNodes = countColoredNodes;
+    }
+
 }

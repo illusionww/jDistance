@@ -39,12 +39,12 @@ public class ClassifierChecker extends Checker {
             }
         }
 
-        return new Integer[]{data.size(), countErrors};
+        return new Integer[]{data.size(), countErrors, classifier.getCountColoredNodes()};
     }
 
     @Override
-    protected Double rate(Double countErrors, Double total) {
-        return 1 - p - countErrors / ((1 - p) * total);
+    protected Double rate(Double countErrors, Double total, Integer coloredNodes) {
+        return 1 - p - countErrors / (total - coloredNodes);
     }
 
     @Override

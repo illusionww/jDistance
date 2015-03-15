@@ -43,6 +43,7 @@ public abstract class Checker implements Cloneable {
     public Double test(Distance distance, Double parameter) {
         Integer total = 0;
         Integer countErrors = 0;
+        Integer coloredNodes = 0;
 
         if (parameter < 0.001) {
             parameter = 0.001;
@@ -57,9 +58,10 @@ public abstract class Checker implements Cloneable {
 
             total += result[0];
             countErrors += result[1];
+            coloredNodes += result[2];
         }
 
-        Double rate = rate((double) countErrors, (double) total);
+        Double rate = rate((double) countErrors, (double) total, coloredNodes);
         log.info("{}: {} {}", distance.getShortName(), parameter, rate);
 
         return rate;
@@ -67,7 +69,7 @@ public abstract class Checker implements Cloneable {
 
     protected abstract Integer[] roundErrors(DoubleMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
 
-    protected abstract Double rate(Double countErrors, Double total);
+    protected abstract Double rate(Double countErrors, Double total, Integer coloredNodes);
 
     public abstract Checker clone();
 }
