@@ -44,8 +44,7 @@ public class ClassifierChecker extends Checker {
 
     @Override
     protected Double rate(Double countErrors, Double total, Integer coloredNodes) {
-        return 1 - p - countErrors / (total - coloredNodes);
-    }
+        return 1 - (double)coloredNodes/total - countErrors / (total - coloredNodes);    }
 
     @Override
     public ClassifierChecker clone() {
