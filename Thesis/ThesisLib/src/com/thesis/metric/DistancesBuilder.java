@@ -38,7 +38,8 @@ public class DistancesBuilder {
         int d = L.getColumns();
         double j = 1.0 / d;
         DoubleMatrix J = DoubleMatrix.ones(d, d).mul(j);
-        return DistancesHelper.pinv(L.add(J));
+        DoubleMatrix H =  DistancesHelper.pinv(L.add(J));
+        return H.mul(2); // normalization
     }
 
     // H0 = (I - tA)^{-1}

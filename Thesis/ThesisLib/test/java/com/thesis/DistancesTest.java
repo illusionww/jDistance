@@ -95,6 +95,15 @@ public class DistancesTest {
     }
 
     @Test
+    public void testChainGraphResistanceDistanceNormalization() {
+        DistancesBuilder db = new DistancesBuilder();
+        DoubleMatrix L = db.getL(triangleGraph);
+        DoubleMatrix H = db.getHResistance(L);
+        DoubleMatrix D = db.getD(H);
+        assertTrue("distances not equal: 1.000 != " + D.get(0, 1), equalDouble(D.get(0, 1), 1.000));
+    }
+
+    @Test
     public void testChainGraphWalkDistance() {
         Distance distance = Distance.WALK;
         DoubleMatrix D = distance.getD(chainGraph, 1.0);

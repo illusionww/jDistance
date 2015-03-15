@@ -27,7 +27,7 @@ public abstract class Checker implements Cloneable {
         Date start = new Date();
         log.info("Start {}", distance.getName());
 
-        IntStream.range(2, countOfPoints).boxed().collect(Collectors.toList()).forEach(idx -> {
+        IntStream.range(0, countOfPoints).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double base = from + idx * step;
             Double i = scale.calc(base);
             Double result = test(distance, i);
@@ -44,8 +44,8 @@ public abstract class Checker implements Cloneable {
         Integer total = 0;
         Integer countErrors = 0;
 
-        if (parameter < 0.01) {
-            parameter = 0.01;
+        if (parameter < 0.001) {
+            parameter = 0.001;
         }
 
         for (Graph graph : getGraphs()) {
@@ -60,7 +60,7 @@ public abstract class Checker implements Cloneable {
         }
 
         Double rate = rate((double) countErrors, (double) total);
-        log.debug("{}: {} {}", distance.getShortName(), parameter, rate);
+        log.info("{}: {} {}", distance.getShortName(), parameter, rate);
 
         return rate;
     }

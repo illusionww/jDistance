@@ -17,6 +17,13 @@ public class DistancesHelper {
             {0, 1, 1, 0}
     });
 
+    public static DoubleMatrix squareGraph = new DoubleMatrix(new double[][]{
+            {0, 1, 0, 1},
+            {1, 0, 1, 0},
+            {0, 1, 0, 1},
+            {1, 0, 1, 0}
+    });
+
     public static boolean equalDouble(double a, double b) {
         return Math.abs(a - b) < 0.0011;
     }

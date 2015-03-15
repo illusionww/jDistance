@@ -14,7 +14,7 @@ public class Classifier {
         this.matrixWithWeights = matrixWithWeights.toArray2();
 
         //Collections.sort(realData);
-        this.realData = realData;
+        this.realData = new ArrayList<>(realData);
     }
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
