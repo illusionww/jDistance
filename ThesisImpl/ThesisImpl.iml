@@ -23,6 +23,6 @@
     </orderEntry>
     <orderEntry type="library" name="org.jblas:jblas:1.2.3" level="project" />
     <orderEntry type="library" name="org.slf4j:slf4j-log4j12:1.7.10" level="project" />
-    <orderEntry type="library" name="JavaPlot" level="project" />
+    <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

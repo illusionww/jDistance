@@ -105,4 +105,8 @@ public enum Distance {
     }
 
     public abstract DoubleMatrix getD(DoubleMatrix A, double t);
+
+    public String toString() {
+        return shortName;
+    }
 }

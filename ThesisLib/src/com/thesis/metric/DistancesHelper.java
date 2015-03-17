@@ -1,5 +1,7 @@
 package com.thesis.metric;
 
+import Jama.Matrix;
+import jeigen.DenseMatrix;
 import org.jblas.DoubleMatrix;
 import org.jblas.NativeBlas;
 import org.jblas.exceptions.LapackArgumentException;
@@ -11,54 +13,30 @@ import static org.jblas.util.Functions.max;
 import static org.jblas.util.Functions.min;
 
 public class DistancesHelper {
-    public static DoubleMatrix solveLeastSquares(DoubleMatrix A, DoubleMatrix B) {
-        if (B.rows < A.columns) {
-            DoubleMatrix X = DoubleMatrix.concatVertically(B, new DoubleMatrix(A.columns - B.rows, B.columns));
-            synchronized (DistancesHelper.class) {
-                gelsd(A.dup(), X);
-            }
-            return X;
-        } else {
-            DoubleMatrix X = B.dup();
-            synchronized (DistancesHelper.class) {
-                gelsd(A.dup(), X);
-            }
-            return X.getRange(0, A.columns, 0, B.columns);
-        }
-    }
-
     public static DoubleMatrix pinv(DoubleMatrix A) {
-        return solveLeastSquares(A, DoubleMatrix.eye(A.rows));
+        double[][] matrx = A.toArray2();
+        Matrix matrix = new Matrix(matrx);
+        return new DoubleMatrix(matrix.inverse().getArray());
     }
 
-    public static void gelsd(DoubleMatrix A, DoubleMatrix B) {
-        int m = A.rows;
-        int n = A.columns;
-        int nrhs = B.columns;
-        int minmn = min(m, n);
-        int maxmn = max(m, n);
+    public static synchronized DoubleMatrix mexp(DoubleMatrix A) {
+        DenseMatrix dm = new DenseMatrix(A.toArray2()); // create new matrix
+        DenseMatrix result = dm.mexp();
+        return denseToDoubleMatrix(result);
+    }
 
-        if (B.rows < maxmn) {
-            throw new SizeException("Result matrix B must be padded to contain the solution matrix X!");
+    public static DoubleMatrix denseToDoubleMatrix(DenseMatrix dm) {
+        double[] values = dm.getValues();
+        int length = values.length;
+        int side = (int) Math.sqrt(length);
+
+        double[][] newValues = new double[side][side];
+        for (int i = 0; i < side; i++) {
+            for (int j = 0; j < side; j++) {
+                newValues[i][j] = values[i * side + j];
+            }
         }
 
-        int smlsiz;
-        synchronized (DistancesHelper.class) {
-            smlsiz = NativeBlas.ilaenv(9, "DGELSD", "", m, n, nrhs, 0);
-        }
-        int nlvl = max(0, (int) log2(minmn / (smlsiz + 1)) + 1);
-
-        int[] iwork = new int[3 * minmn * nlvl + 11 * minmn];
-        double[] s = new double[minmn];
-        int[] rank = new int[1];
-        int info;
-        synchronized (DistancesHelper.class) {
-            info = NativeBlas.dgelsd(m, n, nrhs, A.data, 0, m, B.data, 0, B.rows, s, 0, -1, rank, 0, iwork, 0);
-        }
-        if (info < 0) {
-            throw new LapackArgumentException("DGESD", -info);
-        } else if (info > 0) {
-            throw new LapackConvergenceException("DGESD", info + " off-diagonal elements of an intermediat bidiagonal form did not converge to 0.");
-        }
+        return new DoubleMatrix(newValues);
     }
 }

@@ -34,6 +34,7 @@ public class GNUPlotAdapter {
 
     public void drawData(String title, List<Plot> data, String outputPath) {
         ImageTerminal png = new ImageTerminal();
+        png.set("size", "1280,960");
         File file = new File(outputPath);
         try {
             file.createNewFile();

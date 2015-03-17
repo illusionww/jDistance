@@ -25,7 +25,7 @@ public abstract class Checker implements Cloneable {
         final Map<Double, Double> results = new ConcurrentHashMap<>();
 
         Date start = new Date();
-        log.info("Start {}", distance.getName());
+        log.info("START {}", distance.getName());
 
         IntStream.range(0, countOfPoints).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double base = from + idx * step;
@@ -35,8 +35,7 @@ public abstract class Checker implements Cloneable {
         });
         Date finish = new Date();
         long diff = finish.getTime() - start.getTime();
-        log.info("End {}; time: {} ms", distance.getName(), diff);
-
+        log.info("END {}; time: {} ms", distance.getName(), diff);
         return results;
     }
 
@@ -49,20 +48,36 @@ public abstract class Checker implements Cloneable {
             parameter = 0.001;
         }
 
-        for (Graph graph : getGraphs()) {
-            ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
+        try {
+            for (Graph graph : getGraphs()) {
+                ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
 
-            DoubleMatrix A = graph.getSparseMatrix();
-            DoubleMatrix D = distance.getD(A, parameter);
-            Integer[] result = roundErrors(D, simpleNodeData);
+                DoubleMatrix A = graph.getSparseMatrix();
+                DoubleMatrix D = distance.getD(A, parameter);
+                boolean nan = false;
+                for (double[] row : D.toArray2()) {
+                    for (double item : row) {
+                        if (Double.isNaN(item) || Double.isInfinite(item)) {
+                            nan = true;
+                            break;
+                        }
+                    }
+                    if (nan) break;
+                }
+                if (!nan) {
+                    Integer[] result = roundErrors(D, simpleNodeData);
 
-            total += result[0];
-            countErrors += result[1];
-            coloredNodes += result[2];
+                    total += result[0];
+                    countErrors += result[1];
+                    coloredNodes += result[2];
+                }
+            }
+        } catch (RuntimeException e) {
+            log.info("Calculation error", e);
         }
 
         Double rate = rate((double) countErrors, (double) total, coloredNodes);
-        log.info("{}: {} {}", distance.getShortName(), parameter, rate);
+        log.info("  {}: {} {}", distance.getShortName(), parameter, rate);
 
         return rate;
     }

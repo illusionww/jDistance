@@ -7,15 +7,14 @@ import com.thesis.adapter.gnuplot.GNUPlotAdapter;
 import com.thesis.adapter.gnuplot.Plot;
 import com.thesis.helper.MetricTask;
 import com.thesis.metric.Distance;
-import com.thesis.workflow.Environment;
+import com.thesis.metric.Scale;
+import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
 import org.jblas.DoubleMatrix;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.thesis.helper.DistancesHelper.*;
 
 public class GnuplotTest {
     DoubleMatrix exampleMatrix = new DoubleMatrix(new double[][]{
@@ -56,9 +55,8 @@ public class GnuplotTest {
 
     @Test
     public void drawSP_CTAttitude() {
-        Environment.GNUPLOT_PATH = "C:\\cygwin64\\bin\\gnuplot.exe";
-        Environment.IMG_FOLDER = "C:\\";
-        Environment.PARALLEL = false;
+        Context.PARALLEL = false;
+        Context.SCALE = Scale.LINEAR;
 
         DoubleMatrix triangleGraph = new DoubleMatrix(new double[][]{
                 {0, 1, 0, 0},

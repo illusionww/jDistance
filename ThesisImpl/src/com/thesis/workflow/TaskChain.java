@@ -64,8 +64,8 @@ public class TaskChain {
             plots.add(new Plot(plotTitle, color.next(), plotPointsSet));
         }));
 
-        GNUPlotAdapter ga = new GNUPlotAdapter(Environment.GNUPLOT_PATH);
-        ga.drawData(imgTitle, plots, Environment.IMG_FOLDER + File.separator + imgTitle + ".png");
+        GNUPlotAdapter ga = new GNUPlotAdapter(Context.GNUPLOT_PATH);
+        ga.drawData(imgTitle, plots, Context.IMG_FOLDER + File.separator + imgTitle + ".png");
 
         return this;
     }

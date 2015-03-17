@@ -191,4 +191,17 @@ public class DistancesTest {
         D = distance.getD(triangleGraph, 30.0);
         assertTrue("Free Energy distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.0));
     }
+
+    @Test
+    public void testTreeGraphSP_CTEquality() {
+        Distance distance = Distance.COMBINATIONS;
+        double[][] SP = distance.getD(treeMatrix, 0).toArray2();
+        double[][] CT = distance.getD(treeMatrix, 1).toArray2();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
+                        equalDoubleStrict(SP[i][j], CT[i][j]));
+            }
+        }
+    }
 }

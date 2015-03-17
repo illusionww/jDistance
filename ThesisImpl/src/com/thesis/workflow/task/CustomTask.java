@@ -1,6 +1,6 @@
 package com.thesis.workflow.task;
 
-import com.thesis.workflow.Environment;
+import com.thesis.workflow.Context;
 import com.thesis.workflow.checker.Checker;
 import com.thesis.metric.Scale;
 import com.thesis.metric.Distance;
@@ -8,6 +8,7 @@ import com.thesis.metric.Distance;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class CustomTask implements Task {
     private List<Distance> distances;
@@ -32,17 +33,11 @@ public class CustomTask implements Task {
 
     @Override
     public Task execute() {
-        if (Environment.PARALLEL) {
-            distances.parallelStream().forEach(distance -> {
-                Map<Double, Double> distanceResult = checker.seriesOfTests(distance, from, to, step, Scale.LINEAR);
-                result.put(distance, distanceResult);
-            });
-        } else {
-            distances.forEach(distance -> {
-                Map<Double, Double> distanceResult = checker.seriesOfTests(distance, from, to, step, Scale.LINEAR);
-                result.put(distance, distanceResult);
-            });
-        }
+        Stream<Distance> stream = Context.PARALLEL ? distances.parallelStream() : distances.stream();
+        stream.forEach(distance -> {
+            Map<Double, Double> distanceResult = checker.seriesOfTests(distance, from, to, step, Scale.LINEAR);
+            result.put(distance, distanceResult);
+        });
         return this;
     }
 

@@ -59,7 +59,7 @@ public class DistancesBuilder {
 
     // H0 = exp(tA)
     public DoubleMatrix getH0Communicability(DoubleMatrix A, double t) {
-        return MatrixFunctions.expm(A.mul(t));
+        return DistancesHelper.mexp(A.mul(t));
     }
 
     // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
