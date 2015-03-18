@@ -1,7 +1,8 @@
 package com.thesis.classifier;
 
 import com.thesis.adapter.parser.graph.SimpleNodeData;
-import org.jblas.DoubleMatrix;
+import com.thesis.metric.DistancesHelper;
+import jeigen.DenseMatrix;
 
 import java.util.*;
 
@@ -12,8 +13,8 @@ public class Classifier {
     private int countColoredNodes;
 
 
-    public Classifier(DoubleMatrix matrixWithWeights, ArrayList<SimpleNodeData> realData) {
-        this.matrixWithWeights = matrixWithWeights.toArray2();
+    public Classifier(DenseMatrix matrixWithWeights, ArrayList<SimpleNodeData> realData) {
+        this.matrixWithWeights = DistancesHelper.toArray2(matrixWithWeights);
         this.realData = new ArrayList<>(realData);
         countColoredNodes = 0;
     }

@@ -3,9 +3,10 @@ package com.thesis.workflow.checker;
 import com.thesis.adapter.parser.graph.Graph;
 import com.thesis.adapter.parser.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
+import com.thesis.metric.DistancesHelper;
 import com.thesis.metric.Scale;
 import com.thesis.utils.Cloneable;
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,10 +53,10 @@ public abstract class Checker implements Cloneable {
             for (Graph graph : getGraphs()) {
                 ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
 
-                DoubleMatrix A = graph.getSparseMatrix();
-                DoubleMatrix D = distance.getD(A, parameter);
+                DenseMatrix A = graph.getSparseMatrix();
+                DenseMatrix D = distance.getD(A, parameter);
                 boolean nan = false;
-                for (double[] row : D.toArray2()) {
+                for (double[] row : DistancesHelper.toArray2(D)) {
                     for (double item : row) {
                         if (Double.isNaN(item) || Double.isInfinite(item)) {
                             nan = true;
@@ -82,7 +83,7 @@ public abstract class Checker implements Cloneable {
         return rate;
     }
 
-    protected abstract Integer[] roundErrors(DoubleMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
+    protected abstract Integer[] roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
 
     protected abstract Double rate(Double countErrors, Double total, Integer coloredNodes);
 

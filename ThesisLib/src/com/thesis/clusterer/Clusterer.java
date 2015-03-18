@@ -1,14 +1,15 @@
 package com.thesis.clusterer;
 
-import org.jblas.DoubleMatrix;
+import com.thesis.metric.DistancesHelper;
+import jeigen.DenseMatrix;
 
 import java.util.*;
 
 public class Clusterer {
     private double[][] matrixWithWeights;
 
-    public Clusterer(DoubleMatrix matrixWithWeights) {
-        this.matrixWithWeights = matrixWithWeights.toArray2();
+    public Clusterer(DenseMatrix matrixWithWeights) {
+        this.matrixWithWeights = DistancesHelper.toArray2(matrixWithWeights);
     }
 
     //k количество кластеров

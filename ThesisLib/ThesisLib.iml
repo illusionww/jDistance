@@ -19,8 +19,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="org.jblas:jblas:1.2.3" level="project" />
-    <orderEntry type="library" name="gov.nist.math:jama:1.0.3" level="project" />
     <orderEntry type="library" name="lib" level="project" />
   </component>
 </module>

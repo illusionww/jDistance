@@ -10,14 +10,14 @@ import com.thesis.metric.Distance;
 import com.thesis.metric.Scale;
 import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GnuplotTest {
-    DoubleMatrix exampleMatrix = new DoubleMatrix(new double[][]{
+    DenseMatrix exampleMatrix = new DenseMatrix(new double[][]{
             {0, 1, 0, 0},
             {1, 0, 1, 0},
             {0, 1, 0, 1},
@@ -50,7 +50,7 @@ public class GnuplotTest {
         plots.add(plot1);
         plots.add(plot2);
 
-        ga.drawData(imgTitle, plots, "C:\\output.png");
+        ga.drawData(imgTitle, plots, "output.png");
     }
 
     @Test
@@ -58,7 +58,7 @@ public class GnuplotTest {
         Context.PARALLEL = false;
         Context.SCALE = Scale.LINEAR;
 
-        DoubleMatrix triangleGraph = new DoubleMatrix(new double[][]{
+        DenseMatrix triangleGraph = new DenseMatrix(new double[][]{
                 {0, 1, 0, 0},
                 {1, 0, 1, 1},
                 {0, 1, 0, 1},

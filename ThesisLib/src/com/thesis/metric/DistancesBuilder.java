@@ -1,110 +1,104 @@
 package com.thesis.metric;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import com.thesis.metric.algorithm.johnsons.JohnsonsAlgorithm;
-import org.jblas.*;
+import jeigen.ComplexDenseMatrix;
+import jeigen.DenseMatrix;
+
+import java.util.Arrays;
+import java.util.OptionalDouble;
+
+import static jeigen.Shortcuts.*;
 
 public class DistancesBuilder {
     // α > 0 -> 0 < t < ρ^{-1}
-    public double alphaToT(DoubleMatrix A, double alpha) {
-        double ro = 0;
-        ComplexDoubleMatrix cfm = Eigen.eigenvalues(A);
-        for (ComplexDouble[] row : cfm.toArray2()) {
-            ro = row[0].abs() > ro ? row[0].abs() : ro;
-        }
-        return 1.0 / (1.0 / alpha + ro);
+    public double alphaToT(DenseMatrix A, double alpha) {
+        ComplexDenseMatrix cfm = new ComplexDenseMatrix(A.eig().values);
+        OptionalDouble ro = Arrays.stream(DistancesHelper.toArray2(cfm.abs())[0]).max();
+        return 1.0 / (1.0 / alpha + ro.getAsDouble());
     }
 
-    public DoubleMatrix getL(DoubleMatrix A) {
-        int d = A.getRows();
-        double[][] a = A.toArray2();
-        double[] rowSums = new double[d];
-        for (int i = 0; i < d; i++) {
-            double rowSum = 0;
-            for (double element : a[i]) {
-                rowSum += element;
-            }
-            rowSums[i] = rowSum;
-        }
-        return DoubleMatrix.diag(new DoubleMatrix(rowSums)).sub(A);
+    public DenseMatrix getL(DenseMatrix A) {
+        return diag(A.sumOverRows().t()).sub(A);
     }
 
     // H = log(H0)
-    public DoubleMatrix H0toH(DoubleMatrix H0) {
-        return MatrixFunctions.logi(H0);
+    public DenseMatrix H0toH(DenseMatrix H0) {
+        return DistancesHelper.log(H0);
     }
 
     // H = (L + J)^{-1}
-    public DoubleMatrix getHResistance(DoubleMatrix L) {
-        int d = L.getColumns();
+    public DenseMatrix getHResistance(DenseMatrix L) {
+        int d = L.cols;
         double j = 1.0 / d;
-        DoubleMatrix J = DoubleMatrix.ones(d, d).mul(j);
-        DoubleMatrix H =  DistancesHelper.pinv(L.add(J));
+        DenseMatrix J = ones(d, d).mul(j);
+        DenseMatrix H = DistancesHelper.pinv(L.add(J));
         return H.mul(2); // normalization
     }
 
     // H0 = (I - tA)^{-1}
-    public DoubleMatrix getH0Walk(DoubleMatrix A, double t) {
-        int d = A.getColumns();
-        DoubleMatrix I = DoubleMatrix.eye(d);
-        DoubleMatrix ins = I.sub(A.mul(t));
+    public DenseMatrix getH0Walk(DenseMatrix A, double t) {
+        int d = A.cols;
+        DenseMatrix I = eye(d);
+        DenseMatrix ins = I.sub(A.mul(t));
         return DistancesHelper.pinv(ins);
     }
 
     // H0 = (I + tL)^{-1}
-    public DoubleMatrix getH0Forest(DoubleMatrix L, double t) {
-        int d = L.getColumns();
-        DoubleMatrix I = DoubleMatrix.eye(d);
+    public DenseMatrix getH0Forest(DenseMatrix L, double t) {
+        int d = L.cols;
+        DenseMatrix I = eye(d);
         return DistancesHelper.pinv(I.add(L.mul(t)));
     }
 
     // H0 = exp(tA)
-    public DoubleMatrix getH0Communicability(DoubleMatrix A, double t) {
-        return DistancesHelper.mexp(A.mul(t));
+    public DenseMatrix getH0Communicability(DenseMatrix A, double t) {
+        return A.mul(t).mexp();
     }
 
     // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
-    public DoubleMatrix getD(DoubleMatrix H) {
-        int d = H.getColumns();
-        DoubleMatrix h = H.diag();
-        DoubleMatrix i = DoubleMatrix.ones(d, 1);
-        return h.mmul(i.transpose()).add(i.mmul(h.transpose())).sub(H).sub(H.transpose()).div(2);
+    public DenseMatrix getD(DenseMatrix H) {
+        int d = H.cols;
+        DenseMatrix h = DistancesHelper.diagToVector(H);
+        DenseMatrix i = DenseMatrix.ones(d, 1);
+        return h.mmul(i.t()).add(i.mmul(h.t())).sub(H).sub(H.t()).div(2);
     }
 
     // Johnson's Algorithm
-    public DoubleMatrix getDShortestPath(DoubleMatrix A) {
+    public DenseMatrix getDShortestPath(DenseMatrix A) {
         return JohnsonsAlgorithm.getAllShortestPaths(A);
     }
 
-    public DoubleMatrix getDFreeEnergy(DoubleMatrix A, double beta) {
-        int d = A.getColumns();
+    public DenseMatrix getDFreeEnergy(DenseMatrix A, double beta) {
+        int d = A.cols;
 
         // P^{ref} = D^{-1}*A, D = Diag(A*e)
-        DoubleMatrix e = DoubleMatrix.ones(d);
-        DoubleMatrix D = DoubleMatrix.diag(A.mmul(e));
-        DoubleMatrix Pref = DistancesHelper.pinv(D).mmul(A);
+        DenseMatrix e = ones(d, 1);
+        DenseMatrix D = diag(A.mmul(e));
+        DenseMatrix Pref = DistancesHelper.pinv(D).mmul(A);
 
         // W = P^{ref} (element-wise)* exp(-βC)
-        DoubleMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
-        DoubleMatrix W = Pref.mul(MatrixFunctions.exp(C.mul(-beta)));
+        DenseMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
+        DenseMatrix W = Pref.mul(DistancesHelper.exp(C.mul(-beta)));
 
         // Z = (I - W)^{-1}
-        DoubleMatrix I = DoubleMatrix.eye(d);
-        DoubleMatrix Z = DistancesHelper.pinv(I.sub(W));
+        DenseMatrix I = eye(d);
+        DenseMatrix Z = DistancesHelper.pinv(I.sub(W));
 
         // Z^h = Z * D_h^{-1}, D_h = Diag(Z)
-        DoubleMatrix Dh = DoubleMatrix.diag(Z.diag());
-        DoubleMatrix Zh = Z.mmul(DistancesHelper.pinv(Dh));
+        DenseMatrix Dh = diag(DistancesHelper.diagToVector(Z));
+        DenseMatrix Zh = Z.mmul(DistancesHelper.pinv(Dh));
 
         // Φ = -1/β * log(Z^h)
-        DoubleMatrix F = MatrixFunctions.log(Zh).div(-beta);
-
+        DenseMatrix F = DistancesHelper.log(Zh).div(-beta);
+        System.out.println(F);
         // Δ_FE = (Φ + Φ^T)/2
-        DoubleMatrix FE = F.add(F.transpose()).div(2);
-
-        return FE.sub(DoubleMatrix.diag(FE.diag()));
+        DenseMatrix FE = F.add(F.t()).div(2);
+        System.out.println(FE);
+        return FE.sub(diag(DistancesHelper.diagToVector(FE)));
     }
 
-    public DoubleMatrix sqrtD(DoubleMatrix D) {
-        return MatrixFunctions.sqrt(D);
+    public DenseMatrix sqrtD(DenseMatrix D) {
+        return DistancesHelper.sqrt(D);
     }
 }

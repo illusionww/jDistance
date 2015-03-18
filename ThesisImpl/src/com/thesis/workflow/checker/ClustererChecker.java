@@ -4,7 +4,7 @@ package com.thesis.workflow.checker;
 import com.thesis.clusterer.Clusterer;
 import com.thesis.adapter.parser.graph.Graph;
 import com.thesis.adapter.parser.graph.SimpleNodeData;
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
-    protected Integer[] roundErrors(DoubleMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected Integer[] roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Clusterer clusterer = new Clusterer(D);

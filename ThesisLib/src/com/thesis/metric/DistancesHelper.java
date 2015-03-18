@@ -1,42 +1,57 @@
 package com.thesis.metric;
 
-import Jama.Matrix;
 import jeigen.DenseMatrix;
-import org.jblas.DoubleMatrix;
-import org.jblas.NativeBlas;
-import org.jblas.exceptions.LapackArgumentException;
-import org.jblas.exceptions.LapackConvergenceException;
-import org.jblas.exceptions.SizeException;
 
-import static org.jblas.util.Functions.log2;
-import static org.jblas.util.Functions.max;
-import static org.jblas.util.Functions.min;
+import static jeigen.Shortcuts.*;
 
 public class DistancesHelper {
-    public static DoubleMatrix pinv(DoubleMatrix A) {
-        double[][] matrx = A.toArray2();
-        Matrix matrix = new Matrix(matrx);
-        return new DoubleMatrix(matrix.inverse().getArray());
+    public static DenseMatrix log(DenseMatrix A) {
+        double[] values = A.getValues();
+        for (int i = 0; i < values.length; i++) {
+            A.set(i, Math.log(values[i]));
+        }
+        return A;
     }
 
-    public static synchronized DoubleMatrix mexp(DoubleMatrix A) {
-        DenseMatrix dm = new DenseMatrix(A.toArray2()); // create new matrix
-        DenseMatrix result = dm.mexp();
-        return denseToDoubleMatrix(result);
+    public static DenseMatrix sqrt(DenseMatrix A) {
+        double[] values = A.getValues();
+        for (int i = 0; i < values.length; i++) {
+            A.set(i, Math.sqrt(values[i]));
+        }
+        return A;
     }
 
-    public static DoubleMatrix denseToDoubleMatrix(DenseMatrix dm) {
-        double[] values = dm.getValues();
-        int length = values.length;
-        int side = (int) Math.sqrt(length);
+    public static DenseMatrix exp(DenseMatrix A) {
+        double[] values = A.getValues();
+        for (int i = 0; i < values.length; i++) {
+            A.set(i, Math.exp(values[i]));
+        }
+        return A;
+    }
 
-        double[][] newValues = new double[side][side];
-        for (int i = 0; i < side; i++) {
-            for (int j = 0; j < side; j++) {
-                newValues[i][j] = values[i * side + j];
-            }
+    public static DenseMatrix diagToVector(DenseMatrix A) {
+        DenseMatrix diag = new DenseMatrix(A.rows, 1);
+        double[] values = A.getValues();
+        for (int i = 0; i < A.rows; i++) {
+            diag.set(i, values[i * (A.cols + 1)]);
+        }
+        return diag;
+    }
+
+    public static DenseMatrix pinv(DenseMatrix A) {
+        if (A.cols != A.rows) {
+            throw new RuntimeException("pinv matrix size error: must be square matrix");
         }
 
-        return new DoubleMatrix(newValues);
+        return A.fullPivHouseholderQRSolve(diag(ones(A.cols, 1)));
+    }
+
+    public static double[][] toArray2(DenseMatrix dm) {
+        double[] values = dm.getValues();
+        double[][] newValues = new double[dm.cols][dm.rows];
+        for (int i = 0; i < dm.cols; i++) {
+            System.arraycopy(values, i * dm.rows, newValues[i], 0, dm.rows);
+        }
+        return newValues;
     }
 }

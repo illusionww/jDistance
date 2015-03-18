@@ -5,6 +5,7 @@ import com.thesis.adapter.parser.ParserWrapper;
 import com.thesis.adapter.parser.graph.Graph;
 import com.thesis.helper.Constants;
 import com.thesis.metric.Distance;
+import com.thesis.metric.Scale;
 import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
 import com.thesis.workflow.checker.ClassifierChecker;
@@ -34,6 +35,8 @@ public class CheckerTest {
 
         URL url = Thread.currentThread().getContextClassLoader().getResource(Constants.GRAPHML_EXAMPLE1);
         graphs.add(parser.parse(url.getPath()));
+
+        Context.SCALE = Scale.ATAN;
     }
 
     @Test

@@ -1,82 +1,83 @@
 package com.thesis.metric;
 
-import org.jblas.DoubleMatrix;
+
+import jeigen.DenseMatrix;
 
 public enum Distance {
     WALK("Walk", "Walk", Scale.LINEAR) {
         @Override
-        public DoubleMatrix getD(DoubleMatrix A, double alpha) {
+        public DenseMatrix getD(DenseMatrix A, double alpha) {
             DistancesBuilder db = new DistancesBuilder();
             double t = db.alphaToT(A, alpha);
-            DoubleMatrix H0 = db.getH0Walk(A, t);
-            DoubleMatrix H = db.H0toH(H0);
+            DenseMatrix H0 = db.getH0Walk(A, t);
+            DenseMatrix H = db.H0toH(H0);
             return db.getD(H);
         }
     },
     LOGARITHMIC_FOREST("Logarithmic Forest", "logFor", Scale.DEFAULT) {
         @Override
-        public DoubleMatrix getD(DoubleMatrix A, double t) {
+        public DenseMatrix getD(DenseMatrix A, double t) {
             DistancesBuilder db = new DistancesBuilder();
-            DoubleMatrix L = db.getL(A);
-            DoubleMatrix H0 = db.getH0Forest(L, t);
-            DoubleMatrix H = db.H0toH(H0);
+            DenseMatrix L = db.getL(A);
+            DenseMatrix H0 = db.getH0Forest(L, t);
+            DenseMatrix H = db.H0toH(H0);
             return db.getD(H);
         }
     },
     PLAIN_FOREST("[\"Plain\"] Forest", "For", Scale.DEFAULT) {
         @Override
-        public DoubleMatrix getD(DoubleMatrix A, double t) {
+        public DenseMatrix getD(DenseMatrix A, double t) {
             DistancesBuilder db = new DistancesBuilder();
-            DoubleMatrix L = db.getL(A);
-            DoubleMatrix H = db.getH0Forest(L, t);
+            DenseMatrix L = db.getL(A);
+            DenseMatrix H = db.getH0Forest(L, t);
             return db.getD(H);
         }
     },
     PLAIN_WALK("\"Plain\" Walk", "pWalk", Scale.LINEAR) {
         @Override
-        public DoubleMatrix getD(DoubleMatrix A, double alpha) {
+        public DenseMatrix getD(DenseMatrix A, double alpha) {
             DistancesBuilder db = new DistancesBuilder();
             double t = db.alphaToT(A, alpha);
-            DoubleMatrix H = db.getH0Walk(A, t);
+            DenseMatrix H = db.getH0Walk(A, t);
             return db.getD(H);
         }
     },
     COMMUNICABILITY("Communicability Distances", "Comm", Scale.DEFAULT) {
         @Override
-        public DoubleMatrix getD(DoubleMatrix A, double t) {
+        public DenseMatrix getD(DenseMatrix A, double t) {
             DistancesBuilder db = new DistancesBuilder();
-            DoubleMatrix H = db.getH0Communicability(A, t);
-            DoubleMatrix D = db.getD(H);
+            DenseMatrix H = db.getH0Communicability(A, t);
+            DenseMatrix D = db.getD(H);
             return db.sqrtD(D);
         }
     },
     LOGARITHMIC_COMMUNICABILITY("Logarithmic Communicability", "logComm", Scale.DEFAULT) {
         @Override
-        public DoubleMatrix getD(DoubleMatrix A, double t) {
+        public DenseMatrix getD(DenseMatrix A, double t) {
             DistancesBuilder db = new DistancesBuilder();
-            DoubleMatrix H0 = db.getH0Communicability(A, t);
-            DoubleMatrix H = db.H0toH(H0);
+            DenseMatrix H0 = db.getH0Communicability(A, t);
+            DenseMatrix H = db.H0toH(H0);
             return db.getD(H);
         }
     },
     COMBINATIONS("Convex combination of the shortest path and resistance metrics", "SP-CT", Scale.LINEAR) {
         @Override
-        public DoubleMatrix getD(DoubleMatrix A, double lambda) {
+        public DenseMatrix getD(DenseMatrix A, double lambda) {
             if (lambda < 0.0 || lambda > 1.0) {
                 throw new RuntimeException("lambda should be in [0, 1], lambda = " + lambda);
             }
 
             DistancesBuilder db = new DistancesBuilder();
-            DoubleMatrix L = db.getL(A);
-            DoubleMatrix Ds = db.getDShortestPath(A);
-            DoubleMatrix H = db.getHResistance(L);
-            DoubleMatrix Dr = db.getD(H);
+            DenseMatrix L = db.getL(A);
+            DenseMatrix Ds = db.getDShortestPath(A);
+            DenseMatrix H = db.getHResistance(L);
+            DenseMatrix Dr = db.getD(H);
             return Ds.mul(1 - lambda).add(Dr.mul(lambda));
         }
     },
     HELMHOLTZ_FREE_ENERGY("Helmholtz Free Energy Distances", "FE", Scale.DEFAULT) {
         @Override
-        public DoubleMatrix getD(DoubleMatrix A, double beta) {
+        public DenseMatrix getD(DenseMatrix A, double beta) {
             DistancesBuilder db = new DistancesBuilder();
             return db.getDFreeEnergy(A, beta);
         }
@@ -104,7 +105,7 @@ public enum Distance {
         return scale;
     }
 
-    public abstract DoubleMatrix getD(DoubleMatrix A, double t);
+    public abstract DenseMatrix getD(DenseMatrix A, double t);
 
     public String toString() {
         return shortName;
