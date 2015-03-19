@@ -1,17 +1,17 @@
 package com.thesis;
 
-import com.thesis.helper.DistancesHelper;
+import com.thesis.helper.TestHelper;
 import com.thesis.metric.Distance;
 import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.DistancesHelper;
 import jeigen.DenseMatrix;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertTrue;
-import static com.thesis.helper.DistancesHelper.*;
+import static com.thesis.helper.TestHelper.*;
 
 public class DistancesTest {
 

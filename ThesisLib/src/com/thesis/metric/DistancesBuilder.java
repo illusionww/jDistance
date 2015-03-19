@@ -14,8 +14,8 @@ public class DistancesBuilder {
     // α > 0 -> 0 < t < ρ^{-1}
     public double alphaToT(DenseMatrix A, double alpha) {
         ComplexDenseMatrix cfm = new ComplexDenseMatrix(A.eig().values);
-        OptionalDouble ro = Arrays.stream(DistancesHelper.toArray2(cfm.abs())[0]).max();
-        return 1.0 / (1.0 / alpha + ro.getAsDouble());
+        double ro = cfm.abs().maxOverCols().s();
+        return 1.0 / (1.0 / alpha + ro);
     }
 
     public DenseMatrix getL(DenseMatrix A) {
@@ -91,10 +91,10 @@ public class DistancesBuilder {
 
         // Φ = -1/β * log(Z^h)
         DenseMatrix F = DistancesHelper.log(Zh).div(-beta);
-        System.out.println(F);
+
         // Δ_FE = (Φ + Φ^T)/2
         DenseMatrix FE = F.add(F.t()).div(2);
-        System.out.println(FE);
+
         return FE.sub(diag(DistancesHelper.diagToVector(FE)));
     }
 

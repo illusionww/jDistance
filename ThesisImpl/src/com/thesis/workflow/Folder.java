@@ -21,7 +21,7 @@ public class Folder {
     }
 
     public String getFilePath() {
-        return Context.GRAPH_FOLDER + File.separator + fileName;
+        return Context.getInstance().GRAPH_FOLDER + File.separator + fileName;
     }
 
     public String getTitle() {

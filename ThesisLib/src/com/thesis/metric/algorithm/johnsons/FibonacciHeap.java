@@ -61,7 +61,7 @@ import java.util.*; // For ArrayList
  * @param T The type of elements to store in the heap.
  * @author Keith Schwarz (htiek@cs.stanford.edu)
  */
-public final class FibonacciHeap<T> {
+final class FibonacciHeap<T> {
     /* In order for all of the Fibonacci heap operations to complete in O(1),
      * clients need to have O(1) access to any element in the heap.  We make
      * this work by having each insertion operation produce a handle to the

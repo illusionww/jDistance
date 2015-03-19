@@ -50,7 +50,7 @@ public class GNUPlotAdapter {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
-            plotStyle.setLineWidth(1);
+            plotStyle.setLineWidth(2);
 
             DataSetPlot dataSetPlot = new DataSetPlot(plot.getData());
             dataSetPlot.setPlotStyle(plotStyle);

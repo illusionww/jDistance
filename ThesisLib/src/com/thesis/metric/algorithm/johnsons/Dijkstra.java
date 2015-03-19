@@ -32,7 +32,7 @@ package com.thesis.metric.algorithm.johnsons;
 
 import java.util.*; // For HashMap
 
-public final class Dijkstra {
+final class Dijkstra {
     /**
      * Given a directed, weighted graph G and a source node s, produces the
      * distances from s to each other node in the graph.  If any nodes in

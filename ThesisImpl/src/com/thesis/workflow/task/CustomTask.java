@@ -33,7 +33,7 @@ public class CustomTask implements Task {
 
     @Override
     public Task execute() {
-        Stream<Distance> stream = Context.PARALLEL ? distances.parallelStream() : distances.stream();
+        Stream<Distance> stream = Context.getInstance().PARALLEL ? distances.parallelStream() : distances.stream();
         stream.forEach(distance -> {
             Map<Double, Double> distanceResult = checker.seriesOfTests(distance, from, to, step, Scale.LINEAR);
             result.put(distance, distanceResult);

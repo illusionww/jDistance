@@ -41,6 +41,10 @@ public class TaskChain {
     }
 
     public TaskChain execute() {
+        if (!Context.getInstance().checkContext()) {
+            throw new RuntimeException("context not initialized!");
+        }
+
         Date start = new Date();
         log.info("Start task chain");
         tasks.forEach(Task::execute);
@@ -64,8 +68,8 @@ public class TaskChain {
             plots.add(new Plot(plotTitle, color.next(), plotPointsSet));
         }));
 
-        GNUPlotAdapter ga = new GNUPlotAdapter(Context.GNUPLOT_PATH);
-        ga.drawData(imgTitle, plots, Context.IMG_FOLDER + File.separator + imgTitle + ".png");
+        GNUPlotAdapter ga = new GNUPlotAdapter(Context.getInstance().GNUPLOT_PATH);
+        ga.drawData(imgTitle, plots, Context.getInstance().IMG_FOLDER + File.separator + imgTitle + ".png");
 
         return this;
     }

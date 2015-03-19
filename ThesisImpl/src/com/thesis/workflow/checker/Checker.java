@@ -74,11 +74,11 @@ public abstract class Checker implements Cloneable {
                 }
             }
         } catch (RuntimeException e) {
-            log.info("Calculation error", e);
+            log.error("Calculation error: disnance " + distance.getShortName() + ", param " + parameter, e);
         }
 
         Double rate = rate((double) countErrors, (double) total, coloredNodes);
-        log.info("  {}: {} {}", distance.getShortName(), parameter, rate);
+        log.debug("{}: {} {}", distance.getShortName(), parameter, rate);
 
         return rate;
     }

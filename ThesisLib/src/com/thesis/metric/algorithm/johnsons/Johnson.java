@@ -93,7 +93,7 @@ package com.thesis.metric.algorithm.johnsons;
 
 import java.util.*; // For HashMap
 
-public final class Johnson {
+final class Johnson {
     /* An object to use as the source node which cannot normally appear in an
      * input graph.
      */

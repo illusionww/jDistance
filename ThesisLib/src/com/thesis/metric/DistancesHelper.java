@@ -2,29 +2,27 @@ package com.thesis.metric;
 
 import jeigen.DenseMatrix;
 
+import java.util.function.UnaryOperator;
+
 import static jeigen.Shortcuts.*;
 
 public class DistancesHelper {
     public static DenseMatrix log(DenseMatrix A) {
-        double[] values = A.getValues();
-        for (int i = 0; i < values.length; i++) {
-            A.set(i, Math.log(values[i]));
-        }
-        return A;
+        return elementWise(A, Math::log);
     }
 
     public static DenseMatrix sqrt(DenseMatrix A) {
-        double[] values = A.getValues();
-        for (int i = 0; i < values.length; i++) {
-            A.set(i, Math.sqrt(values[i]));
-        }
-        return A;
+        return elementWise(A, Math::sqrt);
     }
 
     public static DenseMatrix exp(DenseMatrix A) {
+        return elementWise(A, Math::exp);
+    }
+
+    private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
         double[] values = A.getValues();
         for (int i = 0; i < values.length; i++) {
-            A.set(i, Math.exp(values[i]));
+            A.set(i, operator.apply(values[i]));
         }
         return A;
     }

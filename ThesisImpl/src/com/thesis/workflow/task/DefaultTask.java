@@ -42,9 +42,9 @@ public class DefaultTask implements Task {
     @Override
     public Task execute() {
         final Set<Distance> stack = new HashSet<>();
-        Stream<Distance> stream = Context.PARALLEL ? distances.parallelStream() : distances.stream();
+        Stream<Distance> stream = Context.getInstance().PARALLEL ? distances.parallelStream() : distances.stream();
         stream.forEach(distance -> {
-            Scale scale = Scale.DEFAULT.equals(distance.getScale()) ? Context.SCALE : distance.getScale();
+            Scale scale = Scale.DEFAULT.equals(distance.getScale()) ? Context.getInstance().SCALE : distance.getScale();
             stack.add(distance);
             Map<Double, Double> distanceResult = checker.clone().seriesOfTests(distance, 0.0, 1.0, step, scale);
             stack.remove(distance);

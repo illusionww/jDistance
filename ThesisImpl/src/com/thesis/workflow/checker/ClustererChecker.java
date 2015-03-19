@@ -40,7 +40,7 @@ public class ClustererChecker extends Checker {
         }
 
         Integer total = (int) Math.round(Math.floor((double) (data.size()*data.size()-data.size())/2.0));
-        return new Integer[] {total, countErrors};
+        return new Integer[] {total, countErrors, 0};
     }
 
     @Override

@@ -8,24 +8,39 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Context {
-    public static final String GNUPLOT_PATH = "C:\\cygwin64\\bin\\gnuplot.exe";
-    public static final String GRAPH_FOLDER = "graphs";
-    public static final String IMG_FOLDER = "C:\\thesis";
+    private static volatile Context instance;
 
-    public static Map<String, Folder> folders = Arrays.asList(
-            new Folder("n100pin03pout002k5"),
-            new Folder("n100pin03pout01k5"),
-            new Folder("n300pin03pout002k5"),
-            new Folder("n300pin03pout003k5"),
-            new Folder("n300pin03pout005k5"),
-            new Folder("n300pin03pout01k5"),
-            new Folder("n500pin03pout002k5"),
-            new Folder("n500pin03pout003k5"),
-            new Folder("n500pin03pout005k5"),
-            new Folder("n500pin03pout01k5"),
-            new Folder("n1000pin03pot01k5")
-    ).stream().collect(Collectors.toMap(Folder::getFileName, item -> item));
+    public String GNUPLOT_PATH = null;
+    public String GRAPH_FOLDER = null;
+    public String IMG_FOLDER = null;
+    public Boolean PARALLEL = null;
+    public Scale SCALE = null;
 
-    public static boolean PARALLEL;
-    public static Scale SCALE;
+    private Context() {
+    }
+
+    public static Context getInstance() {
+        Context localInstance = instance;
+        if (localInstance == null) {
+            synchronized (Context.class) {
+                localInstance = instance;
+                if (localInstance == null) {
+                    instance = localInstance = new Context();
+                }
+            }
+        }
+        return localInstance;
+    }
+
+    public void init(String gnuplotPath, String graphFolder, String imgFolder, Boolean parallel, Scale scale) {
+        this.GNUPLOT_PATH = gnuplotPath;
+        this.GRAPH_FOLDER = graphFolder;
+        this.IMG_FOLDER = imgFolder;
+        this.PARALLEL = parallel;
+        this.SCALE = scale;
+    }
+
+    public boolean checkContext() {
+        return GNUPLOT_PATH != null && GRAPH_FOLDER != null && IMG_FOLDER != null && PARALLEL != null && SCALE != null;
+    }
 }

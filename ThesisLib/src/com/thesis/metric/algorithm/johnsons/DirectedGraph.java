@@ -10,7 +10,7 @@ package com.thesis.metric.algorithm.johnsons;
  */
 import java.util.*; // For HashMap
 
-public final class DirectedGraph<T> implements Iterable<T> {
+final class DirectedGraph<T> implements Iterable<T> {
     /* A map from nodes in the graph to sets of outgoing edges.  Each
      * set of edges is represented by a map from edges to doubles.
      */
