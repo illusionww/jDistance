@@ -10,9 +10,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="ThesisLib" />
-    <orderEntry type="library" name="Jeigen-win-linux-32-64" level="project" />
-    <orderEntry type="library" name="JavaPlot" level="project" />
-    <orderEntry type="library" name="org.slf4j:slf4j-log4j12:1.7.10" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit4">
         <CLASSES>
@@ -24,5 +21,8 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="JavaPlot" level="project" />
+    <orderEntry type="library" name="Jeigen-win-linux-32-64" level="project" />
+    <orderEntry type="library" name="slf4j-log4j12-1.7.10" level="project" />
   </component>
 </module>

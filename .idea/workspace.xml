@@ -2,35 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8d38d350-0497-4360-a2df-735b9267c49b" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\.idea\libraries\gov_nist_math_jama_1_0_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\.idea\libraries\lib.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\.idea\libraries\org_jblas_jblas_1_2_3.xml" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\output.png" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\test\java\com\thesis\CheckerTest.java" afterPath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\test\java\com\thesis\GnuplotTest.java" afterPath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/GnuplotTest.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\test\java\com\thesis\helper\DistancesHelper.java" afterPath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/helper/TestHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/BellmanFord.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/BellmanFord.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClustererChecker.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClustererChecker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/helper/Constants.java" afterPath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/helper/Constants.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Context.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Context.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/CustomTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/CustomTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/Dijkstra.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/Dijkstra.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/DirectedGraph.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/DirectedGraph.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesHelper.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/DistancesTest.java" afterPath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/DistancesTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/FibonacciHeap.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/FibonacciHeap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Folder.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Folder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/Johnson.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/Johnson.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/TaskChain.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/TaskChain.java" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\test\java\com\thesis\CheckerTest.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\test\java\com\thesis\GnuplotTest.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\lib\JavaPlot.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\lib\Jeigen-win-linux-32-64.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\lib\dcrgenerator.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\lib\jna-4.0.0.jar" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\test\java\com\thesis\helper\DistancesHelper.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/JavaPlot.xml" afterPath="$PROJECT_DIR$/.idea/libraries/JavaPlot.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Jeigen_win_linux_32_64.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Jeigen_win_linux_32_64.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" afterPath="$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/ThesisLib.iml" afterPath="$PROJECT_DIR$/ThesisLib/ThesisLib.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/log4j.properties" afterPath="$PROJECT_DIR$/ThesisImpl/src/log4j.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/ThesisImpl/log4j.properties" afterPath="$PROJECT_DIR$/out/production/ThesisImpl/log4j.properties" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Thesis.iws" />
@@ -99,8 +81,8 @@
       <file leaf-file-name="Checker.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2828784" vertical-offset="1246" max-vertical-offset="1649">
-              <caret line="80" column="19" selection-start-line="80" selection-start-column="19" selection-end-line="80" selection-end-column="19" />
+            <state vertical-scroll-proportion="0.662531" vertical-offset="1246" max-vertical-offset="1649">
+              <caret line="89" column="36" selection-start-line="89" selection-start-column="36" selection-end-line="89" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -720,15 +702,15 @@
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="options.splitter.details.proportions" value="0.2" />
     <property name="ignore_donation_0.6" value="true" />
-    <property name="Downloaded.Files.Path.Enabled" value="false" />
-    <property name="Repository.Attach.JavaDocs" value="true" />
-    <property name="Repository.Attach.Sources" value="true" />
-    <property name="project.structure.last.edited" value="Problems" />
+    <property name="Downloaded.Files.Path.Enabled" value="true" />
+    <property name="Repository.Attach.JavaDocs" value="false" />
+    <property name="Repository.Attach.Sources" value="false" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15332031" />
     <property name="project.structure.side.proportion" value="0.282" />
     <property name="dynamic.classpath" value="false" />
     <property name="LayoutCode.rearrangeEntriesJava" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/ThesisLib/lib/jna-4.0.0.jar!/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/log4j-1.2.17.jar!/" />
     <property name="FullScreen" value="false" />
     <property name="OverrideImplement.combined" value="true" />
     <property name="OverrideImplement.overriding.sorted" value="false" />
@@ -1205,12 +1187,12 @@
       <workItem from="1426405018845" duration="6068000" />
       <workItem from="1426422695601" duration="51000" />
       <workItem from="1426422766914" duration="542000" />
-      <workItem from="1426631376381" duration="15094000" />
+      <workItem from="1426631376381" duration="15331000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="271127000" />
+    <option name="totallyTimeSpent" value="271364000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -1395,26 +1377,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/ThesisLib/lib/Jeigen-win-linux-32-64.jar!/jeigen/JeigenJna.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="860" max-vertical-offset="1564">
-          <caret line="67" column="34" selection-start-line="67" selection-start-column="34" selection-end-line="67" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_25/src.zip!/java/lang/System.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="7452" max-vertical-offset="20485">
           <caret line="492" column="30" selection-start-line="492" selection-start-column="30" selection-end-line="492" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/ThesisLib/lib/Jeigen-win-linux-32-64.jar!/jeigen/DenseMatrixComplex.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1683">
-          <caret line="8" column="69" selection-start-line="8" selection-start-column="69" selection-end-line="8" selection-end-column="69" />
           <folding />
         </state>
       </provider>
@@ -1472,38 +1438,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$PROJECT_DIR$/ThesisLib/lib/Jeigen-win-linux-32-64.jar!/jeigen/Shortcuts.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0149254" vertical-offset="0" max-vertical-offset="1003">
-          <caret line="28" column="30" selection-start-line="28" selection-start-column="30" selection-end-line="28" selection-end-column="30" />
-          <folding>
-            <element signature="e#859#860#0" expanded="false" />
-            <element signature="e#900#901#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1266" max-vertical-offset="1887">
           <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/ThesisLib/lib/Jeigen-win-linux-32-64.jar!/jeigen/DenseMatrix.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.6756756" vertical-offset="6412" max-vertical-offset="19057">
-          <caret line="397" column="23" selection-start-line="397" selection-start-column="23" selection-end-line="397" selection-end-column="23" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#15560#15561#0" expanded="true" />
-            <element signature="e#15599#15600#0" expanded="true" />
-            <element signature="e#15998#15999#0" expanded="true" />
-            <element signature="e#16018#16019#0" expanded="true" />
-            <element signature="e#27809#27810#0" expanded="true" />
-            <element signature="e#27867#27868#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1748,8 +1687,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2828784" vertical-offset="1246" max-vertical-offset="1649">
-          <caret line="80" column="19" selection-start-line="80" selection-start-column="19" selection-end-line="80" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.662531" vertical-offset="1246" max-vertical-offset="1649">
+          <caret line="89" column="36" selection-start-line="89" selection-start-column="36" selection-end-line="89" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1820,7 +1759,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>Jeigen-win-linux-32-64</last-edited>
+          <last-edited>slf4j-log4j12-1.7.10</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
