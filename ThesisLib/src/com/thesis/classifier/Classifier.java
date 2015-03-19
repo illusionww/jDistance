@@ -4,7 +4,9 @@ import com.thesis.adapter.parser.graph.SimpleNodeData;
 import com.thesis.metric.DistancesHelper;
 import jeigen.DenseMatrix;
 
+import javax.xml.crypto.Data;
 import java.util.*;
+import java.util.concurrent.ThreadFactory;
 
 public class Classifier {
 
@@ -21,6 +23,10 @@ public class Classifier {
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
     public ArrayList<SimpleNodeData> predictLabel(Integer k, Double p) {
+        return predictLabel(k, p, 0);
+    }
+
+    public ArrayList<SimpleNodeData> predictLabel(Integer k, Double p, Integer x) {
 
         HashMap<String, Integer> order = new HashMap<String, Integer>();
 
@@ -57,9 +63,9 @@ public class Classifier {
                 }
                 Collections.sort(weights);
                 if (k > weights.size()) {
-                    predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights)));
+                    predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights, x)));
                 } else {
-                    predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights.subList(0, k))));
+                    predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights.subList(0, k), x)));
                 }
             }
         }
@@ -69,14 +75,18 @@ public class Classifier {
         return predictedDatas;
     }
 
-    private String predictLabel(List<DataForClassifier> weights) {
+    private String predictLabel(List<DataForClassifier> weights, Integer x) {
         HashMap<String, Integer> countLabels = new HashMap<String, Integer>();
-        for (DataForClassifier dataForClassifier : weights) {
+        ListIterator iteratorWeights = weights.listIterator();
+        int i = 0;
+        while (iteratorWeights.hasNext()) {
+            DataForClassifier dataForClassifier = (DataForClassifier) iteratorWeights.next();
             if (countLabels.containsKey(dataForClassifier.getLabel())) {
-                countLabels.put(dataForClassifier.getLabel(), countLabels.get(dataForClassifier.getLabel()) + 1);
+                countLabels.put(dataForClassifier.getLabel(), countLabels.get(dataForClassifier.getLabel()) + (weights.size() - i) + x);
             } else {
-                countLabels.put(dataForClassifier.getLabel(), 1);
+                countLabels.put(dataForClassifier.getLabel(), (weights.size() - i) + x);
             }
+            i++;
         }
         Integer currentCount = 1;
         String label = weights.get(0).getLabel();
@@ -91,29 +101,29 @@ public class Classifier {
 
     private ArrayList<SimpleNodeData> choiceOfVertices(Double p) {  //независимо от размеров класстеров выбираем из каждого одинаковое количество
         ArrayList<SimpleNodeData> sortedRealDatas = realData;
-            Collections.sort(sortedRealDatas);
-            String label = sortedRealDatas.get(0).getLabel();
-            ArrayList<SimpleNodeData> result = new ArrayList<SimpleNodeData>();
-            ArrayList<Integer> endLabel = new ArrayList<Integer>();
-            for (int i = 0; i < sortedRealDatas.size(); ++i) {
-                if (!label.equals(sortedRealDatas.get(i).getLabel())) {
-                    label = sortedRealDatas.get(i).getLabel();
-                    endLabel.add(i - 1);
+        Collections.sort(sortedRealDatas);
+        String label = sortedRealDatas.get(0).getLabel();
+        ArrayList<SimpleNodeData> result = new ArrayList<SimpleNodeData>();
+        ArrayList<Integer> endLabel = new ArrayList<Integer>();
+        for (int i = 0; i < sortedRealDatas.size(); ++i) {
+            if (!label.equals(sortedRealDatas.get(i).getLabel())) {
+                label = sortedRealDatas.get(i).getLabel();
+                endLabel.add(i - 1);
+            }
+        }
+        endLabel.add(sortedRealDatas.size());
+        for (int i = 0; i < endLabel.size() - 1; ++i) {
+            if (i > 0) {
+                countColoredNodes += (endLabel.get(i - 1) + (endLabel.get(i) - endLabel.get(i - 1)) * p) - endLabel.get(i - 1);
+                for (int k = endLabel.get(i - 1); k < endLabel.get(i - 1) + (endLabel.get(i) - endLabel.get(i - 1)) * p; ++k) {   //TODO будет лучше если брать с каждого класса одинаковое количество элементов
+                    result.add(sortedRealDatas.get(k + 1));   //TODO брать элементы рандомно, а не по порядку
+                }
+            } else {
+                countColoredNodes += endLabel.get(i) * p;
+                for (int k = 0; k <= endLabel.get(i) * p; ++k) {
+                    result.add(sortedRealDatas.get(k));
                 }
             }
-            endLabel.add(sortedRealDatas.size());
-            for (int i = 0; i < endLabel.size() - 1; ++i) {
-                if (i > 0) {
-                    countColoredNodes += (endLabel.get(i - 1) + (endLabel.get(i) - endLabel.get(i - 1)) * p) - endLabel.get(i - 1);
-                    for (int k = endLabel.get(i - 1); k < endLabel.get(i - 1) + (endLabel.get(i) - endLabel.get(i - 1)) * p; ++k) {   //TODO будет лучше если брать с каждого класса одинаковое количество элементов
-                        result.add(sortedRealDatas.get(k + 1));   //TODO брать элементы рандомно, а не по порядку
-                    }
-                } else {
-                    countColoredNodes += endLabel.get(i) * p;
-                    for (int k = 0; k <= endLabel.get(i) * p; ++k) {
-                        result.add(sortedRealDatas.get(k));
-                    }
-                }
         }
         if (endLabel.size() > 1) {
             for (int k = endLabel.get(endLabel.size() - 2) + 1; k < sortedRealDatas.size(); ++k) {
@@ -123,7 +133,7 @@ public class Classifier {
         return result;
     }
 
-    private class DataForClassifier implements Comparable<DataForClassifier> {  //TODO appropriate class name
+    private class DataForClassifier implements Comparable<DataForClassifier> {
         String name;
         String label;
         Double value;
