@@ -34,7 +34,7 @@ public class GNUPlotAdapter {
 
     public void drawData(String title, List<Plot> data, String outputPath) {
         ImageTerminal png = new ImageTerminal();
-        png.set("size", "1280,960");
+        png.set("size", "1024,768");
         File file = new File(outputPath);
         try {
             file.createNewFile();
@@ -50,7 +50,7 @@ public class GNUPlotAdapter {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
-            plotStyle.setLineWidth(2);
+            plotStyle.setLineWidth(1);
 
             DataSetPlot dataSetPlot = new DataSetPlot(plot.getData());
             dataSetPlot.setPlotStyle(plotStyle);

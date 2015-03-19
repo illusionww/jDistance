@@ -2,18 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8d38d350-0497-4360-a2df-735b9267c49b" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\test\java\com\thesis\CheckerTest.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\test\java\com\thesis\GnuplotTest.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\lib\JavaPlot.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\lib\Jeigen-win-linux-32-64.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\lib\dcrgenerator.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\lib\jna-4.0.0.jar" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\test\java\com\thesis\helper\DistancesHelper.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/JavaPlot.xml" afterPath="$PROJECT_DIR$/.idea/libraries/JavaPlot.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Jeigen_win_linux_32_64.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Jeigen_win_linux_32_64.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" afterPath="$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/ThesisLib.iml" afterPath="$PROJECT_DIR$/ThesisLib/ThesisLib.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
     </list>
     <ignored path="Thesis.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -78,24 +68,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Checker.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Checker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.662531" vertical-offset="1246" max-vertical-offset="1649">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1246" max-vertical-offset="1649">
               <caret line="89" column="36" selection-start-line="89" selection-start-column="36" selection-end-line="89" selection-end-column="36" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="136">
-              <caret line="0" column="4" selection-start-line="0" selection-start-column="4" selection-end-line="0" selection-end-column="4" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -142,11 +122,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="267" max-vertical-offset="935">
-              <caret line="40" column="8" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="111" />
+            <state vertical-scroll-proportion="1.25" vertical-offset="299" max-vertical-offset="1020">
+              <caret line="65" column="91" selection-start-line="65" selection-start-column="91" selection-end-line="65" selection-end-column="91" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GNUPlotAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="339" max-vertical-offset="1071">
+              <caret line="52" column="36" selection-start-line="52" selection-start-column="36" selection-end-line="52" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -187,7 +177,6 @@
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClassifierChecker.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/helper/MetricTask.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/CheckerTest.java" />
-        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/Johnson.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/FibonacciHeap.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/algorithm/johnsons/DirectedGraph.java" />
@@ -204,13 +193,14 @@
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/CustomTask.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/helper/Constants.java" />
         <option value="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/helper/TestHelper.java" />
         <option value="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/DistancesTest.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Context.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" />
+        <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" />
       </list>
     </option>
   </component>
@@ -1187,12 +1177,12 @@
       <workItem from="1426405018845" duration="6068000" />
       <workItem from="1426422695601" duration="51000" />
       <workItem from="1426422766914" duration="542000" />
-      <workItem from="1426631376381" duration="15331000" />
+      <workItem from="1426631376381" duration="15783000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="271364000" />
+    <option name="totallyTimeSpent" value="271816000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
@@ -1208,7 +1198,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30707395" sideWeight="0.5385779" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3118971" sideWeight="0.5385779" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23600605" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1518,14 +1508,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="1071">
-          <caret line="52" column="36" selection-start-line="52" selection-start-column="36" selection-end-line="52" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="523" max-vertical-offset="1700">
@@ -1616,14 +1598,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="267" max-vertical-offset="935">
-          <caret line="40" column="8" selection-start-line="40" selection-start-column="8" selection-end-line="40" selection-end-column="111" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClassifierChecker.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="833">
@@ -1687,11 +1661,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.662531" vertical-offset="1246" max-vertical-offset="1649">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1246" max-vertical-offset="1649">
           <caret line="89" column="36" selection-start-line="89" selection-start-column="36" selection-end-line="89" selection-end-column="36" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="594" max-vertical-offset="1071">
+          <caret line="52" column="36" selection-start-line="52" selection-start-column="36" selection-end-line="52" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.25" vertical-offset="299" max-vertical-offset="1020">
+          <caret line="65" column="91" selection-start-line="65" selection-start-column="91" selection-end-line="65" selection-end-column="91" />
+          <folding />
         </state>
       </provider>
     </entry>
