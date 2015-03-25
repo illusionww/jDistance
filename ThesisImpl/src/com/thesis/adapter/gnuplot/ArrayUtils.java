@@ -1,4 +1,4 @@
-package com.thesis.utils;
+package com.thesis.adapter.gnuplot;
 
 import com.panayotis.gnuplot.dataset.Point;
 

@@ -1,4 +1,4 @@
-package com.thesis.adapter.parser.graph;
+package com.thesis.graph;
 
 import com.thesis.utils.Cloneable;
 

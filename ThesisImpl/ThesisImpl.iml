@@ -24,5 +24,6 @@
     <orderEntry type="library" name="JavaPlot" level="project" />
     <orderEntry type="library" name="Jeigen-win-linux-32-64" level="project" />
     <orderEntry type="library" name="slf4j-log4j12-1.7.10" level="project" />
+    <orderEntry type="library" name="dcrgenerator" level="project" />
   </component>
 </module>

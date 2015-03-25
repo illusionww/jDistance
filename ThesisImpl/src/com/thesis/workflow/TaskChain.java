@@ -6,7 +6,7 @@ import com.panayotis.gnuplot.style.PlotColor;
 import com.thesis.adapter.gnuplot.GNUPlotAdapter;
 import com.thesis.adapter.gnuplot.Plot;
 import com.thesis.metric.Distance;
-import com.thesis.utils.ArrayUtils;
+import com.thesis.adapter.gnuplot.ArrayUtils;
 import com.thesis.workflow.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

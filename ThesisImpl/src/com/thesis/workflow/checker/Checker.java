@@ -1,7 +1,7 @@
 package com.thesis.workflow.checker;
 
-import com.thesis.adapter.parser.graph.Graph;
-import com.thesis.adapter.parser.graph.SimpleNodeData;
+import com.thesis.graph.Graph;
+import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
 import com.thesis.metric.DistancesHelper;
 import com.thesis.metric.Scale;

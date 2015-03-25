@@ -2,7 +2,7 @@ package com.thesis;
 
 import com.thesis.adapter.parser.Parser;
 import com.thesis.adapter.parser.ParserWrapper;
-import com.thesis.adapter.parser.graph.Graph;
+import com.thesis.graph.Graph;
 import com.thesis.helper.Constants;
 import com.thesis.helper.MetricTask;
 import com.thesis.metric.Distance;

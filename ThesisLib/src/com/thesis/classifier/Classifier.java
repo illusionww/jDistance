@@ -1,12 +1,10 @@
 package com.thesis.classifier;
 
-import com.thesis.adapter.parser.graph.SimpleNodeData;
+import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.DistancesHelper;
 import jeigen.DenseMatrix;
 
-import javax.xml.crypto.Data;
 import java.util.*;
-import java.util.concurrent.ThreadFactory;
 
 public class Classifier {
 

@@ -1,8 +1,8 @@
 package com.thesis.workflow.checker;
 
 import com.thesis.classifier.Classifier;
-import com.thesis.adapter.parser.graph.Graph;
-import com.thesis.adapter.parser.graph.SimpleNodeData;
+import com.thesis.graph.Graph;
+import com.thesis.graph.SimpleNodeData;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;

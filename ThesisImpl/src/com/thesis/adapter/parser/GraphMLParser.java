@@ -1,10 +1,9 @@
 package com.thesis.adapter.parser;
 
-
-import com.thesis.adapter.parser.graph.EdgeData;
-import com.thesis.adapter.parser.graph.Graph;
-import com.thesis.adapter.parser.graph.NodeData;
-import com.thesis.adapter.parser.graph.SimpleNodeData;
+import com.thesis.graph.EdgeData;
+import com.thesis.graph.Graph;
+import com.thesis.graph.NodeData;
+import com.thesis.graph.SimpleNodeData;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -23,8 +22,7 @@ import java.util.stream.Collectors;
 public class GraphMLParser extends Parser {
 
     @Override
-    public Graph parse(String path) throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(path);
+    public Graph parse(File file) throws ParserConfigurationException, IOException, SAXException {
         LinkedList<NodeData> linkedList = new LinkedList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(false);

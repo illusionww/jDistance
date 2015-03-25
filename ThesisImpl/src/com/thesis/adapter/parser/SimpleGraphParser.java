@@ -1,12 +1,13 @@
 package com.thesis.adapter.parser;
 
-import com.thesis.adapter.parser.graph.Graph;
-import com.thesis.adapter.parser.graph.SimpleNodeData;
+import com.thesis.graph.Graph;
+import com.thesis.graph.SimpleNodeData;
 import org.xml.sax.SAXException;
 import sun.security.pkcs.ParsingException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,10 +20,10 @@ public class SimpleGraphParser extends Parser {
     final Pattern edge = Pattern.compile("^(\\d+) -> (\\d+).*");
 
     @Override
-    public Graph parse(String path) throws ParserConfigurationException, IOException, SAXException {
+    public Graph parse(File file) throws ParserConfigurationException, IOException, SAXException {
         ArrayList<SimpleNodeData> simpleNodeData = new ArrayList<>();
 
-        try(BufferedReader br = new BufferedReader(new FileReader(path))) {
+        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine();
             while (line != null && !line.matches("begin vertices:")) {
                 //System.out.println("skip '" + line + "'");

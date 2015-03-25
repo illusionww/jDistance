@@ -19,7 +19,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="JavaPlot" level="project" />
     <orderEntry type="library" name="Jeigen-win-linux-32-64" level="project" />
   </component>
 </module>

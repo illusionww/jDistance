@@ -1,19 +1,20 @@
 package com.thesis.adapter.parser;
 
-import com.thesis.adapter.parser.graph.Graph;
+import com.thesis.graph.Graph;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 
 public class ParserWrapper extends Parser {
     @Override
-    public Graph parse(String path) throws ParserConfigurationException, IOException, SAXException {
-        switch (getExtension(path)) {
+    public Graph parse(File file) throws ParserConfigurationException, IOException, SAXException {
+        switch (getExtension(file.getAbsolutePath())) {
             case "simplegraph":
-                return new SimpleGraphParser().parse(path);
+                return new SimpleGraphParser().parse(file);
             case "graphml":
-                return new GraphMLParser().parse(path);
+                return new GraphMLParser().parse(file);
             default:
                 return null;
         }
