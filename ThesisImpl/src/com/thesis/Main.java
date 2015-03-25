@@ -1,7 +1,6 @@
 package com.thesis;
 
 import com.thesis.adapter.generator.DCRGeneratorAdapter;
-import com.thesis.adapter.GraphValidator;
 import com.thesis.graph.Graph;
 import com.thesis.metric.Distance;
 import com.thesis.metric.Scale;
@@ -21,7 +20,7 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        Context.getInstance().init("C:\\cygwin64\\bin\\gnuplot.exe", "graphs", "C:\\thesis", true, Scale.ATAN);
+        Context.getInstance().init("C:\\cygwin64\\bin\\gnuplot.exe", "graphs", "C:\\thesis", true, Scale.EXP);
 
         List<Distance> distances = Arrays.asList(
                 Distance.WALK,
@@ -35,9 +34,9 @@ public class Main {
         );
 
         DCRGeneratorAdapter generator = new DCRGeneratorAdapter();
-        List<Graph> graphs = generator.generateList(10, 100, 0.3, 0.1, 5);
-        new TaskChain(new DefaultTask(new ClassifierChecker(graphs, 5, 0.3), distances, 0.003))
-                .execute().draw("classifier (k=5, p=0.3) n=100, p_in=0.3, p_out=0.1");
+        List<Graph> graphs = generator.generateList(50, 100, 0.3, 0.1, 5);
+        new TaskChain(new DefaultTask(new ClassifierChecker(graphs, 3, 0.3), distances, 0.003))
+                .execute().draw("classifier(k=3, p=0.3) count=50, n=100, p_in=0.3, p_out=0.1 exp");
     }
 }
 
