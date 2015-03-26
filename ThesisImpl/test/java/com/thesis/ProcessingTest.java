@@ -30,7 +30,7 @@ public class ProcessingTest {
 
     @Before
     public void prepare() throws IOException, ParserConfigurationException, SAXException {
-        Context.getInstance().init(Constants.GNUPLOT_PATH, "", Constants.IMG_FOLDER, true, Scale.ATAN);
+        Context.getInstance().init(Constants.GNUPLOT_PATH, Constants.IMG_FOLDER, true, Scale.ATAN);
 
         distances = Arrays.asList(Distance.values());
 

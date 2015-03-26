@@ -11,7 +11,6 @@ public class Context {
     private static volatile Context instance;
 
     public String GNUPLOT_PATH = null;
-    public String GRAPH_FOLDER = null;
     public String IMG_FOLDER = null;
     public Boolean PARALLEL = null;
     public Scale SCALE = null;
@@ -32,15 +31,14 @@ public class Context {
         return localInstance;
     }
 
-    public void init(String gnuplotPath, String graphFolder, String imgFolder, Boolean parallel, Scale scale) {
+    public void init(String gnuplotPath, String imgFolder, Boolean parallel, Scale scale) {
         this.GNUPLOT_PATH = gnuplotPath;
-        this.GRAPH_FOLDER = graphFolder;
         this.IMG_FOLDER = imgFolder;
         this.PARALLEL = parallel;
         this.SCALE = scale;
     }
 
     public boolean checkContext() {
-        return GNUPLOT_PATH != null && GRAPH_FOLDER != null && IMG_FOLDER != null && PARALLEL != null && SCALE != null;
+        return GNUPLOT_PATH != null && IMG_FOLDER != null && PARALLEL != null && SCALE != null;
     }
 }
