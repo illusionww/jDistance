@@ -6,6 +6,7 @@ import com.thesis.graph.Graph;
 import com.thesis.helper.Constants;
 import com.thesis.helper.MetricTask;
 import com.thesis.metric.Distance;
+import com.thesis.metric.Distances;
 import com.thesis.metric.Scale;
 import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
@@ -18,9 +19,11 @@ import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
@@ -32,7 +35,13 @@ public class ProcessingTest {
     public void prepare() throws IOException, ParserConfigurationException, SAXException {
         Context.getInstance().init(Constants.GNUPLOT_PATH, Constants.IMG_FOLDER, true, Scale.ATAN);
 
-        distances = Arrays.asList(Distance.values());
+        File img = new File(Constants.IMG_FOLDER);
+        if (!img.exists() && !img.mkdirs()) {
+            throw new RuntimeException("cannot make image dir");
+        }
+
+        distances = new ArrayList<>();
+        Arrays.asList(Distances.values()).stream().forEach(value -> distances.add(value.getInstance()));
 
         Parser parser = new ParserWrapper();
         graphs = new ArrayList<>();
@@ -70,7 +79,7 @@ public class ProcessingTest {
         });
 
         new TaskChain()
-                .addTask(new MetricTask(Distance.COMBINATIONS, triangleGraph, 0.01))
+                .addTask(new MetricTask(Distances.SP_CT.getInstance(), triangleGraph, 0.01))
                 .execute().draw("SP-CT");
     }
 }

@@ -1,6 +1,7 @@
 package com.thesis.workflow.task;
 
 import com.thesis.metric.Distance;
+import com.thesis.metric.Distances;
 import com.thesis.metric.Scale;
 import com.thesis.workflow.Context;
 import com.thesis.workflow.checker.Checker;
@@ -11,7 +12,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-public class DefaultTask implements Task {
+public class DefaultTask extends Task {
     private static final Logger log = LoggerFactory.getLogger(DefaultTask.class);
 
     private List<Distance> distances;
@@ -21,14 +22,6 @@ public class DefaultTask implements Task {
 
     public DefaultTask(Checker checker, List<Distance> distances, Double step) {
         this.distances = distances;
-        this.checker = checker;
-        this.step = step;
-        this.result = new ConcurrentHashMap<>();
-    }
-
-    public DefaultTask(Checker checker, Distance distance, Double step) {
-        this.distances = new ArrayList<>();
-        distances.add(distance);
         this.checker = checker;
         this.step = step;
         this.result = new ConcurrentHashMap<>();

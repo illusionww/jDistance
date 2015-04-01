@@ -6,6 +6,7 @@ import com.panayotis.gnuplot.style.PlotColor;
 import com.thesis.adapter.gnuplot.GNUPlotAdapter;
 import com.thesis.adapter.gnuplot.Plot;
 import com.thesis.metric.Distance;
+import com.thesis.metric.Distances;
 import com.thesis.adapter.gnuplot.ArrayUtils;
 import com.thesis.workflow.task.Task;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Stream;
 
 public class TaskChain {
     private static final Logger log = LoggerFactory.getLogger(TaskChain.class);
@@ -22,9 +24,8 @@ public class TaskChain {
         tasks = new ArrayList<>();
     }
 
-    public TaskChain(Task task) {
-        tasks = new ArrayList<>();
-        tasks.add(task);
+    public TaskChain(Task ... tasks) {
+        this.tasks = Arrays.asList(tasks);
     }
 
     public TaskChain(List<Task> tasks) {
@@ -47,7 +48,8 @@ public class TaskChain {
 
         Date start = new Date();
         log.info("Start task chain");
-        tasks.forEach(Task::execute);
+        Stream<Task> stream = Context.getInstance().PARALLEL ? tasks.parallelStream() : tasks.stream();
+        stream.forEach(Task::execute);
         Date finish = new Date();
         long diff = finish.getTime() - start.getTime();
         log.info("Task chain done. Time: " + diff);

@@ -25,6 +25,15 @@ public class GNUPlotAdapter {
             NamedPlotColor.GREY,
             NamedPlotColor.BLACK,
             NamedPlotColor.ORANGE,
+            NamedPlotColor.VIOLET,
+
+            NamedPlotColor.RED,
+            NamedPlotColor.GREEN,
+            NamedPlotColor.BLUE,
+            NamedPlotColor.YELLOW,
+            NamedPlotColor.GREY,
+            NamedPlotColor.BLACK,
+            NamedPlotColor.ORANGE,
             NamedPlotColor.VIOLET
     };
 

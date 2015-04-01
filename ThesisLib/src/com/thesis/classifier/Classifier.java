@@ -21,11 +21,10 @@ public class Classifier {
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
     public ArrayList<SimpleNodeData> predictLabel(Integer k, Double p) {
-        return predictLabel(k, p, 0);
+        return predictLabel(k, p, 0.0);
     }
 
-    public ArrayList<SimpleNodeData> predictLabel(Integer k, Double p, Integer x) {
-
+    public ArrayList<SimpleNodeData> predictLabel(Integer k, Double p, Double x) {
         HashMap<String, Integer> order = new HashMap<String, Integer>();
 
         for (int i = 0; i < realData.size(); ++i) {
@@ -73,8 +72,8 @@ public class Classifier {
         return predictedDatas;
     }
 
-    private String predictLabel(List<DataForClassifier> weights, Integer x) {
-        HashMap<String, Integer> countLabels = new HashMap<String, Integer>();
+    private String predictLabel(List<DataForClassifier> weights, Double x) {
+        HashMap<String, Double> countLabels = new HashMap<>();
         ListIterator iteratorWeights = weights.listIterator();
         int i = 0;
         while (iteratorWeights.hasNext()) {
@@ -86,9 +85,9 @@ public class Classifier {
             }
             i++;
         }
-        Integer currentCount = 1;
+        Double currentCount = 1.0;
         String label = weights.get(0).getLabel();
-        for (Map.Entry<String, Integer> map : countLabels.entrySet()) {
+        for (Map.Entry<String, Double> map : countLabels.entrySet()) {
             if (map.getValue() > currentCount) {
                 currentCount = map.getValue();
                 label = map.getKey();

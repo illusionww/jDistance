@@ -1,6 +1,7 @@
 package com.thesis.helper;
 
 import com.thesis.metric.Distance;
+import com.thesis.metric.Distances;
 import com.thesis.workflow.checker.Checker;
 import com.thesis.workflow.task.Task;
 import jeigen.DenseMatrix;
@@ -12,7 +13,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class MetricTask implements Task {
+public class MetricTask extends Task {
     private List<Distance> distances;
     private DenseMatrix A;
     private Double step;

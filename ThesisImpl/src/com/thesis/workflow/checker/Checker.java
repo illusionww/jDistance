@@ -3,6 +3,7 @@ package com.thesis.workflow.checker;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
+import com.thesis.metric.Distances;
 import com.thesis.metric.DistancesHelper;
 import com.thesis.metric.Scale;
 import com.thesis.utils.Cloneable;
@@ -18,16 +19,17 @@ import java.util.stream.IntStream;
 public abstract class Checker implements Cloneable {
     private static final Logger log = LoggerFactory.getLogger(Checker.class);
 
+    public abstract String getName();
+
     public abstract List<Graph> getGraphs();
 
     public Map<Double, Double> seriesOfTests(final Distance distance, Double from, Double to, Double step, Scale scale) {
-        int countOfPoints = (int) Math.round(Math.floor((to - from) / step) + 1);
-
         final Map<Double, Double> results = new ConcurrentHashMap<>();
 
         Date start = new Date();
         log.info("START {}", distance.getName());
 
+        int countOfPoints = (int) Math.round(Math.floor((to - from) / step) + 1);
         IntStream.range(0, countOfPoints).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double base = from + idx * step;
             Double i = scale.calc(base);
@@ -45,9 +47,7 @@ public abstract class Checker implements Cloneable {
         Integer countErrors = 0;
         Integer coloredNodes = 0;
 
-        if (parameter < 0.001) {
-            parameter = 0.001;
-        }
+        parameter = parameter < 0.001 ? 0.001 : parameter;
 
         try {
             for (Graph graph : getGraphs()) {

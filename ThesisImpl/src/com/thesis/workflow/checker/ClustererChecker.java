@@ -20,6 +20,11 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
+    public String getName() {
+        return "clusterer (k=" + k + ")";
+    }
+
+    @Override
     public List<Graph> getGraphs() {
         return graphs;
     }

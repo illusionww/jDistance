@@ -12,11 +12,25 @@ public class ClassifierChecker extends Checker {
     List<Graph> graphs;
     Integer k;
     Double p;
+    Double x;
 
     public ClassifierChecker(List<Graph> graphs, Integer k, Double p) {
         this.graphs = graphs;
         this.k = k;
         this.p = p;
+        this.x = 0.0;
+    }
+
+    public ClassifierChecker(List<Graph> graphs, Integer k, Double p, Double x) {
+        this.graphs = graphs;
+        this.k = k;
+        this.p = p;
+        this.x = x;
+    }
+
+    @Override
+    public String getName() {
+        return "classifier (k=" + k + ", p=" + p + ")";
     }
 
     @Override
@@ -24,12 +38,16 @@ public class ClassifierChecker extends Checker {
         return graphs;
     }
 
+    public void setX(Double x) {
+        this.x = x;
+    }
+
     @Override
     protected Integer[] roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Classifier classifier = new Classifier(D, simpleNodeData);
-        ArrayList<SimpleNodeData> data = classifier.predictLabel(k, p);
+        ArrayList<SimpleNodeData> data = classifier.predictLabel(k, p, x);
 
         for (int q = 0; q < data.size(); ++q) {
             SimpleNodeData original = simpleNodeData.get(q);
@@ -48,6 +66,6 @@ public class ClassifierChecker extends Checker {
 
     @Override
     public ClassifierChecker clone() {
-        return new ClassifierChecker(graphs, k, p);
+        return new ClassifierChecker(graphs, k, p, x);
     }
 }
