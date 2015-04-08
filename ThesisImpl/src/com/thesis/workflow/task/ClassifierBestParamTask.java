@@ -6,6 +6,7 @@ import com.thesis.workflow.checker.ClassifierChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,16 +17,16 @@ public class ClassifierBestParamTask extends Task {
     private static final Logger log = LoggerFactory.getLogger(ClassifierBestParamTask.class);
 
     private ClassifierChecker checker;
-    private List<Distance> distances;
+    private Distance distance;
     private Double from;
     private Double to;
     private Double step;
     private Double checkerStep;
     private Map<Distance, Map<Double, Double>> result = new HashMap<>();
 
-    public ClassifierBestParamTask(ClassifierChecker checker, List<Distance> distances, Double from, Double to, Double step, Double checkerStep) {
+    public ClassifierBestParamTask(ClassifierChecker checker, Distance distance, Double from, Double to, Double step, Double checkerStep) {
         this.checker = checker;
-        this.distances = distances;
+        this.distance = distance;
         this.from = from;
         this.to = to;
         this.step = step;
@@ -44,8 +45,8 @@ public class ClassifierBestParamTask extends Task {
             Double x = from + idx * step;
             checker.setX(x);
 
-            log.info("X: {}", x);
-            Task task = new DefaultTask(checker, distances, checkerStep);
+            log.info("distance {}, x: {}", distance.getShortName(), x);
+            Task task = new DefaultTask(checker, Collections.singletonList(distance), checkerStep);
             Map<Distance, Map.Entry<Double, Double>> best = task.execute().getBestResult();
             best.entrySet().stream().forEach(entry -> {
                 if (!result.containsKey(entry.getKey())) {

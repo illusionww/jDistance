@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class DefaultTask extends Task {
@@ -40,8 +41,9 @@ public class DefaultTask extends Task {
             Scale scale = Scale.DEFAULT.equals(distance.getScale()) ? Context.getInstance().SCALE : distance.getScale();
             stack.add(distance);
             Map<Double, Double> distanceResult = checker.clone().seriesOfTests(distance, 0.0, 1.0, step, scale);
+            distanceResult = removeNaN(distanceResult);
             stack.remove(distance);
-            log.info("in progress: {}", stack);
+            log.debug("in progress: {}", stack);
             result.put(distance, distanceResult);
         });
         return this;
@@ -50,5 +52,10 @@ public class DefaultTask extends Task {
     @Override
     public Map<Distance, Map<Double, Double>> getResults() {
         return result;
+    }
+
+    private Map<Double, Double> removeNaN(Map<Double, Double> distanceResult) {
+        return distanceResult.entrySet().stream().filter(entry -> !Double.isNaN(entry.getValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 }

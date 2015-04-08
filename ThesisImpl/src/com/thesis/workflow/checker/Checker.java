@@ -27,7 +27,7 @@ public abstract class Checker implements Cloneable {
         final Map<Double, Double> results = new ConcurrentHashMap<>();
 
         Date start = new Date();
-        log.info("START {}", distance.getName());
+        log.debug("START {}", distance.getName());
 
         int countOfPoints = (int) Math.round(Math.floor((to - from) / step) + 1);
         IntStream.range(0, countOfPoints).boxed().collect(Collectors.toList()).forEach(idx -> {
@@ -38,7 +38,7 @@ public abstract class Checker implements Cloneable {
         });
         Date finish = new Date();
         long diff = finish.getTime() - start.getTime();
-        log.info("END {}; time: {} ms", distance.getName(), diff);
+        log.debug("END {}; time: {} ms", distance.getName(), diff);
         return results;
     }
 

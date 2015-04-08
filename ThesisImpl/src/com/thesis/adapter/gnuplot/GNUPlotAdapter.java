@@ -7,6 +7,8 @@ import com.panayotis.gnuplot.style.PlotColor;
 import com.panayotis.gnuplot.style.PlotStyle;
 import com.panayotis.gnuplot.style.Style;
 import com.panayotis.gnuplot.terminal.ImageTerminal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import java.io.File;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class GNUPlotAdapter {
+    private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
     private String gnuplotPath;
 
     public static final PlotColor[] colors = {
@@ -26,9 +29,9 @@ public class GNUPlotAdapter {
             NamedPlotColor.BLACK,
             NamedPlotColor.ORANGE,
             NamedPlotColor.VIOLET,
+            NamedPlotColor.CYAN,
+            NamedPlotColor.BROWN,
 
-            NamedPlotColor.RED,
-            NamedPlotColor.GREEN,
             NamedPlotColor.BLUE,
             NamedPlotColor.YELLOW,
             NamedPlotColor.GREY,
@@ -74,7 +77,7 @@ public class GNUPlotAdapter {
         try {
             ImageIO.write(png.getImage(), "png", file);
         } catch (IOException ex) {
-            System.err.print(ex);
+            log.error("Error while write image", ex);
         }
     }
 }
