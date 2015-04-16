@@ -1,64 +1,52 @@
 package com.thesis;
 
+import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.adapter.parser.Parser;
 import com.thesis.adapter.parser.ParserWrapper;
-import com.thesis.graph.Graph;
+import com.thesis.cache.CacheManager;
 import com.thesis.helper.Constants;
 import com.thesis.helper.MetricTask;
+import com.thesis.helper.TestHelper;
 import com.thesis.metric.Distance;
 import com.thesis.metric.Distances;
-import com.thesis.metric.Scale;
 import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
 import com.thesis.workflow.checker.ClassifierChecker;
-import com.thesis.workflow.task.DefaultTask;
-import com.thesis.workflow.task.Task;
-import jeigen.DenseMatrix;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
 public class ProcessingTest {
-    private List<Graph> graphs;
     private List<Distance> distances;
 
     @Before
-    public void prepare() throws IOException, ParserConfigurationException, SAXException {
-        Context.getInstance().init(Constants.GNUPLOT_PATH, Constants.IMG_FOLDER, true, Scale.ATAN);
-
-        File img = new File(Constants.IMG_FOLDER);
-        if (!img.exists() && !img.mkdirs()) {
-            throw new RuntimeException("cannot make image dir");
-        }
+    public void prepare() {
+        TestHelper.initTestContext();
 
         distances = new ArrayList<>();
         Arrays.asList(Distances.values()).stream().forEach(value -> distances.add(value.getInstance()));
-
-        Parser parser = new ParserWrapper();
-        graphs = new ArrayList<>();
-
-        URL url = Thread.currentThread().getContextClassLoader().getResource(Constants.GRAPHML_EXAMPLE1);
-        graphs.add(parser.parse(url.getPath()));
     }
 
     @Test
-    public void testClassifierParallel() {
-        Task task1 = new DefaultTask(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
-        Task task2 = new DefaultTask(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
+    public void testClassifierParallel() throws IOException, SAXException, ParserConfigurationException {
+        Parser parser = new ParserWrapper();
+        URL url = Thread.currentThread().getContextClassLoader().getResource(Constants.GRAPHML_EXAMPLE1);
+        GraphBundle graphs = new GraphBundle(null, null, null, null, Collections.singletonList(parser.parse(url.getPath())));
+
+        TaskChain chain1 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
+        TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
 
         Context.getInstance().PARALLEL = false;
-        Map<Distance, Map<Double, Double>> notParallel = new TaskChain(task1).execute().draw("notParallel").getData().get(task1);
+        Map<Distance, Map<Double, Double>> notParallel = TestHelper.toDistanceMap(chain1.execute().getData());
         Context.getInstance().PARALLEL = true;
-        Map<Distance, Map<Double, Double>> parallel = new TaskChain(task2).execute().draw("parallel").getData().get(task2);
+        Map<Distance, Map<Double, Double>> parallel = TestHelper.toDistanceMap(chain2.execute().getData());
 
         distances.forEach(distance -> {
             Map<Double, Double> notParallelPoints = notParallel.get(distance);
@@ -71,15 +59,36 @@ public class ProcessingTest {
 
     @Test
     public void drawSP_CTAttitude() {
-        DenseMatrix triangleGraph = new DenseMatrix(new double[][]{
-                {0, 1, 0, 0},
-                {1, 0, 1, 1},
-                {0, 1, 0, 1},
-                {0, 1, 1, 0}
-        });
-
-        new TaskChain()
-                .addTask(new MetricTask(Distances.SP_CT.getInstance(), triangleGraph, 0.01))
+        new TaskChain().addTask(new MetricTask(Distances.SP_CT.getInstance(), Constants.triangleGraph, 0.01))
                 .execute().draw("SP-CT");
+    }
+
+    @Test
+    public void testCacheManager() throws IOException {
+        Parser parser = new ParserWrapper();
+        URL url = Thread.currentThread().getContextClassLoader().getResource(Constants.n100pin03pout01k5FOLDER);
+        GraphBundle graphs = new GraphBundle(100, 0.3, 0.1, 5, parser.parseInDirectory(url.getPath().substring(1)));
+        GraphBundle graphs1 = new GraphBundle(100, 0.3, 0.1, 5, parser.parseInDirectory(url.getPath().substring(1)));
+        graphs1.setGraphs(graphs1.getGraphs().subList(5, 10));
+        GraphBundle graphs2 = new GraphBundle(100, 0.3, 0.1, 5, parser.parseInDirectory(url.getPath().substring(1)));
+
+        TaskChain chain = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
+        TaskChain chain1 = Scenario.defaultTasks(new ClassifierChecker(graphs1, 1, 0.3), distances, 0.1);
+        TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs2, 1, 0.3), distances, 0.1);
+
+        Context.getInstance().USE_CACHE = false;
+        Map<Distance, Map<Double, Double>> withoutCache = TestHelper.toDistanceMap(chain.execute().getData());
+        Context.getInstance().USE_CACHE = true;
+        chain1.execute();
+        CacheManager.getInstance().reconciliation();
+        Map<Distance, Map<Double, Double>> withCache = TestHelper.toDistanceMap(chain2.execute().getData());
+
+        distances.forEach(distance -> {
+            Map<Double, Double> withoutCachePoints = withoutCache.get(distance);
+            Map<Double, Double> withCachePoints = withCache.get(distance);
+
+            withoutCachePoints.keySet().forEach(x -> assertTrue("Calculation with cache not working for " + distance.getName() + " " + x + ": " + withoutCachePoints.get(x) + " != " + withCachePoints.get(x),
+                    Objects.equals(withoutCachePoints.get(x), withCachePoints.get(x))));
+        });
     }
 }

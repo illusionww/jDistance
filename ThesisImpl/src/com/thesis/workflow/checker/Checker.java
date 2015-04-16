@@ -1,9 +1,9 @@
 package com.thesis.workflow.checker;
 
+import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
-import com.thesis.metric.Distances;
 import com.thesis.metric.DistancesHelper;
 import com.thesis.metric.Scale;
 import com.thesis.utils.Cloneable;
@@ -21,7 +21,9 @@ public abstract class Checker implements Cloneable {
 
     public abstract String getName();
 
-    public abstract List<Graph> getGraphs();
+    public abstract CheckerType getType();
+
+    public abstract GraphBundle getGraphBundle();
 
     public Map<Double, Double> seriesOfTests(final Distance distance, Double from, Double to, Double step, Scale scale) {
         final Map<Double, Double> results = new ConcurrentHashMap<>();
@@ -43,15 +45,11 @@ public abstract class Checker implements Cloneable {
     }
 
     public Double test(Distance distance, Double parameter) {
-        Integer total = 0;
-        Integer countErrors = 0;
-        Integer coloredNodes = 0;
-
-        parameter = parameter < 0.001 ? 0.001 : parameter;
-
+        List<CheckerTestResultDTO> results = new ArrayList<>();
+        parameter = parameter < 0.0001 ? 0.0001 : parameter;
         try {
-            for (Graph graph : getGraphs()) {
-                ArrayList<SimpleNodeData> simpleNodeData = graph.getSimpleNodeData();
+            for (Graph graph : getGraphBundle().getGraphs()) {
+                ArrayList<SimpleNodeData> nodesData = graph.getSimpleNodeData();
 
                 DenseMatrix A = graph.getSparseMatrix();
                 DenseMatrix D = distance.getD(A, parameter);
@@ -66,26 +64,23 @@ public abstract class Checker implements Cloneable {
                     if (nan) break;
                 }
                 if (!nan) {
-                    Integer[] result = roundErrors(D, simpleNodeData);
-
-                    total += result[0];
-                    countErrors += result[1];
-                    coloredNodes += result[2];
+                    CheckerTestResultDTO result = roundErrors(D, nodesData);
+                    results.add(result);
                 }
             }
         } catch (RuntimeException e) {
             log.error("Calculation error: disnance " + distance.getShortName() + ", param " + parameter, e);
         }
 
-        Double rate = rate((double) countErrors, (double) total, coloredNodes);
+        Double rate = rate(results);
         log.debug("{}: {} {}", distance.getShortName(), parameter, rate);
 
         return rate;
     }
 
-    protected abstract Integer[] roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
+    protected abstract CheckerTestResultDTO roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
 
-    protected abstract Double rate(Double countErrors, Double total, Integer coloredNodes);
+    protected abstract Double rate(List<CheckerTestResultDTO> results);
 
     public abstract Checker clone();
 }

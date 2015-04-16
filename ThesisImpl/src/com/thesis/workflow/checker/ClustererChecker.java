@@ -1,8 +1,8 @@
 package com.thesis.workflow.checker;
 
 
+import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.clusterer.Clusterer;
-import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import jeigen.DenseMatrix;
 
@@ -11,26 +11,33 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ClustererChecker extends Checker {
-    private List<Graph> graphs;
+    private static final CheckerType type = CheckerType.CLUSTERER;
+
+    private GraphBundle graphs;
     private Integer k;
 
-    public ClustererChecker(List<Graph> graphs, Integer k) {
+    public ClustererChecker(GraphBundle graphs, Integer k) {
         this.graphs = graphs;
         this.k = k;
     }
 
     @Override
     public String getName() {
-        return "clusterer (k=" + k + ")";
+        return type.name() + " (k=" + k + ")" + graphs.getName();
     }
 
     @Override
-    public List<Graph> getGraphs() {
+    public CheckerType getType() {
+        return type;
+    }
+
+    @Override
+    public GraphBundle getGraphBundle() {
         return graphs;
     }
 
     @Override
-    protected Integer[] roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected CheckerTestResultDTO roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Clusterer clusterer = new Clusterer(D);
@@ -45,18 +52,15 @@ public class ClustererChecker extends Checker {
         }
 
         Integer total = (int) Math.round(Math.floor((double) (data.size()*data.size()-data.size())/2.0));
-        return new Integer[] {total, countErrors, 0};
+        return new CheckerTestResultDTO(total, countErrors, 0);
     }
 
     @Override
-    protected Double rate(Double countErrors, Double total, Integer coloredNodes) {
-        return rate(countErrors, total);
+    protected Double rate(List<CheckerTestResultDTO> results) {
+        Double sum = results.stream().mapToDouble(i -> 1 - i.getCountErrors() / i.getTotal()).sum();
+        return sum / (double) results.size();
     }
 
-    private Double rate(Double countErrors, Double total){
-        return 1 - countErrors / total;
-    }
-    
     @Override
     public ClustererChecker clone() {
         return new ClustererChecker(graphs, k);

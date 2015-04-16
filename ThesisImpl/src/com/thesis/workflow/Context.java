@@ -1,7 +1,9 @@
 package com.thesis.workflow;
 
+import com.panayotis.gnuplot.utils.FileUtils;
 import com.thesis.metric.Scale;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -12,7 +14,9 @@ public class Context {
 
     public String GNUPLOT_PATH = null;
     public String IMG_FOLDER = null;
+    public String CACHE_FOLDER = null;
     public Boolean PARALLEL = null;
+    public Boolean USE_CACHE = null;
     public Scale SCALE = null;
 
     private Context() {
@@ -31,14 +35,25 @@ public class Context {
         return localInstance;
     }
 
-    public void init(String gnuplotPath, String imgFolder, Boolean parallel, Scale scale) {
-        this.GNUPLOT_PATH = gnuplotPath;
-        this.IMG_FOLDER = imgFolder;
-        this.PARALLEL = parallel;
-        this.SCALE = scale;
+    public boolean checkContext() {
+        GNUPLOT_PATH = isExist(GNUPLOT_PATH) ? GNUPLOT_PATH : FileUtils.findPathExec();
+
+        if (!isExist(GNUPLOT_PATH)) {
+            throw new RuntimeException("Gnuplot not found");
+        }
+
+        if (!isExist(IMG_FOLDER) && !new File(IMG_FOLDER).mkdirs()) {
+            throw new RuntimeException("Folder " + new File(IMG_FOLDER).getAbsolutePath() + " is not exist");
+        }
+
+        if (!isExist(CACHE_FOLDER) && !new File(CACHE_FOLDER).mkdirs()) {
+            throw new RuntimeException("Folder " + new File(CACHE_FOLDER).getAbsolutePath() + " is not exist");
+        }
+
+        return PARALLEL != null && USE_CACHE != null && SCALE != null;
     }
 
-    public boolean checkContext() {
-        return GNUPLOT_PATH != null && IMG_FOLDER != null && PARALLEL != null && SCALE != null;
+    private static boolean isExist(String path) {
+        return path != null && new File(path).exists();
     }
 }

@@ -17,25 +17,44 @@ import java.util.stream.Stream;
 
 public class TaskChain {
     private static final Logger log = LoggerFactory.getLogger(TaskChain.class);
-    List<Task> tasks;
 
-    public TaskChain() {
-        tasks = new ArrayList<>();
+    String name = null;
+    List<Task> tasks = null;
+
+    public TaskChain(String name) {
+        this.name = name;
     }
 
     public TaskChain(Task ... tasks) {
-        this.tasks = Arrays.asList(tasks);
+        this.tasks = new ArrayList<>(Arrays.asList(tasks));
     }
 
     public TaskChain(List<Task> tasks) {
         this.tasks = tasks;
     }
 
-    public TaskChain addTask(Task task) {
-        if (tasks == null) {
-            tasks = new ArrayList<>();
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public TaskChain addTasks(List<Task> tasks) {
+        if (this.tasks == null) {
+            this.tasks = new ArrayList<>();
         }
-        tasks.add(task);
+        this.tasks.addAll(tasks);
+
+        return this;
+    }
+
+    public TaskChain addTask(Task task) {
+        if (this.tasks == null) {
+            this.tasks = new ArrayList<>();
+        }
+        this.tasks.add(task);
 
         return this;
     }
@@ -55,19 +74,23 @@ public class TaskChain {
         return this;
     }
 
+    public TaskChain draw() {
+        return draw(name);
+    }
+
     public TaskChain draw(String imgTitle) {
         Iterator<PlotColor> color = Arrays.asList(GNUPlotAdapter.colors).iterator();
 
         List<Plot> plots = new ArrayList<>();
-        tasks.forEach(task -> task.getResults().entrySet().forEach(entry -> {
-            Distance distance = entry.getKey();
-            Map<Double, Double> points = entry.getValue();
+        tasks.forEach(task -> {
+            Distance distance = task.getDistance();
+            Map<Double, Double> points = task.getResults();
 
             String plotTitle = distance.getShortName();
             List<Point<Double>> plotPoints = ArrayUtils.mapToPoints(points);
             PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
             plots.add(new Plot(plotTitle, color.next(), plotPointsSet));
-        }));
+        });
 
         GNUPlotAdapter ga = new GNUPlotAdapter(Context.getInstance().GNUPLOT_PATH);
         ga.drawData(imgTitle, plots, Context.getInstance().IMG_FOLDER + File.separator + imgTitle + ".png");
@@ -75,8 +98,8 @@ public class TaskChain {
         return this;
     }
 
-    public Map<Task, Map<Distance, Map<Double, Double>>> getData() {
-        Map<Task, Map<Distance, Map<Double, Double>>> result = new HashMap<>();
+    public Map<Task, Map<Double, Double>> getData() {
+        Map<Task, Map<Double, Double>> result = new HashMap<>();
         tasks.forEach(task -> result.put(task, task.getResults()));
         return result;
     }

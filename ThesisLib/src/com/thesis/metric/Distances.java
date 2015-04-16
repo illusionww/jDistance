@@ -16,6 +16,17 @@ public enum Distances {
         this.clazz = clazz;
     }
 
+
+    public static Distance getByShortName(String shortName) {
+        for(Distances distanceClass : Distances.values()) {
+            Distance distance = distanceClass.getInstance();
+            if(shortName.equals(distance.getShortName())) {
+                return distance;
+            }
+        }
+        return null;
+    }
+
     public Distance getInstance(String name) {
         Distance distance = getInstance();
         distance.setName(name);

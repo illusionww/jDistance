@@ -1,14 +1,11 @@
 package com.thesis.workflow.task;
 
 import com.thesis.metric.Distance;
-import com.thesis.workflow.checker.Checker;
 import com.thesis.workflow.checker.ClassifierChecker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,7 +19,7 @@ public class ClassifierBestParamTask extends Task {
     private Double to;
     private Double step;
     private Double checkerStep;
-    private Map<Distance, Map<Double, Double>> result = new HashMap<>();
+    private Map<Double, Double> result = new HashMap<>();
 
     public ClassifierBestParamTask(ClassifierChecker checker, Distance distance, Double from, Double to, Double step, Double checkerStep) {
         this.checker = checker;
@@ -34,8 +31,13 @@ public class ClassifierBestParamTask extends Task {
     }
 
     @Override
-    public Checker getChecker() {
-        return checker;
+    public String getName() {
+        return distance.getShortName() + checker.getName();
+    }
+
+    @Override
+    public Distance getDistance() {
+        return distance;
     }
 
     @Override
@@ -46,21 +48,16 @@ public class ClassifierBestParamTask extends Task {
             checker.setX(x);
 
             log.info("distance {}, x: {}", distance.getShortName(), x);
-            Task task = new DefaultTask(checker, Collections.singletonList(distance), checkerStep);
-            Map<Distance, Map.Entry<Double, Double>> best = task.execute().getBestResult();
-            best.entrySet().stream().forEach(entry -> {
-                if (!result.containsKey(entry.getKey())) {
-                    result.put(entry.getKey(), new HashMap<>());
-                }
-                result.get(entry.getKey()).put(x, entry.getValue().getValue());
-            });
+            Task task = new DefaultTask(checker, distance, checkerStep);
+            Map.Entry<Double, Double> best = task.execute().getBestResult();
+            result.put(x, best.getValue());
         });
 
         return this;
     }
 
     @Override
-    public Map<Distance, Map<Double, Double>> getResults() {
+    public Map<Double, Double> getResults() {
         return result;
     }
 }

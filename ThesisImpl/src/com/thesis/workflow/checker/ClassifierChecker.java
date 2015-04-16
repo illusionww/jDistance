@@ -1,7 +1,7 @@
 package com.thesis.workflow.checker;
 
+import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.classifier.Classifier;
-import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import jeigen.DenseMatrix;
 
@@ -9,19 +9,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClassifierChecker extends Checker {
-    List<Graph> graphs;
-    Integer k;
-    Double p;
-    Double x;
+    private static final CheckerType type = CheckerType.CLASSIFIER;
 
-    public ClassifierChecker(List<Graph> graphs, Integer k, Double p) {
+    private GraphBundle graphs;
+    private Integer k;
+    private Double p;
+    private Double x;
+
+    public ClassifierChecker(GraphBundle graphs, Integer k, Double p) {
         this.graphs = graphs;
         this.k = k;
         this.p = p;
         this.x = 0.0;
     }
 
-    public ClassifierChecker(List<Graph> graphs, Integer k, Double p, Double x) {
+    public ClassifierChecker(GraphBundle graphs, Integer k, Double p, Double x) {
         this.graphs = graphs;
         this.k = k;
         this.p = p;
@@ -30,11 +32,16 @@ public class ClassifierChecker extends Checker {
 
     @Override
     public String getName() {
-        return "classifier (k=" + k + ", p=" + p + ")";
+        return type.name() + " (k=" + k + ", p=" + p + ") " + graphs.getName();
     }
 
     @Override
-    public List<Graph> getGraphs() {
+    public CheckerType getType() {
+        return type;
+    }
+
+    @Override
+    public GraphBundle getGraphBundle() {
         return graphs;
     }
 
@@ -43,7 +50,7 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    protected Integer[] roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected CheckerTestResultDTO roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Classifier classifier = new Classifier(D, simpleNodeData);
@@ -57,12 +64,14 @@ public class ClassifierChecker extends Checker {
             }
         }
 
-        return new Integer[]{data.size(), countErrors, classifier.getCountColoredNodes()};
+        return new CheckerTestResultDTO(data.size(), countErrors, classifier.getCountColoredNodes());
     }
 
     @Override
-    protected Double rate(Double countErrors, Double total, Integer coloredNodes) {
-        return 1 - (double)coloredNodes/total - countErrors / (total - coloredNodes);    }
+    protected Double rate(List<CheckerTestResultDTO> results) {
+        Double sum = results.stream().mapToDouble(i -> 1 - (double)i.getColoredNodes()/i.getTotal() - i.getCountErrors()/ (i.getTotal() - i.getColoredNodes())).sum();
+        return sum / (double) results.size();
+    }
 
     @Override
     public ClassifierChecker clone() {

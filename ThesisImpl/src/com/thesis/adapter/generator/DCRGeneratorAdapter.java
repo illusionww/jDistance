@@ -32,10 +32,10 @@ public class DCRGeneratorAdapter {
     private static final int ATTEMPTS = 5;
     private static final double DEVIATION = 0.03;
 
-    public List<Graph> generateList(int count, int n, double p_in, double p_out, int k) throws IOException, ParserConfigurationException, SAXException {
+    public List<Graph> generateList(int count, int n, double pIn, double pOut, int k) throws IOException, ParserConfigurationException, SAXException {
         List<Graph> graphs = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            graphs.add(generate(n, p_in, p_out, k));
+            graphs.add(generate(n, pIn, pOut, k));
         }
         return graphs;
     }
