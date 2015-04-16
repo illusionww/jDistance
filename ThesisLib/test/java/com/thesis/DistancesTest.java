@@ -1,7 +1,7 @@
 package com.thesis;
 
 import com.thesis.metric.Distance;
-import com.thesis.metric.Distances;
+import com.thesis.metric.DistanceClass;
 import com.thesis.metric.DistancesBuilder;
 import com.thesis.metric.DistancesHelper;
 import jeigen.DenseMatrix;
@@ -12,16 +12,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertTrue;
-import static com.thesis.helper.TestHelper.*;
+import static com.thesis.helper.TestHelperLib.*;
 
 public class DistancesTest {
 
     @Test
     public void testChainGraphAllDistancesItemsMoreThanZero() {
-        Distances values[] = Distances.values();
+        DistanceClass values[] = DistanceClass.values();
         Arrays.asList(values).forEach(value -> {
             Distance distance = value.getInstance();
-            int multiplier = value.equals(Distances.SP_CT) ? 1 : 10;
+            int multiplier = value.equals(DistanceClass.SP_CT) ? 1 : 10;
             IntStream.range(1, 20).boxed().collect(Collectors.toList()).forEach(idx -> {
                 double i = multiplier * idx / 20;
                 i = i == 0 ? 0.0001 : i;
@@ -35,10 +35,10 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphAllDistancesSymmetryMatrix() {
-        Distances values[] = Distances.values();
+        DistanceClass values[] = DistanceClass.values();
         Arrays.asList(values).forEach(value -> {
             Distance distance = value.getInstance();
-            int multiplier = value.equals(Distances.SP_CT) ? 1 : 10;
+            int multiplier = value.equals(DistanceClass.SP_CT) ? 1 : 10;
             IntStream.range(1, 20).boxed().collect(Collectors.toList()).forEach(idx -> {
                 double i = multiplier * idx / 20 + 0.0001;
                 DenseMatrix result = distance.getD(chainGraph, i);
@@ -56,10 +56,10 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphAllDistancesMainDiagonalZero() {
-        Distances values[] = Distances.values();
+        DistanceClass values[] = DistanceClass.values();
         Arrays.asList(values).forEach(value -> {
             Distance distance = value.getInstance();
-            int multiplier = value.equals(Distances.SP_CT) ? 1 : 10;
+            int multiplier = value.equals(DistanceClass.SP_CT) ? 1 : 10;
             IntStream.range(1, 20).boxed().collect(Collectors.toList()).forEach(idx -> {
                 double i = multiplier * idx / 20 + 0.0001;
                 DenseMatrix result = distance.getD(chainGraph, i);
@@ -107,7 +107,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphWalkDistance() {
-        Distance distance = Distances.WALK.getInstance();
+        Distance distance = DistanceClass.WALK.getInstance();
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 1.025 / D.get(0, 1);
         assertTrue("distances not equal: 1.025 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.025));
@@ -118,7 +118,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphLogarithmicForestDistance() {
-        Distance distance = Distances.LOG_FOREST.getInstance();
+        Distance distance = DistanceClass.LOG_FOREST.getInstance();
         DenseMatrix D = distance.getD(chainGraph, 2.0);
         double multiplier = 0.959 / D.get(0, 1);
         assertTrue("distances not equal: 0.959 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.959));
@@ -129,7 +129,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphPlainForestDistance() {
-        Distance distance = Distances.FOREST.getInstance();
+        Distance distance = DistanceClass.FOREST.getInstance();
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 1.026 / D.get(0, 1);
         assertTrue("distances not equal: 1.026 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.026));
@@ -140,7 +140,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphPlainWalkDistance() {
-        Distance distance = Distances.PLAIN_WALK.getInstance();
+        Distance distance = DistanceClass.PLAIN_WALK.getInstance();
         DenseMatrix D = distance.getD(chainGraph, 4.5);
         double multiplier = 1.025 / D.get(0, 1);
         assertTrue("distances not equal: 1.025 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.025));
@@ -158,7 +158,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphCommunicabilityDistance() {
-        Distance distance = Distances.COMMUNICABILITY.getInstance();
+        Distance distance = DistanceClass.COMMUNICABILITY.getInstance();
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 0.964 / D.get(0, 1);
         assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.964));
@@ -169,7 +169,7 @@ public class DistancesTest {
 
     @Test
     public void testTriangleGraphSP_CTDistance() {
-        Distance distance = Distances.SP_CT.getInstance();
+        Distance distance = DistanceClass.SP_CT.getInstance();
         DenseMatrix D = distance.getD(triangleGraph, 0);
         assertTrue("SP distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDouble(D.get(0, 1) / D.get(1, 2), 1.0));
         D = distance.getD(triangleGraph, 1);
@@ -178,7 +178,7 @@ public class DistancesTest {
 
     @Test
     public void testTriangleGraphLogarithmicForestDistance() {
-        Distance distance = Distances.LOG_FOREST.getInstance();
+        Distance distance = DistanceClass.LOG_FOREST.getInstance();
         DenseMatrix D = distance.getD(triangleGraph, 0.01);
         assertTrue("Logarithmic Forest distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.0));
         D = distance.getD(triangleGraph, 500.0);
@@ -187,7 +187,7 @@ public class DistancesTest {
 
     @Test
     public void testTriangleGraphFEDistance() {
-        Distance distance = Distances.FREE_ENERGY.getInstance();
+        Distance distance = DistanceClass.FREE_ENERGY.getInstance();
         DenseMatrix D = distance.getD(triangleGraph, 0.0001);
         assertTrue("Free Energy distance attitude not equal 1.5: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.5));
         D = distance.getD(triangleGraph, 30.0);
@@ -196,7 +196,7 @@ public class DistancesTest {
 
     @Test
     public void testTreeGraphSP_CTEquality() {
-        Distance distance = Distances.SP_CT.getInstance();
+        Distance distance = DistanceClass.SP_CT.getInstance();
         double[][] SP = DistancesHelper.toArray2(distance.getD(treeMatrix, 0));
         double[][] CT = DistancesHelper.toArray2(distance.getD(treeMatrix, 1));
         for (int i = 0; i < 10; i++) {

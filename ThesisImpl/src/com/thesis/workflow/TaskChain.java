@@ -8,6 +8,10 @@ import com.thesis.adapter.gnuplot.GNUPlotAdapter;
 import com.thesis.adapter.gnuplot.Plot;
 import com.thesis.metric.Distance;
 import com.thesis.workflow.task.Task;
+import org.perf4j.LoggingStopWatch;
+import org.perf4j.StopWatch;
+import org.perf4j.aop.Profiled;
+import org.perf4j.slf4j.Slf4JStopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,11 +29,8 @@ public class TaskChain {
         this.name = name;
     }
 
-    public TaskChain(Task ... tasks) {
-        this.tasks = new ArrayList<>(Arrays.asList(tasks));
-    }
-
-    public TaskChain(List<Task> tasks) {
+    public TaskChain(String name, List<Task> tasks) {
+        this.name = name;
         this.tasks = tasks;
     }
 
@@ -59,13 +60,14 @@ public class TaskChain {
         return this;
     }
 
+    @Profiled(tag = "TaskChain")
     public TaskChain execute() {
         if (!Context.getInstance().checkContext()) {
             throw new RuntimeException("context not initialized!");
         }
 
         Date start = new Date();
-        log.info("Start task chain");
+        log.info("Start task chain {}", name);
         Stream<Task> stream = Context.getInstance().PARALLEL ? tasks.parallelStream() : tasks.stream();
         stream.forEach(Task::execute);
         Date finish = new Date();

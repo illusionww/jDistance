@@ -32,7 +32,7 @@ public class ClassifierChecker extends Checker {
 
     @Override
     public String getName() {
-        return type.name() + " (k=" + k + ", p=" + p + ") " + graphs.getName();
+        return type.name() + " (k=" + k + ", p=" + p + ", x=" + x + ") " + graphs.getName();
     }
 
     @Override

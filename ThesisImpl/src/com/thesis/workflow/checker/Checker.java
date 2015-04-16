@@ -53,17 +53,7 @@ public abstract class Checker implements Cloneable {
 
                 DenseMatrix A = graph.getSparseMatrix();
                 DenseMatrix D = distance.getD(A, parameter);
-                boolean nan = false;
-                for (double[] row : DistancesHelper.toArray2(D)) {
-                    for (double item : row) {
-                        if (Double.isNaN(item) || Double.isInfinite(item)) {
-                            nan = true;
-                            break;
-                        }
-                    }
-                    if (nan) break;
-                }
-                if (!nan) {
+                if (!hasNaN(D)) {
                     CheckerTestResultDTO result = roundErrors(D, nodesData);
                     results.add(result);
                 }
@@ -73,7 +63,7 @@ public abstract class Checker implements Cloneable {
         }
 
         Double rate = rate(results);
-        log.debug("{}: {} {}", distance.getShortName(), parameter, rate);
+        log.info("{}: {} {}", distance.getShortName(), parameter, rate);
 
         return rate;
     }
@@ -81,6 +71,20 @@ public abstract class Checker implements Cloneable {
     protected abstract CheckerTestResultDTO roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
 
     protected abstract Double rate(List<CheckerTestResultDTO> results);
+
+    protected boolean hasNaN(DenseMatrix D) {
+        boolean nan = false;
+        for (double[] row : DistancesHelper.toArray2(D)) {
+            for (double item : row) {
+                if (Double.isNaN(item) || Double.isInfinite(item)) {
+                    nan = true;
+                    break;
+                }
+            }
+            if (nan) break;
+        }
+        return nan;
+    }
 
     public abstract Checker clone();
 }

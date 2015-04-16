@@ -6,9 +6,9 @@ import com.thesis.adapter.parser.ParserWrapper;
 import com.thesis.cache.CacheManager;
 import com.thesis.helper.Constants;
 import com.thesis.helper.MetricTask;
-import com.thesis.helper.TestHelper;
+import com.thesis.helper.TestHelperImpl;
 import com.thesis.metric.Distance;
-import com.thesis.metric.Distances;
+import com.thesis.metric.DistanceClass;
 import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
 import com.thesis.workflow.checker.ClassifierChecker;
@@ -28,10 +28,10 @@ public class ProcessingTest {
 
     @Before
     public void prepare() {
-        TestHelper.initTestContext();
+        TestHelperImpl.initTestContext();
 
         distances = new ArrayList<>();
-        Arrays.asList(Distances.values()).stream().forEach(value -> distances.add(value.getInstance()));
+        Arrays.asList(DistanceClass.values()).stream().forEach(value -> distances.add(value.getInstance()));
     }
 
     @Test
@@ -44,9 +44,9 @@ public class ProcessingTest {
         TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
 
         Context.getInstance().PARALLEL = false;
-        Map<Distance, Map<Double, Double>> notParallel = TestHelper.toDistanceMap(chain1.execute().getData());
+        Map<Distance, Map<Double, Double>> notParallel = TestHelperImpl.toDistanceMap(chain1.execute().getData());
         Context.getInstance().PARALLEL = true;
-        Map<Distance, Map<Double, Double>> parallel = TestHelper.toDistanceMap(chain2.execute().getData());
+        Map<Distance, Map<Double, Double>> parallel = TestHelperImpl.toDistanceMap(chain2.execute().getData());
 
         distances.forEach(distance -> {
             Map<Double, Double> notParallelPoints = notParallel.get(distance);
@@ -59,8 +59,8 @@ public class ProcessingTest {
 
     @Test
     public void drawSP_CTAttitude() {
-        new TaskChain().addTask(new MetricTask(Distances.SP_CT.getInstance(), Constants.triangleGraph, 0.01))
-                .execute().draw("SP-CT");
+        new TaskChain("SP-CT").addTask(new MetricTask(DistanceClass.SP_CT.getInstance(), Constants.triangleGraph, 0.01))
+                .execute().draw();
     }
 
     @Test
@@ -77,11 +77,11 @@ public class ProcessingTest {
         TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs2, 1, 0.3), distances, 0.1);
 
         Context.getInstance().USE_CACHE = false;
-        Map<Distance, Map<Double, Double>> withoutCache = TestHelper.toDistanceMap(chain.execute().getData());
+        Map<Distance, Map<Double, Double>> withoutCache = TestHelperImpl.toDistanceMap(chain.execute().getData());
         Context.getInstance().USE_CACHE = true;
         chain1.execute();
         CacheManager.getInstance().reconciliation();
-        Map<Distance, Map<Double, Double>> withCache = TestHelper.toDistanceMap(chain2.execute().getData());
+        Map<Distance, Map<Double, Double>> withCache = TestHelperImpl.toDistanceMap(chain2.execute().getData());
 
         distances.forEach(distance -> {
             Map<Double, Double> withoutCachePoints = withoutCache.get(distance);

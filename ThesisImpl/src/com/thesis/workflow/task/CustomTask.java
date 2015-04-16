@@ -1,15 +1,10 @@
 package com.thesis.workflow.task;
 
 import com.thesis.metric.Distance;
-import com.thesis.workflow.Context;
 import com.thesis.workflow.checker.Checker;
 import com.thesis.metric.Scale;
-import com.thesis.metric.Distances;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 public class CustomTask extends Task {
     private Checker checker;

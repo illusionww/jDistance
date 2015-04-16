@@ -25,5 +25,6 @@
     <orderEntry type="library" name="Jeigen-win-linux-32-64" level="project" />
     <orderEntry type="library" name="slf4j-log4j12-1.7.10" level="project" />
     <orderEntry type="library" name="dcrgenerator" level="project" />
+    <orderEntry type="library" name="perf4j-0.9.16" level="project" />
   </component>
 </module>

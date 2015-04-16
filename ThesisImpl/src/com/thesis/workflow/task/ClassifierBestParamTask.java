@@ -2,6 +2,8 @@ package com.thesis.workflow.task;
 
 import com.thesis.metric.Distance;
 import com.thesis.workflow.checker.ClassifierChecker;
+import org.perf4j.StopWatch;
+import org.perf4j.slf4j.Slf4JStopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +48,6 @@ public class ClassifierBestParamTask extends Task {
         IntStream.range(0, countOfPoints).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double x = from + idx * step;
             checker.setX(x);
-
             log.info("distance {}, x: {}", distance.getShortName(), x);
             Task task = new DefaultTask(checker, distance, checkerStep);
             Map.Entry<Double, Double> best = task.execute().getBestResult();

@@ -1,6 +1,6 @@
 package com.thesis.metric;
 
-public enum Distances {
+public enum DistanceClass {
     WALK(Walk.class),
     LOG_FOREST(LogForest.class),
     FOREST(Forest.class),
@@ -12,16 +12,16 @@ public enum Distances {
 
     private Class clazz;
 
-    Distances(Class clazz) {
+    DistanceClass(Class clazz) {
         this.clazz = clazz;
     }
 
 
-    public static Distance getByShortName(String shortName) {
-        for(Distances distanceClass : Distances.values()) {
+    public static DistanceClass getByClassName(String className) {
+        for(DistanceClass distanceClass : DistanceClass.values()) {
             Distance distance = distanceClass.getInstance();
-            if(shortName.equals(distance.getShortName())) {
-                return distance;
+            if(className.equals(distance.getClass().toString())) {
+                return distanceClass;
             }
         }
         return null;

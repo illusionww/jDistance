@@ -79,9 +79,9 @@ public class Classifier {
         while (iteratorWeights.hasNext()) {
             DataForClassifier dataForClassifier = (DataForClassifier) iteratorWeights.next();
             if (countLabels.containsKey(dataForClassifier.getLabel())) {
-                countLabels.put(dataForClassifier.getLabel(), countLabels.get(dataForClassifier.getLabel()) + Math.pow((weights.size() - i), x));
+                countLabels.put(dataForClassifier.getLabel(), countLabels.get(dataForClassifier.getLabel()) + (weights.size() - i + x));
             } else {
-                countLabels.put(dataForClassifier.getLabel(), Math.pow((weights.size() - i), x));
+                countLabels.put(dataForClassifier.getLabel(), (weights.size() - i) + x);
             }
             i++;
         }

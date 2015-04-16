@@ -1,9 +1,8 @@
 package com.thesis;
 
-import com.thesis.adapter.generator.DCRGeneratorAdapter;
 import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.metric.Distance;
-import com.thesis.metric.Distances;
+import com.thesis.metric.DistanceClass;
 import com.thesis.metric.Scale;
 import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
@@ -31,47 +30,43 @@ public class Main {
 
     private static void drawGraphsScenario() throws ParserConfigurationException, SAXException, IOException {
         List<Distance> distances = Arrays.asList(
-//                Distances.SP_CT.getInstance(),
-//                Distances.FREE_ENERGY.getInstance(),
-//                Distances.WALK.getInstance(),
-//                Distances.LOG_FOREST.getInstance(),
-//                Distances.FOREST.getInstance(),
-//                Distances.PLAIN_WALK.getInstance(),
-//                Distances.COMMUNICABILITY.getInstance(),
-                Distances.LOG_COMMUNICABILITY.getInstance()
+//                DistanceClass.SP_CT.getInstance(),
+//                DistanceClass.FREE_ENERGY.getInstance(),
+                DistanceClass.WALK.getInstance()
+//                DistanceClass.LOG_FOREST.getInstance(),
+//                DistanceClass.FOREST.getInstance(),
+//                DistanceClass.PLAIN_WALK.getInstance(),
+//                DistanceClass.COMMUNICABILITY.getInstance(),
+//                DistanceClass.LOG_COMMUNICABILITY.getInstance()
         );
 
-        GraphBundle graphs = new GraphBundle(100, 0.3, 0.1, 5, 5);
+        GraphBundle graphs = new GraphBundle(100, 0.3, 0.1, 5, 1);
         Scenario.defaultTasks(new ClassifierChecker(graphs, 3, 0.3), distances, 0.01).execute().draw();
     }
 
     private static void findBestClassifierParameterScenario() {
-        List<Distances> distances = Arrays.asList(
-                Distances.SP_CT,
-                Distances.FREE_ENERGY,
-                Distances.WALK,
-                Distances.LOG_FOREST,
-                Distances.FOREST,
-                Distances.PLAIN_WALK,
-                Distances.COMMUNICABILITY,
-                Distances.LOG_COMMUNICABILITY
+        List<DistanceClass> distances = Arrays.asList(
+//                DistanceClass.SP_CT,
+//                DistanceClass.FREE_ENERGY,
+//                DistanceClass.WALK,
+//                DistanceClass.LOG_FOREST,
+//                DistanceClass.FOREST,
+//                DistanceClass.PLAIN_WALK,
+//                DistanceClass.COMMUNICABILITY,
+                DistanceClass.LOG_COMMUNICABILITY
         );
 
-        int graphCount = 30;
-
-        Arrays.asList(200).forEach(numOfNodes -> {
-            Arrays.asList(0.02, 0.05, 0.1).forEach(p_out -> {
-                GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, p_out, 5, graphCount);
-                distances.forEach(distance -> {
-                    log.info("Distance: {}", distance.getInstance().getShortName());
-                    List<Task> tasks = new ArrayList<>();
-                    IntStream.range(1, 8).forEach(i -> tasks.add(new ClassifierBestParamTask(new ClassifierChecker(graphs, i, 0.3),
-                            distance.getInstance(Integer.toString(i)), 0.0, 10.0, 0.1, 0.1)));
-                    try {
-                        new TaskChain(tasks).execute().draw("bestParam " + distance.getInstance().getShortName() + " n=" + numOfNodes + ", p_i=0.3, p_o=" + p_out + ", count=" + graphCount + " (k=1..7, p=0.3)");
-                    } catch (RuntimeException e) {
-                        log.error("Exception while execute/draw", e);
-                    }
+        Arrays.asList(3).forEach(graphCount -> {
+            Arrays.asList(100).forEach(numOfNodes -> {
+                Arrays.asList(0.02, 0.05, 0.1).forEach(pOut -> {
+                    GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCount);
+                    distances.forEach(distanceClass -> {
+                        List<Task> tasks = new ArrayList<>();
+                        IntStream.range(1, 8).forEach(i -> tasks.add(new ClassifierBestParamTask(new ClassifierChecker(graphs, i, 0.3),
+                                distanceClass.getInstance(Integer.toString(i)), 0.0, 1.5, 0.05, 0.05)));
+                        String taskChainName = "bestParam " + distanceClass.getInstance().getShortName() + " n=" + numOfNodes + ", p_i=0.3, p_o=" + pOut + ", count=" + graphCount;
+                        new TaskChain(taskChainName, tasks).execute().draw();
+                    });
                 });
             });
         });
@@ -83,6 +78,7 @@ public class Main {
         context.IMG_FOLDER = "pictures";
         context.CACHE_FOLDER = "cache";
         context.PARALLEL = true;
+        context.USE_CACHE = false;
         context.SCALE = Scale.EXP;
     }
 }
