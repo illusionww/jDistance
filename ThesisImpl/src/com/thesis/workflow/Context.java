@@ -38,6 +38,10 @@ public class Context {
     public boolean checkContext() {
         GNUPLOT_PATH = isExist(GNUPLOT_PATH) ? GNUPLOT_PATH : FileUtils.findPathExec();
 
+        if (GNUPLOT_PATH == null || IMG_FOLDER == null || CACHE_FOLDER == null) {
+            throw new RuntimeException("Context not filled properly");
+        }
+
         if (!isExist(GNUPLOT_PATH)) {
             throw new RuntimeException("Gnuplot not found");
         }

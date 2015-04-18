@@ -21,11 +21,16 @@ public class TestHelperImpl {
         Context context = Context.getInstance();
         context.GNUPLOT_PATH = GNUPLOT_PATH;
         context.IMG_FOLDER = TEST_FOLDER;
+        context.CACHE_FOLDER = TEST_FOLDER;
+        context.USE_CACHE = false;
         context.PARALLEL = false;
         context.SCALE = Scale.EXP;
 
-        for(File file: new File(TEST_FOLDER).listFiles()) {
-            file.delete();
+        File testFolder = new File(TEST_FOLDER);
+        if (testFolder.exists()) {
+            for(File file: testFolder.listFiles()) {
+                file.delete();
+            }
         }
     }
 
