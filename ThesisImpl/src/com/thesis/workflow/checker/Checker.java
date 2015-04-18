@@ -70,7 +70,17 @@ public abstract class Checker implements Cloneable {
 
     protected abstract CheckerTestResultDTO roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
 
-    protected abstract Double rate(List<CheckerTestResultDTO> results);
+    protected Double rate(List<CheckerTestResultDTO> results) {
+        Double sum = 0.0;
+        for (CheckerTestResultDTO result : results) {
+            int total = result.getTotal();
+            int countErrors = result.getCountErrors();
+            int coloredNodes = result.getColoredNodes();
+
+            sum += 1 - (double)countErrors/(double)(total - coloredNodes);
+        }
+        return sum / (double) results.size();
+    }
 
     protected boolean hasNaN(DenseMatrix D) {
         boolean nan = false;

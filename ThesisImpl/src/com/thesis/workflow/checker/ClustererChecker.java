@@ -56,12 +56,6 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
-    protected Double rate(List<CheckerTestResultDTO> results) {
-        Double sum = results.stream().mapToDouble(i -> 1 - i.getCountErrors() / i.getTotal()).sum();
-        return sum / (double) results.size();
-    }
-
-    @Override
     public ClustererChecker clone() {
         return new ClustererChecker(graphs, k);
     }

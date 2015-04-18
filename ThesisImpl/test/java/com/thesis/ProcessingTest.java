@@ -13,6 +13,7 @@ import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
 import com.thesis.workflow.checker.Checker;
 import com.thesis.workflow.checker.ClassifierChecker;
+import com.thesis.workflow.checker.ClustererChecker;
 import com.thesis.workflow.task.DefaultTask;
 import com.thesis.workflow.task.Task;
 import org.junit.Before;
@@ -62,11 +63,10 @@ public class ProcessingTest {
     }
 
     @Test
-    public void drawSP_CTAttitude() {
+    public void testDrawSP_CTAttitude() {
         new TaskChain("SP-CT").addTask(new MetricTask(DistanceClass.SP_CT.getInstance(), Constants.triangleGraph, 0.01))
                 .execute().draw();
-
-        String filePath = Context.getInstance().IMG_FOLDER + "/" + "SP-CT.png";
+        String filePath = Context.getInstance().IMG_FOLDER + "/SP-CT.png";
         File file = new File(filePath);
         assertTrue(file.exists());
     }
@@ -96,14 +96,24 @@ public class ProcessingTest {
             Map<Double, Double> withCachePoints = withCache.get(distance);
 
             withoutCachePoints.keySet().forEach(x -> assertTrue("Calculation with cache not working for " + distance.getName() + " " + x + ": " + withoutCachePoints.get(x) + " != " + withCachePoints.get(x),
-                    Objects.equals(withoutCachePoints.get(x), withCachePoints.get(x))));
+                    TestHelperImpl.equalDoubleStrict(withoutCachePoints.get(x), withCachePoints.get(x))));
         });
     }
 
     @Test
-    public void testConstantResult() {
+    public void testConstantResultClassifier() {
         GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 1);
-        Checker checker = new ClassifierChecker(bundle, 1, 0.3);
+        Checker checker = new ClassifierChecker(bundle, 3, 0.3);
+        Task task = new DefaultTask(checker, DistanceClass.COMMUNICABILITY.getInstance(), 0.1);
+        Map<Double, Double> result = new TaskChain("test", Collections.singletonList(task)).execute().getData().get(task);
+        long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();
+        assertTrue("countDistinct should be > 1, but it = " + countDistinct, countDistinct > 1);
+    }
+
+    @Test
+    public void testConstantResultClusterer() {
+        GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 1);
+        Checker checker = new ClustererChecker(bundle, 5);
         Task task = new DefaultTask(checker, DistanceClass.COMMUNICABILITY.getInstance(), 0.1);
         Map<Double, Double> result = new TaskChain("test", Collections.singletonList(task)).execute().getData().get(task);
         long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();

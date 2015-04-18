@@ -68,12 +68,6 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    protected Double rate(List<CheckerTestResultDTO> results) {
-        Double sum = results.stream().mapToDouble(i -> 1 - (double)i.getColoredNodes()/i.getTotal() - i.getCountErrors()/ (i.getTotal() - i.getColoredNodes())).sum();
-        return sum / (double) results.size();
-    }
-
-    @Override
     public ClassifierChecker clone() {
         return new ClassifierChecker(graphs, k, p, x);
     }
