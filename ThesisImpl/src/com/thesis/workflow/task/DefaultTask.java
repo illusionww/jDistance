@@ -45,7 +45,7 @@ public class DefaultTask extends Task {
         if (Context.getInstance().USE_CACHE) {
             executeUseCache();
         } else {
-            executeInternal();
+            executeInternal(false);
         }
         return this;
     }
@@ -56,18 +56,16 @@ public class DefaultTask extends Task {
         int count = bundle.getCount();
 
         List<CacheItem> items = CacheManager.getInstance().pop(this);
-        int i = items.stream().mapToInt(CacheItem::getCount).sum();
-        int left = count - i;
-        if (i > 0 && left > 0) {
+        int cached = items.stream().mapToInt(CacheItem::getCount).sum();
+        int left = count - cached;
+        if (cached > 0 && left > 0) {
             bundle.setGraphs(bundle.getGraphs().subList(0, left));
         }
         if (left > 0) {
-            executeInternal();
-            CacheItem item = new CacheItem(this);
-            CacheManager.getInstance().push(item);
-            items.add(item);
+            executeInternal(true);
+            items.add(new CacheItem(this));
         }
-        if (i > 0) {
+        if (cached > 0) {
             Map<Double, List<Map<String, Object>>> rawData = new HashMap<>();
             for(CacheItem item : items) {
                 Map<Double, Double> itemData = item.getData();
@@ -94,10 +92,15 @@ public class DefaultTask extends Task {
         bundle.setGraphs(graphs);
     }
 
-    private void executeInternal() {
+    private void executeInternal(boolean cache) {
         Scale scale = Scale.DEFAULT.equals(distance.getScale()) ? Context.getInstance().SCALE : distance.getScale();
         Map<Double, Double> distanceResult = checker.seriesOfTests(distance, 0.0, 1.0, step, scale);
         result = removeNaN(distanceResult);
+
+        if (cache) {
+            CacheItem item = new CacheItem(this);
+            CacheManager.getInstance().push(item);
+        }
     }
 
     @Override

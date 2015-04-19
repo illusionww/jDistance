@@ -4,6 +4,7 @@ import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.adapter.parser.Parser;
 import com.thesis.adapter.parser.ParserWrapper;
 import com.thesis.cache.CacheManager;
+import com.thesis.cache.CacheUtils;
 import com.thesis.helper.Constants;
 import com.thesis.helper.MetricTask;
 import com.thesis.helper.TestHelperImpl;
@@ -22,6 +23,7 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -88,7 +90,12 @@ public class ProcessingTest {
         Map<Distance, Map<Double, Double>> withoutCache = TestHelperImpl.toDistanceMap(chain.execute().getData());
         Context.getInstance().USE_CACHE = true;
         chain1.execute();
+
+        int cacheCount = CacheUtils.getAllSerFiles(Context.getInstance().CACHE_FOLDER).size();
+        assertTrue("cache files is not created", cacheCount > 0);
+
         CacheManager.getInstance().reconciliation();
+
         Map<Distance, Map<Double, Double>> withCache = TestHelperImpl.toDistanceMap(chain2.execute().getData());
 
         distances.forEach(distance -> {

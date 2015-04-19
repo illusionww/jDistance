@@ -5,6 +5,7 @@ import com.thesis.workflow.task.DefaultTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -53,7 +54,6 @@ public class CacheManager {
                 count += item.getCount();
             }
         }
-        log.info("get from cache {}/{}", count, needle.getCount());
         return items;
     }
 
@@ -64,16 +64,15 @@ public class CacheManager {
     private void indexCache() {
         items = new ArrayList<>();
         String basePath = Context.getInstance().CACHE_FOLDER;
-        try {
-            Files.walk(Paths.get(basePath)).forEach(filePath -> {
-                if (Files.isRegularFile(filePath) && isCacheFile(filePath.getFileName().toString())) {
-                    CacheItem item = new CacheItem(filePath.getFileName().toString());
-                    items.add(item);
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        CacheUtils.getAllSerFiles(basePath).forEach(filePath -> {
+            String fileName = new File(filePath).getName();
+            if (isCacheFile(fileName)) {
+                CacheItem item = new CacheItem(fileName);
+                items.add(item);
+            } else {
+                log.warn(".ser file, but not regex name: {}", fileName);
+            }
+        });
     }
 
     private List<CacheItem> getAppropriateList(CacheItem task) {
