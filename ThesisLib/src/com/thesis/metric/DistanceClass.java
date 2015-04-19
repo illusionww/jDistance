@@ -1,5 +1,8 @@
 package com.thesis.metric;
 
+import java.util.Arrays;
+import java.util.List;
+
 public enum DistanceClass {
     WALK(Walk.class),
     LOG_FOREST(LogForest.class),
@@ -16,6 +19,9 @@ public enum DistanceClass {
         this.clazz = clazz;
     }
 
+    public static List<DistanceClass> getAll() {
+        return Arrays.asList(DistanceClass.values());
+    }
 
     public static DistanceClass getByClassName(String className) {
         for(DistanceClass distanceClass : DistanceClass.values()) {

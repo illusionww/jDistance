@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TaskChain {
@@ -60,6 +61,10 @@ public class TaskChain {
         return this;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
     @Profiled(tag = "TaskChain")
     public TaskChain execute() {
         if (!Context.getInstance().checkContext()) {
@@ -101,8 +106,6 @@ public class TaskChain {
     }
 
     public Map<Task, Map<Double, Double>> getData() {
-        Map<Task, Map<Double, Double>> result = new HashMap<>();
-        tasks.forEach(task -> result.put(task, task.getResults()));
-        return result;
+        return tasks.stream().collect(Collectors.toMap(task -> task, Task::getResults));
     }
 }

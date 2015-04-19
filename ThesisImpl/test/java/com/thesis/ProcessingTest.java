@@ -23,10 +23,10 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
@@ -109,7 +109,7 @@ public class ProcessingTest {
 
     @Test
     public void testConstantResultClassifier() {
-        GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 1);
+        GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 2);
         Checker checker = new ClassifierChecker(bundle, 3, 0.3);
         Task task = new DefaultTask(checker, DistanceClass.COMMUNICABILITY.getInstance(), 0.1);
         Map<Double, Double> result = new TaskChain("test", Collections.singletonList(task)).execute().getData().get(task);
@@ -119,11 +119,23 @@ public class ProcessingTest {
 
     @Test
     public void testConstantResultClusterer() {
-        GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 1);
+        GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 2);
         Checker checker = new ClustererChecker(bundle, 5);
         Task task = new DefaultTask(checker, DistanceClass.COMMUNICABILITY.getInstance(), 0.1);
         Map<Double, Double> result = new TaskChain("test", Collections.singletonList(task)).execute().getData().get(task);
         long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();
         assertTrue("countDistinct should be > 1, but it = " + countDistinct, countDistinct > 1);
+    }
+
+    @Test
+    public void testBestClassifierResultNotNull() {
+        GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 10);
+        Checker checker = new ClassifierChecker(bundle, 3, 0.3);
+        TaskChain chain = Scenario.defaultTasks(checker, DistanceClass.getAll().stream().map(DistanceClass::getInstance).collect(Collectors.toList()), 0.1);
+        List<Task>  result = chain.execute().getTasks();
+        result.forEach(i -> {
+            Map.Entry<Double, Double> bestResult = i.getBestResult();
+            assertTrue("For " + i.getName() + " lambda = " + bestResult.getKey() + " best result - NaN", !bestResult.getValue().isNaN());
+        });
     }
 }
