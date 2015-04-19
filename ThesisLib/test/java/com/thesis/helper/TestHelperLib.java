@@ -41,4 +41,20 @@ public class TestHelperLib {
     public static boolean equalDoubleNonStrict(double a, double b) {
         return Math.abs(a - b) < 0.012;
     }
+
+    public static boolean equalArraysStrict(double[][] a, double[][] b) {
+        if (a == null || b == null || a.length == 0 || b.length == 0 || a.length != b.length || a[0].length != b[0].length) {
+            return false;
+        }
+
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+                if (!equalDoubleStrict(a[i][j], b[i][j])) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
 }

@@ -206,4 +206,40 @@ public class DistancesTest {
             }
         }
     }
+
+    @Test
+    public void testChainGraphForestDistance() {
+        DistancesBuilder builder = new DistancesBuilder();
+
+        DenseMatrix L = builder.getL(chainGraph);
+        DenseMatrix H0 = builder.getH0Forest(L, 0);
+        double[][] forChain0 = DistancesHelper.toArray2(H0);
+        double[][] forChain0etalon = {{1, 0, 0, 0},
+                {0, 1, 0, 0},
+                {0, 0, 1, 0},
+                {0, 0, 0, 1}};
+        assertTrue(Arrays.deepToString(forChain0), equalArraysStrict(forChain0, forChain0etalon));
+
+        DenseMatrix H05 = builder.getH0Forest(L, 0.5);
+        double[][] forChain05 = DistancesHelper.toArray2(H05);
+        double[][] forChain05etalon = {{0.73214286, 0.19642857, 0.05357143, 0.01785714},
+                {0.19642857, 0.58928571, 0.16071429, 0.05357143},
+                {0.05357143, 0.16071429, 0.58928571, 0.19642857},
+                {0.01785714, 0.05357143, 0.19642857, 0.73214286}};
+        assertTrue(Arrays.deepToString(forChain05), equalArraysStrict(forChain05, forChain05etalon));
+    }
+
+    @Test
+    public void testTriangleGraphForestDistance() {
+        DistancesBuilder builder = new DistancesBuilder();
+
+        DenseMatrix L = builder.getL(triangleGraph);
+        DenseMatrix H0 = builder.getH0Forest(L, 0.2);
+        double[][] forChain02 = DistancesHelper.toArray2(H0);
+        double[][] forChain0etalon = {{0.85185185, 0.11111111, 0.01851852, 0.01851852},
+                {0.11111111, 0.66666667, 0.11111111, 0.11111111},
+                {0.01851852, 0.11111111, 0.74768519, 0.12268519},
+                {0.01851852, 0.11111111, 0.12268519, 0.74768519}};
+        assertTrue(Arrays.deepToString(forChain02), equalArraysStrict(forChain02, forChain0etalon));
+    }
 }
