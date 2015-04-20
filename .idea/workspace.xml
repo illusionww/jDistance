@@ -7,31 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d38d350-0497-4360-a2df-735b9267c49b" name="Default" comment="">
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\Communicability.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/Communicability.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\Forest.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/Forest.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\FreeEnergy.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/FreeEnergy.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\LogCommunicability.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/LogCommunicability.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\LogForest.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/LogForest.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\PlainWalk.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/PlainWalk.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\SP_CT.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/SP_CT.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\Walk.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/Walk.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/cache/CacheItem.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/cache/CacheItem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/ClassifierBestParamTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/ClassifierBestParamTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Context.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Context.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/CustomTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/CustomTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" afterPath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Scale.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Scale.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenario.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenario.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/TaskChain.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/TaskChain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/helper/TestHelperImpl.java" afterPath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/helper/TestHelperImpl.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Thesis.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -85,21 +62,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TaskChain.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/TaskChain.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="74" column="0" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Checker.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="32" column="53" selection-start-line="32" selection-start-column="53" selection-end-line="32" selection-end-column="53" />
+              <caret line="32" column="54" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="54" />
               <folding />
             </state>
           </provider>
@@ -108,18 +75,38 @@
       <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6">
-              <caret line="86" column="33" selection-start-line="86" selection-start-column="33" selection-end-line="86" selection-end-column="33" />
+            <state vertical-scroll-proportion="1.24">
+              <caret line="84" column="32" selection-start-line="84" selection-start-column="32" selection-end-line="84" selection-end-column="32" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Plot.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/gnuplot/Plot.java">
+      <file leaf-file-name="Scenario.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenario.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
+              <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Context.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Context.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="18" column="36" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ClassifierBestParamTask.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/ClassifierBestParamTask.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="49" column="77" selection-start-line="49" selection-start-column="77" selection-end-line="49" selection-end-column="77" />
               <folding />
             </state>
           </provider>
@@ -140,16 +127,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="64" column="36" selection-start-line="64" selection-start-column="36" selection-end-line="64" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Scenario.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenario.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
               <folding />
             </state>
           </provider>
@@ -228,7 +205,6 @@
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/Walk.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/PlainWalk.java" />
-        <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/ClassifierBestParamTask.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/cache/CacheItem.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenario.java" />
@@ -237,6 +213,7 @@
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Scale.java" />
+        <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/ClassifierBestParamTask.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
       </list>
     </option>
@@ -1222,16 +1199,16 @@
       <workItem from="1429369446240" duration="1258000" />
       <workItem from="1429393833209" duration="8922000" />
       <workItem from="1429434963691" duration="346000" />
-      <workItem from="1429487039456" duration="9394000" />
+      <workItem from="1429487039456" duration="11808000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="404394000" />
+    <option name="totallyTimeSpent" value="406808000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1241,7 +1218,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29767442" sideWeight="0.5045386" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.29767442" sideWeight="0.5045386" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.21669106" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1512,14 +1489,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Context.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="36" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/helper/TestHelperImpl.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1576,7 +1545,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1594,7 +1563,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="34" column="25" selection-start-line="34" selection-start-column="25" selection-end-line="34" selection-end-column="25" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1604,7 +1573,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="9" column="30" selection-start-line="9" selection-start-column="30" selection-end-line="9" selection-end-column="30" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1613,14 +1582,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="37" column="20" selection-start-line="37" selection-start-column="20" selection-end-line="37" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/ClassifierBestParamTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="49" column="33" selection-start-line="49" selection-start-column="33" selection-end-line="49" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -1653,30 +1614,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="112" column="0" selection-start-line="112" selection-start-column="0" selection-end-line="112" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenario.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="134" selection-start-line="33" selection-start-column="123" selection-end-line="33" selection-end-column="134" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="32" column="53" selection-start-line="32" selection-start-column="53" selection-end-line="32" selection-end-column="53" />
           <folding />
         </state>
       </provider>
@@ -1734,10 +1671,50 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="33" column="134" selection-start-line="33" selection-start-column="123" selection-end-line="33" selection-end-column="134" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="32" column="54" selection-start-line="32" selection-start-column="8" selection-end-line="32" selection-end-column="54" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Scenario.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="17" column="56" selection-start-line="17" selection-start-column="56" selection-end-line="17" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/ClassifierBestParamTask.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="49" column="77" selection-start-line="49" selection-start-column="77" selection-end-line="49" selection-end-column="77" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/Context.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="18" column="36" selection-start-line="18" selection-start-column="36" selection-end-line="18" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6">
-          <caret line="86" column="33" selection-start-line="86" selection-start-column="33" selection-end-line="86" selection-end-column="33" />
+        <state vertical-scroll-proportion="1.24">
+          <caret line="84" column="32" selection-start-line="84" selection-start-column="32" selection-end-line="84" selection-end-column="32" />
           <folding />
         </state>
       </provider>

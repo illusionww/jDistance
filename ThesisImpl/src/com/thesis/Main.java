@@ -25,7 +25,7 @@ public class Main {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         initContext();
-        drawGraphsScenario();
+        findBestClassifierParameterScenario();
     }
 
     private static void drawGraphsScenario() throws ParserConfigurationException, SAXException, IOException {
@@ -52,24 +52,24 @@ public class Main {
 
     private static void findBestClassifierParameterScenario() {
         List<DistanceClass> distances = Arrays.asList(
-//                DistanceClass.SP_CT,
-//                DistanceClass.FREE_ENERGY,
-//                DistanceClass.WALK,
-//                DistanceClass.LOG_FOREST,
-//                DistanceClass.FOREST,
-//                DistanceClass.PLAIN_WALK,
-//                DistanceClass.COMMUNICABILITY,
+                DistanceClass.SP_CT,
+                DistanceClass.FREE_ENERGY,
+                DistanceClass.WALK,
+                DistanceClass.LOG_FOREST,
+                DistanceClass.FOREST,
+                DistanceClass.PLAIN_WALK,
+                DistanceClass.COMMUNICABILITY,
                 DistanceClass.LOG_COMMUNICABILITY
         );
 
-        Arrays.asList(3).forEach(graphCount -> {
+        Arrays.asList(5).forEach(graphCount -> {
             Arrays.asList(100).forEach(numOfNodes -> {
                 Arrays.asList(0.02, 0.05, 0.1).forEach(pOut -> {
                     GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCount);
                     distances.forEach(distanceClass -> {
                         List<Task> tasks = new ArrayList<>();
                         IntStream.range(1, 8).forEach(i -> tasks.add(new ClassifierBestParamTask(new ClassifierChecker(graphs, i, 0.3),
-                                distanceClass.getInstance(Integer.toString(i)), 0.0, 1.5, 0.05, 100)));
+                                distanceClass.getInstance(Integer.toString(i)), 0.0, 1.5, 30, 100)));
                         String taskChainName = "bestParam " + distanceClass.getInstance().getName() + " n=" + numOfNodes + ", p_i=0.3, p_o=" + pOut + ", count=" + graphCount;
                         new TaskChain(taskChainName, tasks).execute().draw();
                     });
@@ -81,10 +81,10 @@ public class Main {
     private static void initContext() {
         Context context = Context.getInstance();
         context.GNUPLOT_PATH = "c:\\cygwin64\\bin\\gnuplot.exe";
-        context.IMG_FOLDER = "pictures";
+        context.IMG_FOLDER = "D:\\Dropbox\\thesis\\pictures";
         context.CACHE_FOLDER = "cache";
         context.PARALLEL = true;
-        context.USE_CACHE = false;
+        context.USE_CACHE = true;
     }
 }
 

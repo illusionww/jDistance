@@ -17,16 +17,16 @@ public class ClassifierBestParamTask extends Task {
     private Distance distance;
     private Double from;
     private Double to;
-    private Double step;
+    private Integer checkerPointsCount;
     private Integer pointsCount;
     private Map<Double, Double> result = new HashMap<>();
 
-    public ClassifierBestParamTask(ClassifierChecker checker, Distance distance, Double from, Double to, Double step, int pointsCount) {
+    public ClassifierBestParamTask(ClassifierChecker checker, Distance distance, Double from, Double to, int checkerPointsCount, int pointsCount) {
         this.checker = checker;
         this.distance = distance;
         this.from = from;
         this.to = to;
-        this.step = step;
+        this.checkerPointsCount = checkerPointsCount;
         this.pointsCount = pointsCount;
     }
 
@@ -42,12 +42,12 @@ public class ClassifierBestParamTask extends Task {
 
     @Override
     public Task execute() {
-        int countOfPoints = (int) Math.round(Math.floor((to - from) / step) + 1);
-        IntStream.range(0, countOfPoints).boxed().collect(Collectors.toList()).forEach(idx -> {
+        double step = (to - from) / (pointsCount - 1);
+        IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double x = from + idx * step;
             checker.setX(x);
             log.info("distance {}, x: {}", distance.getName(), x);
-            Task task = new DefaultTask(checker, distance, pointsCount);
+            Task task = new DefaultTask(checker, distance, checkerPointsCount);
             Map.Entry<Double, Double> best = task.execute().getBestResult();
             result.put(x, best.getValue());
         });
