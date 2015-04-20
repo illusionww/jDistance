@@ -5,11 +5,7 @@ import jeigen.DenseMatrix;
 public abstract class Distance {
     public abstract String getName();
 
-    public abstract void setName(String name);
-
-    public abstract String getShortName();
-
-    public abstract void setShortName(String shortName);
+    public abstract void setName(String shortName);
 
     public abstract Scale getScale();
 
@@ -18,6 +14,6 @@ public abstract class Distance {
     public abstract DenseMatrix getD(DenseMatrix A, double t);
 
     public String toString() {
-        return getShortName();
+        return getName();
     }
 }

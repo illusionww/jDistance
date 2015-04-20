@@ -47,8 +47,8 @@ public class ProcessingTest {
         URL url = Thread.currentThread().getContextClassLoader().getResource(Constants.GRAPHML_EXAMPLE1);
         GraphBundle graphs = new GraphBundle(null, null, null, null, Collections.singletonList(parser.parse(url.getPath())));
 
-        TaskChain chain1 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
-        TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
+        TaskChain chain1 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
+        TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
 
         Context.getInstance().PARALLEL = false;
         Map<Distance, Map<Double, Double>> notParallel = TestHelperImpl.toDistanceMap(chain1.execute().getData());
@@ -82,9 +82,9 @@ public class ProcessingTest {
         graphs1.setGraphs(graphs1.getGraphs().subList(2, 4));
         GraphBundle graphs2 = new GraphBundle(100, 0.3, 0.1, 5, parser.parseInDirectory(url.getPath().substring(1)));
 
-        TaskChain chain = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 0.1);
-        TaskChain chain1 = Scenario.defaultTasks(new ClassifierChecker(graphs1, 1, 0.3), distances, 0.1);
-        TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs2, 1, 0.3), distances, 0.1);
+        TaskChain chain = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
+        TaskChain chain1 = Scenario.defaultTasks(new ClassifierChecker(graphs1, 1, 0.3), distances, 10);
+        TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs2, 1, 0.3), distances, 10);
 
         Context.getInstance().USE_CACHE = false;
         Map<Distance, Map<Double, Double>> withoutCache = TestHelperImpl.toDistanceMap(chain.execute().getData());
@@ -111,7 +111,7 @@ public class ProcessingTest {
     public void testConstantResultClassifier() {
         GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 2);
         Checker checker = new ClassifierChecker(bundle, 3, 0.3);
-        Task task = new DefaultTask(checker, DistanceClass.COMMUNICABILITY.getInstance(), 0.1);
+        Task task = new DefaultTask(checker, DistanceClass.COMMUNICABILITY.getInstance(), 10);
         Map<Double, Double> result = new TaskChain("test", Collections.singletonList(task)).execute().getData().get(task);
         long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();
         assertTrue("countDistinct should be > 1, but it = " + countDistinct, countDistinct > 1);
@@ -121,7 +121,7 @@ public class ProcessingTest {
     public void testConstantResultClusterer() {
         GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 2);
         Checker checker = new ClustererChecker(bundle, 5);
-        Task task = new DefaultTask(checker, DistanceClass.COMMUNICABILITY.getInstance(), 0.1);
+        Task task = new DefaultTask(checker, DistanceClass.COMMUNICABILITY.getInstance(), 10);
         Map<Double, Double> result = new TaskChain("test", Collections.singletonList(task)).execute().getData().get(task);
         long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();
         assertTrue("countDistinct should be > 1, but it = " + countDistinct, countDistinct > 1);
@@ -131,7 +131,7 @@ public class ProcessingTest {
     public void testBestClassifierResultNotNull() {
         GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 10);
         Checker checker = new ClassifierChecker(bundle, 3, 0.3);
-        TaskChain chain = Scenario.defaultTasks(checker, DistanceClass.getAll().stream().map(DistanceClass::getInstance).collect(Collectors.toList()), 0.1);
+        TaskChain chain = Scenario.defaultTasks(checker, DistanceClass.getAll().stream().map(DistanceClass::getInstance).collect(Collectors.toList()), 10);
         List<Task>  result = chain.execute().getTasks();
         result.forEach(i -> {
             Map.Entry<Double, Double> bestResult = i.getBestResult();

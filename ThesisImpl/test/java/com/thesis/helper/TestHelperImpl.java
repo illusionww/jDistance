@@ -24,7 +24,6 @@ public class TestHelperImpl {
         context.CACHE_FOLDER = TEST_FOLDER;
         context.USE_CACHE = false;
         context.PARALLEL = false;
-        context.SCALE = Scale.EXP;
 
         File testFolder = new File(TEST_FOLDER);
         if (testFolder.exists()) {

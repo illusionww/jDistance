@@ -2,8 +2,6 @@ package com.thesis.workflow.task;
 
 import com.thesis.metric.Distance;
 import com.thesis.workflow.checker.ClassifierChecker;
-import org.perf4j.StopWatch;
-import org.perf4j.slf4j.Slf4JStopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,21 +18,21 @@ public class ClassifierBestParamTask extends Task {
     private Double from;
     private Double to;
     private Double step;
-    private Double checkerStep;
+    private Integer pointsCount;
     private Map<Double, Double> result = new HashMap<>();
 
-    public ClassifierBestParamTask(ClassifierChecker checker, Distance distance, Double from, Double to, Double step, Double checkerStep) {
+    public ClassifierBestParamTask(ClassifierChecker checker, Distance distance, Double from, Double to, Double step, int pointsCount) {
         this.checker = checker;
         this.distance = distance;
         this.from = from;
         this.to = to;
         this.step = step;
-        this.checkerStep = checkerStep;
+        this.pointsCount = pointsCount;
     }
 
     @Override
     public String getName() {
-        return distance.getShortName() + checker.getName();
+        return distance.getName() + checker.getName();
     }
 
     @Override
@@ -48,8 +46,8 @@ public class ClassifierBestParamTask extends Task {
         IntStream.range(0, countOfPoints).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double x = from + idx * step;
             checker.setX(x);
-            log.info("distance {}, x: {}", distance.getShortName(), x);
-            Task task = new DefaultTask(checker, distance, checkerStep);
+            log.info("distance {}, x: {}", distance.getName(), x);
+            Task task = new DefaultTask(checker, distance, pointsCount);
             Map.Entry<Double, Double> best = task.execute().getBestResult();
             result.put(x, best.getValue());
         });

@@ -1,5 +1,7 @@
 package com.thesis.metric;
 
+import com.thesis.metric.impl.*;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,7 +12,7 @@ public enum DistanceClass {
     PLAIN_WALK(PlainWalk.class),
     COMMUNICABILITY(Communicability.class),
     LOG_COMMUNICABILITY(LogCommunicability.class),
-    SP_CT(SP_CT.class),
+    SP_CT(com.thesis.metric.impl.SP_CT.class),
     FREE_ENERGY(FreeEnergy.class);
 
     private Class clazz;
@@ -36,7 +38,6 @@ public enum DistanceClass {
     public Distance getInstance(String name) {
         Distance distance = getInstance();
         distance.setName(name);
-        distance.setShortName(name);
         return distance;
     }
 

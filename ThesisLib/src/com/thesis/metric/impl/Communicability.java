@@ -1,11 +1,13 @@
-package com.thesis.metric;
+package com.thesis.metric.impl;
 
+import com.thesis.metric.Distance;
+import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 
 public class Communicability extends Distance {
-    String name = "Communicability Distances";
-    String shortName = "Comm";
-    Scale scale = Scale.DEFAULT;
+    String name = "Comm";
+    Scale scale = Scale.FRACTION;
 
     @Override
     public String getName() {
@@ -13,18 +15,8 @@ public class Communicability extends Distance {
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getShortName() {
-        return shortName;
-    }
-
-    @Override
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setName(String shortName) {
+        this.name = shortName;
     }
 
     @Override

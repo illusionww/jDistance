@@ -20,19 +20,18 @@ public class DefaultTask extends Task {
 
     private Distance distance;
     private Checker checker;
-    private Double step;
+    private Integer pointsCount;
     private Map<Double, Double> result;
 
-    public DefaultTask(Checker checker, Distance distance, Double step) {
+    public DefaultTask(Checker checker, Distance distance, Integer pointsCount) {
         this.distance = distance;
         this.checker = checker;
-        this.step = step;
+        this.pointsCount = pointsCount;
     }
 
     @Override
     public String getName() {
-        Scale scale = Scale.DEFAULT.equals(distance.getScale()) ? Context.getInstance().SCALE : distance.getScale();
-        return DistanceClass.getByClassName(distance.getClass().toString()) + " " + checker.getName() + ", step=" + step + " " + scale;
+        return DistanceClass.getByClassName(distance.getClass().toString()) + " " + checker.getName() + ", pointsCount=" + pointsCount + " " + distance.getScale();
     }
 
     @Override
@@ -93,8 +92,7 @@ public class DefaultTask extends Task {
     }
 
     private void executeInternal(boolean cache) {
-        Scale scale = Scale.DEFAULT.equals(distance.getScale()) ? Context.getInstance().SCALE : distance.getScale();
-        Map<Double, Double> distanceResult = checker.seriesOfTests(distance, 0.0, 1.0, step, scale);
+        Map<Double, Double> distanceResult = checker.seriesOfTests(distance, 0.00001, 0.99999, pointsCount);
         result = removeNaN(distanceResult);
 
         if (cache) {

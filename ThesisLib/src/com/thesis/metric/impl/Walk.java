@@ -1,10 +1,12 @@
-package com.thesis.metric;
+package com.thesis.metric.impl;
 
+import com.thesis.metric.Distance;
+import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 
 public class Walk extends Distance {
     String name = "Walk";
-    String shortName = "Walk";
     Scale scale = Scale.LINEAR;
 
     @Override
@@ -13,18 +15,8 @@ public class Walk extends Distance {
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getShortName() {
-        return shortName;
-    }
-
-    @Override
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setName(String shortName) {
+        this.name = shortName;
     }
 
     @Override
@@ -38,9 +30,9 @@ public class Walk extends Distance {
     }
 
     @Override
-    public DenseMatrix getD(DenseMatrix A, double alpha) {
+    public DenseMatrix getD(DenseMatrix A, double t) {
         DistancesBuilder db = new DistancesBuilder();
-        double t = db.alphaToT(A, alpha);
+        t = db.rho(A, t);
         DenseMatrix H0 = db.getH0Walk(A, t);
         DenseMatrix H = db.H0toH(H0);
         return db.getD(H);

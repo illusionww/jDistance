@@ -17,7 +17,6 @@ public class Context {
     public String CACHE_FOLDER = null;
     public Boolean PARALLEL = null;
     public Boolean USE_CACHE = null;
-    public Scale SCALE = null;
 
     private Context() {
     }
@@ -54,7 +53,7 @@ public class Context {
             throw new RuntimeException("Folder " + new File(CACHE_FOLDER).getAbsolutePath() + " is not exist");
         }
 
-        return PARALLEL != null && USE_CACHE != null && SCALE != null;
+        return PARALLEL != null && USE_CACHE != null;
     }
 
     private static boolean isExist(String path) {

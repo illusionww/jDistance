@@ -8,10 +8,7 @@ import com.thesis.adapter.gnuplot.GNUPlotAdapter;
 import com.thesis.adapter.gnuplot.Plot;
 import com.thesis.metric.Distance;
 import com.thesis.workflow.task.Task;
-import org.perf4j.LoggingStopWatch;
-import org.perf4j.StopWatch;
 import org.perf4j.aop.Profiled;
-import org.perf4j.slf4j.Slf4JStopWatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +90,7 @@ public class TaskChain {
             Distance distance = task.getDistance();
             Map<Double, Double> points = task.getResults();
 
-            String plotTitle = distance.getShortName();
+            String plotTitle = distance.getName();
             List<Point<Double>> plotPoints = ArrayUtils.mapToPoints(points);
             PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
             plots.add(new Plot(plotTitle, color.next(), plotPointsSet));

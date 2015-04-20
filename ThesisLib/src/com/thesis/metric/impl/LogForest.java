@@ -1,11 +1,13 @@
-package com.thesis.metric;
+package com.thesis.metric.impl;
 
+import com.thesis.metric.Distance;
+import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 
 public class LogForest extends Distance {
-    String name = "Logarithmic Forest";
-    String shortName = "logFor";
-    Scale scale = Scale.DEFAULT;
+    String name = "logFor";
+    Scale scale = Scale.FRACTION_BETA;
 
     @Override
     public String getName() {
@@ -13,18 +15,8 @@ public class LogForest extends Distance {
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getShortName() {
-        return shortName;
-    }
-
-    @Override
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setName(String shortName) {
+        this.name = shortName;
     }
 
     @Override

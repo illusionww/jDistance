@@ -16,7 +16,7 @@ import java.util.regex.Pattern;
 
 public class CacheItem {
     private static final Logger log = LoggerFactory.getLogger(CacheItem.class);
-    public static final String regex = "^([_\\-\\w]+) (\\w+) \\((.+)\\) n=(\\d+), p_i=([\\.\\d]+), p_o=([\\.\\d]+), k=(\\d+), count=(\\d+), step=([\\.\\d]+) (\\w+) #(\\d+)\\.ser$";
+    public static final String regex = "^([_\\-\\w]+) (\\w+) \\((.+)\\) n=(\\d+), p_i=([\\.\\d]+), p_o=([\\.\\d]+), k=(\\d+), count=(\\d+), pointsCount=([\\d]+) (\\w+) #(\\d+)\\.ser$";
 
     private String fileName = null;
     private HashMap<Double, Double> data = null;
@@ -29,7 +29,7 @@ public class CacheItem {
     private Double pOut;
     private Integer k;
     private Integer count;
-    private Double step;
+    private Integer pointsCount;
     private Scale scale;
 
     public CacheItem(String fileName) {
@@ -72,14 +72,14 @@ public class CacheItem {
 
     public boolean isAppropriate(CacheItem item) {
         try {
-            return this.distance.getInstance().getShortName().equals(item.distance.getInstance().getShortName())
+            return this.distance.getInstance().getName().equals(item.distance.getInstance().getName())
                     && this.checker.equals(item.checker)
                     && this.checkerParams.equals(item.checkerParams)
                     && this.n.equals(item.n)
                     && this.pIn.equals(item.pIn)
                     && this.pOut.equals(item.pOut)
                     && this.k.equals(item.k)
-                    && this.step.equals(item.step)
+                    && this.pointsCount.equals(item.pointsCount)
                     && this.scale.equals(item.scale);
         } catch (NullPointerException e) {
             log.error("error with {}", this.getFileName());
@@ -113,7 +113,7 @@ public class CacheItem {
             pOut = Double.valueOf(m.group(6));
             k = Integer.valueOf(m.group(7));
             count = Integer.valueOf(m.group(8));
-            step = Double.valueOf(m.group(9));
+            pointsCount = Integer.valueOf(m.group(9));
             scale = Scale.valueOf(m.group(10));
         } else {
             throw new RuntimeException();

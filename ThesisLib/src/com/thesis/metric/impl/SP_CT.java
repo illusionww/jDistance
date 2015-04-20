@@ -1,10 +1,12 @@
-package com.thesis.metric;
+package com.thesis.metric.impl;
 
+import com.thesis.metric.Distance;
+import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 
 public class SP_CT extends Distance {
-    String name = "Convex combination of the shortest path and resistance metrics";
-    String shortName = "SP-CT";
+    String name = "SP-CT";
     Scale scale = Scale.LINEAR;
 
     @Override
@@ -13,18 +15,8 @@ public class SP_CT extends Distance {
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getShortName() {
-        return shortName;
-    }
-
-    @Override
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setName(String shortName) {
+        this.name = shortName;
     }
 
     @Override

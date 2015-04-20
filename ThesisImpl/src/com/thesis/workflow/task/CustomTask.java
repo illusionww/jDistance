@@ -2,7 +2,6 @@ package com.thesis.workflow.task;
 
 import com.thesis.metric.Distance;
 import com.thesis.workflow.checker.Checker;
-import com.thesis.metric.Scale;
 
 import java.util.Map;
 
@@ -11,22 +10,20 @@ public class CustomTask extends Task {
     private Distance distance;
     private Double from;
     private Double to;
-    private Double step;
-    private Scale scale;
+    private Integer pointsCount;
     private Map<Double, Double> result;
 
-    public CustomTask(Checker checker, Distance distance, Double from, Double to, Double step, Scale scale) {
+    public CustomTask(Checker checker, Distance distance, Double from, Double to, Integer pointsCount) {
         this.checker = checker;
         this.distance = distance;
         this.from = from;
         this.to = to;
-        this.step = step;
-        this.scale = scale;
+        this.pointsCount = pointsCount;
     }
 
     @Override
     public String getName() {
-        return distance.getShortName() + " " + checker.getName();
+        return distance.getName() + " " + checker.getName();
     }
 
     @Override
@@ -36,7 +33,7 @@ public class CustomTask extends Task {
 
     @Override
     public Task execute() {
-        result = checker.seriesOfTests(distance, from, to, step, scale);
+        result = checker.seriesOfTests(distance, from, to, pointsCount);
         return this;
     }
 

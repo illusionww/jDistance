@@ -1,11 +1,13 @@
-package com.thesis.metric;
+package com.thesis.metric.impl;
 
+import com.thesis.metric.Distance;
+import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 
 public class LogCommunicability extends Distance {
-    String name = "Logarithmic Communicability";
-    String shortName = "logComm";
-    Scale scale = Scale.DEFAULT;
+    String name = "logComm";
+    Scale scale = Scale.FRACTION;
 
     @Override
     public String getName() {
@@ -13,18 +15,8 @@ public class LogCommunicability extends Distance {
     }
 
     @Override
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getShortName() {
-        return shortName;
-    }
-
-    @Override
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
+    public void setName(String shortName) {
+        this.name = shortName;
     }
 
     @Override

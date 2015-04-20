@@ -11,11 +11,11 @@ import java.util.OptionalDouble;
 import static jeigen.Shortcuts.*;
 
 public class DistancesBuilder {
-    // α > 0 -> 0 < t < ρ^{-1}
-    public double alphaToT(DenseMatrix A, double alpha) {
+    // 0 < t < ρ^{-1} -> 0 < t < 1
+    public double rho(DenseMatrix A, double t) {
         ComplexDenseMatrix cfm = new ComplexDenseMatrix(A.eig().values);
-        double ro = cfm.abs().maxOverCols().s();
-        return 1.0 / (1.0 / alpha + ro);
+        double rho = cfm.abs().maxOverCols().s();
+        return t / rho;
     }
 
     public DenseMatrix getL(DenseMatrix A) {
