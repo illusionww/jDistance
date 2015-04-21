@@ -14,7 +14,7 @@ public class DistancesBuilder {
     // 0 < t < ρ^{-1} -> 0 < t < 1
     public double rho(DenseMatrix A, double t) {
         ComplexDenseMatrix cfm = new ComplexDenseMatrix(A.eig().values);
-        double rho = cfm.abs().maxOverCols().s();
+        double rho = 1.0 / cfm.abs().maxOverCols().s();
         return t / rho;
     }
 

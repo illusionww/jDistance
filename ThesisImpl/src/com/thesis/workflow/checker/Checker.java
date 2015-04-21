@@ -61,7 +61,7 @@ public abstract class Checker implements Cloneable {
         }
 
         Double rate = rate(results);
-        log.info("{}: {} {}", distance.getName(), parameter, rate);
+//        log.info("{}: {} {}", distance.getName(), parameter, rate);
 
         return rate;
     }
