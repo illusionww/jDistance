@@ -1,5 +1,6 @@
 package com.thesis;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import com.thesis.metric.Distance;
 import com.thesis.metric.DistanceClass;
 import com.thesis.metric.DistancesBuilder;
@@ -241,5 +242,64 @@ public class DistancesTest {
                 {0.01851852, 0.11111111, 0.74768519, 0.12268519},
                 {0.01851852, 0.11111111, 0.12268519, 0.74768519}};
         assertTrue(Arrays.deepToString(forChain02), equalArraysStrict(forChain02, forChain0etalon));
+    }
+
+    @Test
+    public void testChainGraphSP_CTEquality() {
+        Distance distance = DistanceClass.SP_CT.getInstance();
+        double[][] SP = DistancesHelper.toArray2(distance.getD(chainGraph, 0));
+        double[][] CT = DistancesHelper.toArray2(distance.getD(chainGraph, 1));
+        for (int i = 0; i < chainGraph.cols; i++) {
+            for (int j = 0; j < chainGraph.cols; j++) {
+                assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
+                        equalDoubleStrict(SP[i][j], CT[i][j]));
+            }
+        }
+    }
+
+    @Test
+    public void testBigChainGraphSP_CTEquality() {
+        double[][] bigChain = new double[100][100];
+        for (int i = 0; i < 100; i++) {
+            if (i + 1 < 100) {
+                bigChain[i][i + 1] = 1.0;
+            }
+            if (i - 1 >= 0) {
+                bigChain[i][i - 1] = 1.0;
+            }
+        }
+        DenseMatrix chainGraph = new DenseMatrix(bigChain);
+        Distance distance = DistanceClass.SP_CT.getInstance();
+        double[][] SP = DistancesHelper.toArray2(distance.getD(chainGraph, 0));
+        double[][] CT = DistancesHelper.toArray2(distance.getD(chainGraph, 1));
+        for (int i = 0; i < chainGraph.cols; i++) {
+            for (int j = 0; j < chainGraph.cols; j++) {
+                assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
+                        equalDoubleStrict(SP[i][j], CT[i][j]));
+            }
+        }
+    }
+
+    @Test
+    public void testFullGraphSP_CTEquality() {
+        Distance distance = DistanceClass.SP_CT.getInstance();
+        double[][] SP = DistancesHelper.toArray2(distance.getD(fullGraph, 0));
+        double[][] CT = DistancesHelper.toArray2(distance.getD(fullGraph, 1));
+
+        System.out.println("sdsd");
+    }
+
+    @Test
+    public void testChainGraphSPLogForWalkEquality() {
+        double[][] SP = DistancesHelper.toArray2(DistanceClass.SP_CT.getInstance().getD(fullGraph, 0.000001));
+        double[][] logFor = DistancesHelper.toArray2(DistanceClass.LOG_FOREST.getInstance().getD(fullGraph, 0.000001));
+        double[][] Walk = DistancesHelper.toArray2(DistanceClass.WALK.getInstance().getD(fullGraph, 0.000001));
+
+        for (int i = 0; i < chainGraph.cols; i++) {
+            for (int j = 0; j < chainGraph.cols; j++) {
+                assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j],
+                        equalDoubleStrict(SP[i][j], logFor[i][j]) && equalDoubleStrict(SP[i][j], Walk[i][j]));
+            }
+        }
     }
 }

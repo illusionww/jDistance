@@ -40,7 +40,12 @@ public class SP_CT extends Distance {
         DenseMatrix Ds = db.getDShortestPath(A);
         DenseMatrix H = db.getHResistance(L);
         DenseMatrix Dr = db.getD(H);
-        return Ds.mul(1 - lambda).add(Dr.mul(lambda));
+
+        Double avgDs = Ds.sum().sum().s() / (Ds.cols * (Ds.cols - 1));
+        Double avgDr = Dr.sum().sum().s() / (Dr.cols * (Dr.cols - 1));
+        Double norm = avgDs / avgDr;
+
+        return Ds.mul(1 - lambda).add(Dr.mul(lambda * norm));
     }
 }
 
