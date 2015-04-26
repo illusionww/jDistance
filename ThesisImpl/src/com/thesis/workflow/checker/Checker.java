@@ -33,8 +33,7 @@ public abstract class Checker implements Cloneable {
         double step = (to - from) / (pointsCount - 1);
         IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double base = from + idx * step;
-            Double i = distance.getScale().calc(base);
-            Double result = test(distance, i);
+            Double result = test(distance, base);
             results.put(base, result);
         });
         Date finish = new Date();
@@ -43,21 +42,22 @@ public abstract class Checker implements Cloneable {
         return results;
     }
 
-    public Double test(Distance distance, Double parameter) {
+    public Double test(Distance distance, Double base) {
         List<CheckerTestResultDTO> results = new ArrayList<>();
         try {
             for (Graph graph : getGraphBundle().getGraphs()) {
                 ArrayList<SimpleNodeData> nodesData = graph.getSimpleNodeData();
 
                 DenseMatrix A = graph.getSparseMatrix();
+                Double parameter = distance.getScale().calc(A, base);
                 DenseMatrix D = distance.getD(A, parameter);
                 if (!hasNaN(D)) {
-                    CheckerTestResultDTO result = roundErrors(D, nodesData);
+                    CheckerTestResultDTO result = roundErrors(graph, D, nodesData);
                     results.add(result);
                 }
             }
         } catch (RuntimeException e) {
-            log.error("Calculation error: disnance " + distance.getName() + ", param " + parameter, e);
+            log.error("Calculation error: distance " + distance.getName() + ", baseParam " + base, e);
         }
 
         Double rate = rate(results);
@@ -66,16 +66,15 @@ public abstract class Checker implements Cloneable {
         return rate;
     }
 
-    protected abstract CheckerTestResultDTO roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
+    protected abstract CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
 
     protected Double rate(List<CheckerTestResultDTO> results) {
         Double sum = 0.0;
         for (CheckerTestResultDTO result : results) {
-            int total = result.getTotal();
-            int countErrors = result.getCountErrors();
-            int coloredNodes = result.getColoredNodes();
-
-            sum += 1 - (double)countErrors/(double)(total - coloredNodes);
+            Double total = result.getTotal();
+            Double countErrors = result.getCountErrors();
+            Double coloredNodes = result.getColoredNodes();
+            sum += 1 - countErrors/(total - coloredNodes);
         }
         return sum / (double) results.size();
     }

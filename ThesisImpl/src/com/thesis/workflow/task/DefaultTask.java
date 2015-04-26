@@ -31,7 +31,7 @@ public class DefaultTask extends Task {
 
     @Override
     public String getName() {
-        return DistanceClass.getByClassName(distance.getClass().toString()) + " " + checker.getName() + ", pointsCount=" + pointsCount + " " + distance.getScale();
+        return DistanceClass.getDistanceName(distance) + " " + checker.getName() + ", pointsCount=" + pointsCount + " " + distance.getScale();
     }
 
     @Override

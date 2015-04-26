@@ -3,21 +3,21 @@ package com.thesis.helper;
 import jeigen.DenseMatrix;
 
 public class TestHelperLib {
-    public static DenseMatrix chainGraph = new DenseMatrix(new double[][]{
+    public final static DenseMatrix chainGraph = new DenseMatrix(new double[][]{
             {0, 1, 0, 0},
             {1, 0, 1, 0},
             {0, 1, 0, 1},
             {0, 0, 1, 0}
     });
 
-    public static DenseMatrix triangleGraph = new DenseMatrix(new double[][]{
+    public final static DenseMatrix triangleGraph = new DenseMatrix(new double[][]{
             {0, 1, 0, 0},
             {1, 0, 1, 1},
             {0, 1, 0, 1},
             {0, 1, 1, 0}
     });
 
-    public static DenseMatrix fullGraph = new DenseMatrix(new double[][]{
+    public final static DenseMatrix fullGraph = new DenseMatrix(new double[][]{
             {0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 0, 1, 1, 1, 1, 1, 1, 1},
@@ -30,7 +30,7 @@ public class TestHelperLib {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 0}
     });
 
-    public static DenseMatrix treeMatrix = new DenseMatrix(new double[][] {
+    public final static DenseMatrix treeMatrix = new DenseMatrix(new double[][] {
             {0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
             {1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
             {1, 0, 0, 0, 1, 1, 0, 0, 0, 0},

@@ -3,11 +3,12 @@ package com.thesis;
 import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.metric.Distance;
 import com.thesis.metric.DistanceClass;
-import com.thesis.metric.Scale;
 import com.thesis.workflow.Context;
 import com.thesis.workflow.TaskChain;
 import com.thesis.workflow.checker.ClassifierChecker;
+import com.thesis.workflow.checker.DeviationChecker;
 import com.thesis.workflow.task.ClassifierBestParamTask;
+import com.thesis.workflow.task.DefaultTask;
 import com.thesis.workflow.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +26,7 @@ public class Main {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         initContext();
-        drawGraphsScenario();
+        drawDeviationForBestSP();
     }
 
     private static void drawGraphsScenario() throws ParserConfigurationException, SAXException, IOException {
@@ -40,11 +41,11 @@ public class Main {
                 DistanceClass.LOG_COMMUNICABILITY.getInstance()
         );
 
-        Arrays.asList(50).forEach(graphCount -> {
+        Arrays.asList(10).forEach(graphCount -> {
             Arrays.asList(100).forEach(numOfNodes -> {
                 Arrays.asList(0.1).forEach(pOut -> {
                     GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCount);
-                    Scenario.defaultTasks(new ClassifierChecker(graphs, 3, 0.3), distances, 250).execute().draw();
+                    ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 3, 0.3), distances, 250).execute().draw();
                 });
             });
         });
@@ -78,10 +79,37 @@ public class Main {
         });
     }
 
+    public static void drawDeviationForBestSP() {
+        List<DistanceClass> distances = Arrays.asList(
+                DistanceClass.SP_CT,
+                DistanceClass.FREE_ENERGY,
+                DistanceClass.WALK,
+                DistanceClass.LOG_FOREST,
+                DistanceClass.FOREST,
+                DistanceClass.PLAIN_WALK,
+                DistanceClass.COMMUNICABILITY,
+                DistanceClass.LOG_COMMUNICABILITY
+        );
+
+        Arrays.asList(5).forEach(graphCount -> {
+            Arrays.asList(200).forEach(numOfNodes -> {
+                Arrays.asList(0.1).forEach(pOut -> {
+                    GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCount);
+                    List<Task> tasks = new ArrayList<>();
+                    distances.forEach(distanceClass -> {
+                        tasks.add(new DefaultTask(new DeviationChecker(graphs), distanceClass.getInstance(), 250));
+                    });
+                    String taskChainName = "deviation n=" + numOfNodes + ", p_i=0.3, p_o=" + pOut + ", count=" + graphCount;
+                    new TaskChain(taskChainName, tasks).execute().draw();
+                });
+            });
+        });
+    }
+
     private static void initContext() {
         Context context = Context.getInstance();
         context.GNUPLOT_PATH = "c:\\cygwin64\\bin\\gnuplot.exe";
-        context.IMG_FOLDER = "D:\\Dropbox\\thesis\\pictures";
+        context.IMG_FOLDER = "pictures"; //"D:\\Dropbox\\thesis\\pictures";
         context.CACHE_FOLDER = "cache";
         context.PARALLEL = true;
         context.USE_CACHE = false;

@@ -2,11 +2,11 @@ package com.thesis.workflow.checker;
 
 import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.classifier.Classifier;
+import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClassifierChecker extends Checker {
     private static final CheckerType type = CheckerType.CLASSIFIER;
@@ -50,7 +50,7 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Classifier classifier = new Classifier(D, simpleNodeData);

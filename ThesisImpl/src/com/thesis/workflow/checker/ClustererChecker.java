@@ -3,12 +3,12 @@ package com.thesis.workflow.checker;
 
 import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.clusterer.Clusterer;
+import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ClustererChecker extends Checker {
     private static final CheckerType type = CheckerType.CLUSTERER;
@@ -37,7 +37,7 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         Integer countErrors = 0;
 
         final Clusterer clusterer = new Clusterer(D);
@@ -51,8 +51,8 @@ public class ClustererChecker extends Checker {
             }
         }
 
-        Integer total = (int) Math.round(Math.floor((double) (data.size()*data.size()-data.size())/2.0));
-        return new CheckerTestResultDTO(total, countErrors, 0);
+        double total = ((double) data.size() * (double) (data.size() - 1)) / 2.0;
+        return new CheckerTestResultDTO(total, (double) countErrors);
     }
 
     @Override

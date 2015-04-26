@@ -46,13 +46,13 @@ public class GNUPlotAdapter {
 
     public void drawData(String title, List<Plot> data, String outputPath) {
         ImageTerminal png = new ImageTerminal();
-        png.set("size", "1024,768");
+        png.set("size", "1280,768");
         File file = new File(outputPath);
         try {
             file.createNewFile();
             png.processOutput(new FileInputStream(file));
         } catch (IOException ex) {
-            System.err.print(ex);
+            log.error("Error while open file for writing", ex);
         }
 
         JavaPlot gnuplot = new JavaPlot(gnuplotPath);

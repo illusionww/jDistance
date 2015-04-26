@@ -1,23 +1,12 @@
 package com.thesis.metric;
 
-import com.sun.org.apache.xpath.internal.SourceTree;
 import com.thesis.metric.algorithm.johnsons.JohnsonsAlgorithm;
 import jeigen.ComplexDenseMatrix;
 import jeigen.DenseMatrix;
 
-import java.util.Arrays;
-import java.util.OptionalDouble;
-
 import static jeigen.Shortcuts.*;
 
 public class DistancesBuilder {
-    // 0 < t < ρ^{-1} -> 0 < t < 1
-    public double rho(DenseMatrix A, double t) {
-        ComplexDenseMatrix cfm = new ComplexDenseMatrix(A.eig().values);
-        double rho = cfm.abs().maxOverCols().s();
-        return t / rho;
-    }
-
     public DenseMatrix getL(DenseMatrix A) {
         return diag(A.sumOverRows().t()).sub(A);
     }

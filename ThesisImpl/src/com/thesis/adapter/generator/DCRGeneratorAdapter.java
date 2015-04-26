@@ -57,7 +57,7 @@ public class DCRGeneratorAdapter {
                 if (GraphValidator.validate(graph, n, k, DEVIATION)) {
                     return graph;
                 } else {
-                    log.error("Generated graph is not valid");
+                    log.warn("Generated graph is not valid");
                 }
             } catch (Exception e) {
                 log.error("Graph generation attempt failed", e);

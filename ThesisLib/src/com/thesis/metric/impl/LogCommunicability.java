@@ -34,6 +34,7 @@ public class LogCommunicability extends Distance {
         DistancesBuilder db = new DistancesBuilder();
         DenseMatrix H0 = db.getH0Communicability(A, t);
         DenseMatrix H = db.H0toH(H0);
-        return db.getD(H);
+        DenseMatrix D = db.getD(H);
+        return db.sqrtD(D);
     }
 }

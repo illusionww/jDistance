@@ -8,7 +8,6 @@ import com.thesis.adapter.gnuplot.GNUPlotAdapter;
 import com.thesis.adapter.gnuplot.Plot;
 import com.thesis.metric.Distance;
 import com.thesis.workflow.task.Task;
-import org.perf4j.aop.Profiled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,13 +22,14 @@ public class TaskChain {
     String name = null;
     List<Task> tasks = null;
 
-    public TaskChain(String name) {
+    public TaskChain(String name, Task ... tasks) {
         this.name = name;
+        this.tasks = new ArrayList<>(Arrays.asList(tasks));
     }
 
     public TaskChain(String name, List<Task> tasks) {
         this.name = name;
-        this.tasks = tasks;
+        this.tasks = new ArrayList<>(tasks);
     }
 
     public String getName() {
@@ -62,7 +62,6 @@ public class TaskChain {
         return tasks;
     }
 
-    @Profiled(tag = "TaskChain")
     public TaskChain execute() {
         if (!Context.getInstance().checkContext()) {
             throw new RuntimeException("context not initialized!");
@@ -71,10 +70,18 @@ public class TaskChain {
         Date start = new Date();
         log.info("Start task chain {}", name);
         Stream<Task> stream = Context.getInstance().PARALLEL ? tasks.parallelStream() : tasks.stream();
-        stream.forEach(Task::execute);
+
+        stream.forEach(task -> {
+            Date startTask = new Date();
+            log.info("Task start: {}", task.getName());
+            task.execute();
+            Date finishTask = new Date();
+            long diffTask = finishTask.getTime() - startTask.getTime();
+            log.info("Task done: {}. Time: {} ", task.getName(), diffTask);
+        });
         Date finish = new Date();
         long diff = finish.getTime() - start.getTime();
-        log.info("Task chain done. Time: " + diff);
+        log.info("Task chain done. Time: {}", diff);
         return this;
     }
 

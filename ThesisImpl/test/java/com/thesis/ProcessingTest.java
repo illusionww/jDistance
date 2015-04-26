@@ -6,7 +6,7 @@ import com.thesis.adapter.parser.ParserWrapper;
 import com.thesis.cache.CacheManager;
 import com.thesis.cache.CacheUtils;
 import com.thesis.helper.Constants;
-import com.thesis.helper.MetricTask;
+import com.thesis.workflow.task.MetricTask;
 import com.thesis.helper.TestHelperImpl;
 import com.thesis.metric.Distance;
 import com.thesis.metric.DistanceClass;
@@ -47,8 +47,8 @@ public class ProcessingTest {
         URL url = Thread.currentThread().getContextClassLoader().getResource(Constants.GRAPHML_EXAMPLE1);
         GraphBundle graphs = new GraphBundle(null, null, null, null, Collections.singletonList(parser.parse(url.getPath())));
 
-        TaskChain chain1 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
-        TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
+        TaskChain chain1 = ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
+        TaskChain chain2 = ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
 
         Context.getInstance().PARALLEL = false;
         Map<Distance, Map<Double, Double>> notParallel = TestHelperImpl.toDistanceMap(chain1.execute().getData());
@@ -66,7 +66,7 @@ public class ProcessingTest {
 
     @Test
     public void testDrawSP_CTAttitude() {
-        new TaskChain("SP-CT").addTask(new MetricTask(DistanceClass.SP_CT.getInstance(), Constants.triangleGraph, 0.01))
+        new TaskChain("SP-CT", new MetricTask(DistanceClass.SP_CT.getInstance(), Constants.triangleGraph, 100, 0.0, 1.0))
                 .execute().draw();
         String filePath = Context.getInstance().IMG_FOLDER + "/SP-CT.png";
         File file = new File(filePath);
@@ -82,9 +82,9 @@ public class ProcessingTest {
         graphs1.setGraphs(graphs1.getGraphs().subList(2, 4));
         GraphBundle graphs2 = new GraphBundle(100, 0.3, 0.1, 5, parser.parseInDirectory(url.getPath().substring(1)));
 
-        TaskChain chain = Scenario.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
-        TaskChain chain1 = Scenario.defaultTasks(new ClassifierChecker(graphs1, 1, 0.3), distances, 10);
-        TaskChain chain2 = Scenario.defaultTasks(new ClassifierChecker(graphs2, 1, 0.3), distances, 10);
+        TaskChain chain = ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
+        TaskChain chain1 = ScenarioHelper.defaultTasks(new ClassifierChecker(graphs1, 1, 0.3), distances, 10);
+        TaskChain chain2 = ScenarioHelper.defaultTasks(new ClassifierChecker(graphs2, 1, 0.3), distances, 10);
 
         Context.getInstance().USE_CACHE = false;
         Map<Distance, Map<Double, Double>> withoutCache = TestHelperImpl.toDistanceMap(chain.execute().getData());
@@ -131,7 +131,7 @@ public class ProcessingTest {
     public void testBestClassifierResultNotNull() {
         GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 10);
         Checker checker = new ClassifierChecker(bundle, 3, 0.3);
-        TaskChain chain = Scenario.defaultTasks(checker, DistanceClass.getAll().stream().map(DistanceClass::getInstance).collect(Collectors.toList()), 10);
+        TaskChain chain = ScenarioHelper.defaultTasks(checker, DistanceClass.getAll().stream().map(DistanceClass::getInstance).collect(Collectors.toList()), 10);
         List<Task>  result = chain.execute().getTasks();
         result.forEach(i -> {
             Map.Entry<Double, Double> bestResult = i.getBestResult();

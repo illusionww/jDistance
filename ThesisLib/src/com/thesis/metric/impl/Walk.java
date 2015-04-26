@@ -7,7 +7,7 @@ import jeigen.DenseMatrix;
 
 public class Walk extends Distance {
     String name = "Walk";
-    Scale scale = Scale.LINEAR;
+    Scale scale = Scale.RHO;
 
     @Override
     public String getName() {
@@ -32,7 +32,6 @@ public class Walk extends Distance {
     @Override
     public DenseMatrix getD(DenseMatrix A, double t) {
         DistancesBuilder db = new DistancesBuilder();
-        t = db.rho(A, t);
         DenseMatrix H0 = db.getH0Walk(A, t);
         DenseMatrix H = db.H0toH(H0);
         return db.getD(H);

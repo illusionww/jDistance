@@ -2,6 +2,8 @@ package com.thesis.metric;
 
 import jeigen.DenseMatrix;
 
+import java.util.Arrays;
+import java.util.Map;
 import java.util.function.UnaryOperator;
 
 import static jeigen.Shortcuts.*;
@@ -20,11 +22,13 @@ public class DistancesHelper {
     }
 
     private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
-        double[] values = A.getValues();
+        double[][] values = DistancesHelper.toArray2(A);
         for (int i = 0; i < values.length; i++) {
-            A.set(i, operator.apply(values[i]));
+            for (int j = 0; j < values[i].length; j++) {
+                values[i][j] = operator.apply(values[i][j]);
+            }
         }
-        return A;
+        return new DenseMatrix(values);
     }
 
     public static DenseMatrix diagToVector(DenseMatrix A) {
@@ -42,6 +46,11 @@ public class DistancesHelper {
         }
 
         return A.fullPivHouseholderQRSolve(diag(ones(A.cols, 1)));
+    }
+
+    public static DenseMatrix normalization(DenseMatrix dm) {
+        Double avg = dm.sum().sum().s() / (dm.cols * (dm.cols - 1));
+        return dm.div(avg);
     }
 
     public static double[][] toArray2(DenseMatrix dm) {

@@ -25,10 +25,11 @@ public enum DistanceClass {
         return Arrays.asList(DistanceClass.values());
     }
 
-    public static DistanceClass getByClassName(String className) {
+    public static DistanceClass getDistanceName(Distance distance) {
+        String className = distance.getClass().toString();
         for(DistanceClass distanceClass : DistanceClass.values()) {
-            Distance distance = distanceClass.getInstance();
-            if(className.equals(distance.getClass().toString())) {
+            Distance distanceInstance = distanceClass.getInstance();
+            if(className.equals(distanceInstance.getClass().toString())) {
                 return distanceClass;
             }
         }

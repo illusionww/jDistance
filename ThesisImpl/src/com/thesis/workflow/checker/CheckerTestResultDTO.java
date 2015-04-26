@@ -1,25 +1,37 @@
 package com.thesis.workflow.checker;
 
 public class CheckerTestResultDTO {
-    private Integer total;
-    private Integer countErrors;
-    private Integer coloredNodes;
+    private Double total;
+    private Double countErrors;
+    private Double coloredNodes;
 
     public CheckerTestResultDTO(Integer total, Integer countErrors, Integer coloredNodes) {
+        this.total = (double)total;
+        this.countErrors = (double)countErrors;
+        this.coloredNodes = (double)coloredNodes;
+    }
+
+    public CheckerTestResultDTO(Double total, Double countErrors) {
+        this.total = total;
+        this.countErrors = countErrors;
+        this.coloredNodes = 0.0;
+    }
+
+    public CheckerTestResultDTO(Double total, Double countErrors, Double coloredNodes) {
         this.total = total;
         this.countErrors = countErrors;
         this.coloredNodes = coloredNodes;
     }
 
-    public Integer getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public Integer getCountErrors() {
+    public Double getCountErrors() {
         return countErrors;
     }
 
-    public Integer getColoredNodes() {
+    public Double getColoredNodes() {
         return coloredNodes;
     }
 }
