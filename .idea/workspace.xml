@@ -7,33 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d38d350-0497-4360-a2df-735b9267c49b" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\.idea\libraries\perf4j_0_9_16.xml" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\src\com\thesis\Scenario.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/ScenarioHelper.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\test\java\com\thesis\helper\MetricTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/MetricTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/CheckerTestResultDTO.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/CheckerTestResultDTO.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/CheckerType.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/CheckerType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClassifierChecker.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClassifierChecker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClustererChecker.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClustererChecker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/generator/DCRGeneratorAdapter.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/generator/DCRGeneratorAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesBuilder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesHelper.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistancesHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/DistancesTest.java" afterPath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/DistancesTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/LogCommunicability.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/LogCommunicability.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/PlainWalk.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/PlainWalk.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" afterPath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Scale.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Scale.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/Task.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/Task.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/TaskChain.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/TaskChain.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/helper/TestHelperLib.java" afterPath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/helper/TestHelperLib.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" afterPath="$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/Walk.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/Walk.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\src\com\thesis\Scenario.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisImpl\test\java\com\thesis\helper\MetricTask.java" afterPath="" />
     </list>
     <ignored path="Thesis.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -1272,12 +1247,12 @@
       <workItem from="1429982414326" duration="15152000" />
       <workItem from="1430034018814" duration="29000" />
       <workItem from="1430034078327" duration="25000" />
-      <workItem from="1430034143871" duration="9511000" />
+      <workItem from="1430034143871" duration="9758000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="446778000" />
+    <option name="totallyTimeSpent" value="447025000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
