@@ -2,11 +2,10 @@ package com.thesis.metric;
 
 import jeigen.DenseMatrix;
 
-import java.util.Arrays;
-import java.util.Map;
 import java.util.function.UnaryOperator;
 
-import static jeigen.Shortcuts.*;
+import static jeigen.Shortcuts.diag;
+import static jeigen.Shortcuts.ones;
 
 public class DistancesHelper {
     public static DenseMatrix log(DenseMatrix A) {
