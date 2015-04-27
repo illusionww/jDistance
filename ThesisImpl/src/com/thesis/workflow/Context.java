@@ -15,6 +15,7 @@ public class Context {
     public String GNUPLOT_PATH = null;
     public String IMG_FOLDER = null;
     public String CACHE_FOLDER = null;
+    public String COMPETITION_FOLDER = null;
     public Boolean PARALLEL = null;
     public Boolean USE_CACHE = null;
 
@@ -37,7 +38,7 @@ public class Context {
     public boolean checkContext() {
         GNUPLOT_PATH = isExist(GNUPLOT_PATH) ? GNUPLOT_PATH : FileUtils.findPathExec();
 
-        if (GNUPLOT_PATH == null || IMG_FOLDER == null || CACHE_FOLDER == null) {
+        if (GNUPLOT_PATH == null || IMG_FOLDER == null || CACHE_FOLDER == null || COMPETITION_FOLDER == null) {
             throw new RuntimeException("Context not filled properly");
         }
 
@@ -53,7 +54,10 @@ public class Context {
             throw new RuntimeException("Folder " + new File(CACHE_FOLDER).getAbsolutePath() + " is not exist");
         }
 
-        return PARALLEL != null && USE_CACHE != null;
+        if (!isExist(COMPETITION_FOLDER) && !new File(COMPETITION_FOLDER).mkdirs()) {
+            throw new RuntimeException("Folder " + new File(COMPETITION_FOLDER).getAbsolutePath() + " is not exist");
+        }
+        return PARALLEL != null && USE_CACHE != null && COMPETITION_FOLDER != null;
     }
 
     private static boolean isExist(String path) {

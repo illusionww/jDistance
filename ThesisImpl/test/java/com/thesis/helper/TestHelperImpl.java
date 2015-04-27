@@ -22,6 +22,7 @@ public class TestHelperImpl {
         context.GNUPLOT_PATH = GNUPLOT_PATH;
         context.IMG_FOLDER = TEST_FOLDER;
         context.CACHE_FOLDER = TEST_FOLDER;
+        context.COMPETITION_FOLDER = TEST_FOLDER;
         context.USE_CACHE = false;
         context.PARALLEL = false;
 
