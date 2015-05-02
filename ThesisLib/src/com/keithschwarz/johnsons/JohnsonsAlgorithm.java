@@ -1,4 +1,4 @@
-package com.thesis.metric.algorithm.johnsons;
+package com.keithschwarz.johnsons;
 
 import jeigen.DenseMatrix;
 

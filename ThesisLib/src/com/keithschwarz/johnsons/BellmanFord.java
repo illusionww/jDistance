@@ -1,19 +1,19 @@
-package com.thesis.metric.algorithm.johnsons;
+package com.keithschwarz.johnsons;
 
 /**************************************************************************
  * File: BellmanFord.java
  * Author: Keith Schwarz (htiek@cs.stanford.edu)
  *
- * An implementation of the Bellman-Ford algorithm for single-source shortest
- * paths.  Like Dijkstra's algorithm, the Bellman-Ford algorithm computes the
+ * An implementation of the Bellman-Ford matrix for single-source shortest
+ * paths.  Like Dijkstra's matrix, the Bellman-Ford matrix computes the
  * shortest paths from a source node to all other nodes in the graph.  However,
- * unlike Dijkstra's algorithm, the Bellman-Ford algorithm works correctly in
+ * unlike Dijkstra's matrix, the Bellman-Ford matrix works correctly in
  * graphs containing negative-cost edges, so long as the graph does not contain
  * a negative cycle (in which case the cost of a shortest path may not be well-
  * defined).
  *
- * The Bellman-Ford algorithm, like the Floyd-Warshall algorithm, is a classic
- * example of a dynamic programming algorithm.  The idea behind the algorithm
+ * The Bellman-Ford matrix, like the Floyd-Warshall matrix, is a classic
+ * example of a dynamic programming matrix.  The idea behind the matrix
  * is to consider what the shortest path is from the source node s to each
  * other node in the graph, subject to the constraint that each path uses no
  * more than k edges.  When k = n, this contains all acyclic paths in the graph
@@ -47,27 +47,27 @@ package com.thesis.metric.algorithm.johnsons;
  * This implementation computes this recurrence from the bottom up by beginning
  * with k = 0 and progressively increasing it until it reaches |V|.
  *
- * The runtime of this algorithm is easily determined.  We need to compute the
+ * The runtime of this matrix is easily determined.  We need to compute the
  * value of D(t, |V|) for each t, so O(|V|) iterations of the recurrence
  * computation are required.  On each iteration, for each node, we'll scan the
  * outgoing edges from that node, and so each iteration visits each edge
  * exactly once.  This takes time O(|E|), so the overall runtime is O(|V||E|).
- * An interesting detail about this algorithm is that since |E| = O(|V|^2), in
- * the worst case this algorithm runs in time O(|V|^3), which is the same
- * runtime as the Floyd-Warshall algorithm.  However, Floyd-Warshall actually
+ * An interesting detail about this matrix is that since |E| = O(|V|^2), in
+ * the worst case this matrix runs in time O(|V|^3), which is the same
+ * runtime as the Floyd-Warshall matrix.  However, Floyd-Warshall actually
  * produces the lengths of all paths between all pairs of points in this time,
  * and so it makes more sense to run Floyd-Warshall rather than Bellman-Ford!
  * That said, on sparse graphs (|E| = Theta(|V|)) the runtime is O(|V|^2),
  * which is much faster.
  *
- * The Bellman-Ford algorithm is interesting and useful for several reasons,
+ * The Bellman-Ford matrix is interesting and useful for several reasons,
  * excluding historical relevance.  First, the update rule of the Bellman-Ford
- * algorithm can be computed in a distributed fashion, making it possible for
+ * matrix can be computed in a distributed fashion, making it possible for
  * independent computers to each determine their distance from some predefined
- * computer using the algorithm.  This allows the algorithm to be used in
- * network routing protocols.  Second, the Bellman-Ford algorithm can be used
- * as a subroutine of Johnson's algorithm, an all-pairs shortest paths
- * algorithm that is asymptotically faster than the Floyd-Warshall algorithm on
+ * computer using the matrix.  This allows the matrix to be used in
+ * network routing protocols.  Second, the Bellman-Ford matrix can be used
+ * as a subroutine of Johnson's matrix, an all-pairs shortest paths
+ * matrix that is asymptotically faster than the Floyd-Warshall matrix on
  * sparse graphs.
  */
 
@@ -80,7 +80,7 @@ final class BellmanFord {
      * the graph are unreachable from s, they will be reported at infinite
      * distance.
      *
-     * @param graph The graph upon which to run Dijkstra's algorithm.
+     * @param graph The graph upon which to run Dijkstra's matrix.
      * @param source The source node in the graph.
      * @return A map from nodes in the graph to their distances from the source.
      */

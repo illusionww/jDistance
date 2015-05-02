@@ -1,4 +1,4 @@
-package com.thesis.metric.algorithm.johnsons;
+package com.keithschwarz.johnsons;
 
 /***********************************************************************
  * File: FibonacciHeap.java
@@ -10,7 +10,7 @@ package com.thesis.metric.algorithm.johnsons;
  * for many operations.  In particular, insert, peek, and decrease-key all
  * run in amortized O(1) time.  dequeueMin and delete each run in amortized
  * O(lg n) time.  This allows algorithms that rely heavily on decrease-key
- * to gain significant performance boosts.  For example, Dijkstra's algorithm
+ * to gain significant performance boosts.  For example, Dijkstra's matrix
  * for single-source shortest paths can be shown to run in O(m + n lg n) using
  * a Fibonacci heap, compared to O(m lg n) using a standard binary or binomial
  * heap.

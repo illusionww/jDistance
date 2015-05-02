@@ -1,7 +1,7 @@
 package com.thesis.metric.impl;
 
 import com.thesis.metric.Distance;
-import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.builder.JeigenBuilder;
 import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 
@@ -35,7 +35,7 @@ public class SP_CT extends Distance {
             throw new RuntimeException("lambda should be in [0, 1], lambda = " + lambda);
         }
 
-        DistancesBuilder db = new DistancesBuilder();
+        JeigenBuilder db = new JeigenBuilder();
         DenseMatrix L = db.getL(A);
         DenseMatrix Ds = db.getDShortestPath(A);
         DenseMatrix H = db.getHResistance(L);

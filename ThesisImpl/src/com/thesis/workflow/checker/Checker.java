@@ -4,7 +4,7 @@ import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.Distance;
-import com.thesis.metric.DistancesHelper;
+import com.thesis.metric.builder.JeigenHelper;
 import com.thesis.utils.Cloneable;
 import jeigen.DenseMatrix;
 import org.slf4j.Logger;
@@ -81,7 +81,7 @@ public abstract class Checker implements Cloneable {
 
     protected boolean hasNaN(DenseMatrix D) {
         boolean nan = false;
-        for (double[] row : DistancesHelper.toArray2(D)) {
+        for (double[] row : JeigenHelper.toArray2(D)) {
             for (double item : row) {
                 if (Double.isNaN(item) || Double.isInfinite(item)) {
                     nan = true;

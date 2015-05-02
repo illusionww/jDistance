@@ -1,7 +1,7 @@
 package com.thesis.metric.impl;
 
 import com.thesis.metric.Distance;
-import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.builder.JeigenBuilder;
 import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 
@@ -31,7 +31,7 @@ public class LogForest extends Distance {
 
     @Override
     public DenseMatrix getD(DenseMatrix A, double t) {
-        DistancesBuilder db = new DistancesBuilder();
+        JeigenBuilder db = new JeigenBuilder();
         DenseMatrix L = db.getL(A);
         DenseMatrix H0 = db.getH0Forest(L, t);
         DenseMatrix H = db.H0toH(H0);

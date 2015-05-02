@@ -1,7 +1,7 @@
 package com.thesis.metric.impl;
 
 import com.thesis.metric.Distance;
-import com.thesis.metric.DistancesBuilder;
+import com.thesis.metric.builder.JeigenBuilder;
 import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 
@@ -31,7 +31,7 @@ public class FreeEnergy extends Distance {
 
     @Override
     public DenseMatrix getD(DenseMatrix A, double beta) {
-        DistancesBuilder db = new DistancesBuilder();
+        JeigenBuilder db = new JeigenBuilder();
         return db.getDFreeEnergy(A, beta);
     }
 }

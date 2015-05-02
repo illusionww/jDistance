@@ -4,7 +4,7 @@ import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.graph.Graph;
 import com.thesis.graph.SimpleNodeData;
 import com.thesis.metric.DistanceClass;
-import com.thesis.metric.DistancesHelper;
+import com.thesis.metric.builder.JeigenHelper;
 import com.thesis.metric.NodesDistanceDTO;
 import jeigen.DenseMatrix;
 
@@ -45,7 +45,7 @@ public class DeviationChecker extends Checker {
     @Override
     protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         NodesDistanceDTO nodesDistanceSP = bestBySP.get(graph);
-        double[][] arrD = DistancesHelper.toArray2(D);
+        double[][] arrD = JeigenHelper.toArray2(D);
         Double nodesDistance = arrD[nodesDistanceSP.getI()][nodesDistanceSP.getJ()];
         Double sum = Arrays.stream(arrD).flatMapToDouble(Arrays::stream).sum();
         Double avg = sum / (arrD.length * (arrD.length - 1));

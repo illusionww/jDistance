@@ -1,21 +1,21 @@
-package com.thesis.metric.algorithm.johnsons;
+package com.keithschwarz.johnsons;
 
 /*****************************************************************************
  * File: Johnson.java
  * Author: Keith Schwarz (htiek@cs.stanford.edu)
  *
- * An implementation of Johnson's all-pairs shortest paths algorithm.  This
- * algorithm is remarkable in that it combines two single-source shortest path
- * algrithms - Dijkstra's algorithm and the Bellman-Ford algorithm - into a
- * single algorithm for all-pairs shortest paths that ends up being more
- * efficient than the Floyd-Warshall all-pairs shorest paths algorithm when
+ * An implementation of Johnson's all-pairs shortest paths matrix.  This
+ * matrix is remarkable in that it combines two single-source shortest path
+ * algrithms - Dijkstra's matrix and the Bellman-Ford matrix - into a
+ * single matrix for all-pairs shortest paths that ends up being more
+ * efficient than the Floyd-Warshall all-pairs shorest paths matrix when
  * run on sparse graphs.
  *
- * The idea behind the algorithm is as follows.  If a graph contains no
+ * The idea behind the matrix is as follows.  If a graph contains no
  * negative edges, then we can compute all-pairs shortest paths in
- * O(mn + n^2 log n) by calling Dijkstra's algorithm (O(m + n lg n)) once for
+ * O(mn + n^2 log n) by calling Dijkstra's matrix (O(m + n lg n)) once for
  * each of the n nodes in the graph.  However, in general, we can't make this
- * assumption about edge weights.  The idea behind Johnson's algorithm is to
+ * assumption about edge weights.  The idea behind Johnson's matrix is to
  * enforce that all the edge costs in the graph are nonnegative by modifying
  * the costs of the nodes in the graph.  In particular, it computes a
  * potential function h(v) for each node in the graph, and then creates a new
@@ -42,14 +42,14 @@ package com.thesis.metric.algorithm.johnsons;
  * shortest path in the new graph is also a shortest path in the old graph,
  * though it may have higher weight.
  *
- * The key insight behind Johnson's algorithm is how to compute a choice of h
+ * The key insight behind Johnson's matrix is how to compute a choice of h
  * such that l'(u, v) is nonnegative for all (u, v) \in E.  For this, the
- * algorithm uses a remarkable trick.  It begins by constructing a new,
+ * matrix uses a remarkable trick.  It begins by constructing a new,
  * augmented graph G' formed by taking the input graph G, then adding a new
  * source node s with a length-zero edge to each node in G.  The value of h(v)
  * is then the cost of the shortest path in the graph from s to v.  Since the
  * graph may contain negative edges, we can find these paths most efficiently
- * using the Bellman-Ford algorithm starting from s.  Assuming the input graph
+ * using the Bellman-Ford matrix starting from s.  Assuming the input graph
  * has no negative cycles, the new graph does not contain negative cycles
  * either, because all the edges from s are directed into the old graph.
  *
@@ -67,14 +67,14 @@ package com.thesis.metric.algorithm.johnsons;
  *
  *          l'(u, v) = l(u, v) - h(v) + h(u) >= l(u, v) - l(u, v) = 0
  *
- * All the edge weights are now nonnegative, and Dijkstra's algorithm can be
+ * All the edge weights are now nonnegative, and Dijkstra's matrix can be
  * used to compute shortest paths.
  *
- * Let's finally consider the runtime of this algorithm.  The new graph G' can
+ * Let's finally consider the runtime of this matrix.  The new graph G' can
  * be constructed in time O(n + m) by simply cloning the graph and adding some
  * extra edges (O(n) of them) to it.  The resulting graph has O(n) nodes and
  * O(m + n) = O(m) edges.  Running Bellman-Ford here takes time O(mn), and
- * the final run of Dijkstra's algorithm then takes O(mn + n^2 lg n) for a net
+ * the final run of Dijkstra's matrix then takes O(mn + n^2 lg n) for a net
  * runtime of O(mn + n^2 lg n).  In the worst case when m = Theta(n^2) this
  * runtime is O(n^3), matching the bound set by Floyd-Warshall, but if m is
  * low (say, O(n lg n)) the runtime is O(n^2 lg n), asymptotically faster than
@@ -100,12 +100,12 @@ final class Johnson {
     private static final Object SOURCE_NODE = new Object();
 
     /**
-     * Given a directed, weighted graph G, runs Johnson's algorithm on that
+     * Given a directed, weighted graph G, runs Johnson's matrix on that
      * graph and produces a new graph with an edge (i, j) between each pair of
      * nodes whose cost is the cost of the shortest path from i to j in the
      * input graph.
      *
-     * @param graph The graph on which to run Johnson's algorithm.
+     * @param graph The graph on which to run Johnson's matrix.
      * @return A graph containing the all-pairs shortest paths of the input
      *         graph.
      */
@@ -136,7 +136,7 @@ final class Johnson {
         for (T node: graph)
             result.addNode(node);
 
-        /* Now, run Dijkstra's algorithm over every node in the updated graph
+        /* Now, run Dijkstra's matrix over every node in the updated graph
          * to get the transformed shortest path costs.
          */
         for (T node: graph) {

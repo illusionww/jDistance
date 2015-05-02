@@ -1,4 +1,4 @@
-package com.thesis.metric;
+package com.thesis.metric.builder;
 
 import jeigen.DenseMatrix;
 
@@ -7,13 +7,9 @@ import java.util.function.UnaryOperator;
 import static jeigen.Shortcuts.diag;
 import static jeigen.Shortcuts.ones;
 
-public class DistancesHelper {
+public class JeigenHelper {
     public static DenseMatrix log(DenseMatrix A) {
         return elementWise(A, Math::log);
-    }
-
-    public static DenseMatrix sqrt(DenseMatrix A) {
-        return elementWise(A, Math::sqrt);
     }
 
     public static DenseMatrix exp(DenseMatrix A) {
@@ -21,7 +17,7 @@ public class DistancesHelper {
     }
 
     private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
-        double[][] values = DistancesHelper.toArray2(A);
+        double[][] values = toArray2(A);
         for (int i = 0; i < values.length; i++) {
             for (int j = 0; j < values[i].length; j++) {
                 values[i][j] = operator.apply(values[i][j]);

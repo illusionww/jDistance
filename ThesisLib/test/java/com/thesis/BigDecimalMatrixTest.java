@@ -1,13 +1,12 @@
 package com.thesis;
 
 import com.thesis.helper.TestHelperLib;
-import com.thesis.metric.DistancesHelper;
-import com.thesis.metric.algorithm.exponential.BigDecimalMatrix;
+import com.thesis.metric.builder.JeigenHelper;
+import com.thesis.utils.BigDecimalMatrix;
 import jeigen.DenseMatrix;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.thesis.helper.TestHelperLib.equalDoubleNonStrict;
 import static org.junit.Assert.assertTrue;
 
 public class BigDecimalMatrixTest {
@@ -79,7 +78,7 @@ public class BigDecimalMatrixTest {
     public void testMExp0() {
         BigDecimalMatrix m1 = new BigDecimalMatrix(new double[][]{{0.0}});
         m1 = m1.mexp(10);
-        BigDecimalMatrix i = BigDecimalMatrix.ones(1);
+        BigDecimalMatrix i = BigDecimalMatrix.eye(1);
         assertTrue("Not equal", i.equals(m1));
     }
 
@@ -90,7 +89,7 @@ public class BigDecimalMatrixTest {
         m1 = m1.mexp(100);
         m2 = m2.mexp(100);
         BigDecimalMatrix res = m1.mmul(m2);
-        BigDecimalMatrix i = BigDecimalMatrix.ones(3);
+        BigDecimalMatrix i = BigDecimalMatrix.eye(3);
 
         double[][] m2array = res.getDoubleArray();
         double[][] m2darray = i.getDoubleArray();
@@ -109,7 +108,7 @@ public class BigDecimalMatrixTest {
 
         double[][] m2array = res.getDoubleArray();
         double[][] m2darray = m3.getDoubleArray();
-        assertTrue("Not equal", TestHelperLib.equalArraysStrict(m2array, m2darray));
+        assertTrue("Not equal", TestHelperLib.equalArraysNonStrict(m2array, m2darray));
     }
 
     @Test
@@ -120,7 +119,7 @@ public class BigDecimalMatrixTest {
         m2 = m2.mexp();
 
         double[][] m2array = m1.getDoubleArray();
-        double[][] m2darray = DistancesHelper.toArray2(m2);
+        double[][] m2darray = JeigenHelper.toArray2(m2);
         assertTrue("Not equal", TestHelperLib.equalArraysStrict(m2array, m2darray));
     }
 }

@@ -1,15 +1,15 @@
-package com.thesis.metric.algorithm.johnsons;
+package com.keithschwarz.johnsons;
 
 /**************************************************************************
  * File: Dijkstra.java
  * Author: Keith Schwarz (htiek@cs.stanford.edu)
  *
- * An implementation of Dijkstra's single-source shortest path algorithm.
- * The algorithm takes as input a directed graph with non-negative edge
+ * An implementation of Dijkstra's single-source shortest path matrix.
+ * The matrix takes as input a directed graph with non-negative edge
  * costs and a source node, then computes the shortest path from that node
  * to each other node in the graph.
  *
- * The algorithm works by maintaining a priority queue of nodes whose
+ * The matrix works by maintaining a priority queue of nodes whose
  * priorities are the lengths of some path from the source node to the
  * node in question.  At each step, the algortihm dequeues a node from
  * this priority queue, records that node as being at the indicated
@@ -17,7 +17,7 @@ package com.thesis.metric.algorithm.johnsons;
  * in the graph by considering all outgoing edges from the recently-
  * dequeued node to those nodes.
  *
- * In the course of this algorithm, the code makes up to |E| calls to
+ * In the course of this matrix, the code makes up to |E| calls to
  * decrease-key on the heap (since in the worst case every edge from every
  * node will yield a shorter path to some node than before) and |V| calls
  * to dequeue-min (since each node is removed from the prioritiy queue
@@ -39,7 +39,7 @@ final class Dijkstra {
      * the graph are unreachable from s, they will be reported at distance
      * +infinity.
      *
-     * @param graph The graph upon which to run Dijkstra's algorithm.
+     * @param graph The graph upon which to run Dijkstra's matrix.
      * @param source The source node in the graph.
      * @return A map from nodes in the graph to their distances from the source.
      */
@@ -73,7 +73,7 @@ final class Dijkstra {
 
         /* Keep processing the queue until no nodes remain. */
         while (!pq.isEmpty()) {
-            /* Grab the current node.  The algorithm guarantees that we now
+            /* Grab the current node.  The matrix guarantees that we now
              * have the shortest distance to it.
              */
             FibonacciHeap.Entry<T> curr = pq.dequeueMin();
