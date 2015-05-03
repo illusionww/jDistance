@@ -52,8 +52,8 @@ public class ClustererCompetitionTask {
                 DistanceClass.LOG_FOREST,
                 DistanceClass.FOREST,
                 DistanceClass.PLAIN_WALK,
-                DistanceClass.COMMUNICABILITY,
-                DistanceClass.LOG_COMMUNICABILITY
+                DistanceClass.COMM,
+                DistanceClass.LOG_COMM
         );
         HashMap<Distance, LinkedList<Double>> results = new HashMap<>();
 

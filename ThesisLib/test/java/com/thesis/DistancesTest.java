@@ -173,7 +173,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphCommunicabilityDistance() {
-        Distance distance = DistanceClass.COMMUNICABILITY.getInstance();
+        Distance distance = DistanceClass.COMM.getInstance();
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 0.964 / D.get(0, 1);
         assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.964));

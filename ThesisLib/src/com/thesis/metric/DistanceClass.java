@@ -10,8 +10,10 @@ public enum DistanceClass {
     LOG_FOREST(LogForest.class),
     FOREST(Forest.class),
     PLAIN_WALK(PlainWalk.class),
-    COMMUNICABILITY(Comm.class),
-    LOG_COMMUNICABILITY(LogComm.class),
+    COMM(Comm.class),
+    COMM_BD(Comm_BD.class),
+    LOG_COMM(LogComm.class),
+    LOG_COMM_BD(LogComm_BD.class),
     SP_CT(com.thesis.metric.impl.SP_CT.class),
     FREE_ENERGY(FreeEnergy.class);
 

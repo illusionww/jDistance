@@ -7,22 +7,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8d38d350-0497-4360-a2df-735b9267c49b" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/builder/BDBuilder.java" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\builder\BigDecimalBuilder.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\builder\BigDecimalHelper.java" afterPath="" />
-      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\builder\JeigenHelper.java" afterPath="" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\impl\Communicability.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/Comm.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\impl\LogCommunicability.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/LogComm.java" />
-      <change type="MOVED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\utils\BigDecimalMatrix.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/BDMatrix.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/BigDecimalMatrixTest.java" afterPath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/BigDecimalMatrixTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/Checker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/classifier/Classifier.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/classifier/Classifier.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/clusterer/Clusterer.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/clusterer/Clusterer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/DeviationChecker.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/DeviationChecker.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\impl\Communicability.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\metric\impl\LogCommunicability.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\illus_000\Documents\GitHub\thesis\ThesisLib\src\com\thesis\utils\BigDecimalMatrix.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/competition/ClassifierCompetitionTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/competition/ClassifierCompetitionTask.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/competition/ClustererCompetitionTask.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/competition/ClustererCompetitionTask.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/DistancesTest.java" afterPath="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/DistancesTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/builder/JeigenBuilder.java" afterPath="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/builder/JeigenBuilder.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" afterPath="$PROJECT_DIR$/ThesisImpl/src/com/thesis/Main.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" afterPath="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Thesis.iws" />
@@ -52,31 +45,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="JeigenBuilder.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/builder/JeigenBuilder.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="17" column="15" selection-start-line="17" selection-start-column="15" selection-end-line="17" selection-end-column="15" />
-              <folding>
-                <element signature="e#426#427#0" expanded="true" />
-                <element signature="e#456#457#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MatrixAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/MatrixAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="BDMatrix.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/BDMatrix.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -109,10 +77,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BigDecimalMatrixTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BigDecimalMatrixTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/BigDecimalMatrixTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="2.093596">
+            <state vertical-scroll-proportion="0.0">
               <caret line="92" column="27" selection-start-line="92" selection-start-column="27" selection-end-line="92" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -157,10 +125,30 @@
         <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+              <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DistanceClass.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProcessingTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-0.43097642">
+              <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -190,9 +178,7 @@
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/CheckerTestResultDTO.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClustererChecker.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/ClassifierChecker.java" />
-        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/task/DefaultTask.java" />
-        <option value="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/generator/DCRGeneratorAdapter.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/LogCommunicability.java" />
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/adapter/gnuplot/GNUPlotAdapter.java" />
@@ -238,6 +224,8 @@
         <option value="$PROJECT_DIR$/ThesisImpl/src/com/thesis/workflow/checker/DeviationChecker.java" />
         <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/utils/BDMatrix.java" />
         <option value="$PROJECT_DIR$/ThesisLib/test/java/com/thesis/BigDecimalMatrixTest.java" />
+        <option value="$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java" />
+        <option value="$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java" />
       </list>
     </option>
   </component>
@@ -1386,16 +1374,16 @@
       <workItem from="1430034078327" duration="25000" />
       <workItem from="1430034143871" duration="9758000" />
       <workItem from="1430165409679" duration="1074000" />
-      <workItem from="1430589105266" duration="13028000" />
+      <workItem from="1430589105266" duration="14065000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="461127000" />
+    <option name="totallyTimeSpent" value="462164000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="754" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="754" extended-state="7" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1405,10 +1393,10 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3022508" sideWeight="0.50907713" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3022508" sideWeight="0.50907713" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23146747" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2579425" sideWeight="0.5" order="4" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32980332" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.43086818" sideWeight="0.505295" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962178" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1703,14 +1691,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="100" column="0" selection-start-line="100" selection-start-column="0" selection-end-line="100" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/impl/LogComm.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1804,16 +1784,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="0" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/builder/JeigenBuilder.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1889,11 +1859,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ThesisLib/test/java/com/thesis/BigDecimalMatrixTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.093596">
+        <state vertical-scroll-proportion="0.0">
           <caret line="92" column="27" selection-start-line="92" selection-start-column="27" selection-end-line="92" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/Distance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="5" column="22" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisLib/src/com/thesis/metric/DistanceClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="9" column="32" selection-start-line="9" selection-start-column="32" selection-end-line="9" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ThesisImpl/test/java/com/thesis/ProcessingTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.43097642">
+          <caret line="73" column="5" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
+          <folding />
         </state>
       </provider>
     </entry>

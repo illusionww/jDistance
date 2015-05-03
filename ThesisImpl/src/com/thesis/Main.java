@@ -3,25 +3,17 @@ package com.thesis;
 import com.thesis.adapter.generator.GraphBundle;
 import com.thesis.metric.Distance;
 import com.thesis.metric.DistanceClass;
-import com.thesis.metric.Scale;
 import com.thesis.workflow.Context;
-import com.thesis.workflow.TaskChain;
-import com.thesis.workflow.checker.ClassifierChecker;
 import com.thesis.workflow.checker.ClustererChecker;
-import com.thesis.workflow.competition.ClassifierCompetitionTask;
 import com.thesis.workflow.competition.ClustererCompetitionTask;
-import com.thesis.workflow.task.ClassifierBestParamTask;
-import com.thesis.workflow.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.IntStream;
 
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -39,8 +31,8 @@ public class Main {
                 DistanceClass.LOG_FOREST.getInstance(),
                 DistanceClass.FOREST.getInstance(),
                 DistanceClass.PLAIN_WALK.getInstance(),
-                DistanceClass.COMMUNICABILITY.getInstance(),
-                DistanceClass.LOG_COMMUNICABILITY.getInstance()
+                DistanceClass.COMM.getInstance(),
+                DistanceClass.LOG_COMM.getInstance()
         );
 
         Arrays.asList(20).forEach(graphCount -> {
@@ -64,8 +56,8 @@ public class Main {
 //                DistanceClass.LOG_FOREST,
 //                DistanceClass.FOREST,
 //                DistanceClass.PLAIN_WALK,
-//                DistanceClass.COMMUNICABILITY,
-                DistanceClass.LOG_COMMUNICABILITY
+//                DistanceClass.COMM,
+                DistanceClass.LOG_COMM
         );
 
         Arrays.asList(3).forEach(graphCount -> {
