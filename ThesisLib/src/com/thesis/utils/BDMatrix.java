@@ -1,5 +1,6 @@
 package com.thesis.utils;
 
+import com.sun.org.apache.xpath.internal.SourceTree;
 import jeigen.DenseMatrix;
 import org.nevec.rjm.BigDecimalMath;
 
@@ -429,7 +430,12 @@ public class BDMatrix {
         BDMatrix result = new BDMatrix(rows, cols);
         int capacity = rows * cols;
         for (int i = 0; i < capacity; i++) {
-            result.values[i] = BigDecimalMath.sqrt(values[i]);
+            try {
+                result.values[i] = BigDecimalMath.sqrt(values[i]);
+            } catch (ArithmeticException e) {
+                System.out.println("Exception while sqrt, value: " + values[i]);
+                result.values[i] = null;
+            }
         }
         return result;
     }

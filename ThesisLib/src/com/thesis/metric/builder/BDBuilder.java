@@ -10,7 +10,7 @@ import java.util.function.UnaryOperator;
 public class BDBuilder {
     // H0 = exp(tA)
     public BDMatrix getH0Communicability(BDMatrix A, double t) {
-        return A.mul(t).mexp(100);
+        return A.mul(t).mexp(7);
     }
 
     // H = log(H0)
