@@ -33,15 +33,17 @@ public class Main {
 
     private static void drawGraphsScenario() throws ParserConfigurationException, SAXException, IOException {
         List<Distance> distances = Arrays.asList(
+                DistanceClass.COMM_D.getInstance(),
                 DistanceClass.COMM.getInstance(),
-                DistanceClass.COMM_BD.getInstance()
+                DistanceClass.LOG_COMM_D.getInstance(),
+                DistanceClass.LOG_COMM.getInstance()
         );
 
-        Arrays.asList(2).forEach(graphCount -> {
-            Arrays.asList(100).forEach(numOfNodes -> {
+        Arrays.asList(5).forEach(graphCount -> {
+            Arrays.asList(200).forEach(numOfNodes -> {
                 Arrays.asList(0.1).forEach(pOut -> {
                     GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCount);
-                    ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 3, 0.3), distances, 20).execute().draw();
+                    ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 3, 0.3), distances, 250).execute().draw();
 
                 });
             });

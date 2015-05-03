@@ -2,13 +2,11 @@ package com.thesis.metric.impl;
 
 import com.thesis.metric.Distance;
 import com.thesis.metric.Scale;
-import com.thesis.metric.builder.BDBuilder;
-import com.thesis.utils.BDMatrix;
-import com.thesis.utils.MatrixAdapter;
+import com.thesis.metric.builder.JeigenBuilder;
 import jeigen.DenseMatrix;
 
-public class Comm_BD extends Distance {
-    String name = "Comm_BD";
+public class LogComm_D extends Distance {
+    String name = "logComm Dummy";
     Scale scale = Scale.FRACTION;
 
     @Override
@@ -33,12 +31,10 @@ public class Comm_BD extends Distance {
 
     @Override
     public DenseMatrix getD(DenseMatrix A, double t) {
-        BDMatrix A_BD = MatrixAdapter.toBD(A);
-        BDBuilder db = new BDBuilder();
-        BDMatrix H = db.getH0Communicability(A_BD, t);
-        BDMatrix D = db.getD(H);
-        BDMatrix result = db.sqrtD(D);
-        BDMatrix norm = db.normalization(result);
-        return MatrixAdapter.toDense(norm);
+        JeigenBuilder db = new JeigenBuilder();
+        DenseMatrix H0 = db.getH0DummyCommunicability(A, t);
+        DenseMatrix H = db.H0toH(H0);
+        DenseMatrix D = db.getD(H);
+        return db.sqrtD(D);
     }
 }

@@ -47,6 +47,11 @@ public class JeigenBuilder {
         return A.mul(t).mexp();
     }
 
+    // H0 = exp(tA)
+    public DenseMatrix getH0DummyCommunicability(DenseMatrix A, double t) {
+        return dummy_mexp(A.mul(t), 30);
+    }
+
     // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
     public DenseMatrix getD(DenseMatrix H) {
         int d = H.cols;
@@ -130,6 +135,19 @@ public class JeigenBuilder {
         }
 
         return A.fullPivHouseholderQRSolve(diag(ones(A.cols, 1)));
+    }
+
+    public static DenseMatrix dummy_mexp(DenseMatrix A, int nSteps) {
+        DenseMatrix runtot = eye(A.rows);
+        DenseMatrix sum = eye(A.rows);
+
+        double factorial = 1;
+        for (int i = 1; i <= nSteps; i++) {
+            factorial /= (double) i;
+            sum = sum.mmul(A);
+            runtot = runtot.add(sum.mul(factorial));
+        }
+        return runtot;
     }
 
     public static DenseMatrix normalization(DenseMatrix dm) {
