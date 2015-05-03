@@ -1,8 +1,8 @@
 package com.thesis;
 
 import com.thesis.helper.TestHelperLib;
-import com.thesis.metric.builder.JeigenHelper;
-import com.thesis.utils.BigDecimalMatrix;
+import com.thesis.utils.BDMatrix;
+import com.thesis.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +14,7 @@ public class BigDecimalMatrixTest {
     private double[][] m2;
     private double[][] m3;
     private double[][] m4;
+    private double[][] m5;
 
     @Before
     public void prepare() {
@@ -37,14 +38,20 @@ public class BigDecimalMatrixTest {
                 {0, 1, 3, 3},
                 {1, 1, 4, 4}
         };
+        m5 = new double[][]{
+                {1, 0, 1},
+                {0, 1, 3},
+                {1, 1, 4},
+                {2, 4, 3}
+        };
     }
 
     @Test
     public void testAdd() {
-        BigDecimalMatrix m1 = new BigDecimalMatrix(this.m1);
-        BigDecimalMatrix m2 = new BigDecimalMatrix(this.m2);
-        BigDecimalMatrix m3 = new BigDecimalMatrix(this.m3);
-        BigDecimalMatrix res = m1.add(m2).add(m3);
+        BDMatrix m1 = new BDMatrix(this.m1);
+        BDMatrix m2 = new BDMatrix(this.m2);
+        BDMatrix m3 = new BDMatrix(this.m3);
+        BDMatrix res = m1.add(m2).add(m3);
 
         DenseMatrix m1d = new DenseMatrix(this.m1);
         DenseMatrix m2d = new DenseMatrix(this.m2);
@@ -56,10 +63,10 @@ public class BigDecimalMatrixTest {
 
     @Test
     public void testMMul() {
-        BigDecimalMatrix m1 = new BigDecimalMatrix(this.m1);
-        BigDecimalMatrix m2 = new BigDecimalMatrix(this.m2);
-        BigDecimalMatrix m3 = new BigDecimalMatrix(this.m3);
-        BigDecimalMatrix res = m1.mmul(m2).mmul(m3);
+        BDMatrix m1 = new BDMatrix(this.m1);
+        BDMatrix m2 = new BDMatrix(this.m2);
+        BDMatrix m3 = new BDMatrix(this.m3);
+        BDMatrix res = m1.mmul(m2).mmul(m3);
 
         DenseMatrix m1d = new DenseMatrix(this.m1);
         DenseMatrix m2d = new DenseMatrix(this.m2);
@@ -71,9 +78,9 @@ public class BigDecimalMatrixTest {
 
     @Test
     public void testMMulNotSquare() {
-        BigDecimalMatrix m1 = new BigDecimalMatrix(this.m1);
-        BigDecimalMatrix m4 = new BigDecimalMatrix(this.m4);
-        BigDecimalMatrix res = m1.mmul(m4);
+        BDMatrix m1 = new BDMatrix(this.m1);
+        BDMatrix m4 = new BDMatrix(this.m4);
+        BDMatrix res = m1.mmul(m4);
 
         DenseMatrix m1d = new DenseMatrix(this.m1);
         DenseMatrix m4d = new DenseMatrix(this.m4);
@@ -83,9 +90,22 @@ public class BigDecimalMatrixTest {
     }
 
     @Test
+    public void testMMulNotSquare2() {
+        BDMatrix m1 = new BDMatrix(this.m1);
+        BDMatrix m5 = new BDMatrix(this.m5);
+        BDMatrix res = m5.mmul(m1);
+
+        DenseMatrix m1d = new DenseMatrix(this.m1);
+        DenseMatrix m5d = new DenseMatrix(this.m5);
+        DenseMatrix resd = m5d.mmul(m1d);
+
+        assertTrue("Not equal", res.equals(resd));
+    }
+
+    @Test
     public void testMul() {
-        BigDecimalMatrix m1 = new BigDecimalMatrix(this.m1);
-        BigDecimalMatrix res = m1.mul(4).mul(2);
+        BDMatrix m1 = new BDMatrix(this.m1);
+        BDMatrix res = m1.mul(4).mul(2);
 
         DenseMatrix m1d = new DenseMatrix(this.m1);
         DenseMatrix resd = m1d.mul(4).mul(2);
@@ -95,50 +115,50 @@ public class BigDecimalMatrixTest {
 
     @Test
     public void testMExp0() {
-        BigDecimalMatrix m1 = new BigDecimalMatrix(new double[][]{{0.0}});
+        BDMatrix m1 = new BDMatrix(new double[][]{{0.0}});
         m1 = m1.mexp(10);
-        BigDecimalMatrix i = BigDecimalMatrix.eye(1);
+        BDMatrix i = BDMatrix.eye(1);
         assertTrue("Not equal", i.equals(m1));
     }
 
     @Test
     public void testMExpMulInverse() {
-        BigDecimalMatrix m1 = new BigDecimalMatrix(this.m1);
-        BigDecimalMatrix m2 = new BigDecimalMatrix(this.m1).mul(-1.0);
+        BDMatrix m1 = new BDMatrix(this.m1);
+        BDMatrix m2 = new BDMatrix(this.m1).mul(-1.0);
         m1 = m1.mexp(100);
         m2 = m2.mexp(100);
-        BigDecimalMatrix res = m1.mmul(m2);
-        BigDecimalMatrix i = BigDecimalMatrix.eye(3);
+        BDMatrix res = m1.mmul(m2);
+        BDMatrix i = BDMatrix.eye(3);
 
-        double[][] m2array = res.getDoubleArray();
-        double[][] m2darray = i.getDoubleArray();
+        double[][] m2array = MatrixAdapter.toDoubleArray2(res);
+        double[][] m2darray = MatrixAdapter.toDoubleArray2(i);
         assertTrue("Not equal", TestHelperLib.equalArraysStrict(m2array, m2darray));
     }
 
     @Test
     public void testMExpMMul() {
-        BigDecimalMatrix m1 = new BigDecimalMatrix(this.m1);
-        BigDecimalMatrix m2 = new BigDecimalMatrix(this.m2);
-        BigDecimalMatrix m3 = m1.add(m2);
+        BDMatrix m1 = new BDMatrix(this.m1);
+        BDMatrix m2 = new BDMatrix(this.m2);
+        BDMatrix m3 = m1.add(m2);
         m1 = m1.mexp(10000);
         m2 = m2.mexp(10000);
         m3 = m3.mexp(10000);
-        BigDecimalMatrix res = m1.mmul(m2);
+        BDMatrix res = m1.mmul(m2);
 
-        double[][] m2array = res.getDoubleArray();
-        double[][] m2darray = m3.getDoubleArray();
+        double[][] m2array = MatrixAdapter.toDoubleArray2(res);
+        double[][] m2darray = MatrixAdapter.toDoubleArray2(m3);
         assertTrue("Not equal", TestHelperLib.equalArraysNonStrict(m2array, m2darray));
     }
 
     @Test
     public void testMExp() {
-        BigDecimalMatrix m1 = new BigDecimalMatrix(this.m2);
+        BDMatrix m1 = new BDMatrix(this.m2);
         m1 = m1.mexp(10000);
         DenseMatrix m2 = new DenseMatrix(this.m2);
         m2 = m2.mexp();
 
-        double[][] m2array = m1.getDoubleArray();
-        double[][] m2darray = JeigenHelper.toArray2(m2);
+        double[][] m2array = MatrixAdapter.toDoubleArray2(m1);
+        double[][] m2darray = MatrixAdapter.toArray2(m2);
         assertTrue("Not equal", TestHelperLib.equalArraysStrict(m2array, m2darray));
     }
 }

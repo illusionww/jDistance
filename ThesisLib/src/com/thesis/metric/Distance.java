@@ -1,10 +1,7 @@
 package com.thesis.metric;
 
-import com.thesis.metric.builder.JeigenHelper;
-import com.thesis.utils.BigDecimalMatrix;
+import com.thesis.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
-
-import java.math.BigDecimal;
 
 public abstract class Distance {
     public abstract String getName();
@@ -19,7 +16,7 @@ public abstract class Distance {
 
     public NodesDistanceDTO getBiggestDistance(DenseMatrix A, double t) {
         NodesDistanceDTO p = new NodesDistanceDTO(0, 0, 0);
-        double[][] D = JeigenHelper.toArray2(getD(A, t));
+        double[][] D = MatrixAdapter.toArray2(getD(A, t));
         for (int i = 0; i < D.length; i++) {
             for(int j = 0; j < D[i].length; j++) {
                 if (p.getValue() < D[i][j]) {

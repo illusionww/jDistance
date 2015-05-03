@@ -1,6 +1,6 @@
 package com.thesis.clusterer;
 
-import com.thesis.metric.builder.JeigenHelper;
+import com.thesis.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
 
 import java.util.*;
@@ -9,7 +9,7 @@ public class Clusterer {
     private double[][] matrixWithWeights;
 
     public Clusterer(DenseMatrix matrixWithWeights) {
-        this.matrixWithWeights = JeigenHelper.toArray2(matrixWithWeights);
+        this.matrixWithWeights = MatrixAdapter.toArray2(matrixWithWeights);
     }
 
     //k количество кластеров

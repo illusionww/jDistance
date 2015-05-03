@@ -1,7 +1,7 @@
 package com.thesis.classifier;
 
 import com.thesis.graph.SimpleNodeData;
-import com.thesis.metric.builder.JeigenHelper;
+import com.thesis.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
 
 import java.util.*;
@@ -14,7 +14,7 @@ public class Classifier {
 
 
     public Classifier(DenseMatrix matrixWithWeights, ArrayList<SimpleNodeData> realData) {
-        this.matrixWithWeights = JeigenHelper.toArray2(matrixWithWeights);
+        this.matrixWithWeights = MatrixAdapter.toArray2(matrixWithWeights);
         this.realData = new ArrayList<>(realData);
         countColoredNodes = 0;
     }

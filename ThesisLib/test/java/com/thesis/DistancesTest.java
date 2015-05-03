@@ -1,8 +1,8 @@
 package com.thesis;
 
 import com.thesis.metric.*;
-import com.thesis.metric.builder.JeigenHelper;
 import com.thesis.metric.builder.JeigenBuilder;
+import com.thesis.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 
@@ -50,7 +50,7 @@ public class DistancesTest {
                 Double base = from + idx * step;
                 Double i = distance.getScale().calc(chainGraph, base);
                 DenseMatrix result = distance.getD(chainGraph, i);
-                double resultArray[][] = JeigenHelper.toArray2(result);
+                double resultArray[][] = MatrixAdapter.toArray2(result);
                 int d = resultArray.length;
                 for (int j = 1; j < d - 1; j++) {
                     for (int k = j + 1; k < d; k++) {
@@ -76,7 +76,7 @@ public class DistancesTest {
                 Double base = from + idx * step;
                 Double i = distance.getScale().calc(chainGraph, base);
                 DenseMatrix result = distance.getD(chainGraph, i);
-                double resultArray[][] = JeigenHelper.toArray2(result);
+                double resultArray[][] = MatrixAdapter.toArray2(result);
                 for (int j = 0; j < resultArray.length; j++) {
                     assertTrue(distance.getName() + ", parameter = " + i + " diagonal not zero:\n" + result, resultArray[j][j] == 0);
                 }
@@ -212,8 +212,8 @@ public class DistancesTest {
     @Test
     public void testTreeGraphSP_CTEquality() {
         Distance distance = DistanceClass.SP_CT.getInstance();
-        double[][] SP = JeigenHelper.toArray2(distance.getD(treeMatrix, 0));
-        double[][] CT = JeigenHelper.toArray2(distance.getD(treeMatrix, 1));
+        double[][] SP = MatrixAdapter.toArray2(distance.getD(treeMatrix, 0));
+        double[][] CT = MatrixAdapter.toArray2(distance.getD(treeMatrix, 1));
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
@@ -228,7 +228,7 @@ public class DistancesTest {
 
         DenseMatrix L = builder.getL(chainGraph);
         DenseMatrix H0 = builder.getH0Forest(L, 0);
-        double[][] forChain0 = JeigenHelper.toArray2(H0);
+        double[][] forChain0 = MatrixAdapter.toArray2(H0);
         double[][] forChain0etalon = {{1, 0, 0, 0},
                 {0, 1, 0, 0},
                 {0, 0, 1, 0},
@@ -236,7 +236,7 @@ public class DistancesTest {
         assertTrue(Arrays.deepToString(forChain0), equalArraysStrict(forChain0, forChain0etalon));
 
         DenseMatrix H05 = builder.getH0Forest(L, 0.5);
-        double[][] forChain05 = JeigenHelper.toArray2(H05);
+        double[][] forChain05 = MatrixAdapter.toArray2(H05);
         double[][] forChain05etalon = {{0.73214286, 0.19642857, 0.05357143, 0.01785714},
                 {0.19642857, 0.58928571, 0.16071429, 0.05357143},
                 {0.05357143, 0.16071429, 0.58928571, 0.19642857},
@@ -250,7 +250,7 @@ public class DistancesTest {
 
         DenseMatrix L = builder.getL(triangleGraph);
         DenseMatrix H0 = builder.getH0Forest(L, 0.2);
-        double[][] forChain02 = JeigenHelper.toArray2(H0);
+        double[][] forChain02 = MatrixAdapter.toArray2(H0);
         double[][] forChain0etalon = {{0.85185185, 0.11111111, 0.01851852, 0.01851852},
                 {0.11111111, 0.66666667, 0.11111111, 0.11111111},
                 {0.01851852, 0.11111111, 0.74768519, 0.12268519},
@@ -261,8 +261,8 @@ public class DistancesTest {
     @Test
     public void testChainGraphSP_CTEquality() {
         Distance distance = DistanceClass.SP_CT.getInstance();
-        double[][] SP = JeigenHelper.toArray2(distance.getD(chainGraph, 0));
-        double[][] CT = JeigenHelper.toArray2(distance.getD(chainGraph, 1));
+        double[][] SP = MatrixAdapter.toArray2(distance.getD(chainGraph, 0));
+        double[][] CT = MatrixAdapter.toArray2(distance.getD(chainGraph, 1));
         for (int i = 0; i < chainGraph.cols; i++) {
             for (int j = 0; j < chainGraph.cols; j++) {
                 assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
@@ -284,8 +284,8 @@ public class DistancesTest {
         }
         DenseMatrix chainGraph = new DenseMatrix(bigChain);
         Distance distance = DistanceClass.SP_CT.getInstance();
-        double[][] SP = JeigenHelper.toArray2(distance.getD(chainGraph, 0));
-        double[][] CT = JeigenHelper.toArray2(distance.getD(chainGraph, 1));
+        double[][] SP = MatrixAdapter.toArray2(distance.getD(chainGraph, 0));
+        double[][] CT = MatrixAdapter.toArray2(distance.getD(chainGraph, 1));
         for (int i = 0; i < chainGraph.cols; i++) {
             for (int j = 0; j < chainGraph.cols; j++) {
                 assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
@@ -297,8 +297,8 @@ public class DistancesTest {
     @Test
     public void testFullGraphSP_CTEquality() {
         Distance distance = DistanceClass.SP_CT.getInstance();
-        double[][] SP = JeigenHelper.toArray2(distance.getD(fullGraph, 0));
-        double[][] CT = JeigenHelper.toArray2(distance.getD(fullGraph, 1));
+        double[][] SP = MatrixAdapter.toArray2(distance.getD(fullGraph, 0));
+        double[][] CT = MatrixAdapter.toArray2(distance.getD(fullGraph, 1));
 
         for (int i = 0; i < fullGraph.cols; i++) {
             for (int j = 0; j < fullGraph.cols; j++) {
@@ -313,9 +313,9 @@ public class DistancesTest {
         DenseMatrix graph = fullGraph;
         Double parameter = 0.000001;
 
-        double[][] SP = JeigenHelper.toArray2(JeigenHelper.normalization(DistanceClass.SP_CT.getInstance().getD(graph, parameter)));
-        double[][] logFor = JeigenHelper.toArray2(JeigenHelper.normalization(DistanceClass.LOG_FOREST.getInstance().getD(graph, parameter)));
-        double[][] Walk = JeigenHelper.toArray2(JeigenHelper.normalization(DistanceClass.WALK.getInstance().getD(graph, parameter)));
+        double[][] SP = MatrixAdapter.toArray2(JeigenBuilder.normalization(DistanceClass.SP_CT.getInstance().getD(graph, parameter)));
+        double[][] logFor = MatrixAdapter.toArray2(JeigenBuilder.normalization(DistanceClass.LOG_FOREST.getInstance().getD(graph, parameter)));
+        double[][] Walk = MatrixAdapter.toArray2(JeigenBuilder.normalization(DistanceClass.WALK.getInstance().getD(graph, parameter)));
 
         for (int i = 0; i < chainGraph.cols; i++) {
             for (int j = 0; j < chainGraph.cols; j++) {
