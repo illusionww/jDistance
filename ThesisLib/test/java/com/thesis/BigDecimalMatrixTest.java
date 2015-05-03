@@ -13,6 +13,7 @@ public class BigDecimalMatrixTest {
     private double[][] m1;
     private double[][] m2;
     private double[][] m3;
+    private double[][] m4;
 
     @Before
     public void prepare() {
@@ -30,6 +31,11 @@ public class BigDecimalMatrixTest {
                 {1, 0, 1},
                 {0, 1, 3},
                 {1, 1, 4}
+        };
+        m4 = new double[][]{
+                {1, 0, 1, 3},
+                {0, 1, 3, 3},
+                {1, 1, 4, 4}
         };
     }
 
@@ -59,6 +65,19 @@ public class BigDecimalMatrixTest {
         DenseMatrix m2d = new DenseMatrix(this.m2);
         DenseMatrix m3d = new DenseMatrix(this.m3);
         DenseMatrix resd = m1d.mmul(m2d).mmul(m3d);
+
+        assertTrue("Not equal", res.equals(resd));
+    }
+
+    @Test
+    public void testMMulNotSquare() {
+        BigDecimalMatrix m1 = new BigDecimalMatrix(this.m1);
+        BigDecimalMatrix m4 = new BigDecimalMatrix(this.m4);
+        BigDecimalMatrix res = m1.mmul(m4);
+
+        DenseMatrix m1d = new DenseMatrix(this.m1);
+        DenseMatrix m4d = new DenseMatrix(this.m4);
+        DenseMatrix resd = m1d.mmul(m4d);
 
         assertTrue("Not equal", res.equals(resd));
     }
