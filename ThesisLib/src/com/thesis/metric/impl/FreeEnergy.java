@@ -1,7 +1,7 @@
 package com.thesis.metric.impl;
 
 import com.thesis.metric.Distance;
-import com.thesis.metric.builder.JeigenBuilder;
+import com.thesis.metric.JeigenBuilder;
 import com.thesis.metric.Scale;
 import jeigen.DenseMatrix;
 

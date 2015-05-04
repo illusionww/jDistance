@@ -2,7 +2,7 @@ package com.thesis.metric.impl;
 
 import com.thesis.metric.Distance;
 import com.thesis.metric.Scale;
-import com.thesis.metric.builder.JeigenBuilder;
+import com.thesis.metric.JeigenBuilder;
 import jeigen.DenseMatrix;
 
 public class LogComm_D extends Distance {

@@ -1,7 +1,7 @@
 package com.thesis;
 
 import com.thesis.metric.*;
-import com.thesis.metric.builder.JeigenBuilder;
+import com.thesis.metric.JeigenBuilder;
 import com.thesis.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
 import org.junit.Test;
