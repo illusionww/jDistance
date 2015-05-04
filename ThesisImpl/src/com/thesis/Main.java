@@ -34,9 +34,13 @@ public class Main {
     private static void drawGraphsScenario() throws ParserConfigurationException, SAXException, IOException {
         List<Distance> distances = Arrays.asList(
                 DistanceClass.COMM_D.getInstance(),
-                DistanceClass.COMM.getInstance(),
                 DistanceClass.LOG_COMM_D.getInstance(),
-                DistanceClass.LOG_COMM.getInstance()
+                DistanceClass.SP_CT.getInstance(),
+                DistanceClass.FREE_ENERGY.getInstance(),
+                DistanceClass.WALK.getInstance(),
+                DistanceClass.LOG_FOREST.getInstance(),
+                DistanceClass.FOREST.getInstance(),
+                DistanceClass.PLAIN_WALK.getInstance()
         );
 
         Arrays.asList(5).forEach(graphCount -> {
@@ -52,14 +56,14 @@ public class Main {
 
     private static void findBestClassifierParameterScenario() {
         List<DistanceClass> distances = Arrays.asList(
+                DistanceClass.COMM_D,
+                DistanceClass.LOG_COMM_D,
                 DistanceClass.SP_CT,
                 DistanceClass.FREE_ENERGY,
                 DistanceClass.WALK,
                 DistanceClass.LOG_FOREST,
                 DistanceClass.FOREST,
-                DistanceClass.PLAIN_WALK,
-                DistanceClass.COMM,
-                DistanceClass.LOG_COMM
+                DistanceClass.PLAIN_WALK
         );
 
         Arrays.asList(50).forEach(graphCount -> {
@@ -80,14 +84,14 @@ public class Main {
 
     public static void drawDeviationForBestSP() {
         List<DistanceClass> distances = Arrays.asList(
+                DistanceClass.COMM_D,
+                DistanceClass.LOG_COMM_D,
                 DistanceClass.SP_CT,
                 DistanceClass.FREE_ENERGY,
                 DistanceClass.WALK,
                 DistanceClass.LOG_FOREST,
                 DistanceClass.FOREST,
-                DistanceClass.PLAIN_WALK,
-                DistanceClass.COMM,
-                DistanceClass.LOG_COMM
+                DistanceClass.PLAIN_WALK
         );
 
         Arrays.asList(5).forEach(graphCount -> {
@@ -107,14 +111,14 @@ public class Main {
 
     private static void competitions() throws ParserConfigurationException, SAXException, IOException {
         List<Distance> distances = Arrays.asList(
+                DistanceClass.COMM_D.getInstance(),
+                DistanceClass.LOG_COMM_D.getInstance(),
                 DistanceClass.SP_CT.getInstance(),
                 DistanceClass.FREE_ENERGY.getInstance(),
                 DistanceClass.WALK.getInstance(),
                 DistanceClass.LOG_FOREST.getInstance(),
                 DistanceClass.FOREST.getInstance(),
-                DistanceClass.PLAIN_WALK.getInstance(),
-                DistanceClass.COMM.getInstance(),
-                DistanceClass.LOG_COMM.getInstance()
+                DistanceClass.PLAIN_WALK.getInstance()
         );
 
         Arrays.asList(20).forEach(graphCount -> {
