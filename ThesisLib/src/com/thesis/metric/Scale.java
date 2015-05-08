@@ -32,6 +32,13 @@ public enum Scale {
             return t / (1.0 - t);
         }
     },
+    FRCTION_REVERSE {
+        @Override
+        public Double calc(DenseMatrix A, Double t) {
+            t = 1.0 - t;
+            return t / (1.0 - t);
+        }
+    },
     FRACTION_BETA { // FE
         @Override
         public Double calc(DenseMatrix A, Double t) {

@@ -7,7 +7,7 @@ import jeigen.DenseMatrix;
 
 public class LogForest extends Distance {
     String name = "logFor";
-    Scale scale = Scale.FRACTION_BETA;
+    Scale scale = Scale.FRACTION;
 
     @Override
     public String getName() {

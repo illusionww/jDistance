@@ -32,7 +32,7 @@ public class ClassifierBestParamTask extends Task {
 
     @Override
     public String getName() {
-        return distance.getName() + checker.getName();
+        return distance.getName() + " " + checker.getName();
     }
 
     @Override

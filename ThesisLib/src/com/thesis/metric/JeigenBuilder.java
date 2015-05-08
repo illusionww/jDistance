@@ -13,7 +13,7 @@ public class JeigenBuilder {
         return diag(A.sumOverRows().t()).sub(A);
     }
 
-    // H = log(H0)
+    // H = element-wise log(H0)
     public DenseMatrix H0toH(DenseMatrix H0) {
         return log(H0);
     }
@@ -23,8 +23,7 @@ public class JeigenBuilder {
         int d = L.cols;
         double j = 1.0 / d;
         DenseMatrix J = ones(d, d).mul(j);
-        DenseMatrix H = pinv(L.add(J));
-        return H.mul(2); // normalization
+        return pinv(L.add(J));
     }
 
     // H0 = (I - tA)^{-1}

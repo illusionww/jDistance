@@ -28,7 +28,7 @@ public class Main {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         initContext();
-        drawGraphsScenario();
+        drawDeviationForBestSP();
     }
 
     private static void drawGraphsScenario() throws ParserConfigurationException, SAXException, IOException {
@@ -43,12 +43,11 @@ public class Main {
                 DistanceClass.PLAIN_WALK.getInstance()
         );
 
-        Arrays.asList(5).forEach(graphCount -> {
+        Arrays.asList(10).forEach(graphCount -> {
             Arrays.asList(200).forEach(numOfNodes -> {
                 Arrays.asList(0.1).forEach(pOut -> {
                     GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCount);
-                    ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 3, 0.3), distances, 250).execute().draw();
-
+                    ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 3, 0.3), distances, 30).execute().draw();
                 });
             });
         });
@@ -66,14 +65,14 @@ public class Main {
                 DistanceClass.PLAIN_WALK
         );
 
-        Arrays.asList(50).forEach(graphCount -> {
+        Arrays.asList(5).forEach(graphCount -> {
             Arrays.asList(100).forEach(numOfNodes -> {
                 Arrays.asList(0.1).forEach(pOut -> {
                     GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCount);
                     distances.forEach(distanceClass -> {
                         List<Task> tasks = new ArrayList<>();
                         IntStream.range(2, 10).forEach(i -> tasks.add(new ClassifierBestParamTask(new ClassifierChecker(graphs, i, 0.3),
-                                distanceClass.getInstance(Integer.toString(i)), 0.0, 3.0, 30, 250)));
+                                distanceClass.getInstance(Integer.toString(i)), 0.0, 3.0, 30, 50)));
                         String taskChainName = "bestParam " + distanceClass.getInstance().getName() + " n=" + numOfNodes + ", p_i=0.3, p_o=" + pOut + ", count=" + graphCount;
                         new TaskChain(taskChainName, tasks).execute().draw();
                     });
@@ -94,7 +93,7 @@ public class Main {
                 DistanceClass.PLAIN_WALK
         );
 
-        Arrays.asList(5).forEach(graphCount -> {
+        Arrays.asList(10).forEach(graphCount -> {
             Arrays.asList(200).forEach(numOfNodes -> {
                 Arrays.asList(0.1).forEach(pOut -> {
                     GraphBundle graphs = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCount);
