@@ -25,7 +25,6 @@ public class ClustererCompetitionTask {
 
     private ClustererChecker checker;
     private Integer pointsCount;
-    private Map<Double, Double> result = new HashMap<>();
     private Integer n;
     private Double pOut;
     private Double pIn;
@@ -56,6 +55,8 @@ public class ClustererCompetitionTask {
                 DistanceClass.LOG_COMM
         );
         HashMap<Distance, LinkedList<Double>> results = new HashMap<>();
+        ArrayList<Double> bestResults = new ArrayList<>();
+        ArrayList<String> output = new ArrayList<>();
 
         LinkedList<Task> tasks = new LinkedList<>();
         for (int i = 0; i < distances.size(); ++i) {
@@ -85,11 +86,26 @@ public class ClustererCompetitionTask {
                         }
                         result += clustererCheckerForTest.test(taskMap.getKey().getDistance(), taskMap.getKey().getBestResult().getKey());
                     }
-                    out.println(taskMap.getKey().getDistance().getName() + " " + taskMap.getKey().getBestResult().getValue() + " " + taskMap.getKey().getBestResult().getKey() + " " + result);
+                    output.add(taskMap.getKey().getDistance().getName() + " " + taskMap.getKey().getBestResult().getValue() + " " + taskMap.getKey().getBestResult().getKey() + " " + result);
+                    bestResults.add(result);
                 }
-                Integer rate;
+
                 Integer index;
-                Double max_result;
+                Double maxResult;
+                for (int j = 0; j < bestResults.size(); ++j) {
+                    index = 0;
+                    maxResult = 0d;
+                    for (int i = 0; i < bestResults.size(); ++i) {
+                        if (maxResult < bestResults.get(i)) {
+                            maxResult = bestResults.get(i);
+                            index = i;
+                        }
+                    }
+                    bestResults.set(index, -1d);
+                    out.println(output.get(index));
+                }
+
+                Integer rate;
                 LinkedList<Integer> score = new LinkedList<>();
                 LinkedList<Distance> distanceLinkedList = new LinkedList<>();
                 distanceLinkedList.addAll(results.keySet());
@@ -102,10 +118,10 @@ public class ClustererCompetitionTask {
                     rate = 8;
                     for (int j = 0; j < results.size(); ++j) {
                         index = -1;
-                        max_result = 0d;
+                        maxResult = 0d;
                         for (int s = 0; s < distanceLinkedList.size(); ++s) {
-                            if (max_result < results.get(distanceLinkedList.get(s)).get(i)) {
-                                max_result = results.get(distanceLinkedList.get(s)).get(i);
+                            if (maxResult < results.get(distanceLinkedList.get(s)).get(i)) {
+                                maxResult = results.get(distanceLinkedList.get(s)).get(i);
                                 index = s;
                             }
                         }
