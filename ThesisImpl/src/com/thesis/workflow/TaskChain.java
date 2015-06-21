@@ -11,7 +11,7 @@ import com.thesis.workflow.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -86,6 +86,7 @@ public class TaskChain {
     }
 
     public TaskChain draw() {
+        write(name);
         return draw(name);
     }
 
@@ -107,6 +108,28 @@ public class TaskChain {
         ga.drawData(imgTitle, plots, Context.getInstance().IMG_FOLDER + File.separator + imgTitle + ".png");
 
         return this;
+    }
+
+    public void write(String filename) {
+        String path = Context.getInstance().IMG_FOLDER + File.separator + filename + ".txt";
+        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(path))) {
+            for (Task task : tasks) {
+                Distance distance = task.getDistance();
+                outputWriter.write(distance.getName() + "\t");
+            }
+            outputWriter.newLine();
+            Set<Double> points = new TreeMap<>(tasks.get(0).getResults()).keySet();
+            for (Double key : points) {
+                outputWriter.write(key + "\t");
+                for (Task task : tasks) {
+                    outputWriter.write(task.getResults().get(key) + "\t");
+                }
+                outputWriter.newLine();
+            }
+
+        } catch (IOException e) {
+            System.err.println("IOException while write results");
+        }
     }
 
     public Map<Task, Map<Double, Double>> getData() {

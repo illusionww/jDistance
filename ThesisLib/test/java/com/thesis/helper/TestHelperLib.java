@@ -45,6 +45,15 @@ public class TestHelperLib {
             {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
     });
 
+    public final static DenseMatrix diplomaMatrix = new DenseMatrix(new double[][] {
+            {0, 1, 1, 0, 0, 0},
+            {1, 0, 1, 0, 0, 0},
+            {1, 1, 0, 1, 1, 0},
+            {0, 0, 1, 0, 1, 1},
+            {0, 0, 1, 1, 0, 1},
+            {0, 0, 0, 1, 1, 0}
+    });
+
     public static boolean equalDouble(double a, double b) {
         double min = Math.min(a, b) != 0 ? Math.min(a, b) : 1;
         return Math.abs(a - b) / min < 0.001;

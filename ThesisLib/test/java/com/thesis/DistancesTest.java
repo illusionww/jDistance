@@ -324,4 +324,21 @@ public class DistancesTest {
             }
         }
     }
+
+    @Test
+    public void testForDiploma() {
+        DenseMatrix graph = diplomaMatrix;
+        Double parameter = 0.2;
+
+        for (DistanceClass clazz : DistanceClass.values()) {
+            System.out.println(clazz.getInstance().getName());
+            double[][] array = MatrixAdapter.toArray2(clazz.getInstance().getD(graph, parameter));
+            for (double[] anArray : array) {
+                for (double anAnArray : anArray) {
+                    System.out.printf("%.3f ", anAnArray);
+                }
+                System.out.println();
+            }
+        }
+    }
 }
