@@ -1,4 +1,4 @@
-package com.jdistance.metric;
+package com.thesis.metric;
 
 import jeigen.ComplexDenseMatrix;
 import jeigen.DenseMatrix;
@@ -32,10 +32,17 @@ public enum Scale {
             return t / (1.0 - t);
         }
     },
+    FRCTION_REVERSE {
+        @Override
+        public Double calc(DenseMatrix A, Double t) {
+            t = 1.0 - t;
+            return t / (1.0 - t);
+        }
+    },
     FRACTION_BETA { // FE
         @Override
         public Double calc(DenseMatrix A, Double t) {
-            return (1.0 - t) / t;
+            return (1.0-t) / t;
         }
     };
 
