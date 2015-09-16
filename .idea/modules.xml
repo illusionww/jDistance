@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" filepath="$PROJECT_DIR$/ThesisImpl/ThesisImpl.iml" />
-      <module fileurl="file://$PROJECT_DIR$/ThesisLib/ThesisLib.iml" filepath="$PROJECT_DIR$/ThesisLib/ThesisLib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jDistance/jDistance.iml" filepath="$PROJECT_DIR$/jDistance/jDistance.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jDistance-aggregator.iml" filepath="$PROJECT_DIR$/jDistance-aggregator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jDistanceImpl/jDistanceImpl.iml" filepath="$PROJECT_DIR$/jDistanceImpl/jDistanceImpl.iml" />
     </modules>
   </component>
 </project>

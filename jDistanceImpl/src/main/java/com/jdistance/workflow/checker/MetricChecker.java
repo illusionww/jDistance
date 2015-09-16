@@ -1,15 +1,13 @@
-package com.thesis.workflow.checker;
+package com.jdistance.workflow.checker;
 
-import com.thesis.adapter.generator.GraphBundle;
-import com.thesis.graph.Graph;
-import com.thesis.graph.SimpleNodeData;
+import com.jdistance.adapter.generator.GraphBundle;
+import com.jdistance.graph.Graph;
+import com.jdistance.graph.SimpleNodeData;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
 
-
 public class MetricChecker extends Checker {
-
     private static final CheckerType type = CheckerType.CLUSTERER;
 
     private GraphBundle graphs;
@@ -39,28 +37,28 @@ public class MetricChecker extends Checker {
     protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
         double sum = 0d;
 
-        for (int i = 0; i < D.cols; i++){
-            for (int j = i+1; j < D.rows; j++){
+        for (int i = 0; i < D.cols; i++) {
+            for (int j = i + 1; j < D.rows; j++) {
                 sum += D.get(i, j);
             }
         }
 
-        double average = sum / (D.rows*(D.cols - 1) / 2);
+        double average = sum / (D.rows * (D.cols - 1) / 2);
 
         //среднеквадратичное отклонение
         double deviation = 0d;
-        for (int i = 0; i < D.cols; i++){
-            for (int j = i + 1; j < D.rows; j++){
+        for (int i = 0; i < D.cols; i++) {
+            for (int j = i + 1; j < D.rows; j++) {
                 deviation += (D.get(i, j) - average) * (D.get(i, j) - average);
             }
         }
 
         //вычитаем среднее компонент и делим на среднеквадратичное отклонение
-        if (D.rows != 0 && D.cols != 0 && deviation != 0){
-            deviation = (float) Math.sqrt(deviation/ ((D.rows*(D.cols - 1) / 2) - 1));
-            for (int i = 0; i < D.cols; i++){
-                for (int j = i + 1; j < D.rows; j++){
-                    D.set(i, j,(D.get(i, j) - average) / deviation);
+        if (D.rows != 0 && D.cols != 0 && deviation != 0) {
+            deviation = (float) Math.sqrt(deviation / ((D.rows * (D.cols - 1) / 2) - 1));
+            for (int i = 0; i < D.cols; i++) {
+                for (int j = i + 1; j < D.rows; j++) {
+                    D.set(i, j, (D.get(i, j) - average) / deviation);
                 }
             }
         }
@@ -71,12 +69,11 @@ public class MetricChecker extends Checker {
         double x = 0d;
         double y = 0d;
         double[] vector2 = new double[D.cols * D.rows];
-        for (int i = 0; i < D.cols; i++){
-            for (int j = 0; j < D.rows; j++){
-                if (graph.getSimpleNodeData().get(i).getLabel().equals(graph.getSimpleNodeData().get(j).getLabel())){
-                    vector2[i*D.cols + j] = 0d;
-                }
-                else vector2[i*D.cols + j] = 1d;
+        for (int i = 0; i < D.cols; i++) {
+            for (int j = 0; j < D.rows; j++) {
+                if (graph.getSimpleNodeData().get(i).getLabel().equals(graph.getSimpleNodeData().get(j).getLabel())) {
+                    vector2[i * D.cols + j] = 0d;
+                } else vector2[i * D.cols + j] = 1d;
                 if (i < j) {
                     correlation += D.get(i, j) * vector2[i * D.cols + j];
                     x += D.get(i, j) * D.get(i, j);
@@ -84,7 +81,7 @@ public class MetricChecker extends Checker {
                 }
             }
         }
-        if (x !=0 && y != 0) {
+        if (x != 0 && y != 0) {
             correlation = correlation / (Math.sqrt(x * y));
         }
         return new CheckerTestResultDTO(1.0d, correlation);

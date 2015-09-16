@@ -10,8 +10,6 @@ import com.jdistance.workflow.checker.DeviationChecker;
 import com.jdistance.workflow.task.ClassifierBestParamTask;
 import com.jdistance.workflow.task.CustomTask;
 import com.jdistance.workflow.task.Task;
-import com.jdistance.workflow.task.competition.ClassifierCompetitionTask;
-import com.jdistance.workflow.task.competition.CompetitionDTO;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,7 +22,7 @@ import java.util.stream.IntStream;
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         initContext();
-        competitions();
+        drawGraphsScenario();
     }
 
     private static void drawGraphsScenario() throws ParserConfigurationException, SAXException, IOException {
@@ -115,72 +113,6 @@ public class Main {
                     String taskChainName = "deviation n=" + numOfNodes + ", p_i=0.3, p_o=" + pOut + ", count=" + graphCount;
                     new TaskChain(taskChainName, tasks).execute().draw();
                 });
-            });
-        });
-    }
-
-    private static void competitions() throws ParserConfigurationException, SAXException, IOException {
-        int graphCountForLearning = 50;
-        int grapsCountForCompetitions = 10;
-        int pointsCountForLearning = 100;
-
-        Arrays.asList(100).forEach(numOfNodes -> {
-            Arrays.asList(0.05).forEach(pOut -> {
-                GraphBundle forLearning = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCountForLearning);
-                GraphBundle forCompetitions = new GraphBundle(numOfNodes, 0.3, pOut, 5, grapsCountForCompetitions);
-
-                List<CompetitionDTO> competitionDTOs = Arrays.asList(
-                        new CompetitionDTO(DistanceClass.COMM_D.getInstance(), 6, 1.5),
-                        new CompetitionDTO(DistanceClass.LOG_COMM_D.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.SP_CT.getInstance(), 4, 0.2),
-                        new CompetitionDTO(DistanceClass.FREE_ENERGY.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.WALK.getInstance(), 8, 1.4),
-                        new CompetitionDTO(DistanceClass.LOG_FOREST.getInstance(), 8, 1.9),
-                        new CompetitionDTO(DistanceClass.FOREST.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.PLAIN_WALK.getInstance(), 10, 1.6)
-                );
-
-                String fileName = "competitions n=" + numOfNodes + ", p_o=" + pOut + ", forLearning=" + graphCountForLearning + ", forCompetioions=" + grapsCountForCompetitions;
-                new ClassifierCompetitionTask(competitionDTOs, forLearning, forCompetitions, pointsCountForLearning, fileName).execute().write();
-            });
-        });
-
-        Arrays.asList(200).forEach(numOfNodes -> {
-            Arrays.asList(0.05).forEach(pOut -> {
-                GraphBundle forLearning = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCountForLearning);
-                GraphBundle forCompetitions = new GraphBundle(numOfNodes, 0.3, pOut, 5, grapsCountForCompetitions);
-
-                List<CompetitionDTO> competitionDTOs = Arrays.asList(
-                        new CompetitionDTO(DistanceClass.COMM_D.getInstance(), 10, 0.8),
-                        new CompetitionDTO(DistanceClass.LOG_COMM_D.getInstance(), 8, 2.6),
-                        new CompetitionDTO(DistanceClass.SP_CT.getInstance(), 7, 0.0),
-                        new CompetitionDTO(DistanceClass.FREE_ENERGY.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.WALK.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.LOG_FOREST.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.FOREST.getInstance(), 6, 0.0),
-                        new CompetitionDTO(DistanceClass.PLAIN_WALK.getInstance(), 10, 4.0)
-                );
-
-                String fileName = "competitions n=" + numOfNodes + ", p_i=0.3, p_o=" + pOut + ", forLearning=" + graphCountForLearning + ", forCompetioions=" + grapsCountForCompetitions;
-                new ClassifierCompetitionTask(competitionDTOs, forLearning, forCompetitions, pointsCountForLearning, fileName).execute().write();
-            });
-            Arrays.asList(0.15).forEach(pOut -> {
-                GraphBundle forLearning = new GraphBundle(numOfNodes, 0.3, pOut, 5, graphCountForLearning);
-                GraphBundle forCompetitions = new GraphBundle(numOfNodes, 0.3, pOut, 5, grapsCountForCompetitions);
-
-                List<CompetitionDTO> competitionDTOs = Arrays.asList(
-                        new CompetitionDTO(DistanceClass.COMM_D.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.LOG_COMM_D.getInstance(), 10, 2.0),
-                        new CompetitionDTO(DistanceClass.SP_CT.getInstance(), 5, 0.0),
-                        new CompetitionDTO(DistanceClass.FREE_ENERGY.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.WALK.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.LOG_FOREST.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.FOREST.getInstance(), 1, 0.0),
-                        new CompetitionDTO(DistanceClass.PLAIN_WALK.getInstance(), 1, 0.0)
-                );
-
-                String fileName = "competitions n=" + numOfNodes + ", p_i=0.3, p_o=" + pOut + ", forLearning=" + graphCountForLearning + ", forCompetioions=" + grapsCountForCompetitions;
-                new ClassifierCompetitionTask(competitionDTOs, forLearning, forCompetitions, pointsCountForLearning, fileName).execute().write();
             });
         });
     }

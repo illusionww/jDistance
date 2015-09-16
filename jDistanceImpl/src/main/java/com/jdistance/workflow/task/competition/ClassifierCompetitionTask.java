@@ -1,14 +1,14 @@
-package com.thesis.workflow.competition;
+package com.jdistance.workflow.task.competition;
 
-import com.thesis.adapter.generator.GraphBundle;
-import com.thesis.metric.Distance;
-import com.thesis.metric.DistanceClass;
-import com.thesis.workflow.Context;
-import com.thesis.workflow.TaskChain;
-import com.thesis.workflow.checker.ClassifierChecker;
-import com.thesis.workflow.task.ClassifierBestParamTask;
-import com.thesis.workflow.task.DefaultTask;
-import com.thesis.workflow.task.Task;
+import com.jdistance.adapter.generator.GraphBundle;
+import com.jdistance.metric.Distance;
+import com.jdistance.metric.DistanceClass;
+import com.jdistance.workflow.Context;
+import com.jdistance.workflow.TaskChain;
+import com.jdistance.workflow.checker.ClassifierChecker;
+import com.jdistance.workflow.task.ClassifierBestParamTask;
+import com.jdistance.workflow.task.DefaultTask;
+import com.jdistance.workflow.task.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,17 +1,15 @@
-package com.thesis.workflow.competition;
+package com.jdistance.workflow.task.competition;
 
-import com.thesis.adapter.generator.GraphBundle;
-import com.thesis.clusterer.Clusterer;
-import com.thesis.graph.Graph;
-import com.thesis.metric.Distance;
-import com.thesis.metric.DistanceClass;
-import com.thesis.workflow.Context;
-import com.thesis.workflow.TaskChain;
-import com.thesis.workflow.checker.ClustererChecker;
-import com.thesis.workflow.checker.MetricChecker;
-import com.thesis.workflow.task.ClassifierBestParamTask;
-import com.thesis.workflow.task.DefaultTask;
-import com.thesis.workflow.task.Task;
+import com.jdistance.adapter.generator.GraphBundle;
+import com.jdistance.graph.Graph;
+import com.jdistance.metric.Distance;
+import com.jdistance.metric.DistanceClass;
+import com.jdistance.workflow.Context;
+import com.jdistance.workflow.TaskChain;
+import com.jdistance.workflow.checker.MetricChecker;
+import com.jdistance.workflow.task.ClassifierBestParamTask;
+import com.jdistance.workflow.task.DefaultTask;
+import com.jdistance.workflow.task.Task;
 import jeigen.DenseMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -167,104 +165,108 @@ public class ClustererCompetitionTask {
 
         return true;
     }
+
     private void additionInformation(Distance distance, Double key, PrintWriter out) throws FileNotFoundException {
-            double sum = 0d;
+        double sum = 0d;
 
-            GraphBundle graphs = new GraphBundle(200, 0.4, 0.1, 5, 1);
-            Graph graph = graphs.getGraphs().get(0);
-            DenseMatrix A = graph.getSparseMatrix();
+        GraphBundle graphs = new GraphBundle(200, 0.4, 0.1, 5, 1);
+        Graph graph = graphs.getGraphs().get(0);
+        DenseMatrix A = graph.getSparseMatrix();
 
-            Double parameter = distance.getScale().calc(A, key);
-            DenseMatrix D = distance.getD(A, parameter);
+        Double parameter = distance.getScale().calc(A, key);
+        DenseMatrix D = distance.getD(A, parameter);
 
 
-        for (int i = 0; i < D.cols; i++){
-            for (int j = i + 1; j < D.rows; j++){
+        for (int i = 0; i < D.cols; i++) {
+            for (int j = i + 1; j < D.rows; j++) {
                 sum += D.get(i, j);
             }
         }
 
-        double average = sum / (D.rows*(D.cols - 1) / 2);;
+        double average = sum / (D.rows * (D.cols - 1) / 2);
+        ;
 
         //среднеквадратичное отклонение
         double deviation = 0d;
-        for (int i = 0; i < D.cols; i++){
-            for (int j = i + 1; j < D.rows; j++){
+        for (int i = 0; i < D.cols; i++) {
+            for (int j = i + 1; j < D.rows; j++) {
                 deviation += (D.get(i, j) - average) * (D.get(i, j) - average);
             }
         }
 
         //вычитаем среднее компонент и делим на среднеквадратичное отклонение
-        if (D.rows != 0 && D.cols != 0 && deviation != 0){
-            deviation = (float) Math.sqrt(deviation/ ((D.rows*(D.cols - 1) / 2) - 1));
-            for (int i = 0; i < D.cols; i++){
-                for (int j = 0; j < D.rows; j++){
-                    if (i != j){    D.set(i, j,(D.get(i, j) - average)/deviation); }
+        if (D.rows != 0 && D.cols != 0 && deviation != 0) {
+            deviation = (float) Math.sqrt(deviation / ((D.rows * (D.cols - 1) / 2) - 1));
+            for (int i = 0; i < D.cols; i++) {
+                for (int j = 0; j < D.rows; j++) {
+                    if (i != j) {
+                        D.set(i, j, (D.get(i, j) - average) / deviation);
+                    }
                 }
             }
         }
 
-            //для одинаковых кластеров
-            ArrayList<Double> first = new ArrayList<>();
-            //для различных
-            ArrayList<Double> second = new ArrayList<>();
+        //для одинаковых кластеров
+        ArrayList<Double> first = new ArrayList<>();
+        //для различных
+        ArrayList<Double> second = new ArrayList<>();
 
-            for (int i = 0; i < D.cols; i++){
-                for (int j = i + 1; j < D.rows; j++){
-                    //sum += D.get(i, j);
-                    if (i != j) {
-                        if (graph.getSimpleNodeData().get(i).getLabel().equals(graph.getSimpleNodeData().get(j).getLabel())) {
-                            first.add(D.get(i, j));
-                        } else {
-                            second.add(D.get(i, j));
-                        }
+        for (int i = 0; i < D.cols; i++) {
+            for (int j = i + 1; j < D.rows; j++) {
+                //sum += D.get(i, j);
+                if (i != j) {
+                    if (graph.getSimpleNodeData().get(i).getLabel().equals(graph.getSimpleNodeData().get(j).getLabel())) {
+                        first.add(D.get(i, j));
+                    } else {
+                        second.add(D.get(i, j));
                     }
                 }
             }
+        }
 
-            Double firstAverage = 0d;
-            Double secondAverage = 0d;
-            Double secondMin = Double.MAX_VALUE;
-            Double firstMin = Double.MAX_VALUE;
-            Double firstMax = Double.MIN_VALUE;
-            Double secondMax = Double.MIN_VALUE;
-            for (int i = 0; i < first.size(); ++i){
-                if (firstMin > first.get(i)){
-                    firstMin = first.get(i);
-                }
-                if (firstMax < first.get(i)){
-                    firstMax = first.get(i);
-                }
-                firstAverage += first.get(i);
+        Double firstAverage = 0d;
+        Double secondAverage = 0d;
+        Double secondMin = Double.MAX_VALUE;
+        Double firstMin = Double.MAX_VALUE;
+        Double firstMax = Double.MIN_VALUE;
+        Double secondMax = Double.MIN_VALUE;
+        for (int i = 0; i < first.size(); ++i) {
+            if (firstMin > first.get(i)) {
+                firstMin = first.get(i);
             }
-            for (int i = 0; i < second.size(); ++i){
-                if (secondMin > second.get(i)){
-                    secondMin = second.get(i);
-                }
-                if (secondMax < second.get(i)){
-                    secondMax = second.get(i);
-                }
-                secondAverage += second.get(i);
+            if (firstMax < first.get(i)) {
+                firstMax = first.get(i);
             }
-            //средние по подвекторам
-            firstAverage = firstAverage / first.size();
-            secondAverage = secondAverage / second.size();
+            firstAverage += first.get(i);
+        }
+        for (int i = 0; i < second.size(); ++i) {
+            if (secondMin > second.get(i)) {
+                secondMin = second.get(i);
+            }
+            if (secondMax < second.get(i)) {
+                secondMax = second.get(i);
+            }
+            secondAverage += second.get(i);
+        }
+        //средние по подвекторам
+        firstAverage = firstAverage / first.size();
+        secondAverage = secondAverage / second.size();
 
-            //считаем дисперсию
-            Double firstVariance = 0d;
-            Double secondVariance = 0d;
-            for (int i = 0; i < first.size(); ++i){
-                firstVariance += (first.get(i) - firstAverage) * (first.get(i) - firstAverage);
-            }
-            firstVariance = Math.sqrt(firstVariance /(first.size() - 1));
-            for (int i = 0; i < second.size(); ++i){
-                secondVariance += (second.get(i) - secondAverage) * (second.get(i) - secondAverage);
-            }
-            secondVariance = Math.sqrt(secondVariance /(second.size() - 1));
+        //считаем дисперсию
+        Double firstVariance = 0d;
+        Double secondVariance = 0d;
+        for (int i = 0; i < first.size(); ++i) {
+            firstVariance += (first.get(i) - firstAverage) * (first.get(i) - firstAverage);
+        }
+        firstVariance = Math.sqrt(firstVariance / (first.size() - 1));
+        for (int i = 0; i < second.size(); ++i) {
+            secondVariance += (second.get(i) - secondAverage) * (second.get(i) - secondAverage);
+        }
+        secondVariance = Math.sqrt(secondVariance / (second.size() - 1));
 
-            //out.println(distance.getName() + " firstAverage = " + firstAverage + " firstMin = " + firstMin + " firstMax = " + firstMax + " firstVariance = " + firstVariance);
-            //out.println(distance.getName() + " secondAverage = " + secondAverage + " secondMin = " + secondMin + " secondMax = " + secondMax + " secondVariance = " + secondVariance);
-        if ("COMM_D".equals(distance.getName())){
+        //out.println(distance.getName() + " firstAverage = " + firstAverage + " firstMin = " + firstMin + " firstMax = " + firstMax + " firstVariance = " + firstVariance);
+        //out.println(distance.getName() + " secondAverage = " + secondAverage + " secondMin = " + secondMin + " secondMax = " + secondMax + " secondVariance = " + secondVariance);
+        if ("COMM_D".equals(distance.getName())) {
             for (int i = 0; i < D.cols; ++i) {
                 for (int j = 0; j < D.rows; ++j) {
                     out.print(D.get(i, j) + " ");

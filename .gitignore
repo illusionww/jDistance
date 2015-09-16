@@ -1,3 +1,14 @@
+# Java
+*.class
+
+# Maven
+target/
+
+# JetBrains
+.idea/
+*.iml
+
+# Output files
 /out/
 /pictures/
 /cache/

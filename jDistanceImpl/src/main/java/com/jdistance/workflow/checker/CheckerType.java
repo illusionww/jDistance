@@ -1,4 +1,4 @@
-package com.thesis.workflow.checker;
+package com.jdistance.workflow.checker;
 
 public enum CheckerType {
     CLASSIFIER,
