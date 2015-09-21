@@ -7,6 +7,8 @@ target/
 # JetBrains
 .idea/
 *.iml
+*.ipr
+*.iws
 
 # Output files
 /out/
