@@ -29,9 +29,9 @@ public enum DistanceClass {
 
     public static DistanceClass getDistanceName(Distance distance) {
         String className = distance.getClass().toString();
-        for(DistanceClass distanceClass : DistanceClass.values()) {
+        for (DistanceClass distanceClass : DistanceClass.values()) {
             Distance distanceInstance = distanceClass.getInstance();
-            if(className.equals(distanceInstance.getClass().toString())) {
+            if (className.equals(distanceInstance.getClass().toString())) {
                 return distanceClass;
             }
         }
@@ -52,5 +52,18 @@ public enum DistanceClass {
         }
 
         throw new RuntimeException();
+    }
+
+    public static List<DistanceClass> getDefaultDistances() {
+        return Arrays.asList(
+                DistanceClass.COMM_D,
+                DistanceClass.LOG_COMM_D,
+                DistanceClass.SP_CT,
+                DistanceClass.FREE_ENERGY,
+                DistanceClass.WALK,
+                DistanceClass.LOG_FOREST,
+                DistanceClass.FOREST,
+                DistanceClass.PLAIN_WALK
+        );
     }
 }

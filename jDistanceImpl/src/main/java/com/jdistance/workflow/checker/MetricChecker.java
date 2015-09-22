@@ -8,7 +8,7 @@ import jeigen.DenseMatrix;
 import java.util.ArrayList;
 
 public class MetricChecker extends Checker {
-    private static final CheckerType type = CheckerType.CLUSTERER;
+    private static final CheckerType type = CheckerType.METRIC;
 
     private GraphBundle graphs;
     private Integer k;
