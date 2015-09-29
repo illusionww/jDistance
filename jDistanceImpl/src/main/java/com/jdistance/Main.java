@@ -33,7 +33,7 @@ public class Main {
         Double pIn = 0.4;
         Double pOut = 0.1;
         Integer k = 5;
-        Integer count = 2;
+        Integer count = 10;
 
         List<CompetitionDTO> competitionDTOs = DistanceClass.getDefaultDistances().stream()
                 .map(distanceClass -> new CompetitionDTO(distanceClass.getInstance(), k)).collect(Collectors.toList());
@@ -41,7 +41,7 @@ public class Main {
         GraphBundle forLearning = new GraphBundle(N, pIn, pOut, k, count);
         GraphBundle forCompetitions = new GraphBundle(N, pIn, pOut, k, 1);
 
-        MetricCompetitionTask task = new MetricCompetitionTask(competitionDTOs, forLearning, forCompetitions, 50, "test");
+        MetricCompetitionTask task = new MetricCompetitionTask(competitionDTOs, forLearning, forCompetitions, 150, "test");
         task.execute().write();
     }
 }

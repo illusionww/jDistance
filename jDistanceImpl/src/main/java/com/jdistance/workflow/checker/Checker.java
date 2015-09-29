@@ -10,7 +10,10 @@ import jeigen.DenseMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -74,7 +77,7 @@ public abstract class Checker implements Cloneable {
             Double total = result.getTotal();
             Double countErrors = result.getCountErrors();
             Double coloredNodes = result.getColoredNodes();
-            sum += 1 - countErrors/(total - coloredNodes);
+            sum += 1 - countErrors / (total - coloredNodes);
         }
         return sum / (double) results.size();
     }

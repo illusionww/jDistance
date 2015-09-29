@@ -58,7 +58,7 @@ public abstract class CompetitionTask {
                 GraphBundle bundle = forCompetitions.clone();
                 bundle.setGraphs(Collections.singletonList(graph));
                 Checker checker = getChecker(bundle, dto);
-                dto.tempResult = checker.test(dto.distance, dto.pLearn.getValue());
+                dto.tempResult = checker.test(dto.distance, dto.pLearn.getKey());
             });
             Collections.sort(competitionDTOs, Comparator.comparingDouble(i -> i.tempResult));
             for (int i = 0; i < competitionDTOs.size(); i++) {
@@ -72,7 +72,7 @@ public abstract class CompetitionTask {
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(path))) {
             outputWriter.write("Name\tlearnedP\tlearnedQuality\tScore\tAdditionalInfo");
             outputWriter.newLine();
-            competitionDTOs.stream().forEach(dto -> {
+            competitionDTOs.stream().sorted((o1, o2) -> o2.score - o1.score).forEach(dto -> {
                 try {
                     outputWriter.write(dto.distance.getName() + "\t" + dto.pLearn.getKey() + "\t" + dto.pLearn.getValue() + "\t" + dto.score + "\t" + Arrays.toString(dto.additionalInfo.entrySet().toArray()));
                     outputWriter.newLine();

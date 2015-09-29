@@ -4,7 +4,9 @@ import com.jdistance.adapter.generator.GraphBundle;
 import com.jdistance.graph.Graph;
 import com.jdistance.workflow.checker.Checker;
 import com.jdistance.workflow.checker.MetricChecker;
+import com.jdistance.workflow.util.TaskHelper;
 import jeigen.DenseMatrix;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,31 +40,23 @@ public class MetricCompetitionTask extends CompetitionTask {
             Double sum = Arrays.stream(D.getValues()).sum();
             Double average = sum / (D.rows * (D.cols - 1));
             D = D.sub(average);
-            for (int i = 0; i < A.cols; i++) {
+            for (int i = 0; i < D.cols; i++) {
                 D.set(i, i, 0); // обнулим диагональ
             }
 
             // найдем среднеквадратичное отклонение и поделим на него
-            Double deviationRaw = 0d;
-            for (int i = 0; i < D.cols; i++) {
-                for (int j = i + 1; j < D.rows; j++) {
-                    deviationRaw += D.get(i, j) * D.get(i, j);
-                }
-            }
-            Double deviation = Math.sqrt(deviationRaw / (D.rows * (D.cols - 1) / 2));
+            Double deviation = getDeviation(D);
             D = D.div(deviation);
 
             ArrayList<Double> same = new ArrayList<>(); //для одинаковых кластеров
             ArrayList<Double> different = new ArrayList<>(); //для различных
 
-            for (int i = 0; i < D.cols; i++) {
-                for (int j = i + 1; j < D.rows; j++) {
-                    if (i != j) {
-                        if (graph.getSimpleNodeData().get(i).getLabel().equals(graph.getSimpleNodeData().get(j).getLabel())) {
-                            same.add(D.get(i, j));
-                        } else {
-                            different.add(D.get(i, j));
-                        }
+            for (int c = 0; c < D.cols; c++) {
+                for (int r = c + 1; r < D.rows; r++) {
+                    if (graph.getSimpleNodeData().get(c).getLabel().equals(graph.getSimpleNodeData().get(r).getLabel())) {
+                        same.add(D.get(c, r));
+                    } else {
+                        different.add(D.get(c, r));
                     }
                 }
             }
@@ -70,10 +64,22 @@ public class MetricCompetitionTask extends CompetitionTask {
             dto.additionalInfo.put("sameMax", Collections.max(same));
             dto.additionalInfo.put("sameMin", Collections.min(same));
             dto.additionalInfo.put("sameAvg", same.stream().mapToDouble(Double::doubleValue).sum() / same.size());
+            dto.additionalInfo.put("sameVariance", TaskHelper.deviation(ArrayUtils.toPrimitive(same.toArray(new Double[same.size()]))));
 
             dto.additionalInfo.put("diffMax", Collections.max(different));
             dto.additionalInfo.put("diffMin", Collections.min(different));
-            dto.additionalInfo.put("diffAvg", different.stream().mapToDouble(Double::doubleValue).sum() / same.size());
+            dto.additionalInfo.put("diffAvg", different.stream().mapToDouble(Double::doubleValue).sum() / different.size());
+            dto.additionalInfo.put("diffVariance", TaskHelper.deviation(ArrayUtils.toPrimitive(different.toArray(new Double[same.size()]))));
         });
+    }
+
+    private double getDeviation(DenseMatrix D) {
+        Double deviationRaw = 0d;
+        for (int c = 0; c < D.cols; c++) {
+            for (int r = c + 1; r < D.rows; r++) {
+                deviationRaw += D.get(c, r) * D.get(c, r);
+            }
+        }
+        return Math.sqrt(deviationRaw / (D.rows * (D.cols - 1) / 2));
     }
 }
