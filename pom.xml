@@ -12,6 +12,7 @@
     <modules>
         <module>jDistance</module>
         <module>jDistanceImpl</module>
+        <module>graphGenerator</module>
     </modules>
 
     <build>
