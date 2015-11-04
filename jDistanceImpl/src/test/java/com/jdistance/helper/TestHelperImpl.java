@@ -1,8 +1,8 @@
 package com.jdistance.helper;
 
 import com.jdistance.metric.Distance;
-import com.jdistance.workflow.Context;
-import com.jdistance.workflow.task.Task;
+import com.jdistance.impl.workflow.Context;
+import com.jdistance.impl.workflow.task.Task;
 
 import java.io.File;
 import java.util.HashMap;

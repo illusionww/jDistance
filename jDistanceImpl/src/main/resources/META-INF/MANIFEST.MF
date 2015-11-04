@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: com.jdistance.Main
+Main-Class: com.jdistance.impl.Main
 
