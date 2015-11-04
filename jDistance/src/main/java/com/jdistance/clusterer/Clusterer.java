@@ -3,7 +3,10 @@ package com.jdistance.clusterer;
 import com.jdistance.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Stack;
 
 public class Clusterer {
     private double[][] matrixWithWeights;
@@ -54,7 +57,7 @@ public class Clusterer {
             }
             set.add(to);
             sparseMatrix[to][from] = minWeight;
-            sparseMatrix[from][to] = minWeight; 
+            sparseMatrix[from][to] = minWeight;
             matrixWithWeights[to][from] = Double.MAX_VALUE;
             matrixWithWeights[from][to] = Double.MAX_VALUE;
         }

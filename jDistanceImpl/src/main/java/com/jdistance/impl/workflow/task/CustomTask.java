@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.task;
 
-import com.jdistance.metric.Distance;
 import com.jdistance.impl.workflow.checker.Checker;
+import com.jdistance.metric.Distance;
 
 import java.util.Map;
 

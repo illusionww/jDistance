@@ -17,7 +17,7 @@ public class GraphValidator {
         boolean valid = true;
 
         // validate number of nodes
-        if (data.size() < numOfNodes * (1 - deviation) || data.size()> numOfNodes * (1 + deviation)) {
+        if (data.size() < numOfNodes * (1 - deviation) || data.size() > numOfNodes * (1 + deviation)) {
             log.info("Validation failed: numOfNodes - expected: {} but {} found", numOfNodes, data.size());
             valid = false;
         }

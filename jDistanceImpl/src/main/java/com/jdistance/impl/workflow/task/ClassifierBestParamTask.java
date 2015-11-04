@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.task;
 
-import com.jdistance.metric.Distance;
 import com.jdistance.impl.workflow.checker.ClassifierChecker;
+import com.jdistance.metric.Distance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

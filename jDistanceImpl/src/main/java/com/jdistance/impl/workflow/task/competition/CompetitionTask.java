@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Stream;
 
 public abstract class CompetitionTask {
     private static final Logger log = LoggerFactory.getLogger(ClassifierBestParamTask.class);
@@ -37,16 +38,17 @@ public abstract class CompetitionTask {
 
     public CompetitionTask execute() {
         log.info("START CompetitionTask");
-        log.info("learning");
+        log.info("LEARNING");
         learning();
-        log.info("competitions");
+        log.info("COMPETITIONS");
         competitions();
 
         return this;
     }
 
     protected void learning() {
-        competitionDTOs.stream().forEach(dto -> {
+        Stream<CompetitionDTO> stream = Context.getInstance().PARALLEL ? competitionDTOs.parallelStream() : competitionDTOs.stream();
+        stream.forEach(dto -> {
             log.info("{}...", dto.distance.getName());
             Checker checker = getChecker(forLearning, dto);
             Task task = new DefaultTask(checker, dto.distance, pointsCount);

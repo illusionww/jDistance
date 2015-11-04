@@ -6,7 +6,6 @@ import com.jdistance.impl.workflow.checker.Checker;
 import com.jdistance.impl.workflow.checker.MetricChecker;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
-import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

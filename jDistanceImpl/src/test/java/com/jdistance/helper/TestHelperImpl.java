@@ -1,8 +1,8 @@
 package com.jdistance.helper;
 
-import com.jdistance.metric.Distance;
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.task.Task;
+import com.jdistance.metric.Distance;
 
 import java.io.File;
 import java.util.HashMap;
@@ -23,7 +23,7 @@ public class TestHelperImpl {
 
         File testFolder = new File(TEST_FOLDER);
         if (testFolder.exists()) {
-            for(File file: testFolder.listFiles()) {
+            for (File file : testFolder.listFiles()) {
                 file.delete();
             }
         }

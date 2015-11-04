@@ -10,7 +10,6 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,20 +31,21 @@ public class Main {
     }
 
     private static void callMetricCompetitionTask() {
-        Integer N = 200;
-        Double pIn = 0.4;
-        Double pOut = 0.1;
-        Integer k = 5;
-        Integer countForLearning = 5;
-        Integer countForCompetitions = 5;
+        int N = 200;
+        double pIn = 0.4;
+        double pOut = 0.1;
+        int k = 5;
+        int graphCountForLearning = 5;
+        int graphCountForCompetitions = 5;
+        int pointsCount = 5;
 
         List<CompetitionDTO> competitionDTOs = DistanceClass.getDefaultDistances().stream()
                 .map(distanceClass -> new CompetitionDTO(distanceClass.getInstance(), k)).collect(Collectors.toList());
 
-        GraphBundle forLearning = new GraphBundle(N, pIn, pOut, k, countForLearning);
-        GraphBundle forCompetitions = new GraphBundle(N, pIn, pOut, k, countForCompetitions);
+        GraphBundle graphsForLearning = new GraphBundle(N, pIn, pOut, k, graphCountForLearning);
+        GraphBundle graphsForCompetitions = new GraphBundle(N, pIn, pOut, k, graphCountForCompetitions);
 
-        MetricCompetitionTask task = new MetricCompetitionTask(competitionDTOs, forLearning, forCompetitions, 150, "test");
+        MetricCompetitionTask task = new MetricCompetitionTask(competitionDTOs, graphsForLearning, graphsForCompetitions, pointsCount, "test");
         task.execute().write();
     }
 }

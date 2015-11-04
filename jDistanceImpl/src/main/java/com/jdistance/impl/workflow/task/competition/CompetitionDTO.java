@@ -14,16 +14,13 @@ public class CompetitionDTO {
     public Double tempResult;
     public Map<String, Double> additionalInfo = new LinkedHashMap<>();
 
-
-    public CompetitionDTO(Distance distance, Integer k) {
-        this.distance = distance;
-        this.k = k;
-        this.x = 0d;
-    }
-
     public CompetitionDTO(Distance distance, Integer k, Double x) {
         this.distance = distance;
         this.k = k;
         this.x = x;
+    }
+
+    public CompetitionDTO(Distance distance, Integer k) {
+        this(distance, k, 0.0);
     }
 }

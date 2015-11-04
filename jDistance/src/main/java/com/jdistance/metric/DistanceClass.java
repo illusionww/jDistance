@@ -38,6 +38,19 @@ public enum DistanceClass {
         return null;
     }
 
+    public static List<DistanceClass> getDefaultDistances() {
+        return Arrays.asList(
+                DistanceClass.COMM_D,
+                DistanceClass.LOG_COMM_D,
+                DistanceClass.SP_CT,
+                DistanceClass.FREE_ENERGY,
+                DistanceClass.WALK,
+                DistanceClass.LOG_FOREST,
+                DistanceClass.FOREST,
+                DistanceClass.PLAIN_WALK
+        );
+    }
+
     public Distance getInstance(String name) {
         Distance distance = getInstance();
         distance.setName(name);
@@ -52,18 +65,5 @@ public enum DistanceClass {
         }
 
         throw new RuntimeException();
-    }
-
-    public static List<DistanceClass> getDefaultDistances() {
-        return Arrays.asList(
-                DistanceClass.COMM_D,
-                DistanceClass.LOG_COMM_D,
-                DistanceClass.SP_CT,
-                DistanceClass.FREE_ENERGY,
-                DistanceClass.WALK,
-                DistanceClass.LOG_FOREST,
-                DistanceClass.FOREST,
-                DistanceClass.PLAIN_WALK
-        );
     }
 }

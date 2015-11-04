@@ -2,13 +2,14 @@ package com.jdistance.graph;
 
 import java.util.LinkedList;
 
-public class NodeData implements Comparable<NodeData>{
+public class NodeData implements Comparable<NodeData> {
     private String idNode;
     private String color;
     private String cluster;
     private String referenceCluster;
     private Boolean active;
     private String borderColor;
+    private LinkedList list;
 
     public String getBorderColor() {
         return borderColor;
@@ -50,8 +51,6 @@ public class NodeData implements Comparable<NodeData>{
         this.list = list;
     }
 
-    private LinkedList list;
-
     public String getIdNode() {
         return idNode;
     }
@@ -73,7 +72,6 @@ public class NodeData implements Comparable<NodeData>{
     public int compareTo(NodeData o) {
         if (this.getColor() != null) {
             return this.getColor().compareTo(o.getColor());
-        }
-        else return 0;
+        } else return 0;
     }
 }

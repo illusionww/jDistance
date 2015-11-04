@@ -29,29 +29,24 @@ public class GraphMLParser extends Parser {
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
         NodeList nodeList = doc.getElementsByTagName("node");
-        for (int i = 0; i < nodeList.getLength(); ++i){
+        for (int i = 0; i < nodeList.getLength(); ++i) {
             NodeData nodeData = new NodeData();
             NodeList childNodes = nodeList.item(i).getChildNodes();
-            for (int k = 0; k < childNodes.getLength(); ++k){
-                if (childNodes.item(k).getAttributes() != null){
+            for (int k = 0; k < childNodes.getLength(); ++k) {
+                if (childNodes.item(k).getAttributes() != null) {
                     String prefix = childNodes.item(k).getAttributes().getNamedItem("key").getNodeValue();
                     String value = childNodes.item(k).getFirstChild().getNodeValue();
-                    if ("d102".equals(prefix)){
+                    if ("d102".equals(prefix)) {
                         nodeData.setIdNode(value);
-                    }
-                    else if ("d7".equals(prefix)){
+                    } else if ("d7".equals(prefix)) {
                         nodeData.setActive(Boolean.valueOf(value));
-                    }
-                    else if ("d100".equals(prefix)){
+                    } else if ("d100".equals(prefix)) {
                         nodeData.setCluster(value);
-                    }
-                    else if ("d5".equals(prefix)){
+                    } else if ("d5".equals(prefix)) {
                         nodeData.setBorderColor(value);
-                    }
-                    else if ("d101".equals(prefix)){
+                    } else if ("d101".equals(prefix)) {
                         nodeData.setReferenceCluster(value);
-                    }
-                    else if ("d4".equals(prefix)){
+                    } else if ("d4".equals(prefix)) {
                         nodeData.setColor(value);
                     }
                 }
@@ -75,7 +70,7 @@ public class GraphMLParser extends Parser {
                     }
                 }
             }
-            if (edgeData.getActive()){
+            if (edgeData.getActive()) {
                 edgeData.setSource(edgeList.item(i).getAttributes().getNamedItem("source").getNodeValue());
                 edgeData.setTarget(edgeList.item(i).getAttributes().getNamedItem("target").getNodeValue());
                 activeEdgeData.add(edgeData);

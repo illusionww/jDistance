@@ -130,6 +130,14 @@ public class Classifier {
         return result;
     }
 
+    public int getCountColoredNodes() {
+        return countColoredNodes;
+    }
+
+    public void setCountColoredNodes(int countColoredNodes) {
+        this.countColoredNodes = countColoredNodes;
+    }
+
     private class DataForClassifier implements Comparable<DataForClassifier> {
         String name;
         String label;
@@ -169,14 +177,6 @@ public class Classifier {
         public int compareTo(DataForClassifier o) {
             return this.value.compareTo(o.getValue());
         }
-    }
-
-    public int getCountColoredNodes() {
-        return countColoredNodes;
-    }
-
-    public void setCountColoredNodes(int countColoredNodes) {
-        this.countColoredNodes = countColoredNodes;
     }
 
 }

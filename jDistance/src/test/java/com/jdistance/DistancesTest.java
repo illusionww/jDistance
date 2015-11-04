@@ -1,7 +1,9 @@
 package com.jdistance;
 
-import com.jdistance.metric.*;
+import com.jdistance.metric.Distance;
+import com.jdistance.metric.DistanceClass;
 import com.jdistance.metric.JeigenBuilder;
+import com.jdistance.metric.Scale;
 import com.jdistance.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
 import org.junit.Test;

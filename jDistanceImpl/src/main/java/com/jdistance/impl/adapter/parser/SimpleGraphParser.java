@@ -23,7 +23,7 @@ public class SimpleGraphParser extends Parser {
     public Graph parse(File file) throws ParserConfigurationException, IOException, SAXException {
         ArrayList<SimpleNodeData> simpleNodeData = new ArrayList<>();
 
-        try(BufferedReader br = new BufferedReader(new FileReader(file))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine();
             while (line != null && !line.matches("begin vertices:")) {
                 //System.out.println("skip '" + line + "'");

@@ -30,6 +30,10 @@ public class Context {
         return localInstance;
     }
 
+    private static boolean isExist(String path) {
+        return path != null && new File(path).exists();
+    }
+
     public boolean checkContext() {
         GNUPLOT_PATH = isExist(GNUPLOT_PATH) ? GNUPLOT_PATH : FileUtils.findPathExec();
 
@@ -53,9 +57,5 @@ public class Context {
             throw new RuntimeException("Folder " + new File(COMPETITION_FOLDER).getAbsolutePath() + " is not exist");
         }
         return PARALLEL != null && USE_CACHE != null && COMPETITION_FOLDER != null;
-    }
-
-    private static boolean isExist(String path) {
-        return path != null && new File(path).exists();
     }
 }

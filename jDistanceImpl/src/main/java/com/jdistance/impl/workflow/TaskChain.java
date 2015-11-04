@@ -1,17 +1,20 @@
 package com.jdistance.impl.workflow;
 
-import com.panayotis.gnuplot.dataset.Point;
-import com.panayotis.gnuplot.dataset.PointDataSet;
-import com.panayotis.gnuplot.style.PlotColor;
 import com.jdistance.impl.adapter.gnuplot.ArrayUtils;
 import com.jdistance.impl.adapter.gnuplot.GNUPlotAdapter;
 import com.jdistance.impl.adapter.gnuplot.Plot;
-import com.jdistance.metric.Distance;
 import com.jdistance.impl.workflow.task.Task;
+import com.jdistance.metric.Distance;
+import com.panayotis.gnuplot.dataset.Point;
+import com.panayotis.gnuplot.dataset.PointDataSet;
+import com.panayotis.gnuplot.style.PlotColor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -22,7 +25,7 @@ public class TaskChain {
     String name = null;
     List<Task> tasks = null;
 
-    public TaskChain(String name, Task ... tasks) {
+    public TaskChain(String name, Task... tasks) {
         this.name = name;
         this.tasks = new ArrayList<>(Arrays.asList(tasks));
     }

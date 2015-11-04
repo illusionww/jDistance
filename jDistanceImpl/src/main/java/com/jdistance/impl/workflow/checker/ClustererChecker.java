@@ -1,10 +1,10 @@
 package com.jdistance.impl.workflow.checker;
 
 
-import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.clusterer.Clusterer;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.SimpleNodeData;
+import com.jdistance.impl.adapter.generator.GraphBundle;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;

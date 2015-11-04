@@ -18,7 +18,7 @@ public abstract class Distance {
         NodesDistanceDTO p = new NodesDistanceDTO(0, 0, 0);
         double[][] D = MatrixAdapter.toArray2(getD(A, t));
         for (int i = 0; i < D.length; i++) {
-            for(int j = 0; j < D[i].length; j++) {
+            for (int j = 0; j < D[i].length; j++) {
                 if (p.getValue() < D[i][j]) {
                     p.setValue(i, j, D[i][j]);
                 }

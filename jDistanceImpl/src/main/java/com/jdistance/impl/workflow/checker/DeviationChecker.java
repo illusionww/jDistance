@@ -1,8 +1,8 @@
 package com.jdistance.impl.workflow.checker;
 
-import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.SimpleNodeData;
+import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.metric.DistanceClass;
 import com.jdistance.metric.NodesDistanceDTO;
 import com.jdistance.utils.MatrixAdapter;

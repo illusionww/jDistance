@@ -1,8 +1,8 @@
 package com.jdistance.metric.impl;
 
 import com.jdistance.metric.Distance;
-import com.jdistance.metric.Scale;
 import com.jdistance.metric.JeigenBuilder;
+import com.jdistance.metric.Scale;
 import jeigen.DenseMatrix;
 
 public class Comm_D extends Distance {

@@ -45,12 +45,12 @@ public class GraphBundle implements Cloneable<GraphBundle> {
         return this.graphs.size();
     }
 
-    public void setGraphs(List<Graph> graphs) {
-        this.graphs = graphs;
-    }
-
     public List<Graph> getGraphs() {
         return graphs;
+    }
+
+    public void setGraphs(List<Graph> graphs) {
+        this.graphs = graphs;
     }
 
     public void generate(int count) throws ParserConfigurationException, SAXException, IOException {

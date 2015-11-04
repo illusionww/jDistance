@@ -17,9 +17,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class GNUPlotAdapter {
-    private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
-    private String gnuplotPath;
-
     public static final PlotColor[] colors = {
             NamedPlotColor.RED,
             NamedPlotColor.GREEN,
@@ -39,6 +36,8 @@ public class GNUPlotAdapter {
             NamedPlotColor.ORANGE,
             NamedPlotColor.VIOLET
     };
+    private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
+    private String gnuplotPath;
 
     public GNUPlotAdapter(String gnuplotPath) {
         this.gnuplotPath = gnuplotPath;
@@ -58,7 +57,7 @@ public class GNUPlotAdapter {
         JavaPlot gnuplot = new JavaPlot(gnuplotPath);
         gnuplot.setTerminal(png);
 
-        for(Plot plot : data) {
+        for (Plot plot : data) {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());

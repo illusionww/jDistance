@@ -1,10 +1,10 @@
 package com.jdistance.impl;
 
-import com.jdistance.metric.Distance;
 import com.jdistance.impl.workflow.TaskChain;
 import com.jdistance.impl.workflow.checker.Checker;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.Task;
+import com.jdistance.metric.Distance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

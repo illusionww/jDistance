@@ -1,7 +1,7 @@
 package com.jdistance.metric;
 
-import com.keithschwarz.johnsons.JohnsonsAlgorithm;
 import com.jdistance.utils.MatrixAdapter;
+import com.keithschwarz.johnsons.JohnsonsAlgorithm;
 import jeigen.DenseMatrix;
 
 import java.util.function.UnaryOperator;
@@ -9,6 +9,63 @@ import java.util.function.UnaryOperator;
 import static jeigen.Shortcuts.*;
 
 public class JeigenBuilder {
+    //////////////////////////////////////////////////////////////////////////////////////
+    // HELPER METHODS
+    //////////////////////////////////////////////////////////////////////////////////////
+
+    public static DenseMatrix log(DenseMatrix A) {
+        return elementWise(A, Math::log);
+    }
+
+    public static DenseMatrix exp(DenseMatrix A) {
+        return elementWise(A, Math::exp);
+    }
+
+    private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
+        double[][] values = MatrixAdapter.toArray2(A);
+        for (int i = 0; i < values.length; i++) {
+            for (int j = 0; j < values[i].length; j++) {
+                values[i][j] = operator.apply(values[i][j]);
+            }
+        }
+        return new DenseMatrix(values);
+    }
+
+    public static DenseMatrix diagToVector(DenseMatrix A) {
+        DenseMatrix diag = new DenseMatrix(A.rows, 1);
+        double[] values = A.getValues();
+        for (int i = 0; i < A.rows; i++) {
+            diag.set(i, values[i * (A.cols + 1)]);
+        }
+        return diag;
+    }
+
+    public static DenseMatrix pinv(DenseMatrix A) {
+        if (A.cols != A.rows) {
+            throw new RuntimeException("pinv matrix size error: must be square matrix");
+        }
+
+        return A.fullPivHouseholderQRSolve(diag(ones(A.cols, 1)));
+    }
+
+    public static DenseMatrix dummy_mexp(DenseMatrix A, int nSteps) {
+        DenseMatrix runtot = eye(A.rows);
+        DenseMatrix sum = eye(A.rows);
+
+        double factorial = 1;
+        for (int i = 1; i <= nSteps; i++) {
+            factorial /= (double) i;
+            sum = sum.mmul(A);
+            runtot = runtot.add(sum.mul(factorial));
+        }
+        return runtot;
+    }
+
+    public static DenseMatrix normalization(DenseMatrix dm) {
+        Double avg = dm.sum().sum().s() / (dm.cols * (dm.cols - 1));
+        return dm.div(avg);
+    }
+
     public DenseMatrix getL(DenseMatrix A) {
         return diag(A.sumOverRows().t()).sub(A);
     }
@@ -95,62 +152,5 @@ public class JeigenBuilder {
 
     public DenseMatrix sqrtD(DenseMatrix D) {
         return D.sqrt();
-    }
-
-    //////////////////////////////////////////////////////////////////////////////////////
-    // HELPER METHODS
-    //////////////////////////////////////////////////////////////////////////////////////
-
-    public static DenseMatrix log(DenseMatrix A) {
-        return elementWise(A, Math::log);
-    }
-
-    public static DenseMatrix exp(DenseMatrix A) {
-        return elementWise(A, Math::exp);
-    }
-
-    private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
-        double[][] values = MatrixAdapter.toArray2(A);
-        for (int i = 0; i < values.length; i++) {
-            for (int j = 0; j < values[i].length; j++) {
-                values[i][j] = operator.apply(values[i][j]);
-            }
-        }
-        return new DenseMatrix(values);
-    }
-
-    public static DenseMatrix diagToVector(DenseMatrix A) {
-        DenseMatrix diag = new DenseMatrix(A.rows, 1);
-        double[] values = A.getValues();
-        for (int i = 0; i < A.rows; i++) {
-            diag.set(i, values[i * (A.cols + 1)]);
-        }
-        return diag;
-    }
-
-    public static DenseMatrix pinv(DenseMatrix A) {
-        if (A.cols != A.rows) {
-            throw new RuntimeException("pinv matrix size error: must be square matrix");
-        }
-
-        return A.fullPivHouseholderQRSolve(diag(ones(A.cols, 1)));
-    }
-
-    public static DenseMatrix dummy_mexp(DenseMatrix A, int nSteps) {
-        DenseMatrix runtot = eye(A.rows);
-        DenseMatrix sum = eye(A.rows);
-
-        double factorial = 1;
-        for (int i = 1; i <= nSteps; i++) {
-            factorial /= (double) i;
-            sum = sum.mmul(A);
-            runtot = runtot.add(sum.mul(factorial));
-        }
-        return runtot;
-    }
-
-    public static DenseMatrix normalization(DenseMatrix dm) {
-        Double avg = dm.sum().sum().s() / (dm.cols * (dm.cols - 1));
-        return dm.div(avg);
     }
 }

@@ -1,7 +1,7 @@
 package com.jdistance.impl.adapter.generator;
 
-import com.jdistance.impl.adapter.GraphValidator;
 import com.jdistance.graph.Graph;
+import com.jdistance.impl.adapter.GraphValidator;
 import com.jdistance.impl.adapter.parser.GraphMLParser;
 import de.uka.algo.generator.accessory.StandaloneDCRArguments;
 import de.uka.algo.generator.standalone.generators.DCRGenerator;
@@ -74,22 +74,22 @@ public class DCRGeneratorAdapter {
         }
 
         StandaloneDCRArguments arguments = new StandaloneDCRArguments();
-        arguments.t_max = Integer.parseInt((String)argMap.get("t_max"));
-        arguments.n = Integer.parseInt((String)argMap.get("n"));
+        arguments.t_max = Integer.parseInt((String) argMap.get("t_max"));
+        arguments.n = Integer.parseInt((String) argMap.get("n"));
         arguments.p_in = Double.parseDouble((String) argMap.get("p_in"));
         arguments.p_out = Double.parseDouble((String) argMap.get("p_out"));
         arguments.p_inList = null;
-        arguments.k = Integer.parseInt((String)argMap.get("k"));
+        arguments.k = Integer.parseInt((String) argMap.get("k"));
         arguments.beta = Double.parseDouble((String) argMap.get("beta"));
         arguments.D_s = null;
-        arguments.p_chi = Double.parseDouble((String)argMap.get("p_chi"));
-        arguments.p_nu = Double.parseDouble((String)argMap.get("p_nu"));
-        arguments.eta = Integer.parseInt((String)argMap.get("eta"));
-        arguments.p_omega = Double.parseDouble((String)argMap.get("p_omega"));
-        arguments.p_mu = Double.parseDouble((String)argMap.get("p_mu"));
-        arguments.sigma = Double.parseDouble((String)argMap.get("sigma"));
-        arguments.theta = Double.parseDouble((String)argMap.get("theta"));
-        arguments.enp = Boolean.parseBoolean((String)argMap.get("enp"));
+        arguments.p_chi = Double.parseDouble((String) argMap.get("p_chi"));
+        arguments.p_nu = Double.parseDouble((String) argMap.get("p_nu"));
+        arguments.eta = Integer.parseInt((String) argMap.get("eta"));
+        arguments.p_omega = Double.parseDouble((String) argMap.get("p_omega"));
+        arguments.p_mu = Double.parseDouble((String) argMap.get("p_mu"));
+        arguments.sigma = Double.parseDouble((String) argMap.get("sigma"));
+        arguments.theta = Double.parseDouble((String) argMap.get("theta"));
+        arguments.enp = Boolean.parseBoolean((String) argMap.get("enp"));
         return arguments;
     }
 

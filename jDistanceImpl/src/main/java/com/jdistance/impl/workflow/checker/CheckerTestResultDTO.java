@@ -6,9 +6,9 @@ public class CheckerTestResultDTO {
     private Double coloredNodes;
 
     public CheckerTestResultDTO(Integer total, Integer countErrors, Integer coloredNodes) {
-        this.total = (double)total;
-        this.countErrors = (double)countErrors;
-        this.coloredNodes = (double)coloredNodes;
+        this.total = (double) total;
+        this.countErrors = (double) countErrors;
+        this.coloredNodes = (double) coloredNodes;
     }
 
     public CheckerTestResultDTO(Double total, Double countErrors) {
