@@ -6,7 +6,7 @@ public class Input {
     private final double[][] probabilityMatrix;
     private final List<Integer> sizeOfVertices;
 
-    public Input(List<Integer> sizeOfVertices, double[][] probabilityMatrix){
+    public Input(List<Integer> sizeOfVertices, double[][] probabilityMatrix) {
         this.sizeOfVertices = sizeOfVertices;
         this.probabilityMatrix = probabilityMatrix;
     }
@@ -18,6 +18,4 @@ public class Input {
     public List<Integer> getSizeOfVertices() {
         return sizeOfVertices;
     }
-
-
 }

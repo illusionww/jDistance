@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ParseInput {
-    public static Input parse(String pathToFile){
+    public static Input parse(String pathToFile) {
         BufferedReader reader;
         List<String> lines = new ArrayList<>();
         try {
@@ -23,13 +23,13 @@ public class ParseInput {
 
         List<Integer> sizeOfVertices = new LinkedList<>();
         String[] str = lines.get(0).split(" ");
-        for (int i = 0; i < str.length; ++i){
-            sizeOfVertices.add(Integer.parseInt(str[i]));
+        for (String aStr : str) {
+            sizeOfVertices.add(Integer.parseInt(aStr));
         }
 
         int numberOfClusters = sizeOfVertices.size();
         double[][] probabilityMatrix = new double[numberOfClusters][numberOfClusters];
-        for (int i = 0; i < numberOfClusters; ++i){
+        for (int i = 0; i < numberOfClusters; ++i) {
             str = lines.get(i + 1).split(" ");
             for (int j = 0; j < numberOfClusters; ++j) {
                 probabilityMatrix[i][j] = Double.parseDouble(str[j]);
