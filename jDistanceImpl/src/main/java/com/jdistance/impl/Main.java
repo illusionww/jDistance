@@ -8,7 +8,9 @@ import com.jdistance.metric.DistanceClass;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,9 +23,10 @@ public class Main {
     private static void initContext() {
         Context context = Context.getInstance();
         context.GNUPLOT_PATH = "c:\\cygwin64\\bin\\gnuplot.exe";
-        context.IMG_FOLDER = "pictures"; //"D:\\Dropbox\\jdistance\\pictures";
+        context.IMG_FOLDER = "pictures";
+        new File("./pictures").mkdir();
         context.COMPETITION_FOLDER = "tournament";
-        context.CACHE_FOLDER = "cache";
+        new File("./tournament").mkdir();
         context.PARALLEL = true;
         context.USE_CACHE = false;
     }
@@ -33,13 +36,14 @@ public class Main {
         Double pIn = 0.4;
         Double pOut = 0.1;
         Integer k = 5;
-        Integer count = 10;
+        Integer countForLearning = 5;
+        Integer countForCompetitions = 5;
 
         List<CompetitionDTO> competitionDTOs = DistanceClass.getDefaultDistances().stream()
                 .map(distanceClass -> new CompetitionDTO(distanceClass.getInstance(), k)).collect(Collectors.toList());
 
-        GraphBundle forLearning = new GraphBundle(N, pIn, pOut, k, count);
-        GraphBundle forCompetitions = new GraphBundle(N, pIn, pOut, k, 1);
+        GraphBundle forLearning = new GraphBundle(N, pIn, pOut, k, countForLearning);
+        GraphBundle forCompetitions = new GraphBundle(N, pIn, pOut, k, countForCompetitions);
 
         MetricCompetitionTask task = new MetricCompetitionTask(competitionDTOs, forLearning, forCompetitions, 150, "test");
         task.execute().write();

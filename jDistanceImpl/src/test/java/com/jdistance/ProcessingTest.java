@@ -1,23 +1,21 @@
 package com.jdistance;
 
+import com.jdistance.helper.Constants;
+import com.jdistance.helper.TestHelperImpl;
 import com.jdistance.impl.ScenarioHelper;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.impl.adapter.parser.Parser;
 import com.jdistance.impl.adapter.parser.ParserWrapper;
-import com.jdistance.impl.cache.CacheManager;
-import com.jdistance.impl.cache.CacheUtils;
-import com.jdistance.helper.Constants;
-import com.jdistance.impl.workflow.task.MetricTask;
-import com.jdistance.helper.TestHelperImpl;
-import com.jdistance.metric.Distance;
-import com.jdistance.metric.DistanceClass;
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.TaskChain;
 import com.jdistance.impl.workflow.checker.Checker;
 import com.jdistance.impl.workflow.checker.ClassifierChecker;
 import com.jdistance.impl.workflow.checker.ClustererChecker;
 import com.jdistance.impl.workflow.task.DefaultTask;
+import com.jdistance.impl.workflow.task.MetricTask;
 import com.jdistance.impl.workflow.task.Task;
+import com.jdistance.metric.Distance;
+import com.jdistance.metric.DistanceClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -75,40 +73,6 @@ public class ProcessingTest {
     }
 
     @Test
-    public void testCacheManager() throws IOException {
-        Parser parser = new ParserWrapper();
-        URL url = Thread.currentThread().getContextClassLoader().getResource(Constants.n100pin03pout01k5FOLDER);
-        GraphBundle graphs = new GraphBundle(100, 0.3, 0.1, 5, parser.parseInDirectory(url.getPath().substring(1)));
-        GraphBundle graphs1 = new GraphBundle(100, 0.3, 0.1, 5, parser.parseInDirectory(url.getPath().substring(1)));
-        graphs1.setGraphs(graphs1.getGraphs().subList(2, 4));
-        GraphBundle graphs2 = new GraphBundle(100, 0.3, 0.1, 5, parser.parseInDirectory(url.getPath().substring(1)));
-
-        TaskChain chain = ScenarioHelper.defaultTasks(new ClassifierChecker(graphs, 1, 0.3), distances, 10);
-        TaskChain chain1 = ScenarioHelper.defaultTasks(new ClassifierChecker(graphs1, 1, 0.3), distances, 10);
-        TaskChain chain2 = ScenarioHelper.defaultTasks(new ClassifierChecker(graphs2, 1, 0.3), distances, 10);
-
-        Context.getInstance().USE_CACHE = false;
-        Map<Distance, Map<Double, Double>> withoutCache = TestHelperImpl.toDistanceMap(chain.execute().getData());
-        Context.getInstance().USE_CACHE = true;
-        chain1.execute();
-
-        int cacheCount = CacheUtils.getAllSerFiles(Context.getInstance().CACHE_FOLDER).size();
-        assertTrue("cache files is not created", cacheCount > 0);
-
-        CacheManager.getInstance().reconciliation();
-
-        Map<Distance, Map<Double, Double>> withCache = TestHelperImpl.toDistanceMap(chain2.execute().getData());
-
-        distances.forEach(distance -> {
-            Map<Double, Double> withoutCachePoints = withoutCache.get(distance);
-            Map<Double, Double> withCachePoints = withCache.get(distance);
-
-            withoutCachePoints.keySet().forEach(x -> assertTrue("Calculation with cache not working for " + distance.getName() + " " + x + ": " + withoutCachePoints.get(x) + " != " + withCachePoints.get(x),
-                    TestHelperImpl.equalDoubleStrict(withoutCachePoints.get(x), withCachePoints.get(x))));
-        });
-    }
-
-    @Test
     public void testConstantResultClassifier() {
         GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 2);
         Checker checker = new ClassifierChecker(bundle, 3, 0.3);
@@ -133,7 +97,7 @@ public class ProcessingTest {
         GraphBundle bundle = new GraphBundle(100, 0.3, 0.1, 5, 10);
         Checker checker = new ClassifierChecker(bundle, 3, 0.3);
         TaskChain chain = ScenarioHelper.defaultTasks(checker, DistanceClass.getAll().stream().map(DistanceClass::getInstance).collect(Collectors.toList()), 10);
-        List<Task>  result = chain.execute().getTasks();
+        List<Task> result = chain.execute().getTasks();
         result.forEach(i -> {
             Map.Entry<Double, Double> bestResult = i.getBestResult();
             assertTrue("For " + i.getName() + " lambda = " + bestResult.getKey() + " best result - NaN", !bestResult.getValue().isNaN());
