@@ -1,5 +1,7 @@
 package com.jdistance.impl;
 
+import com.graphgenerator.utils.Input;
+import com.graphgenerator.utils.ParseInput;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.task.competition.CompetitionDTO;
@@ -16,7 +18,7 @@ import java.util.stream.Collectors;
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         initContext();
-        callMetricCompetitionTask();
+        callMetricCompetitionTask("./dataForGenerator/defaultParameters.txt");
     }
 
     private static void initContext() {
@@ -30,11 +32,9 @@ public class Main {
         context.USE_CACHE = false;
     }
 
-    private static void callMetricCompetitionTask() {
-        int N = 200;
-        double pIn = 0.4;
-        double pOut = 0.1;
-        int k = 5;
+    private static void callMetricCompetitionTask(String pathToParameters) {
+        Input input = ParseInput.parse(pathToParameters);
+        int k = input.getSizeOfVertices().size();
         int graphCountForLearning = 5;
         int graphCountForCompetitions = 5;
         int pointsCount = 5;
@@ -42,8 +42,8 @@ public class Main {
         List<CompetitionDTO> competitionDTOs = DistanceClass.getDefaultDistances().stream()
                 .map(distanceClass -> new CompetitionDTO(distanceClass.getInstance(), k)).collect(Collectors.toList());
 
-        GraphBundle graphsForLearning = new GraphBundle(N, pIn, pOut, k, graphCountForLearning);
-        GraphBundle graphsForCompetitions = new GraphBundle(N, pIn, pOut, k, graphCountForCompetitions);
+        GraphBundle graphsForLearning = new GraphBundle(input, graphCountForLearning);
+        GraphBundle graphsForCompetitions = new GraphBundle(input, graphCountForCompetitions);
 
         MetricCompetitionTask task = new MetricCompetitionTask(competitionDTOs, graphsForLearning, graphsForCompetitions, pointsCount, "test");
         task.execute().write();
