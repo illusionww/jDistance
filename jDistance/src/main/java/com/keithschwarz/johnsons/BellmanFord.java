@@ -89,7 +89,7 @@ final class BellmanFord {
          * with the initial value of the recurrence (the source is at distance
          * zero from itself; all other nodes are at infinite distance).
          */
-        Map<T, Double> result = new HashMap<T, Double>();
+        Map<T, Double> result = new HashMap<>();
         for (T node: graph)
             result.put(node, Double.POSITIVE_INFINITY);
         result.put(source, 0.0);
@@ -98,7 +98,7 @@ final class BellmanFord {
          * forth between the result map and this map during each iteration of
          * the algortihm so that we avoid needlessly reallocating maps.
          */
-        Map<T, Double> scratch = new HashMap<T, Double>();
+        Map<T, Double> scratch = new HashMap<>();
 
         /* Starting with k = 1, compute the new values for the distances by
          * evaluating the recurrence.

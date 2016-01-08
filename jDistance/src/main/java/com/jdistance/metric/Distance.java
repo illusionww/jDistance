@@ -1,6 +1,7 @@
 package com.jdistance.metric;
 
 import com.jdistance.utils.MatrixAdapter;
+import com.jdistance.utils.NodesDistanceDTO;
 import jeigen.DenseMatrix;
 
 public abstract class Distance {

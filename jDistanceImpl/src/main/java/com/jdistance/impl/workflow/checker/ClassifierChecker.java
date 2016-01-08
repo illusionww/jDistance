@@ -1,8 +1,8 @@
 package com.jdistance.impl.workflow.checker;
 
-import com.jdistance.classifier.Classifier;
+import com.jdistance.classifier.KNearestNeighbors;
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.SimpleNodeData;
+import com.jdistance.graph.NodeData;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import jeigen.DenseMatrix;
 
@@ -50,15 +50,15 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData) {
         Integer countErrors = 0;
 
-        final Classifier classifier = new Classifier(D, simpleNodeData);
-        ArrayList<SimpleNodeData> data = classifier.predictLabel(k, p, x);
+        final KNearestNeighbors classifier = new KNearestNeighbors(D, nodeData);
+        ArrayList<NodeData> data = classifier.predictLabel(k, p, x);
 
         for (int q = 0; q < data.size(); ++q) {
-            SimpleNodeData original = simpleNodeData.get(q);
-            SimpleNodeData calculated = data.get(q);
+            NodeData original = nodeData.get(q);
+            NodeData calculated = data.get(q);
             if (original.getName().equals(calculated.getName()) && !original.getLabel().equals(calculated.getLabel())) {
                 countErrors += 1;
             }

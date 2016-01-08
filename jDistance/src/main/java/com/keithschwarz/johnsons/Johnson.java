@@ -132,7 +132,7 @@ final class Johnson {
          * values for edges.  We'll begin by initializing it so that it has a
          * copy of each node in the source graph.
          */
-        DirectedGraph<T> result = new DirectedGraph<T>();
+        DirectedGraph<T> result = new DirectedGraph<>();
         for (T node: graph)
             result.addNode(node);
 
@@ -168,7 +168,7 @@ final class Johnson {
      * @return An augmented version of that graph.
      */
     private static <T> DirectedGraph<Object> constructAugmentedGraph(DirectedGraph<T> graph) {
-        DirectedGraph<Object> result = new DirectedGraph<Object>();
+        DirectedGraph<Object> result = new DirectedGraph<>();
 
         /* Copy over the nodes. */
         for (Object node: graph)
@@ -201,7 +201,7 @@ final class Johnson {
     private static <T> DirectedGraph<T> reweightGraph(DirectedGraph<T> graph,
                                                       Map<Object, Double> potential) {
         /* Begin by copying over all the nodes from the old graph. */
-        DirectedGraph<T> result = new DirectedGraph<T>();
+        DirectedGraph<T> result = new DirectedGraph<>();
         for (T node: graph)
             result.addNode(node);
 

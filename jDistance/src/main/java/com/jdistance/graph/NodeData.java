@@ -1,77 +1,50 @@
 package com.jdistance.graph;
 
-import java.util.LinkedList;
+import com.jdistance.utils.Cloneable;
 
-public class NodeData implements Comparable<NodeData> {
-    private String idNode;
-    private String color;
-    private String cluster;
-    private String referenceCluster;
-    private Boolean active;
-    private String borderColor;
-    private LinkedList list;
+public class NodeData implements Comparable<NodeData>, Cloneable<NodeData> {
+    String name;
+    String label; //color
 
-    public String getBorderColor() {
-        return borderColor;
+    public NodeData(String name, String label) {
+        this.name = name;
+        this.label = label;
     }
 
-    public void setBorderColor(String borderColor) {
-        this.borderColor = borderColor;
+    public String getLabel() {
+        return label;
     }
 
-    public Boolean getActive() {
-        return active;
+    public String getName() {
+        return name;
     }
 
-    public void setActive(Boolean active) {
-        this.active = active;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCluster() {
-        return cluster;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof NodeData)) {
+            return false;
+        }
+        NodeData that = (NodeData) o;
+        return label != null ? label.equals(that.label) : that.label == null &&
+                name != null ? name.equals(that.name) : that.name == null;
     }
-
-    public void setCluster(String cluster) {
-        this.cluster = cluster;
-    }
-
-    public String getReferenceCluster() {
-        return referenceCluster;
-    }
-
-    public void setReferenceCluster(String referenceCluster) {
-        this.referenceCluster = referenceCluster;
-    }
-
-    public LinkedList getList() {
-        return list;
-    }
-
-    public void setList(LinkedList list) {
-        this.list = list;
-    }
-
-    public String getIdNode() {
-        return idNode;
-    }
-
-    public void setIdNode(String idNode) {
-        this.idNode = idNode;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
-    }
-
 
     @Override
     public int compareTo(NodeData o) {
-        if (this.getColor() != null) {
-            return this.getColor().compareTo(o.getColor());
+        if (this.getLabel() != null) {
+            return this.getLabel().compareTo(o.getLabel());
         } else return 0;
+    }
+
+    @Override
+    public NodeData clone() {
+        return new NodeData(this.name, this.label);
     }
 }

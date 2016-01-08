@@ -8,10 +8,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Stack;
 
-public class Clusterer {
+public class MinSpanningTree {
     private double[][] matrixWithWeights;
 
-    public Clusterer(DenseMatrix matrixWithWeights) {
+    public MinSpanningTree(DenseMatrix matrixWithWeights) {
         this.matrixWithWeights = MatrixAdapter.toArray2(matrixWithWeights);
     }
 

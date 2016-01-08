@@ -1,30 +1,30 @@
 package com.jdistance.classifier;
 
-import com.jdistance.graph.SimpleNodeData;
+import com.jdistance.graph.NodeData;
 import com.jdistance.utils.MatrixAdapter;
 import jeigen.DenseMatrix;
 
 import java.util.*;
 
-public class Classifier {
+public class KNearestNeighbors {
 
-    private ArrayList<SimpleNodeData> realData; //  name and cluster
+    private ArrayList<NodeData> realData; //  name and cluster
     private double[][] matrixWithWeights;
     private int countColoredNodes;
 
 
-    public Classifier(DenseMatrix matrixWithWeights, ArrayList<SimpleNodeData> realData) {
+    public KNearestNeighbors(DenseMatrix matrixWithWeights, ArrayList<NodeData> realData) {
         this.matrixWithWeights = MatrixAdapter.toArray2(matrixWithWeights);
         this.realData = new ArrayList<>(realData);
         countColoredNodes = 0;
     }
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
-    public ArrayList<SimpleNodeData> predictLabel(Integer k, Double p) {
+    public ArrayList<NodeData> predictLabel(Integer k, Double p) {
         return predictLabel(k, p, 0.0);
     }
 
-    public ArrayList<SimpleNodeData> predictLabel(Integer k, Double p, Double x) {
+    public ArrayList<NodeData> predictLabel(Integer k, Double p, Double x) {
         HashMap<String, Integer> order = new HashMap<String, Integer>();
 
         for (int i = 0; i < realData.size(); ++i) {
@@ -32,7 +32,7 @@ public class Classifier {
         }
 
         //выбираем вершины о которых будем знать их принадлежность к опеределенному классу
-        ArrayList<SimpleNodeData> coloredNodes = new ArrayList<SimpleNodeData>();
+        ArrayList<NodeData> coloredNodes = new ArrayList<NodeData>();
         if (p <= 1) {
             coloredNodes = choiceOfVertices(p);
         }
@@ -40,10 +40,10 @@ public class Classifier {
             coloredNodes = choiceOfVertices(p / realData.size());
         }
 
-        ArrayList<SimpleNodeData> predictedDatas = new ArrayList<SimpleNodeData>();
+        ArrayList<NodeData> predictedDatas = new ArrayList<NodeData>();
         for (int i = 0; i < realData.size(); ++i) {
             boolean flag = false;
-            for (SimpleNodeData coloredNode : coloredNodes) {
+            for (NodeData coloredNode : coloredNodes) {
                 if (realData.get(i).getName().equals(coloredNode.getName())) {
                     predictedDatas.add(realData.get(i));
                     flag = true;
@@ -52,7 +52,7 @@ public class Classifier {
             }
             if (!flag) {
                 ArrayList<DataForClassifier> weights = new ArrayList<>();
-                for (SimpleNodeData coloredNode : coloredNodes) {
+                for (NodeData coloredNode : coloredNodes) {
                     if (matrixWithWeights[i][order.get(coloredNode.getName())] != 0) {
                         weights.add(new DataForClassifier(coloredNode.getName(), matrixWithWeights[i][order.get(coloredNode.getName())], coloredNode.getLabel()));
                     } else
@@ -60,9 +60,9 @@ public class Classifier {
                 }
                 Collections.sort(weights);
                 if (k > weights.size()) {
-                    predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights, x)));
+                    predictedDatas.add(new NodeData(realData.get(i).getName(), predictLabel(weights, x)));
                 } else {
-                    predictedDatas.add(new SimpleNodeData(realData.get(i).getName(), predictLabel(weights.subList(0, k), x)));
+                    predictedDatas.add(new NodeData(realData.get(i).getName(), predictLabel(weights.subList(0, k), x)));
                 }
             }
         }
@@ -96,11 +96,11 @@ public class Classifier {
         return label;
     }
 
-    private ArrayList<SimpleNodeData> choiceOfVertices(Double p) {  //независимо от размеров класстеров выбираем из каждого одинаковое количество
-        ArrayList<SimpleNodeData> sortedRealDatas = realData;
+    private ArrayList<NodeData> choiceOfVertices(Double p) {  //независимо от размеров класстеров выбираем из каждого одинаковое количество
+        ArrayList<NodeData> sortedRealDatas = realData;
         Collections.sort(sortedRealDatas);
         String label = sortedRealDatas.get(0).getLabel();
-        ArrayList<SimpleNodeData> result = new ArrayList<SimpleNodeData>();
+        ArrayList<NodeData> result = new ArrayList<NodeData>();
         ArrayList<Integer> endLabel = new ArrayList<Integer>();
         for (int i = 0; i < sortedRealDatas.size(); ++i) {
             if (!label.equals(sortedRealDatas.get(i).getLabel())) {

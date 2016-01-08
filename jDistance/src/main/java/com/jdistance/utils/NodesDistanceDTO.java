@@ -1,4 +1,4 @@
-package com.jdistance.metric;
+package com.jdistance.utils;
 
 public class NodesDistanceDTO {
     private int i, j;

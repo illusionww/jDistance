@@ -11,9 +11,7 @@ public enum DistanceClass {
     FOREST(Forest.class),
     PLAIN_WALK(PlainWalk.class),
     COMM(Comm.class),
-    COMM_D(Comm_D.class),
     LOG_COMM(LogComm.class),
-    LOG_COMM_D(LogComm_D.class),
     SP_CT(com.jdistance.metric.impl.SP_CT.class),
     FREE_ENERGY(FreeEnergy.class);
 
@@ -40,8 +38,8 @@ public enum DistanceClass {
 
     public static List<DistanceClass> getDefaultDistances() {
         return Arrays.asList(
-                DistanceClass.COMM_D,
-                DistanceClass.LOG_COMM_D,
+                DistanceClass.COMM,
+                DistanceClass.LOG_COMM,
                 DistanceClass.SP_CT,
                 DistanceClass.FREE_ENERGY,
                 DistanceClass.WALK,

@@ -1,9 +1,9 @@
 package com.jdistance.impl.workflow.checker;
 
 
-import com.jdistance.clusterer.Clusterer;
+import com.jdistance.clusterer.MinSpanningTree;
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.SimpleNodeData;
+import com.jdistance.graph.NodeData;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import jeigen.DenseMatrix;
 
@@ -37,15 +37,15 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData) {
         Integer countErrors = 0;
 
-        final Clusterer clusterer = new Clusterer(D);
+        final MinSpanningTree clusterer = new MinSpanningTree(D);
         final HashMap<Integer, Integer> data = clusterer.predictClusterer(k);
 
         for (int i = 0; i < data.size(); ++i) {
             for (int j = i + 1; j < data.size(); ++j) {
-                if (data.get(i).equals(data.get(j)) != simpleNodeData.get(i).getLabel().equals(simpleNodeData.get(j).getLabel())) {
+                if (data.get(i).equals(data.get(j)) != nodeData.get(i).getLabel().equals(nodeData.get(j).getLabel())) {
                     countErrors += 1;
                 }
             }

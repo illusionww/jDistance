@@ -2,7 +2,7 @@ package com.graphgenerator.generator;
 
 import com.graphgenerator.utils.Input;
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.SimpleNodeData;
+import com.jdistance.graph.NodeData;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -78,16 +78,16 @@ public class GraphGenerator {
         return probabilityMatrix[fromCluster][toCluster];
     }
 
-    private ArrayList<SimpleNodeData> generateSimpleNodeDatas(List<Integer> sizeClusters) {
-        ArrayList<SimpleNodeData> simpleNodeDatas = new ArrayList<>();
+    private ArrayList<NodeData> generateSimpleNodeDatas(List<Integer> sizeClusters) {
+        ArrayList<NodeData> nodeDatas = new ArrayList<>();
         Integer vertex = 0;
         for (Integer i = 0; i < sizeClusters.size(); ++i) {
             for (int j = 0; j < sizeClusters.get(i); ++j) {
-                simpleNodeDatas.add(new SimpleNodeData(vertex.toString(), i.toString()));
+                nodeDatas.add(new NodeData(vertex.toString(), i.toString()));
                 vertex++;
             }
         }
-        return simpleNodeDatas;
+        return nodeDatas;
     }
 
 }

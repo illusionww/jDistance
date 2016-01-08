@@ -14,7 +14,7 @@ final class DirectedGraph<T> implements Iterable<T> {
     /* A map from nodes in the graph to sets of outgoing edges.  Each
      * set of edges is represented by a map from edges to doubles.
      */
-    private final Map<T, Map<T, Double>> mGraph = new HashMap<T, Map<T, Double>>();
+    private final Map<T, Map<T, Double>> mGraph = new HashMap<>();
 
     /**
      * Adds a new node to the graph.  If the node already exists, this
@@ -29,7 +29,7 @@ final class DirectedGraph<T> implements Iterable<T> {
             return false;
 
         /* Otherwise, add the node with an empty set of outgoing edges. */
-        mGraph.put(node, new HashMap<T, Double>());
+        mGraph.put(node, new HashMap<>());
         return true;
     }
 
@@ -100,7 +100,7 @@ final class DirectedGraph<T> implements Iterable<T> {
     /**
      * Returns whether a given node is contained in the graph.
      *
-     * @param The node to test for inclusion.
+     * @param node The node to test for inclusion.
      * @return Whether that node is contained in the graph.
      */
     public boolean containsNode(T node) {

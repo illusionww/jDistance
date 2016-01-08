@@ -47,18 +47,18 @@ final class Dijkstra {
         /* Create a Fibonacci heap storing the distances of unvisited nodes
          * from the source node.
          */
-        FibonacciHeap<T> pq = new FibonacciHeap<T>();
+        FibonacciHeap<T> pq = new FibonacciHeap<>();
 
         /* The Fibonacci heap uses an internal representation that hands back
          * Entry objects for every stored element.  This map associates each
          * node in the graph with its corresponding Entry.
          */
-        Map<T, FibonacciHeap.Entry<T>> entries = new HashMap<T, FibonacciHeap.Entry<T>>();
+        Map<T, FibonacciHeap.Entry<T>> entries = new HashMap<>();
 
         /* Maintain a map from nodes to their distances.  Whenever we expand a
          * node for the first time, we'll put it in here.
          */
-        Map<T, Double> result = new HashMap<T, Double>();
+        Map<T, Double> result = new HashMap<>();
 
         /* Add each node to the Fibonacci heap at distance +infinity since
          * initially all nodes are unreachable.

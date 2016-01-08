@@ -9,10 +9,6 @@ import java.util.function.UnaryOperator;
 import static jeigen.Shortcuts.*;
 
 public class JeigenBuilder {
-    //////////////////////////////////////////////////////////////////////////////////////
-    // HELPER METHODS
-    //////////////////////////////////////////////////////////////////////////////////////
-
     public static DenseMatrix log(DenseMatrix A) {
         return elementWise(A, Math::log);
     }
@@ -100,11 +96,7 @@ public class JeigenBuilder {
 
     // H0 = exp(tA)
     public DenseMatrix getH0Communicability(DenseMatrix A, double t) {
-        return A.mul(t).mexp();
-    }
-
-    // H0 = exp(tA)
-    public DenseMatrix getH0DummyCommunicability(DenseMatrix A, double t) {
+//        return A.mul(t).mexp();
         return dummy_mexp(A.mul(t), 30);
     }
 

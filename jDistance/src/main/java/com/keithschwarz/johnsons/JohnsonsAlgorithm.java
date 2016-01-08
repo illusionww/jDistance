@@ -22,9 +22,7 @@ public class JohnsonsAlgorithm {
         DenseMatrix D = new DenseMatrix(d, d);
         for (int i = 0; i < d; i++) {
             int from = i;
-            out.edgesFrom(from).forEach((to, cost) -> {
-                D.set(from, to, cost.floatValue());
-            });
+            out.edgesFrom(from).forEach((to, cost) -> D.set(from, to, cost.floatValue()));
         }
 
         return D;

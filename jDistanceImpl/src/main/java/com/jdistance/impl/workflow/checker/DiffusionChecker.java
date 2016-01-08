@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.SimpleNodeData;
+import com.jdistance.graph.NodeData;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import jeigen.DenseMatrix;
 
@@ -34,15 +34,15 @@ public class DiffusionChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData) {
         double count = 0;
         double error = 0;
         for (int i = 0; i < D.cols; ++i) {
             for (int j = i + 1; j < D.rows; ++j) {
-                if (simpleNodeData.get(i).getLabel().equals(simpleNodeData.get(j).getLabel())) {
+                if (nodeData.get(i).getLabel().equals(nodeData.get(j).getLabel())) {
                     for (int p = 0; p < D.cols; ++p) {
                         for (int q = p + 1; q < D.rows; ++q) {
-                            if (!simpleNodeData.get(i).getLabel().equals(simpleNodeData.get(j).getLabel())) {
+                            if (!nodeData.get(i).getLabel().equals(nodeData.get(j).getLabel())) {
                                 count++;
                                 if (D.get(i, j) > D.get(p, q)) {
                                     error++;

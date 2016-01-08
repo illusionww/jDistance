@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.SimpleNodeData;
+import com.jdistance.graph.NodeData;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.metric.Distance;
 import com.jdistance.utils.Cloneable;
@@ -49,7 +49,7 @@ public abstract class Checker implements Cloneable {
         List<CheckerTestResultDTO> results = new ArrayList<>();
         try {
             for (Graph graph : getGraphBundle().getGraphs()) {
-                ArrayList<SimpleNodeData> nodesData = graph.getSimpleNodeData();
+                ArrayList<NodeData> nodesData = graph.getNodeData();
 
                 DenseMatrix A = graph.getSparseMatrix();
                 Double parameter = distance.getScale().calc(A, base);
@@ -69,7 +69,7 @@ public abstract class Checker implements Cloneable {
         return rate;
     }
 
-    protected abstract CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<SimpleNodeData> simpleNodeData);
+    protected abstract CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData);
 
     protected Double rate(List<CheckerTestResultDTO> results) {
         Double sum = 0.0;
