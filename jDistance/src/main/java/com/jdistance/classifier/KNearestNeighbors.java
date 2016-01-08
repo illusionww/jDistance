@@ -7,7 +7,6 @@ import jeigen.DenseMatrix;
 import java.util.*;
 
 public class KNearestNeighbors {
-
     private ArrayList<NodeData> realData; //  name and cluster
     private double[][] matrixWithWeights;
     private int countColoredNodes;
@@ -20,19 +19,15 @@ public class KNearestNeighbors {
     }
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
-    public ArrayList<NodeData> predictLabel(Integer k, Double p) {
-        return predictLabel(k, p, 0.0);
-    }
-
     public ArrayList<NodeData> predictLabel(Integer k, Double p, Double x) {
-        HashMap<String, Integer> order = new HashMap<String, Integer>();
+        HashMap<String, Integer> order = new HashMap<>();
 
         for (int i = 0; i < realData.size(); ++i) {
             order.put(realData.get(i).getName(), i);
         }
 
         //выбираем вершины о которых будем знать их принадлежность к опеределенному классу
-        ArrayList<NodeData> coloredNodes = new ArrayList<NodeData>();
+        ArrayList<NodeData> coloredNodes = new ArrayList<>();
         if (p <= 1) {
             coloredNodes = choiceOfVertices(p);
         }
@@ -40,7 +35,7 @@ public class KNearestNeighbors {
             coloredNodes = choiceOfVertices(p / realData.size());
         }
 
-        ArrayList<NodeData> predictedDatas = new ArrayList<NodeData>();
+        ArrayList<NodeData> predictedDatas = new ArrayList<>();
         for (int i = 0; i < realData.size(); ++i) {
             boolean flag = false;
             for (NodeData coloredNode : coloredNodes) {
@@ -100,8 +95,8 @@ public class KNearestNeighbors {
         ArrayList<NodeData> sortedRealDatas = realData;
         Collections.sort(sortedRealDatas);
         String label = sortedRealDatas.get(0).getLabel();
-        ArrayList<NodeData> result = new ArrayList<NodeData>();
-        ArrayList<Integer> endLabel = new ArrayList<Integer>();
+        ArrayList<NodeData> result = new ArrayList<>();
+        ArrayList<Integer> endLabel = new ArrayList<>();
         for (int i = 0; i < sortedRealDatas.size(); ++i) {
             if (!label.equals(sortedRealDatas.get(i).getLabel())) {
                 label = sortedRealDatas.get(i).getLabel();
@@ -134,10 +129,6 @@ public class KNearestNeighbors {
         return countColoredNodes;
     }
 
-    public void setCountColoredNodes(int countColoredNodes) {
-        this.countColoredNodes = countColoredNodes;
-    }
-
     private class DataForClassifier implements Comparable<DataForClassifier> {
         String name;
         String label;
@@ -153,16 +144,8 @@ public class KNearestNeighbors {
             return label;
         }
 
-        public void setLabel(String label) {
-            this.label = label;
-        }
-
         public Double getValue() {
             return value;
-        }
-
-        public void setValue(Double value) {
-            this.value = value;
         }
 
         public String getName() {

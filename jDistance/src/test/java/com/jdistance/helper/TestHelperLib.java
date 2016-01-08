@@ -69,23 +69,14 @@ public class TestHelperLib {
         return Math.abs(a - b) / min < 0.013;
     }
 
-    public static boolean equalArrays(double[][] a, double[][] b) {
-        return equalArrays(a, b, TestHelperLib::equalDouble);
-    }
-
     public static boolean equalArraysStrict(double[][] a, double[][] b) {
         return equalArrays(a, b, TestHelperLib::equalDoubleStrict);
-    }
-
-    public static boolean equalArraysNonStrict(double[][] a, double[][] b) {
-        return equalArrays(a, b, TestHelperLib::equalDoubleNonStrict);
     }
 
     public static boolean equalArrays(double[][] a, double[][] b, BiFunction<Double, Double, Boolean> operator) {
         if (a == null || b == null || a.length == 0 || b.length == 0 || a.length != b.length || a[0].length != b[0].length) {
             return false;
         }
-
         for (int i = 0; i < a.length; i++) {
             for (int j = 0; j < a[i].length; j++) {
                 if (!operator.apply(a[i][j], b[i][j])) {
@@ -93,7 +84,6 @@ public class TestHelperLib {
                 }
             }
         }
-
         return true;
     }
 }

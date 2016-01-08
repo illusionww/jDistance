@@ -52,15 +52,6 @@ public class TaskChain {
         return this;
     }
 
-    public TaskChain addTask(Task task) {
-        if (this.tasks == null) {
-            this.tasks = new ArrayList<>();
-        }
-        this.tasks.add(task);
-
-        return this;
-    }
-
     public List<Task> getTasks() {
         return tasks;
     }
@@ -91,10 +82,6 @@ public class TaskChain {
     public TaskChain draw() {
         write(name);
         return draw(name);
-    }
-
-    public TaskChain write() {
-        return write(name);
     }
 
     public TaskChain draw(String imgTitle) {

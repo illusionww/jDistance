@@ -103,12 +103,4 @@ public class MinSpanningTree {
         }
         return predictCluster;
     }
-
-    public double[][] getMatrixWithWeights() {
-        return this.matrixWithWeights;
-    }
-
-    public void setMatrixWithWeights(double[][] matrixWithWeights) {
-        this.matrixWithWeights = matrixWithWeights;
-    }
 }
