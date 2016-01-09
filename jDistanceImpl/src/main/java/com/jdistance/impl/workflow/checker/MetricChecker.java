@@ -9,8 +9,6 @@ import jeigen.DenseMatrix;
 import java.util.ArrayList;
 
 public class MetricChecker extends Checker {
-    private static final CheckerType type = CheckerType.METRIC;
-
     private GraphBundle graphs;
     private Integer k;
 
@@ -21,12 +19,7 @@ public class MetricChecker extends Checker {
 
     @Override
     public String getName() {
-        return type.name() + " (k=" + k + ")" + graphs.getName();
-    }
-
-    @Override
-    public CheckerType getType() {
-        return type;
+        return "Metric (k=" + k + ")" + graphs.getName();
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.jdistance.impl.workflow.task.competition;
 
-import com.jdistance.metric.Distance;
+import com.jdistance.metric.MetricWrapper;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class CompetitionDTO {
-    public Distance distance;
+    public MetricWrapper metricWrapper;
     public Integer k;
     public Double x;
     public Map.Entry<Double, Double> pLearn;
@@ -14,13 +14,13 @@ public class CompetitionDTO {
     public Double tempResult;
     public Map<String, Double> additionalInfo = new LinkedHashMap<>();
 
-    public CompetitionDTO(Distance distance, Integer k, Double x) {
-        this.distance = distance;
+    public CompetitionDTO(MetricWrapper metricWrapper, Integer k, Double x) {
+        this.metricWrapper = metricWrapper;
         this.k = k;
         this.x = x;
     }
 
-    public CompetitionDTO(Distance distance, Integer k) {
-        this(distance, k, 0.0);
+    public CompetitionDTO(MetricWrapper metricWrapper, Integer k) {
+        this(metricWrapper, k, 0.0);
     }
 }

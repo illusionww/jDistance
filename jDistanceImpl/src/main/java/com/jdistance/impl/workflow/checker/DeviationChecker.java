@@ -3,16 +3,14 @@ package com.jdistance.impl.workflow.checker;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.NodeData;
 import com.jdistance.impl.adapter.generator.GraphBundle;
-import com.jdistance.metric.DistanceClass;
+import com.jdistance.metric.Metric;
 import com.jdistance.utils.NodesDistanceDTO;
-import com.jdistance.utils.MatrixAdapter;
+import com.jdistance.utils.MatrixUtils;
 import jeigen.DenseMatrix;
 
 import java.util.*;
 
 public class DeviationChecker extends Checker {
-    private static final CheckerType type = CheckerType.DEVIATION;
-
     private GraphBundle graphs;
     private Map<Graph, NodesDistanceDTO> bestBySP;
 
@@ -23,18 +21,13 @@ public class DeviationChecker extends Checker {
 
         graphs.getGraphs().forEach(graph -> {
             DenseMatrix A = graph.getSparseMatrix();
-            this.bestBySP.put(graph, DistanceClass.SP_CT.getInstance().getBiggestDistance(A, 0.0));
+            this.bestBySP.put(graph, Metric.SP_CT.getBiggestDistance(A, 0.0));
         });
     }
 
     @Override
     public String getName() {
-        return type.name();
-    }
-
-    @Override
-    public CheckerType getType() {
-        return type;
+        return "Deviation";
     }
 
     @Override
@@ -45,8 +38,8 @@ public class DeviationChecker extends Checker {
     @Override
     protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData) {
         NodesDistanceDTO nodesDistanceSP = bestBySP.get(graph);
-        double[][] arrD = MatrixAdapter.toArray2(D);
-        Double nodesDistance = arrD[nodesDistanceSP.getI()][nodesDistanceSP.getJ()];
+        double[][] arrD = MatrixUtils.toArray2(D);
+        Double nodesDistance = arrD[nodesDistanceSP.getFirstNodeIdx()][nodesDistanceSP.getSecondNodeIdx()];
         Double sum = Arrays.stream(arrD).flatMapToDouble(Arrays::stream).sum();
         Double avg = sum / (arrD.length * (arrD.length - 1));
         return new CheckerTestResultDTO(avg, nodesDistance);
@@ -67,5 +60,4 @@ public class DeviationChecker extends Checker {
     public DeviationChecker clone() {
         return new DeviationChecker(graphs);
     }
-
 }

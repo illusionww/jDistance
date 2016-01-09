@@ -3,9 +3,9 @@ package com.jdistance.impl.workflow.checker;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.NodeData;
 import com.jdistance.impl.adapter.generator.GraphBundle;
-import com.jdistance.metric.Distance;
+import com.jdistance.metric.MetricWrapper;
 import com.jdistance.utils.Cloneable;
-import com.jdistance.utils.MatrixAdapter;
+import com.jdistance.utils.MatrixUtils;
 import jeigen.DenseMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,44 +23,42 @@ public abstract class Checker implements Cloneable {
 
     public abstract String getName();
 
-    public abstract CheckerType getType();
-
     public abstract GraphBundle getGraphBundle();
 
-    public Map<Double, Double> seriesOfTests(final Distance distance, Double from, Double to, Integer pointsCount) {
+    public Map<Double, Double> seriesOfTests(final MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
         final Map<Double, Double> results = new ConcurrentHashMap<>();
 
         Date start = new Date();
-        log.debug("START {}", distance.getName());
+        log.debug("START {}", metricWrapper.getName());
 
         double step = (to - from) / (pointsCount - 1);
         IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double base = from + idx * step;
-            Double result = test(distance, base);
+            Double result = test(metricWrapper, base);
             results.put(base, result);
         });
         Date finish = new Date();
         long diff = finish.getTime() - start.getTime();
-        log.debug("END {}; time: {} ms", distance.getName(), diff);
+        log.debug("END {}; time: {} ms", metricWrapper.getName(), diff);
         return results;
     }
 
-    public Double test(Distance distance, Double base) {
+    public Double test(MetricWrapper metricWrapper, Double base) {
         List<CheckerTestResultDTO> results = new ArrayList<>();
         try {
             for (Graph graph : getGraphBundle().getGraphs()) {
                 ArrayList<NodeData> nodesData = graph.getNodeData();
 
                 DenseMatrix A = graph.getSparseMatrix();
-                Double parameter = distance.getScale().calc(A, base);
-                DenseMatrix D = distance.getD(A, parameter);
+                Double parameter = metricWrapper.getScale().calc(A, base);
+                DenseMatrix D = metricWrapper.getMetric().getD(A, parameter);
                 if (!hasNaN(D)) {
                     CheckerTestResultDTO result = roundErrors(graph, D, nodesData);
                     results.add(result);
                 }
             }
         } catch (RuntimeException e) {
-            log.error("Calculation error: distance " + distance.getName() + ", baseParam " + base, e);
+            log.error("Calculation error: distance " + metricWrapper.getName() + ", baseParam " + base, e);
         }
 
         Double rate = rate(results);
@@ -84,7 +82,7 @@ public abstract class Checker implements Cloneable {
 
     protected boolean hasNaN(DenseMatrix D) {
         boolean nan = false;
-        for (double[] row : MatrixAdapter.toArray2(D)) {
+        for (double[] row : MatrixUtils.toArray2(D)) {
             for (double item : row) {
                 if (Double.isNaN(item) || Double.isInfinite(item)) {
                     nan = true;

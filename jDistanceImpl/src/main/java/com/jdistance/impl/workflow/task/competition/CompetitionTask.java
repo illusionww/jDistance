@@ -49,9 +49,9 @@ public abstract class CompetitionTask {
     protected void learning() {
         Stream<CompetitionDTO> stream = Context.getInstance().PARALLEL ? competitionDTOs.parallelStream() : competitionDTOs.stream();
         stream.forEach(dto -> {
-            log.info("{}...", dto.distance.getName());
+            log.info("{}...", dto.metricWrapper.getName());
             Checker checker = getChecker(forLearning, dto);
-            Task task = new DefaultTask(checker, dto.distance, pointsCount);
+            Task task = new DefaultTask(checker, dto.metricWrapper, pointsCount);
             dto.pLearn = task.execute().getBestResult();
         });
     }
@@ -63,7 +63,7 @@ public abstract class CompetitionTask {
                 GraphBundle bundle = forCompetitions.clone();
                 bundle.setGraphs(Collections.singletonList(graph));
                 Checker checker = getChecker(bundle, dto);
-                dto.tempResult = checker.test(dto.distance, dto.pLearn.getKey());
+                dto.tempResult = checker.test(dto.metricWrapper, dto.pLearn.getKey());
             });
             Collections.sort(competitionDTOs, Comparator.comparingDouble(i -> i.tempResult));
             for (int i = 0; i < competitionDTOs.size(); i++) {
@@ -79,7 +79,7 @@ public abstract class CompetitionTask {
             outputWriter.newLine();
             competitionDTOs.stream().sorted((o1, o2) -> o2.score - o1.score).forEach(dto -> {
                 try {
-                    outputWriter.write(dto.distance.getName() + "\t" + dto.pLearn.getKey() + "\t" + dto.pLearn.getValue() + "\t" + dto.score + "\t" + Arrays.toString(dto.additionalInfo.entrySet().toArray()));
+                    outputWriter.write(dto.metricWrapper.getName() + "\t" + dto.pLearn.getKey() + "\t" + dto.pLearn.getValue() + "\t" + dto.score + "\t" + Arrays.toString(dto.additionalInfo.entrySet().toArray()));
                     outputWriter.newLine();
                 } catch (IOException e) {
                     e.printStackTrace();

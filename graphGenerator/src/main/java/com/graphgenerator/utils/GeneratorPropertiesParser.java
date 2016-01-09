@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ParseInput {
-    public static Input parse(String pathToFile) {
+public class GeneratorPropertiesParser {
+    public static GeneratorPropertiesDTO parse(String pathToFile) {
         BufferedReader reader;
         List<String> lines = new ArrayList<>();
         try {
@@ -21,20 +21,20 @@ public class ParseInput {
             e.printStackTrace();
         }
 
-        List<Integer> sizeOfVertices = new LinkedList<>();
+        List<Integer> sizeOfClusters = new LinkedList<>();
         String[] str = lines.get(0).split(" ");
         for (String aStr : str) {
-            sizeOfVertices.add(Integer.parseInt(aStr));
+            sizeOfClusters.add(Integer.parseInt(aStr));
         }
 
-        int numberOfClusters = sizeOfVertices.size();
-        double[][] probabilityMatrix = new double[numberOfClusters][numberOfClusters];
-        for (int i = 0; i < numberOfClusters; ++i) {
+        int clustersCount = sizeOfClusters.size();
+        double[][] probabilityMatrix = new double[clustersCount][clustersCount];
+        for (int i = 0; i < clustersCount; ++i) {
             str = lines.get(i + 1).split(" ");
-            for (int j = 0; j < numberOfClusters; ++j) {
+            for (int j = 0; j < clustersCount; ++j) {
                 probabilityMatrix[i][j] = Double.parseDouble(str[j]);
             }
         }
-        return new Input(sizeOfVertices, probabilityMatrix);
+        return new GeneratorPropertiesDTO(sizeOfClusters, probabilityMatrix);
     }
 }

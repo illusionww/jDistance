@@ -1,6 +1,6 @@
 package com.jdistance.metric;
 
-import com.jdistance.utils.MatrixAdapter;
+import com.jdistance.utils.MatrixUtils;
 import com.keithschwarz.johnsons.JohnsonsAlgorithm;
 import jeigen.DenseMatrix;
 
@@ -18,7 +18,7 @@ public class JeigenBuilder {
     }
 
     private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
-        double[][] values = MatrixAdapter.toArray2(A);
+        double[][] values = MatrixUtils.toArray2(A);
         for (int i = 0; i < values.length; i++) {
             for (int j = 0; j < values[i].length; j++) {
                 values[i][j] = operator.apply(values[i][j]);

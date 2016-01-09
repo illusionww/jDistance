@@ -12,7 +12,6 @@ public class Context {
     public String CACHE_FOLDER = null;
     public String COMPETITION_FOLDER = null;
     public Boolean PARALLEL = null;
-    public Boolean USE_CACHE = null;
 
     private Context() {
     }
@@ -56,6 +55,6 @@ public class Context {
         if (!isExist(COMPETITION_FOLDER) && !new File(COMPETITION_FOLDER).mkdirs()) {
             throw new RuntimeException("Folder " + new File(COMPETITION_FOLDER).getAbsolutePath() + " is not exist");
         }
-        return PARALLEL != null && USE_CACHE != null && COMPETITION_FOLDER != null;
+        return PARALLEL != null && COMPETITION_FOLDER != null;
     }
 }

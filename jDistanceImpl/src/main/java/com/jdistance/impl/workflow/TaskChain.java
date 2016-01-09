@@ -4,7 +4,7 @@ import com.jdistance.impl.adapter.gnuplot.ArrayUtils;
 import com.jdistance.impl.adapter.gnuplot.GNUPlotAdapter;
 import com.jdistance.impl.adapter.gnuplot.Plot;
 import com.jdistance.impl.workflow.task.Task;
-import com.jdistance.metric.Distance;
+import com.jdistance.metric.MetricWrapper;
 import com.panayotis.gnuplot.dataset.Point;
 import com.panayotis.gnuplot.dataset.PointDataSet;
 import com.panayotis.gnuplot.style.PlotColor;
@@ -37,10 +37,6 @@ public class TaskChain {
 
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public TaskChain addTasks(List<Task> tasks) {
@@ -89,10 +85,10 @@ public class TaskChain {
 
         List<Plot> plots = new ArrayList<>();
         tasks.forEach(task -> {
-            Distance distance = task.getDistance();
+            MetricWrapper metricWrapper = task.getMetricWrapper();
             Map<Double, Double> points = task.getResults();
 
-            String plotTitle = distance.getName();
+            String plotTitle = metricWrapper.getName();
             List<Point<Double>> plotPoints = ArrayUtils.mapToPoints(points);
             PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
             plots.add(new Plot(plotTitle, color.next(), plotPointsSet));
@@ -108,8 +104,8 @@ public class TaskChain {
         String path = Context.getInstance().IMG_FOLDER + File.separator + filename + ".txt";
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(path))) {
             for (Task task : tasks) {
-                Distance distance = task.getDistance();
-                outputWriter.write(distance.getName() + "\t");
+                MetricWrapper metricWrapper = task.getMetricWrapper();
+                outputWriter.write(metricWrapper.getName() + "\t");
             }
             outputWriter.newLine();
             Set<Double> points = new TreeMap<>(tasks.get(0).getResults()).keySet();

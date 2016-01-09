@@ -1,12 +1,13 @@
 package com.jdistance.impl;
 
-import com.graphgenerator.utils.Input;
-import com.graphgenerator.utils.ParseInput;
+import com.graphgenerator.utils.GeneratorPropertiesDTO;
+import com.graphgenerator.utils.GeneratorPropertiesParser;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.task.competition.CompetitionDTO;
 import com.jdistance.impl.workflow.task.competition.MetricCompetitionTask;
-import com.jdistance.metric.DistanceClass;
+import com.jdistance.metric.Metric;
+import com.jdistance.metric.MetricWrapper;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -28,22 +29,21 @@ public class Main {
         new File("./pictures").mkdir();
         context.COMPETITION_FOLDER = "tournament";
         new File("./tournament").mkdir();
-        context.PARALLEL = true;
-        context.USE_CACHE = false;
+        context.PARALLEL = false;
     }
 
     private static void callMetricCompetitionTask(String pathToParameters) {
-        Input input = ParseInput.parse(pathToParameters);
-        int k = input.getSizeOfVertices().size();
+        GeneratorPropertiesDTO generatorPropertiesDTO = GeneratorPropertiesParser.parse(pathToParameters);
+        int k = generatorPropertiesDTO.getSizeOfClusters().size();
         int graphCountForLearning = 5;
         int graphCountForCompetitions = 5;
         int pointsCount = 5;
 
-        List<CompetitionDTO> competitionDTOs = DistanceClass.getDefaultDistances().stream()
-                .map(distanceClass -> new CompetitionDTO(distanceClass.getInstance(), k)).collect(Collectors.toList());
+        List<CompetitionDTO> competitionDTOs = Metric.getDefaultDistances().stream()
+                .map(metric -> new CompetitionDTO(new MetricWrapper(metric), k)).collect(Collectors.toList());
 
-        GraphBundle graphsForLearning = new GraphBundle(input, graphCountForLearning);
-        GraphBundle graphsForCompetitions = new GraphBundle(input, graphCountForCompetitions);
+        GraphBundle graphsForLearning = new GraphBundle(generatorPropertiesDTO, graphCountForLearning);
+        GraphBundle graphsForCompetitions = new GraphBundle(generatorPropertiesDTO, graphCountForCompetitions);
 
         MetricCompetitionTask task = new MetricCompetitionTask(competitionDTOs, graphsForLearning, graphsForCompetitions, pointsCount, "test");
         task.execute().write();

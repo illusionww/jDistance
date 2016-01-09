@@ -1,6 +1,6 @@
 package com.jdistance.impl.workflow.checker;
 
-import com.jdistance.classifier.KNearestNeighbors;
+import com.jdistance.learning.classifier.KNearestNeighbors;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.NodeData;
 import com.jdistance.impl.adapter.generator.GraphBundle;
@@ -9,8 +9,6 @@ import jeigen.DenseMatrix;
 import java.util.ArrayList;
 
 public class ClassifierChecker extends Checker {
-    private static final CheckerType type = CheckerType.CLASSIFIER;
-
     private GraphBundle graphs;
     private Integer k;
     private Double p;
@@ -32,12 +30,7 @@ public class ClassifierChecker extends Checker {
 
     @Override
     public String getName() {
-        return type.name() + " (k=" + k + ", p=" + p + ", x=" + x + ") " + graphs.getName();
-    }
-
-    @Override
-    public CheckerType getType() {
-        return type;
+        return "Classifier (k=" + k + ", p=" + p + ", x=" + x + ") " + graphs.getName();
     }
 
     @Override

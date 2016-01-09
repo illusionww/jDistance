@@ -2,7 +2,7 @@ package com.jdistance.helper;
 
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.task.Task;
-import com.jdistance.metric.Distance;
+import com.jdistance.metric.MetricWrapper;
 
 import java.io.File;
 import java.util.HashMap;
@@ -18,7 +18,6 @@ public class TestHelperImpl {
         context.IMG_FOLDER = TEST_FOLDER;
         context.CACHE_FOLDER = TEST_FOLDER;
         context.COMPETITION_FOLDER = TEST_FOLDER;
-        context.USE_CACHE = false;
         context.PARALLEL = false;
 
         File testFolder = new File(TEST_FOLDER);
@@ -29,10 +28,10 @@ public class TestHelperImpl {
         }
     }
 
-    public static Map<Distance, Map<Double, Double>> toDistanceMap(Map<Task, Map<Double, Double>> map) {
-        Map<Distance, Map<Double, Double>> result = new HashMap<>();
+    public static Map<MetricWrapper, Map<Double, Double>> toDistanceMap(Map<Task, Map<Double, Double>> map) {
+        Map<MetricWrapper, Map<Double, Double>> result = new HashMap<>();
         map.entrySet().forEach(entry -> {
-            result.put(entry.getKey().getDistance(), entry.getValue());
+            result.put(entry.getKey().getMetricWrapper(), entry.getValue());
         });
         return result;
     }

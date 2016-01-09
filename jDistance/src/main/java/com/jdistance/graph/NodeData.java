@@ -4,7 +4,7 @@ import com.jdistance.utils.Cloneable;
 
 public class NodeData implements Comparable<NodeData>, Cloneable<NodeData> {
     String name;
-    String label; //color
+    String label;
 
     public NodeData(String name, String label) {
         this.name = name;

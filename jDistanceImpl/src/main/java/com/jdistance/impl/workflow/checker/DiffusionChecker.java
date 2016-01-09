@@ -8,8 +8,6 @@ import jeigen.DenseMatrix;
 import java.util.ArrayList;
 
 public class DiffusionChecker extends Checker {
-    private static final CheckerType type = CheckerType.CLUSTERER;
-
     private GraphBundle graphs;
     private Integer k;
 
@@ -20,12 +18,7 @@ public class DiffusionChecker extends Checker {
 
     @Override
     public String getName() {
-        return type.name() + " (k=" + k + ")" + graphs.getName();
-    }
-
-    @Override
-    public CheckerType getType() {
-        return type;
+        return "Diffusion (k=" + k + ")" + graphs.getName();
     }
 
     @Override

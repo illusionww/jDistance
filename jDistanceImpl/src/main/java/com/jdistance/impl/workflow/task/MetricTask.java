@@ -1,7 +1,6 @@
 package com.jdistance.impl.workflow.task;
 
-import com.jdistance.metric.Distance;
-import com.jdistance.metric.DistanceClass;
+import com.jdistance.metric.MetricWrapper;
 import jeigen.DenseMatrix;
 
 import java.util.HashMap;
@@ -10,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class MetricTask extends Task {
-    private Distance distance;
+    private MetricWrapper metricWrapper;
     private DenseMatrix A;
     private Integer pointsCount;
     private Double from;
@@ -18,8 +17,8 @@ public class MetricTask extends Task {
 
     private Map<Double, Double> results = new HashMap<>();
 
-    public MetricTask(Distance distance, DenseMatrix A, Integer pointsCount, Double from, Double to) {
-        this.distance = distance;
+    public MetricTask(MetricWrapper metricWrapper, DenseMatrix A, Integer pointsCount, Double from, Double to) {
+        this.metricWrapper = metricWrapper;
         this.A = A;
         this.pointsCount = pointsCount;
         this.from = from;
@@ -28,12 +27,12 @@ public class MetricTask extends Task {
 
     @Override
     public String getName() {
-        return DistanceClass.getDistanceName(distance) + " " + distance.getScale();
+        return metricWrapper.getName() + " " + metricWrapper.getScale();
     }
 
     @Override
-    public Distance getDistance() {
-        return distance;
+    public MetricWrapper getMetricWrapper() {
+        return metricWrapper;
     }
 
     @Override
@@ -41,8 +40,8 @@ public class MetricTask extends Task {
         double step = (to - from) / (pointsCount - 1);
         IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double base = from + idx * step;
-            Double i = distance.getScale().calc(A, base);
-            DenseMatrix result = distance.getD(A, i);
+            Double i = metricWrapper.getScale().calc(A, base);
+            DenseMatrix result = metricWrapper.getMetric().getD(A, i);
             results.put(base, result.get(0, 1) / result.get(1, 2));
         });
 

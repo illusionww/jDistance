@@ -27,6 +27,11 @@
             <artifactId>jDistance</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jdistance</groupId>
+            <artifactId>graphGenerator</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
 
         <dependency>
@@ -55,13 +60,6 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/../lib/Jeigen-win-linux-32-64.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>dcrgenerator</groupId>
-            <artifactId>dcrgenerator</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/dcrgenerator.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>JavaPlot</groupId>

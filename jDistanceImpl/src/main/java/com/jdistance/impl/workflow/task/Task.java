@@ -1,6 +1,6 @@
 package com.jdistance.impl.workflow.task;
 
-import com.jdistance.metric.Distance;
+import com.jdistance.metric.MetricWrapper;
 
 import java.util.Map;
 import java.util.Optional;
@@ -8,7 +8,7 @@ import java.util.Optional;
 public abstract class Task {
     public abstract String getName();
 
-    public abstract Distance getDistance();
+    public abstract MetricWrapper getMetricWrapper();
 
     public abstract Map<Double, Double> getResults();
 

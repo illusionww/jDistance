@@ -31,8 +31,8 @@ public class MetricCompetitionTask extends CompetitionTask {
         Graph graph = forCompetitions.getGraphs().get(0);
         competitionDTOs.stream().forEach(dto -> {
             DenseMatrix A = new DenseMatrix(graph.getSparseMatrix());
-            Double parameter = dto.distance.getScale().calc(A, dto.pLearn.getKey());
-            DenseMatrix D = dto.distance.getD(A, parameter);
+            Double parameter = dto.metricWrapper.getScale().calc(A, dto.pLearn.getKey());
+            DenseMatrix D = dto.metricWrapper.getMetric().getD(A, parameter);
             D = StandardizeHelper.standardize(D);
 
             ArrayList<Double> same = new ArrayList<>(); //для одинаковых кластеров

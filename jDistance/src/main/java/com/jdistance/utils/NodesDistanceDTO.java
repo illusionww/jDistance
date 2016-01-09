@@ -1,30 +1,24 @@
 package com.jdistance.utils;
 
 public class NodesDistanceDTO {
-    private int i, j;
-    private double value;
+    private int firstNodeIdx, secondNodeIdx;
+    private double distance;
 
-    public NodesDistanceDTO(int i, int j, double value) {
-        this.i = i;
-        this.j = j;
-        this.value = value;
+    public NodesDistanceDTO(int firstNodeIdx, int secondNodeIdx, double distance) {
+        this.firstNodeIdx = firstNodeIdx;
+        this.secondNodeIdx = secondNodeIdx;
+        this.distance = distance;
     }
 
-    public void setValue(int i, int j, double value) {
-        this.i = i;
-        this.j = j;
-        this.value = value;
+    public int getFirstNodeIdx() {
+        return firstNodeIdx;
     }
 
-    public int getI() {
-        return i;
+    public int getSecondNodeIdx() {
+        return secondNodeIdx;
     }
 
-    public int getJ() {
-        return j;
-    }
-
-    public double getValue() {
-        return value;
+    public double getDistance() {
+        return distance;
     }
 }

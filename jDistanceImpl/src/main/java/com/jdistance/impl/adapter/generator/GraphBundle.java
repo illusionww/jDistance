@@ -2,29 +2,30 @@ package com.jdistance.impl.adapter.generator;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.utils.Cloneable;
-import com.graphgenerator.utils.Input;
+import com.graphgenerator.utils.GeneratorPropertiesDTO;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class GraphBundle implements Cloneable<GraphBundle> {
-    Input input;
+    GeneratorPropertiesDTO generatorPropertiesDTO;
     List<Graph> graphs = new ArrayList<>();
 
-    public GraphBundle(Input input, List<Graph> graphs) {
-        this.input = input;
+    public GraphBundle(GeneratorPropertiesDTO generatorPropertiesDTO, List<Graph> graphs) {
+        this.generatorPropertiesDTO = generatorPropertiesDTO;
         this.graphs = graphs;
     }
 
-    public GraphBundle(Input input, Integer count) {
-        this.input = input;
+    public GraphBundle(GeneratorPropertiesDTO generatorPropertiesDTO, Integer count) {
+        this.generatorPropertiesDTO = generatorPropertiesDTO;
         generate(count);
     }
 
     public String getName() {
-        return "n = " + Arrays.toString(input.getSizeOfVertices().toArray()) + "probabilities = " +
-                Arrays.toString(input.getProbabilityMatrix())+ " numOfClusters =  " +
-                input.getSizeOfVertices().size() + " count = " + getCount();
+        return "n = " + Arrays.toString(generatorPropertiesDTO.getSizeOfClusters().toArray()) +
+                " probabilities = " + Arrays.toString(generatorPropertiesDTO.getProbabilityMatrix()) +
+                " numOfClusters = " + generatorPropertiesDTO.getSizeOfClusters().size() +
+                " count = " + getCount();
     }
 
     public Integer getCount() {
@@ -41,12 +42,12 @@ public class GraphBundle implements Cloneable<GraphBundle> {
 
     public void generate(int count) {
         GraphGeneratorAdapter generator = new GraphGeneratorAdapter();
-        graphs = generator.generateList(count, input);
+        graphs = generator.generateList(count, generatorPropertiesDTO);
     }
 
     @Override
     public GraphBundle clone() {
         List graphsCopy = new ArrayList<>(graphs);
-        return new GraphBundle(input, graphsCopy);
+        return new GraphBundle(generatorPropertiesDTO, graphsCopy);
     }
 }

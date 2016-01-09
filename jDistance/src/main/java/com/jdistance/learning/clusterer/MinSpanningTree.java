@@ -1,6 +1,6 @@
-package com.jdistance.clusterer;
+package com.jdistance.learning.clusterer;
 
-import com.jdistance.utils.MatrixAdapter;
+import com.jdistance.utils.MatrixUtils;
 import jeigen.DenseMatrix;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ public class MinSpanningTree {
     private double[][] matrixWithWeights;
 
     public MinSpanningTree(DenseMatrix matrixWithWeights) {
-        this.matrixWithWeights = MatrixAdapter.toArray2(matrixWithWeights);
+        this.matrixWithWeights = MatrixUtils.toArray2(matrixWithWeights);
     }
 
     //k количество кластеров

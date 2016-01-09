@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.task;
 
 import com.jdistance.impl.workflow.checker.ClassifierChecker;
-import com.jdistance.metric.Distance;
+import com.jdistance.metric.MetricWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,16 +14,16 @@ public class ClassifierBestParamTask extends Task {
     private static final Logger log = LoggerFactory.getLogger(ClassifierBestParamTask.class);
 
     private ClassifierChecker checker;
-    private Distance distance;
+    private MetricWrapper metricWrapper;
     private Double from;
     private Double to;
     private Integer checkerPointsCount;
     private Integer pointsCount;
     private Map<Double, Double> result = new HashMap<>();
 
-    public ClassifierBestParamTask(ClassifierChecker checker, Distance distance, Double from, Double to, int checkerPointsCount, int pointsCount) {
+    public ClassifierBestParamTask(ClassifierChecker checker, MetricWrapper metricWrapper, Double from, Double to, int checkerPointsCount, int pointsCount) {
         this.checker = checker;
-        this.distance = distance;
+        this.metricWrapper = metricWrapper;
         this.from = from;
         this.to = to;
         this.checkerPointsCount = checkerPointsCount;
@@ -32,12 +32,12 @@ public class ClassifierBestParamTask extends Task {
 
     @Override
     public String getName() {
-        return distance.getName() + " " + checker.getName();
+        return metricWrapper.getName() + " " + checker.getName();
     }
 
     @Override
-    public Distance getDistance() {
-        return distance;
+    public MetricWrapper getMetricWrapper() {
+        return metricWrapper;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class ClassifierBestParamTask extends Task {
         IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double x = from + idx * step;
             checker.setX(x);
-            log.info("distance {}, x: {}", distance.getName(), x);
-            Task task = new DefaultTask(checker, distance, checkerPointsCount);
+            log.info("distance {}, x: {}", metricWrapper.getName(), x);
+            Task task = new DefaultTask(checker, metricWrapper, checkerPointsCount);
             Map.Entry<Double, Double> best = task.execute().getBestResult();
             result.put(x, best.getValue());
         });

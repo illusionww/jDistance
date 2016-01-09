@@ -1,21 +1,21 @@
 package com.jdistance.impl.workflow.task;
 
 import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.metric.Distance;
+import com.jdistance.metric.MetricWrapper;
 
 import java.util.Map;
 
 public class CustomTask extends Task {
     private Checker checker;
-    private Distance distance;
+    private MetricWrapper metricWrapper;
     private Double from;
     private Double to;
     private Integer pointsCount;
     private Map<Double, Double> result;
 
-    public CustomTask(Checker checker, Distance distance, Double from, Double to, Integer pointsCount) {
+    public CustomTask(Checker checker, MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
         this.checker = checker;
-        this.distance = distance;
+        this.metricWrapper = metricWrapper;
         this.from = from;
         this.to = to;
         this.pointsCount = pointsCount;
@@ -23,17 +23,17 @@ public class CustomTask extends Task {
 
     @Override
     public String getName() {
-        return distance.getName() + " " + checker.getName();
+        return metricWrapper.getName() + " " + checker.getName();
     }
 
     @Override
-    public Distance getDistance() {
-        return distance;
+    public MetricWrapper getMetricWrapper() {
+        return metricWrapper;
     }
 
     @Override
     public Task execute() {
-        result = checker.seriesOfTests(distance, from, to, pointsCount);
+        result = checker.seriesOfTests(metricWrapper, from, to, pointsCount);
         return this;
     }
 

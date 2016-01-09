@@ -1,7 +1,7 @@
-package com.jdistance.classifier;
+package com.jdistance.learning.classifier;
 
 import com.jdistance.graph.NodeData;
-import com.jdistance.utils.MatrixAdapter;
+import com.jdistance.utils.MatrixUtils;
 import jeigen.DenseMatrix;
 
 import java.util.*;
@@ -13,7 +13,7 @@ public class KNearestNeighbors {
 
 
     public KNearestNeighbors(DenseMatrix matrixWithWeights, ArrayList<NodeData> realData) {
-        this.matrixWithWeights = MatrixAdapter.toArray2(matrixWithWeights);
+        this.matrixWithWeights = MatrixUtils.toArray2(matrixWithWeights);
         this.realData = new ArrayList<>(realData);
         countColoredNodes = 0;
     }
@@ -131,8 +131,8 @@ public class KNearestNeighbors {
 
     private class DataForClassifier implements Comparable<DataForClassifier> {
         String name;
-        String label;
         Double value;
+        String label;
 
         DataForClassifier(String name, Double value, String label) {
             this.name = name;

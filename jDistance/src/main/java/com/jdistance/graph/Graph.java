@@ -5,16 +5,16 @@ import jeigen.DenseMatrix;
 import java.util.ArrayList;
 
 public class Graph {
-    private DenseMatrix sparseM;
+    private DenseMatrix sparseMatrix;
     private ArrayList<NodeData> nodeData;
 
-    public Graph(double[][] sparseM, ArrayList<NodeData> nodeData) {
-        this.sparseM = new DenseMatrix(sparseM);
+    public Graph(double[][] sparseMatrix, ArrayList<NodeData> nodeData) {
+        this.sparseMatrix = new DenseMatrix(sparseMatrix);
         this.nodeData = nodeData;
     }
 
     public DenseMatrix getSparseMatrix() {
-        return sparseM;
+        return sparseMatrix;
     }
 
     public ArrayList<NodeData> getNodeData() {

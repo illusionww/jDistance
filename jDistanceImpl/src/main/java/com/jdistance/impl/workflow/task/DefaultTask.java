@@ -1,8 +1,7 @@
 package com.jdistance.impl.workflow.task;
 
 import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.metric.Distance;
-import com.jdistance.metric.DistanceClass;
+import com.jdistance.metric.MetricWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,30 +11,30 @@ import java.util.stream.Collectors;
 public class DefaultTask extends Task {
     private static final Logger log = LoggerFactory.getLogger(DefaultTask.class);
 
-    private Distance distance;
+    private MetricWrapper metricWrapper;
     private Checker checker;
     private Integer pointsCount;
     private Map<Double, Double> result;
 
-    public DefaultTask(Checker checker, Distance distance, Integer pointsCount) {
-        this.distance = distance;
+    public DefaultTask(Checker checker, MetricWrapper metricWrapper, Integer pointsCount) {
+        this.metricWrapper = metricWrapper;
         this.checker = checker;
         this.pointsCount = pointsCount;
     }
 
     @Override
     public String getName() {
-        return DistanceClass.getDistanceName(distance) + " " + checker.getName() + ", pointsCount=" + pointsCount + " " + distance.getScale();
+        return metricWrapper.getName() + " " + checker.getName() + ", pointsCount=" + pointsCount + " " + metricWrapper.getMetric().getScale();
     }
 
     @Override
-    public Distance getDistance() {
-        return distance;
+    public MetricWrapper getMetricWrapper() {
+        return metricWrapper;
     }
 
     @Override
     public Task execute() {
-        Map<Double, Double> distanceResult = checker.seriesOfTests(distance, 0.00001, 0.99999, pointsCount);
+        Map<Double, Double> distanceResult = checker.seriesOfTests(metricWrapper, 0.00001, 0.99999, pointsCount);
         result = removeNaN(distanceResult);
         return this;
     }

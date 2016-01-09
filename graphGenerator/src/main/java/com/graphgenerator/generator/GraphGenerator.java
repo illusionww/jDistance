@@ -1,6 +1,6 @@
 package com.graphgenerator.generator;
 
-import com.graphgenerator.utils.Input;
+import com.graphgenerator.utils.GeneratorPropertiesDTO;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.NodeData;
 
@@ -40,25 +40,22 @@ public class GraphGenerator {
             }
         }
 
-
         double[][] sparseMatrix = new double[numberOfVertices][numberOfVertices];
         for (int i = 0; i < numberOfVertices; ++i) {
             for (int j = i + 1; j < numberOfVertices; ++j) {
-                sparseMatrix[i][j] =
-                        (getProbabilityEdge(borderClusters, probabilityMatrix, i, j) < random.nextDouble()) ? 1 : 0;
+                sparseMatrix[i][j] = getProbabilityEdge(borderClusters, probabilityMatrix, i, j) < random.nextDouble() ? 1 : 0;
                 if (biDirectional) {
                     sparseMatrix[j][i] = sparseMatrix[i][j];
                 } else {
-                    sparseMatrix[j][i] =
-                            (getProbabilityEdge(borderClusters, probabilityMatrix, j, i) < random.nextDouble()) ? 1 : 0;
+                    sparseMatrix[j][i] = getProbabilityEdge(borderClusters, probabilityMatrix, j, i) < random.nextDouble() ? 1 : 0;
                 }
             }
         }
         return new Graph(sparseMatrix, generateSimpleNodeDatas(sizeClusters));
     }
 
-    public Graph generateGraph(Input input) {
-        return generateGraph(input.getSizeOfVertices(), input.getProbabilityMatrix());
+    public Graph generateGraph(GeneratorPropertiesDTO generatorPropertiesDTO) {
+        return generateGraph(generatorPropertiesDTO.getSizeOfClusters(), generatorPropertiesDTO.getProbabilityMatrix());
     }
 
     private double getProbabilityEdge(List<Integer> borderClusters, double[][] probabilityMatrix, int from, int to) {
@@ -89,5 +86,4 @@ public class GraphGenerator {
         }
         return nodeDatas;
     }
-
 }
