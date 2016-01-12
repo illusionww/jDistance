@@ -27,7 +27,7 @@ public class DeviationChecker extends Checker {
 
     @Override
     public String getName() {
-        return "Deviation";
+        return "Deviation; " + graphs.getName();
     }
 
     @Override

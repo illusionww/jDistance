@@ -21,7 +21,7 @@ public class ClustererChecker extends Checker {
 
     @Override
     public String getName() {
-        return "Clusterer (k=" + k + ")" + graphs.getName();
+        return "Clusterer: k=" + k + "; " + graphs.getName();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ClustererChecker extends Checker {
         Integer countErrors = 0;
 
         final MinSpanningTree clusterer = new MinSpanningTree(D);
-        final HashMap<Integer, Integer> data = clusterer.predictClusterer(k);
+        final HashMap<Integer, Integer> data = clusterer.predict(k);
 
         for (int i = 0; i < data.size(); ++i) {
             for (int j = i + 1; j < data.size(); ++j) {

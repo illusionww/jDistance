@@ -11,7 +11,6 @@ import java.util.List;
 public class GraphGeneratorAdapter {
     private static final Logger log = LoggerFactory.getLogger(GraphGeneratorAdapter.class);
 
-
     public List<Graph> generateList(int count, GeneratorPropertiesDTO generatorPropertiesDTO) {
         List<Graph> graphs = new ArrayList<>();
         for (int i = 0; i < count; i++) {

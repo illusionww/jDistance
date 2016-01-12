@@ -16,7 +16,7 @@ public class MinSpanningTree {
     }
 
     //k количество кластеров
-    public HashMap<Integer, Integer> predictClusterer(Integer k) {
+    public HashMap<Integer, Integer> predict(Integer k) {
         double minWeight = Double.MAX_VALUE;
         int to = 0;
         int from = 0;

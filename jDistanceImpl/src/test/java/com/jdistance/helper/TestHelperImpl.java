@@ -10,13 +10,12 @@ import java.util.Map;
 
 public class TestHelperImpl {
     public static final String GNUPLOT_PATH = "C:\\cygwin64\\bin\\gnuplot.exe";
-    public static final String TEST_FOLDER = "temp_test";
+    public static final String TEST_FOLDER = "./temp_test";
 
     public static void initTestContext() {
         Context context = Context.getInstance();
         context.GNUPLOT_PATH = GNUPLOT_PATH;
         context.IMG_FOLDER = TEST_FOLDER;
-        context.CACHE_FOLDER = TEST_FOLDER;
         context.COMPETITION_FOLDER = TEST_FOLDER;
         context.PARALLEL = false;
 
@@ -26,6 +25,7 @@ public class TestHelperImpl {
                 file.delete();
             }
         }
+        testFolder.mkdirs();
     }
 
     public static Map<MetricWrapper, Map<Double, Double>> toDistanceMap(Map<Task, Map<Double, Double>> map) {

@@ -24,7 +24,8 @@ public class DefaultTask extends Task {
 
     @Override
     public String getName() {
-        return metricWrapper.getName() + " " + checker.getName() + ", pointsCount=" + pointsCount + " " + metricWrapper.getMetric().getScale();
+        return metricWrapper.getName() + " " + metricWrapper.getScale() + "; pointsCount = " + pointsCount + "; " +
+                checker.getName();
     }
 
     @Override

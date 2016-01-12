@@ -18,7 +18,7 @@ public class DiffusionChecker extends Checker {
 
     @Override
     public String getName() {
-        return "Diffusion (k=" + k + ")" + graphs.getName();
+        return "Diffusion: k=" + k + "; " + graphs.getName();
     }
 
     @Override

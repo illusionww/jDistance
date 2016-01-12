@@ -1,8 +1,9 @@
 package com.jdistance.impl.adapter.generator;
 
+import com.graphgenerator.utils.GeneratorPropertiesDTO;
 import com.jdistance.graph.Graph;
 import com.jdistance.utils.Cloneable;
-import com.graphgenerator.utils.GeneratorPropertiesDTO;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,10 +23,9 @@ public class GraphBundle implements Cloneable<GraphBundle> {
     }
 
     public String getName() {
-        return "n = " + Arrays.toString(generatorPropertiesDTO.getSizeOfClusters().toArray()) +
-                " probabilities = " + Arrays.toString(generatorPropertiesDTO.getProbabilityMatrix()) +
-                " numOfClusters = " + generatorPropertiesDTO.getSizeOfClusters().size() +
-                " count = " + getCount();
+        return "Graphs: sizes=" + Arrays.toString(generatorPropertiesDTO.getSizeOfClusters().toArray()) +
+                ", probabilities=" + Arrays.deepToString(generatorPropertiesDTO.getProbabilityMatrix()) +
+                ", count=" + getCount();
     }
 
     public Integer getCount() {

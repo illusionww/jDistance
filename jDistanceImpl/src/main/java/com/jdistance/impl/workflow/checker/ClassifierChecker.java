@@ -1,9 +1,9 @@
 package com.jdistance.impl.workflow.checker;
 
-import com.jdistance.learning.classifier.KNearestNeighbors;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.NodeData;
 import com.jdistance.impl.adapter.generator.GraphBundle;
+import com.jdistance.learning.classifier.KNearestNeighbors;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ public class ClassifierChecker extends Checker {
     private Double p;
     private Double x;
 
+
     public ClassifierChecker(GraphBundle graphs, Integer k, Double p) {
         this.graphs = graphs;
         this.k = k;
@@ -21,6 +22,11 @@ public class ClassifierChecker extends Checker {
         this.x = 0.0;
     }
 
+    /**
+     * @param k - количество ближайших соседей
+     * @param p - доля заранее размеченных вершин
+     * @param x - параметр, влияющий на вес соседей
+     */
     public ClassifierChecker(GraphBundle graphs, Integer k, Double p, Double x) {
         this.graphs = graphs;
         this.k = k;
@@ -30,7 +36,7 @@ public class ClassifierChecker extends Checker {
 
     @Override
     public String getName() {
-        return "Classifier (k=" + k + ", p=" + p + ", x=" + x + ") " + graphs.getName();
+        return "Classifier: k=" + k + ", p=" + p + ", x=" + x + "; " + graphs.getName();
     }
 
     @Override

@@ -19,7 +19,7 @@ public class MetricChecker extends Checker {
 
     @Override
     public String getName() {
-        return "Metric (k=" + k + ")" + graphs.getName();
+        return "Metric: k=" + k + "; " + graphs.getName();
     }
 
     @Override

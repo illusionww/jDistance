@@ -3,12 +3,12 @@ package com.jdistance.impl.adapter.gnuplot;
 import com.panayotis.gnuplot.dataset.PointDataSet;
 import com.panayotis.gnuplot.style.PlotColor;
 
-public class Plot {
+public class PlotDTO {
     private String name;
     private PlotColor color;
     private PointDataSet data;
 
-    public Plot(String name, PlotColor color, PointDataSet data) {
+    public PlotDTO(String name, PlotColor color, PointDataSet data) {
         this.name = name;
         this.color = color;
         this.data = data;

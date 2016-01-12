@@ -2,7 +2,7 @@ package com.jdistance.impl.workflow;
 
 import com.jdistance.impl.adapter.gnuplot.ArrayUtils;
 import com.jdistance.impl.adapter.gnuplot.GNUPlotAdapter;
-import com.jdistance.impl.adapter.gnuplot.Plot;
+import com.jdistance.impl.adapter.gnuplot.PlotDTO;
 import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.MetricWrapper;
 import com.panayotis.gnuplot.dataset.Point;
@@ -22,8 +22,8 @@ import java.util.stream.Stream;
 public class TaskChain {
     private static final Logger log = LoggerFactory.getLogger(TaskChain.class);
 
-    String name = null;
-    List<Task> tasks = null;
+    private String name;
+    private List<Task> tasks;
 
     public TaskChain(String name, Task... tasks) {
         this.name = name;
@@ -58,20 +58,20 @@ public class TaskChain {
         }
 
         Date start = new Date();
-        log.info("Start task chain {}", name);
+        log.info("START task CHAIN {}", name);
         Stream<Task> stream = Context.getInstance().PARALLEL ? tasks.parallelStream() : tasks.stream();
 
         stream.forEach(task -> {
             Date startTask = new Date();
-            log.info("Task start: {}", task.getName());
+            log.info("Task START: {}", task.getName());
             task.execute();
             Date finishTask = new Date();
             long diffTask = finishTask.getTime() - startTask.getTime();
-            log.info("Task done: {}. Time: {} ", task.getName(), diffTask);
+            log.info("Task DONE: {}.\n\tTime: {} ", task.getName(), diffTask);
         });
         Date finish = new Date();
         long diff = finish.getTime() - start.getTime();
-        log.info("Task chain done. Time: {}", diff);
+        log.info("Task CHAIN DONE. Time: {}", diff);
         return this;
     }
 
@@ -83,7 +83,7 @@ public class TaskChain {
     public TaskChain draw(String imgTitle) {
         Iterator<PlotColor> color = Arrays.asList(GNUPlotAdapter.colors).iterator();
 
-        List<Plot> plots = new ArrayList<>();
+        List<PlotDTO> plots = new ArrayList<>();
         tasks.forEach(task -> {
             MetricWrapper metricWrapper = task.getMetricWrapper();
             Map<Double, Double> points = task.getResults();
@@ -91,11 +91,11 @@ public class TaskChain {
             String plotTitle = metricWrapper.getName();
             List<Point<Double>> plotPoints = ArrayUtils.mapToPoints(points);
             PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
-            plots.add(new Plot(plotTitle, color.next(), plotPointsSet));
+            plots.add(new PlotDTO(plotTitle, color.next(), plotPointsSet));
         });
 
         GNUPlotAdapter ga = new GNUPlotAdapter(Context.getInstance().GNUPLOT_PATH);
-        ga.drawData(imgTitle, plots, Context.getInstance().IMG_FOLDER + File.separator + imgTitle + ".png");
+        ga.drawData(imgTitle, plots, Context.getInstance().IMG_FOLDER + File.separator + imgTitle.replaceAll("\\W+", "") + ".png");
 
         return this;
     }

@@ -60,9 +60,8 @@ public abstract class Checker implements Cloneable {
         } catch (RuntimeException e) {
             log.error("Calculation error: distance " + metricWrapper.getName() + ", baseParam " + base, e);
         }
-
         Double rate = rate(results);
-//        log.info("{}: {} {}", distance.getName(), parameter, rate);
+        log.info("{}: {} {}", metricWrapper.getName(), base, rate);
 
         return rate;
     }

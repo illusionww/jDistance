@@ -68,5 +68,12 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/../lib/JavaPlot.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>dcrgenerator</groupId>
+            <artifactId>dcrgenerator</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/../lib/dcrgenerator.jar</systemPath>
+        </dependency>
     </dependencies>
 </project>

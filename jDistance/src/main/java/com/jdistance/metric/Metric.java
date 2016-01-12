@@ -8,62 +8,70 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Metric {
-    PLAIN_WALK("Plain Walk", Scale.RHO) {
+    PLAIN_WALK("pWalk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            JeigenBuilder db = new JeigenBuilder();
-            DenseMatrix H = db.getH0Walk(A, t);
-            return db.getD(H);
+            DenseMatrix H = jb.getH0Walk(A, t);
+            return jb.getD(H);
         }
     },
     WALK("Walk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            JeigenBuilder db = new JeigenBuilder();
-            DenseMatrix H0 = db.getH0Walk(A, t);
-            DenseMatrix H = db.H0toH(H0);
-            return db.getD(H);
+            DenseMatrix H0 = jb.getH0Walk(A, t);
+            DenseMatrix H = jb.H0toH(H0);
+            return jb.getD(H);
         }
     },
-    FOREST("For", Scale.FRACTION) {
+    FOREST("For", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            JeigenBuilder db = new JeigenBuilder();
-            DenseMatrix L = db.getL(A);
-            DenseMatrix H = db.getH0Forest(L, t);
-            return db.getD(H);
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H = jb.getH0Forest(L, t);
+            return jb.getD(H);
         }
     },
-    LOG_FOREST("logFor", Scale.FRACTION) {
+    LOG_FOREST("logFor", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            JeigenBuilder db = new JeigenBuilder();
-            DenseMatrix L = db.getL(A);
-            DenseMatrix H0 = db.getH0Forest(L, t);
-            DenseMatrix H = db.H0toH(H0);
-            return db.getD(H);
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H0 = jb.getH0Forest(L, t);
+            DenseMatrix H = jb.H0toH(H0);
+            return jb.getD(H);
         }
     },
-    COMM("Comm", Scale.FRACTION) {
+    COMM("Comm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            JeigenBuilder db = new JeigenBuilder();
-            DenseMatrix H = db.getH0Communicability(A, t);
-            DenseMatrix D = db.getD(H);
-            return db.sqrtD(D);
+            DenseMatrix H = jb.getH0Communicability(A, t);
+            DenseMatrix D = jb.getD(H);
+            return jb.sqrtD(D);
         }
     },
-    LOG_COMM("logComm", Scale.FRACTION) {
+    COMM_D("Comm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            JeigenBuilder db = new JeigenBuilder();
-            DenseMatrix H0 = db.getH0Communicability(A, t);
-            DenseMatrix H = db.H0toH(H0);
-            DenseMatrix D = db.getD(H);
-            return db.sqrtD(D);
+            DenseMatrix H = jb.getH0DummyCommunicability(A, t);
+            DenseMatrix D = jb.getD(H);
+            return jb.sqrtD(D);
+        }
+    },
+    LOG_COMM("logComm", Scale.FRACTION_REVERSED) {
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix H0 = jb.getH0Communicability(A, t);
+            DenseMatrix H = jb.H0toH(H0);
+            DenseMatrix D = jb.getD(H);
+            return jb.sqrtD(D);
+        }
+    },
+    LOG_COMM_D("logComm", Scale.FRACTION_REVERSED) {
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix H0 = jb.getH0DummyCommunicability(A, t);
+            DenseMatrix H = jb.H0toH(H0);
+            DenseMatrix D = jb.getD(H);
+            return jb.sqrtD(D);
         }
     },
     SP_CT("SP-CT", Scale.LINEAR) {
         public DenseMatrix getD(DenseMatrix A, double lambda) {
-            JeigenBuilder db = new JeigenBuilder();
-            DenseMatrix L = db.getL(A);
-            DenseMatrix Ds = db.getDShortestPath(A);
-            DenseMatrix H = db.getHResistance(L);
-            DenseMatrix Dr = db.getD(H);
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix Ds = jb.getDShortestPath(A);
+            DenseMatrix H = jb.getHResistance(L);
+            DenseMatrix Dr = jb.getD(H);
             Double avgDs = Ds.sum().sum().s() / (Ds.cols * (Ds.cols - 1));
             Double avgDr = Dr.sum().sum().s() / (Dr.cols * (Dr.cols - 1));
             Double norm = avgDs / avgDr;
@@ -72,11 +80,16 @@ public enum Metric {
     },
     FREE_ENERGY("FE", Scale.FRACTION_BETA) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
-            JeigenBuilder db = new JeigenBuilder();
-            return db.getDFreeEnergy(A, beta);
+            return jb.getDFreeEnergy(A, beta);
+        }
+    },
+    RSP("RSP", Scale.FRACTION_BETA) {
+        public DenseMatrix getD(DenseMatrix A, double beta) {
+            return jb.getD_RSP(A, beta);
         }
     };
 
+    private static JeigenBuilder jb = new JeigenBuilder();
     private String name;
     private Scale scale;
 
@@ -89,16 +102,17 @@ public enum Metric {
         return Arrays.asList(Metric.values());
     }
 
-    public static List<Metric> getDefaultDistances() {
+    public static List<MetricWrapper> getDefaultDistances() {
         return Arrays.asList(
-                Metric.COMM,
-                Metric.LOG_COMM,
-                Metric.SP_CT,
-                Metric.FREE_ENERGY,
-                Metric.WALK,
-                Metric.LOG_FOREST,
-                Metric.FOREST,
-                Metric.PLAIN_WALK
+                new MetricWrapper(Metric.COMM_D),
+                new MetricWrapper(Metric.LOG_COMM_D),
+                new MetricWrapper(Metric.SP_CT),
+                new MetricWrapper(Metric.FREE_ENERGY),
+                new MetricWrapper(Metric.RSP),
+                new MetricWrapper(Metric.WALK),
+                new MetricWrapper(Metric.LOG_FOREST),
+                new MetricWrapper(Metric.FOREST),
+                new MetricWrapper(Metric.PLAIN_WALK)
         );
     }
 

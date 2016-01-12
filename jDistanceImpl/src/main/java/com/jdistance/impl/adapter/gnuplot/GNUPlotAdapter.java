@@ -43,7 +43,7 @@ public class GNUPlotAdapter {
         this.gnuplotPath = gnuplotPath;
     }
 
-    public void drawData(String title, List<Plot> data, String outputPath) {
+    public void drawData(String title, List<PlotDTO> data, String outputPath) {
         ImageTerminal png = new ImageTerminal();
         png.set("size", "1280,768");
         File file = new File(outputPath);
@@ -57,7 +57,7 @@ public class GNUPlotAdapter {
         JavaPlot gnuplot = new JavaPlot(gnuplotPath);
         gnuplot.setTerminal(png);
 
-        for (Plot plot : data) {
+        for (PlotDTO plot : data) {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
