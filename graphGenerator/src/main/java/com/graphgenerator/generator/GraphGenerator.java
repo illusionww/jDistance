@@ -16,7 +16,7 @@ public class GraphGenerator {
 
     private GraphGenerator() {
         random = new Random();
-        biDirectional = false;
+        biDirectional = true;
     }
 
     public static GraphGenerator getInstance() {
@@ -45,7 +45,7 @@ public class GraphGenerator {
         for (int i = 0; i < numberOfVertices; ++i) {
             for (int j = i + 1; j < numberOfVertices; ++j) {
                 sparseMatrix[i][j] =
-                        (getProbabilityEdge(borderClusters, probabilityMatrix, i, j) < random.nextDouble()) ? 1 : 0;
+                        (getProbabilityEdge(borderClusters, probabilityMatrix, i, j) > random.nextDouble()) ? 1 : 0;
                 if (biDirectional) {
                     sparseMatrix[j][i] = sparseMatrix[i][j];
                 } else {
@@ -62,16 +62,16 @@ public class GraphGenerator {
     }
 
     private double getProbabilityEdge(List<Integer> borderClusters, double[][] probabilityMatrix, int from, int to) {
-        int fromCluster = -1;
-        int toCluster = -1;
+        int fromCluster = 0;
+        int toCluster = 0;
         for (int i = 0; i < borderClusters.size(); ++i) {
-            if (borderClusters.get(i) > from) {
-                fromCluster = i;
+            if (borderClusters.get(i) < from) {
+                fromCluster = i + 1;
             }
-            if (borderClusters.get(i) > to) {
-                toCluster = i;
+            if (borderClusters.get(i) < to) {
+                toCluster = i + 1;
             }
-            if (fromCluster != -1 && toCluster != -1) {
+            if (borderClusters.get(i) > from && borderClusters.get(i) > to) {
                 break;
             }
         }

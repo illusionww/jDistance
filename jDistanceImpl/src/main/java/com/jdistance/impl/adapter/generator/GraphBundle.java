@@ -23,7 +23,7 @@ public class GraphBundle implements Cloneable<GraphBundle> {
 
     public String getName() {
         return "n = " + Arrays.toString(input.getSizeOfVertices().toArray()) + "probabilities = " +
-                Arrays.toString(input.getProbabilityMatrix())+ " numOfClusters =  " +
+                Arrays.toString(input.getProbabilityMatrix()[0])+ " numOfClusters =  " +
                 input.getSizeOfVertices().size() + " count = " + getCount();
     }
 
