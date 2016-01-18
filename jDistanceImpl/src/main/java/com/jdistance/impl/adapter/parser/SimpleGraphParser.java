@@ -1,7 +1,7 @@
 package com.jdistance.impl.adapter.parser;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.NodeData;
+import com.jdistance.graph.Node;
 import org.xml.sax.SAXException;
 import sun.security.pkcs.ParsingException;
 
@@ -21,7 +21,7 @@ public class SimpleGraphParser extends Parser {
 
     @Override
     public Graph parse(File file) throws ParserConfigurationException, IOException, SAXException {
-        ArrayList<NodeData> simpleNodeData = new ArrayList<>();
+        ArrayList<Node> simpleNodeData = new ArrayList<>();
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine();
@@ -42,7 +42,7 @@ public class SimpleGraphParser extends Parser {
                     if (cm.find()) {
                         String group = cm.group(1);
                         //System.out.println("number:" + number + " group:" + group);
-                        NodeData simpleNode = new NodeData(number, group);
+                        Node simpleNode = new Node(number, group);
                         simpleNodeData.add(simpleNode);
                         br.readLine();
                         line = br.readLine();

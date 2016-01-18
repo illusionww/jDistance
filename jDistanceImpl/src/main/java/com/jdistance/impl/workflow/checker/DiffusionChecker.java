@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.NodeData;
+import com.jdistance.graph.Node;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import jeigen.DenseMatrix;
 
@@ -27,15 +27,15 @@ public class DiffusionChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
         double count = 0;
         double error = 0;
         for (int i = 0; i < D.cols; ++i) {
             for (int j = i + 1; j < D.rows; ++j) {
-                if (nodeData.get(i).getLabel().equals(nodeData.get(j).getLabel())) {
+                if (node.get(i).getLabel().equals(node.get(j).getLabel())) {
                     for (int p = 0; p < D.cols; ++p) {
                         for (int q = p + 1; q < D.rows; ++q) {
-                            if (!nodeData.get(i).getLabel().equals(nodeData.get(j).getLabel())) {
+                            if (!node.get(i).getLabel().equals(node.get(j).getLabel())) {
                                 count++;
                                 if (D.get(i, j) > D.get(p, q)) {
                                     error++;
@@ -50,7 +50,7 @@ public class DiffusionChecker extends Checker {
     }
 
     @Override
-    public ClustererChecker clone() {
-        return new ClustererChecker(graphs, k);
+    public MinSpanningTreeChecker clone() {
+        return new MinSpanningTreeChecker(graphs, k);
     }
 }

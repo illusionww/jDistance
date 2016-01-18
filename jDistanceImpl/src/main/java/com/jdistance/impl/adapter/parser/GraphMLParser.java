@@ -1,7 +1,7 @@
 package com.jdistance.impl.adapter.parser;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.NodeData;
+import com.jdistance.graph.Node;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -94,10 +94,10 @@ public class GraphMLParser extends Parser {
             sparseM[intTarget][intSource] = (double) 1;
         }
 
-        ArrayList<NodeData> simpleNodeData = activeNodeData.stream()
-                .map(aActiveNodeData -> new NodeData(aActiveNodeData.getNodeId(), aActiveNodeData.getColor()))
+        ArrayList<Node> simpleNode = activeNodeData.stream()
+                .map(aActiveNodeData -> new Node(aActiveNodeData.getNodeId(), aActiveNodeData.getColor()))
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        return new Graph(sparseM, simpleNodeData);
+        return new Graph(sparseM, simpleNode);
     }
 }

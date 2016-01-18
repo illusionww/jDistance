@@ -2,11 +2,11 @@ package com.jdistance.graph;
 
 import com.jdistance.utils.Cloneable;
 
-public class NodeData implements Comparable<NodeData>, Cloneable<NodeData> {
+public class Node implements Comparable<Node>, Cloneable<Node> {
     String name;
     String label;
 
-    public NodeData(String name, String label) {
+    public Node(String name, String label) {
         this.name = name;
         this.label = label;
     }
@@ -28,23 +28,23 @@ public class NodeData implements Comparable<NodeData>, Cloneable<NodeData> {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof NodeData)) {
+        if (!(o instanceof Node)) {
             return false;
         }
-        NodeData that = (NodeData) o;
+        Node that = (Node) o;
         return label != null ? label.equals(that.label) : that.label == null &&
                 name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
-    public int compareTo(NodeData o) {
+    public int compareTo(Node o) {
         if (this.getLabel() != null) {
             return this.getLabel().compareTo(o.getLabel());
         } else return 0;
     }
 
     @Override
-    public NodeData clone() {
-        return new NodeData(this.name, this.label);
+    public Node clone() {
+        return new Node(this.name, this.label);
     }
 }

@@ -1,7 +1,7 @@
 package com.jdistance.impl.adapter.generator.dcr;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.NodeData;
+import com.jdistance.graph.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +13,7 @@ public class GraphValidator {
     private static final Logger log = LoggerFactory.getLogger(GraphValidator.class);
 
     public static boolean validate(Graph graph, int numOfNodes, int numOfClusters, double deviation) {
-        List<NodeData> data = graph.getNodeData();
+        List<Node> data = graph.getNode();
         boolean valid = true;
 
         // validate number of nodes

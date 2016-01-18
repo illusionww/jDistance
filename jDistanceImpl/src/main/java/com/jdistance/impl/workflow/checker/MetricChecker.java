@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.NodeData;
+import com.jdistance.graph.Node;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
@@ -28,13 +28,13 @@ public class MetricChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
         double[] vector1 = StandardizeHelper.standardize(D).getValues(); //вытягиваем матрицу в вектор
 
         double[][] class_match = new double[D.cols][D.rows]; // 1 если объекты в разных кластерах, 0 если в одном
         for (int c = 0; c < D.cols; c++) {
             for (int r = 0; r < D.rows; r++) {
-                class_match[c][r] = graph.getNodeData().get(c).getLabel().equals(graph.getNodeData().get(r).getLabel())
+                class_match[c][r] = graph.getNode().get(c).getLabel().equals(graph.getNode().get(r).getLabel())
                         ? 0d : 1d;
             }
         }

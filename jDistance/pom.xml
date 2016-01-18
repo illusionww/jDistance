@@ -32,5 +32,10 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/../lib/Jeigen-win-linux-32-64.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
     </dependencies>
 </project>

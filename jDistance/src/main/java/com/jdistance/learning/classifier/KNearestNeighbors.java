@@ -1,25 +1,25 @@
 package com.jdistance.learning.classifier;
 
-import com.jdistance.graph.NodeData;
+import com.jdistance.graph.Node;
 import com.jdistance.utils.MatrixUtils;
 import jeigen.DenseMatrix;
 
 import java.util.*;
 
 public class KNearestNeighbors {
-    private ArrayList<NodeData> realData; //  name and cluster
+    private ArrayList<Node> realData; //  name and cluster
     private double[][] matrixWithWeights;
     private int countColoredNodes;
 
 
-    public KNearestNeighbors(DenseMatrix matrixWithWeights, ArrayList<NodeData> realData) {
+    public KNearestNeighbors(DenseMatrix matrixWithWeights, ArrayList<Node> realData) {
         this.matrixWithWeights = MatrixUtils.toArray2(matrixWithWeights);
         this.realData = new ArrayList<>(realData);
         countColoredNodes = 0;
     }
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
-    public ArrayList<NodeData> predictLabel(Integer k, Double p, Double x) {
+    public ArrayList<Node> predictLabel(Integer k, Double p, Double x) {
         HashMap<String, Integer> order = new HashMap<>();
 
         for (int i = 0; i < realData.size(); ++i) {
@@ -27,7 +27,7 @@ public class KNearestNeighbors {
         }
 
         //выбираем вершины о которых будем знать их принадлежность к опеределенному классу
-        ArrayList<NodeData> coloredNodes = new ArrayList<>();
+        ArrayList<Node> coloredNodes = new ArrayList<>();
         if (p <= 1) {
             coloredNodes = choiceOfVertices(p);
         }
@@ -35,10 +35,10 @@ public class KNearestNeighbors {
             coloredNodes = choiceOfVertices(p / realData.size());
         }
 
-        ArrayList<NodeData> predictedDatas = new ArrayList<>();
+        ArrayList<Node> predictedDatas = new ArrayList<>();
         for (int i = 0; i < realData.size(); ++i) {
             boolean flag = false;
-            for (NodeData coloredNode : coloredNodes) {
+            for (Node coloredNode : coloredNodes) {
                 if (realData.get(i).getName().equals(coloredNode.getName())) {
                     predictedDatas.add(realData.get(i));
                     flag = true;
@@ -47,7 +47,7 @@ public class KNearestNeighbors {
             }
             if (!flag) {
                 ArrayList<DataForClassifier> weights = new ArrayList<>();
-                for (NodeData coloredNode : coloredNodes) {
+                for (Node coloredNode : coloredNodes) {
                     if (matrixWithWeights[i][order.get(coloredNode.getName())] != 0) {
                         weights.add(new DataForClassifier(coloredNode.getName(), matrixWithWeights[i][order.get(coloredNode.getName())], coloredNode.getLabel()));
                     } else
@@ -55,9 +55,9 @@ public class KNearestNeighbors {
                 }
                 Collections.sort(weights);
                 if (k > weights.size()) {
-                    predictedDatas.add(new NodeData(realData.get(i).getName(), predictLabel(weights, x)));
+                    predictedDatas.add(new Node(realData.get(i).getName(), predictLabel(weights, x)));
                 } else {
-                    predictedDatas.add(new NodeData(realData.get(i).getName(), predictLabel(weights.subList(0, k), x)));
+                    predictedDatas.add(new Node(realData.get(i).getName(), predictLabel(weights.subList(0, k), x)));
                 }
             }
         }
@@ -91,11 +91,11 @@ public class KNearestNeighbors {
         return label;
     }
 
-    private ArrayList<NodeData> choiceOfVertices(Double p) {  //независимо от размеров класстеров выбираем из каждого одинаковое количество
-        ArrayList<NodeData> sortedRealDatas = realData;
+    private ArrayList<Node> choiceOfVertices(Double p) {  //независимо от размеров класстеров выбираем из каждого одинаковое количество
+        ArrayList<Node> sortedRealDatas = realData;
         Collections.sort(sortedRealDatas);
         String label = sortedRealDatas.get(0).getLabel();
-        ArrayList<NodeData> result = new ArrayList<>();
+        ArrayList<Node> result = new ArrayList<>();
         ArrayList<Integer> endLabel = new ArrayList<>();
         for (int i = 0; i < sortedRealDatas.size(); ++i) {
             if (!label.equals(sortedRealDatas.get(i).getLabel())) {

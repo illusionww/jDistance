@@ -3,25 +3,25 @@ package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.learning.clusterer.MinSpanningTree;
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.NodeData;
+import com.jdistance.graph.Node;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ClustererChecker extends Checker {
+public class MinSpanningTreeChecker extends Checker {
     private GraphBundle graphs;
     private Integer k;
 
-    public ClustererChecker(GraphBundle graphs, Integer k) {
+    public MinSpanningTreeChecker(GraphBundle graphs, Integer k) {
         this.graphs = graphs;
         this.k = k;
     }
 
     @Override
     public String getName() {
-        return "Clusterer: k=" + k + "; " + graphs.getName();
+        return "MinSpanningTree: k=" + k + "; " + graphs.getName();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
         Integer countErrors = 0;
 
         final MinSpanningTree clusterer = new MinSpanningTree(D);
@@ -38,7 +38,7 @@ public class ClustererChecker extends Checker {
 
         for (int i = 0; i < data.size(); ++i) {
             for (int j = i + 1; j < data.size(); ++j) {
-                if (data.get(i).equals(data.get(j)) != nodeData.get(i).getLabel().equals(nodeData.get(j).getLabel())) {
+                if (data.get(i).equals(data.get(j)) != node.get(i).getLabel().equals(node.get(j).getLabel())) {
                     countErrors += 1;
                 }
             }
@@ -49,7 +49,7 @@ public class ClustererChecker extends Checker {
     }
 
     @Override
-    public ClustererChecker clone() {
-        return new ClustererChecker(graphs, k);
+    public MinSpanningTreeChecker clone() {
+        return new MinSpanningTreeChecker(graphs, k);
     }
 }

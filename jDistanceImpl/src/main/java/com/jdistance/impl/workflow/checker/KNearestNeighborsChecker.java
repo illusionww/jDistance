@@ -1,21 +1,21 @@
 package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.NodeData;
+import com.jdistance.graph.Node;
 import com.jdistance.impl.adapter.generator.GraphBundle;
 import com.jdistance.learning.classifier.KNearestNeighbors;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
 
-public class ClassifierChecker extends Checker {
+public class KNearestNeighborsChecker extends Checker {
     private GraphBundle graphs;
     private Integer k;
     private Double p;
     private Double x;
 
 
-    public ClassifierChecker(GraphBundle graphs, Integer k, Double p) {
+    public KNearestNeighborsChecker(GraphBundle graphs, Integer k, Double p) {
         this.graphs = graphs;
         this.k = k;
         this.p = p;
@@ -27,7 +27,7 @@ public class ClassifierChecker extends Checker {
      * @param p - доля заранее размеченных вершин
      * @param x - параметр, влияющий на вес соседей
      */
-    public ClassifierChecker(GraphBundle graphs, Integer k, Double p, Double x) {
+    public KNearestNeighborsChecker(GraphBundle graphs, Integer k, Double p, Double x) {
         this.graphs = graphs;
         this.k = k;
         this.p = p;
@@ -49,15 +49,15 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<NodeData> nodeData) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
         Integer countErrors = 0;
 
-        final KNearestNeighbors classifier = new KNearestNeighbors(D, nodeData);
-        ArrayList<NodeData> data = classifier.predictLabel(k, p, x);
+        final KNearestNeighbors classifier = new KNearestNeighbors(D, node);
+        ArrayList<Node> data = classifier.predictLabel(k, p, x);
 
         for (int q = 0; q < data.size(); ++q) {
-            NodeData original = nodeData.get(q);
-            NodeData calculated = data.get(q);
+            Node original = node.get(q);
+            Node calculated = data.get(q);
             if (original.getName().equals(calculated.getName()) && !original.getLabel().equals(calculated.getLabel())) {
                 countErrors += 1;
             }
@@ -67,7 +67,7 @@ public class ClassifierChecker extends Checker {
     }
 
     @Override
-    public ClassifierChecker clone() {
-        return new ClassifierChecker(graphs, k, p, x);
+    public KNearestNeighborsChecker clone() {
+        return new KNearestNeighborsChecker(graphs, k, p, x);
     }
 }

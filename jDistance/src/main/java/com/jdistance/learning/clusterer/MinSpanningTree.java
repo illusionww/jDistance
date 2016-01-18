@@ -8,14 +8,13 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Stack;
 
-public class MinSpanningTree {
+public class MinSpanningTree implements Clusterer {
     private double[][] matrixWithWeights;
 
     public MinSpanningTree(DenseMatrix matrixWithWeights) {
         this.matrixWithWeights = MatrixUtils.toArray2(matrixWithWeights);
     }
 
-    //k количество кластеров
     public HashMap<Integer, Integer> predict(Integer k) {
         double minWeight = Double.MAX_VALUE;
         int to = 0;

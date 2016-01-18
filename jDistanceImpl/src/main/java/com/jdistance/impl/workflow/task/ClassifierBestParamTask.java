@@ -1,6 +1,6 @@
 package com.jdistance.impl.workflow.task;
 
-import com.jdistance.impl.workflow.checker.ClassifierChecker;
+import com.jdistance.impl.workflow.checker.KNearestNeighborsChecker;
 import com.jdistance.metric.MetricWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 public class ClassifierBestParamTask extends Task {
     private static final Logger log = LoggerFactory.getLogger(ClassifierBestParamTask.class);
 
-    private ClassifierChecker checker;
+    private KNearestNeighborsChecker checker;
     private MetricWrapper metricWrapper;
     private Double from;
     private Double to;
@@ -21,7 +21,7 @@ public class ClassifierBestParamTask extends Task {
     private Integer pointsCount;
     private Map<Double, Double> result = new HashMap<>();
 
-    public ClassifierBestParamTask(ClassifierChecker checker, MetricWrapper metricWrapper, Double from, Double to, int checkerPointsCount, int pointsCount) {
+    public ClassifierBestParamTask(KNearestNeighborsChecker checker, MetricWrapper metricWrapper, Double from, Double to, int checkerPointsCount, int pointsCount) {
         this.checker = checker;
         this.metricWrapper = metricWrapper;
         this.from = from;
