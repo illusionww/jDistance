@@ -1,4 +1,4 @@
-package com.jdistance.impl.adapter.parser;
+package com.jdistance.graph.parser;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
@@ -20,14 +20,14 @@ import java.util.stream.Collectors;
 public class GraphMLParser extends Parser {
     @Override
     public Graph parse(File file) throws ParserConfigurationException, IOException, SAXException {
-        LinkedList<GraphMLNodeData> linkedList = new LinkedList<>();
+        LinkedList<NodeData> linkedList = new LinkedList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(false);
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document doc = db.parse(file);
         NodeList nodeList = doc.getElementsByTagName("node");
         for (int i = 0; i < nodeList.getLength(); ++i) {
-            GraphMLNodeData nodeData = new GraphMLNodeData();
+            NodeData nodeData = new NodeData();
             NodeList childNodes = nodeList.item(i).getChildNodes();
             for (int k = 0; k < childNodes.getLength(); ++k) {
                 if (childNodes.item(k).getAttributes() != null) {
@@ -44,13 +44,13 @@ public class GraphMLParser extends Parser {
             }
             linkedList.add(nodeData);
         }
-        LinkedList<GraphMLNodeData> activeNodeData = new LinkedList<>();
-        LinkedList<GraphMLEdgeData> activeEdgeData = new LinkedList<>();
+        LinkedList<NodeData> activeNodeData = new LinkedList<>();
+        LinkedList<EdgeData> activeEdgeData = new LinkedList<>();
 
-        activeNodeData.addAll(linkedList.stream().filter(GraphMLNodeData::getActive).collect(Collectors.toList()));
+        activeNodeData.addAll(linkedList.stream().filter(NodeData::getActive).collect(Collectors.toList()));
         NodeList edgeList = doc.getElementsByTagName("edge");
         for (int i = 0; i < edgeList.getLength(); ++i) {
-            GraphMLEdgeData edgeData = new GraphMLEdgeData();
+            EdgeData edgeData = new EdgeData();
             NodeList childEdges = edgeList.item(i).getChildNodes();
             for (int k = 0; k < childEdges.getLength(); ++k) {
                 if (childEdges.item(k).getAttributes() != null) {
@@ -74,7 +74,7 @@ public class GraphMLParser extends Parser {
         if (activeNodeData.size() > 0) {
             color = activeNodeData.get(0).getColor();
         }
-        for (GraphMLNodeData aActiveNodeData : activeNodeData) {
+        for (NodeData aActiveNodeData : activeNodeData) {
             if (!color.equals(aActiveNodeData.getColor())) {
                 color = aActiveNodeData.getColor();
             }
@@ -85,7 +85,7 @@ public class GraphMLParser extends Parser {
         }
 
         double[][] sparseM = new double[activeNodeData.size()][activeNodeData.size()];
-        for (GraphMLEdgeData aActiveEdgeData : activeEdgeData) {
+        for (EdgeData aActiveEdgeData : activeEdgeData) {
             String source = aActiveEdgeData.getSource();
             String target = aActiveEdgeData.getTarget();
             Integer intSource = order.get(source);
@@ -99,5 +99,72 @@ public class GraphMLParser extends Parser {
                 .collect(Collectors.toCollection(ArrayList::new));
 
         return new Graph(sparseM, simpleNode);
+    }
+
+    class EdgeData {
+        String source;
+        String target;
+        Boolean active;
+
+        public Boolean getActive() {
+            return active;
+        }
+
+        public void setActive(Boolean active) {
+            this.active = active;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        public void setSource(String source) {
+            this.source = source;
+        }
+
+        public String getTarget() {
+            return target;
+        }
+
+        public void setTarget(String target) {
+            this.target = target;
+        }
+    }
+
+    class NodeData implements Comparable<NodeData> {
+        private String nodeId;
+        private String color;
+        private Boolean active;
+
+        public Boolean getActive() {
+            return active;
+        }
+
+        public void setActive(Boolean active) {
+            this.active = active;
+        }
+
+        public String getNodeId() {
+            return nodeId;
+        }
+
+        public void setNodeId(String nodeId) {
+            this.nodeId = nodeId;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        @Override
+        public int compareTo(NodeData o) {
+            if (this.getColor() != null) {
+                return this.getColor().compareTo(o.getColor());
+            } else return 0;
+        }
     }
 }

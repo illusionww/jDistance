@@ -1,13 +1,12 @@
 package com.jdistance.impl;
 
-import com.graphgenerator.utils.GeneratorPropertiesDTO;
-import com.graphgenerator.utils.GeneratorPropertiesParser;
+import com.jdistance.graph.generator.ClusteredGraphGenerator;
+import com.jdistance.graph.generator.GeneratorPropertiesDTO;
 import com.jdistance.graph.Graph;
-import com.jdistance.impl.adapter.generator.GraphBundle;
-import com.jdistance.impl.adapter.generator.dcr.DCRGeneratorAdapter;
+import com.jdistance.graph.GraphBundle;
+import com.jdistance.impl.adapter.dcrgenerator.DCRGeneratorAdapter;
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.TaskChain;
-import com.jdistance.impl.workflow.checker.KNearestNeighborsChecker;
 import com.jdistance.impl.workflow.checker.MinSpanningTreeChecker;
 import com.jdistance.impl.workflow.checker.WardChecker;
 import com.jdistance.impl.workflow.task.DefaultTask;
@@ -25,7 +24,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         initContext();
-        drawGraphsScenarioOld();
+        drawGraphsScenarioNew();
     }
 
     private static void initContext() {
@@ -38,46 +37,57 @@ public class Main {
         context.PARALLEL = true;
     }
 
-    private static void drawGraphsScenarioOld() throws ParserConfigurationException, SAXException, IOException {
-        int graphCount = 2;
-        int numOfNodes = 200;
-        double pIn = 0.3;
-        double pOut = 0.1;
-        int numOfClusters = 5;
-        int numOfPoints = 40;
-
-        DCRGeneratorAdapter generator = new DCRGeneratorAdapter();
-        List<Graph> graphs = generator.generateList(graphCount, numOfNodes, pIn, pOut, numOfClusters);
-        GraphBundle graphBundle = new GraphBundle(new GeneratorPropertiesDTO(), graphs);
-        ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphBundle, numOfClusters), Metric.getDefaultDistances(), numOfPoints).execute().draw();
-        ScenarioHelper.defaultTasks(new WardChecker(graphBundle, numOfClusters), Metric.getDefaultDistances(), numOfPoints).execute().draw();
-    }
-
     private static void compareClusterers() throws ParserConfigurationException, SAXException, IOException {
         int graphCount = 10;
-        int numOfNodes = 250;
+        int nodesCount = 250;
+        int clustersCount = 5;
         double pIn = 0.30;
         double pOut = 0.05;
-        int numOfClusters = 5;
-        int numOfPoints = 100;
+        int pointsCount = 100;
 
-        DCRGeneratorAdapter generator = new DCRGeneratorAdapter();
-        List<Graph> graphs = generator.generateList(graphCount, numOfNodes, pIn, pOut, numOfClusters);
-        GraphBundle graphBundle = new GraphBundle(new GeneratorPropertiesDTO(), graphs);
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
+        GraphBundle graphs = DCRGeneratorAdapter.getInstance().generate(properties);
 
         TaskChain chain = new TaskChain("Compare Clusterers FE, logComm 0.35 0.03");
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new DefaultTask(new WardChecker(graphBundle, numOfClusters), new MetricWrapper("Ward FE", Metric.FREE_ENERGY), numOfPoints));
-        tasks.add(new DefaultTask(new WardChecker(graphBundle, numOfClusters), new MetricWrapper("Ward logComm", Metric.LOG_COMM_D), numOfPoints));
-        tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphBundle, numOfClusters), new MetricWrapper("Tree FE", Metric.FREE_ENERGY), numOfPoints));
-        tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphBundle, numOfClusters), new MetricWrapper("Tree logComm", Metric.LOG_COMM_D), numOfPoints));
+        tasks.add(new DefaultTask(new WardChecker(graphs, clustersCount), new MetricWrapper("Ward FE", Metric.FREE_ENERGY), pointsCount));
+        tasks.add(new DefaultTask(new WardChecker(graphs, clustersCount), new MetricWrapper("Ward logComm", Metric.LOG_COMM_D), pointsCount));
+        tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphs, clustersCount), new MetricWrapper("Tree FE", Metric.FREE_ENERGY), pointsCount));
+        tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphs, clustersCount), new MetricWrapper("Tree logComm", Metric.LOG_COMM_D), pointsCount));
         chain.addTasks(tasks).execute().draw();
     }
 
+    private static void drawGraphsScenarioOld() throws ParserConfigurationException, SAXException, IOException {
+        int graphCount = 2;
+        int nodesCount = 200;
+        int clustersCount = 5;
+        double pIn = 0.3;
+        double pOut = 0.1;
+        int pointsCount = 40;
+
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
+        GraphBundle graphs = DCRGeneratorAdapter.getInstance().generate(properties);
+        ScenarioHelper.defaultTasks(new WardChecker(graphs, clustersCount), Metric.getDefaultDistances(), pointsCount).execute().draw();
+    }
+
     private static void drawGraphsScenarioNew() {
-        GeneratorPropertiesDTO properties = GeneratorPropertiesParser.parse("./dataForGenerator/defaultParameters.txt");
-        GraphBundle graphBundle = new GraphBundle(properties, 10);
-        ScenarioHelper.defaultTasks(new KNearestNeighborsChecker(graphBundle, 3, 0.3), Metric.getDefaultDistances(), 50).execute().draw();
+        int graphCount = 2;
+        int nodesCount = 200;
+        int clustersCount = 5;
+        double pIn = 0.3;
+        double pOut = 0.1;
+        int pointsCount = 40;
+
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
+        GraphBundle graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+
+        TaskChain chain = new TaskChain("Compare Clusterers (new generator) logComm 0.35 0.03");
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(new DefaultTask(new WardChecker(graphs, clustersCount), new MetricWrapper("Ward FE", Metric.FREE_ENERGY), pointsCount));
+        tasks.add(new DefaultTask(new WardChecker(graphs, clustersCount), new MetricWrapper("Ward logComm", Metric.LOG_COMM_D), pointsCount));
+        tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphs, clustersCount), new MetricWrapper("Tree FE", Metric.FREE_ENERGY), pointsCount));
+        tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphs, clustersCount), new MetricWrapper("Tree logComm", Metric.LOG_COMM_D), pointsCount));
+        chain.addTasks(tasks).execute().draw();
     }
 }
 

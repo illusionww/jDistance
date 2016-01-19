@@ -1,6 +1,5 @@
-package com.graphgenerator.generator;
+package com.jdistance.graph.generator;
 
-import com.graphgenerator.utils.GeneratorPropertiesDTO;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
 
@@ -9,28 +8,26 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class GraphGenerator {
-    private static GraphGenerator graphGenerator;
+public class ClusteredGraphGenerator extends GraphGenerator {
+    private static ClusteredGraphGenerator instance;
     private final Random random;
     private boolean biDirectional;
 
-    private GraphGenerator() {
+    private ClusteredGraphGenerator() {
         random = new Random();
         biDirectional = true;
     }
 
-    public static GraphGenerator getInstance() {
-        if (graphGenerator == null) {
-            graphGenerator = new GraphGenerator();
+    public static ClusteredGraphGenerator getInstance() {
+        if (instance == null) {
+            instance = new ClusteredGraphGenerator();
         }
-        return graphGenerator;
+        return instance;
     }
 
-    public void setBiDirectional(boolean b) {
-        biDirectional = b;
-    }
-
-    public Graph generateGraph(List<Integer> sizeClusters, double[][] probabilityMatrix) {
+    protected Graph generateGraph(GeneratorPropertiesDTO generatorPropertiesDTO) {
+        List<Integer> sizeClusters = generatorPropertiesDTO.getSizeOfClusters();
+        double[][] probabilityMatrix = generatorPropertiesDTO.getProbabilityMatrix();
         int numberOfVertices = 0;
         List<Integer> borderClusters = new LinkedList<>(sizeClusters);
         for (int i = 0; i < sizeClusters.size(); ++i) {
@@ -52,10 +49,6 @@ public class GraphGenerator {
             }
         }
         return new Graph(sparseMatrix, generateSimpleNodeDatas(sizeClusters));
-    }
-
-    public Graph generateGraph(GeneratorPropertiesDTO generatorPropertiesDTO) {
-        return generateGraph(generatorPropertiesDTO.getSizeOfClusters(), generatorPropertiesDTO.getProbabilityMatrix());
     }
 
     private double getProbabilityEdge(List<Integer> borderClusters, double[][] probabilityMatrix, int from, int to) {

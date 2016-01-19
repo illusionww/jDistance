@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.task.competition;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.impl.adapter.generator.GraphBundle;
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.checker.Checker;
 import com.jdistance.impl.workflow.checker.MetricChecker;
 import com.jdistance.impl.workflow.util.StandardizeHelper;

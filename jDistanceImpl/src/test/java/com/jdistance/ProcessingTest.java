@@ -4,7 +4,7 @@ import com.graphgenerator.utils.GeneratorPropertiesParser;
 import com.jdistance.helper.Constants;
 import com.jdistance.helper.TestHelperImpl;
 import com.jdistance.impl.ScenarioHelper;
-import com.jdistance.impl.adapter.generator.GraphBundle;
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.TaskChain;
 import com.jdistance.impl.workflow.checker.Checker;

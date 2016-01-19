@@ -27,12 +27,6 @@
             <artifactId>jDistance</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.jdistance</groupId>
-            <artifactId>graphGenerator</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.slf4j</groupId>

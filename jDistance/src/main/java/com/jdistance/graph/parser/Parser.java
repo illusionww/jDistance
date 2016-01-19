@@ -1,4 +1,4 @@
-package com.jdistance.impl.adapter.parser;
+package com.jdistance.graph.parser;
 
 import com.jdistance.graph.Graph;
 import org.xml.sax.SAXException;

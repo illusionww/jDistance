@@ -1,4 +1,4 @@
-package com.jdistance.impl.adapter.parser;
+package com.jdistance.graph.parser;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
@@ -15,9 +15,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SimpleGraphParser extends Parser {
-    final Pattern label = Pattern.compile("^vertex (\\d+):.*");
-    final Pattern color = Pattern.compile("^color (\\d+).*");
-    final Pattern edge = Pattern.compile("^(\\d+) -> (\\d+).*");
+    private static final Pattern label = Pattern.compile("^vertex (\\d+):.*");
+    private static final Pattern color = Pattern.compile("^color (\\d+).*");
+    private static final Pattern edge = Pattern.compile("^(\\d+) -> (\\d+).*");
 
     @Override
     public Graph parse(File file) throws ParserConfigurationException, IOException, SAXException {
@@ -26,11 +26,9 @@ public class SimpleGraphParser extends Parser {
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line = br.readLine();
             while (line != null && !line.matches("begin vertices:")) {
-                //System.out.println("skip '" + line + "'");
                 line = br.readLine();
             }
             line = br.readLine();
-            //System.out.println("line: " + line);
             while (line != null && line.matches("^vertex \\d+:")) {
                 Matcher nm = label.matcher(line);
                 if (nm.find()) {
@@ -41,7 +39,6 @@ public class SimpleGraphParser extends Parser {
                     Matcher cm = color.matcher(line);
                     if (cm.find()) {
                         String group = cm.group(1);
-                        //System.out.println("number:" + number + " group:" + group);
                         Node simpleNode = new Node(number, group);
                         simpleNodeData.add(simpleNode);
                         br.readLine();

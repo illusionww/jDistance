@@ -2,7 +2,7 @@ package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
-import com.jdistance.impl.adapter.generator.GraphBundle;
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
 

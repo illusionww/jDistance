@@ -1,6 +1,6 @@
 package com.jdistance.impl.workflow.task.competition;
 
-import com.jdistance.impl.adapter.generator.GraphBundle;
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.checker.Checker;
 import com.jdistance.impl.workflow.checker.MinSpanningTreeChecker;
 

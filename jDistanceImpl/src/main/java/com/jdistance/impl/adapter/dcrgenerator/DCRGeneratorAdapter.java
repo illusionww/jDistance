@@ -1,7 +1,10 @@
-package com.jdistance.impl.adapter.generator.dcr;
+package com.jdistance.impl.adapter.dcrgenerator;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.impl.adapter.parser.GraphMLParser;
+import com.jdistance.graph.Node;
+import com.jdistance.graph.generator.GeneratorPropertiesDTO;
+import com.jdistance.graph.generator.GraphGenerator;
+import com.jdistance.graph.parser.GraphMLParser;
 import de.uka.algo.generator.accessory.StandaloneDCRArguments;
 import de.uka.algo.generator.standalone.generators.DCRGenerator;
 import de.uka.algo.generator.standalone.graph.DCRGraph;
@@ -15,12 +18,9 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class DCRGeneratorAdapter {
+public class DCRGeneratorAdapter extends GraphGenerator {
     private static final Logger log = LoggerFactory.getLogger(DCRGeneratorAdapter.class);
 
     private static final String[] keys = new String[]{"t_max", "n", "p_in", "p_out", "p_inList", "k", "beta", "D_s", "p_chi", "p_nu", "eta", "p_omega", "p_mu", "sigma", "theta", "enp", "graphml", "binary", "log", "outDir", "fileName"};
@@ -31,21 +31,26 @@ public class DCRGeneratorAdapter {
     private static final int ATTEMPTS = 5;
     private static final double DEVIATION = 0.03;
 
-    public List<Graph> generateList(int count, int n, double pIn, double pOut, int k) throws IOException, ParserConfigurationException, SAXException {
-        List<Graph> graphs = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            graphs.add(generate(n, pIn, pOut, k));
-        }
-        return graphs;
+    private static DCRGeneratorAdapter instance;
+
+    private DCRGeneratorAdapter() {
     }
 
-    public Graph generate(int n, double p_in, double p_out, int k) throws IOException, ParserConfigurationException, SAXException {
+    public static DCRGeneratorAdapter getInstance() {
+        if (instance == null) {
+            instance = new DCRGeneratorAdapter();
+        }
+        return instance;
+    }
+
+    @Override
+    protected Graph generateGraph(GeneratorPropertiesDTO properties) {
         StandaloneDCRArguments arguments = getDefaultDCRArgs();
         arguments.t_max = 10;
-        arguments.n = n;
-        arguments.p_in = p_in;
-        arguments.p_out = p_out;
-        arguments.k = k;
+        arguments.n = properties.getNodesCount();
+        arguments.p_in = properties.getP_in();
+        arguments.p_out = properties.getP_out();
+        arguments.k = properties.getClustersCount();
 
         for (int i = 0; i < ATTEMPTS; i++) {
             try {
@@ -53,7 +58,7 @@ public class DCRGeneratorAdapter {
                 DCRGenerator generator = new DCRGenerator();
                 DCRGraph dcrGraph = generator.generate(arguments);
                 Graph graph = dcrGraphToGraph(dcrGraph);
-                if (GraphValidator.validate(graph, n, k, DEVIATION)) {
+                if (validate(graph, arguments.n, arguments.k, DEVIATION)) {
                     return graph;
                 } else {
                     log.warn("Generated graph is not valid");
@@ -101,5 +106,26 @@ public class DCRGeneratorAdapter {
 
         GraphMLParser graphMLParser = new GraphMLParser();
         return graphMLParser.parse(tempFile);
+    }
+
+    private boolean validate(Graph graph, int numOfNodes, int numOfClusters, double deviation) {
+        List<Node> data = graph.getNode();
+        boolean valid = true;
+
+        // validate number of nodes
+        if (data.size() < numOfNodes * (1 - deviation) || data.size() > numOfNodes * (1 + deviation)) {
+            log.info("Validation failed: numOfNodes - expected: {} but {} found", numOfNodes, data.size());
+            valid = false;
+        }
+
+        // validate number of clusters
+        Set<String> labels = new HashSet<>();
+        data.forEach(item -> labels.add(item.getLabel()));
+        if (labels.size() != numOfClusters) {
+            log.info("Validation failed: numOfClusters - expected: {} but {} found", numOfClusters, labels.size());
+            valid = false;
+        }
+
+        return valid;
     }
 }
