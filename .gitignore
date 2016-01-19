@@ -11,9 +11,6 @@ target/
 *.iws
 
 # Output files
-/out/
-/pictures/
-/cache/
-/temp_test/
-/logs/
-/tournament/
+*.png
+*.txt
+*.log

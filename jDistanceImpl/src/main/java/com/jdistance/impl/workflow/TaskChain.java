@@ -3,6 +3,7 @@ package com.jdistance.impl.workflow;
 import com.jdistance.impl.adapter.gnuplot.ArrayUtils;
 import com.jdistance.impl.adapter.gnuplot.GNUPlotAdapter;
 import com.jdistance.impl.adapter.gnuplot.PlotDTO;
+import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.MetricWrapper;
 import com.panayotis.gnuplot.dataset.Point;
@@ -53,13 +54,9 @@ public class TaskChain {
     }
 
     public TaskChain execute() {
-        if (!Context.getInstance().checkContext()) {
-            throw new RuntimeException("context not initialized!");
-        }
-
         Date start = new Date();
         log.info("START task CHAIN {}", name);
-        Stream<Task> stream = Context.getInstance().PARALLEL ? tasks.parallelStream() : tasks.stream();
+        Stream<Task> stream = ContextProvider.getInstance().getContext().getParallel() ? tasks.parallelStream() : tasks.stream();
 
         stream.forEach(task -> {
             Date startTask = new Date();
@@ -94,14 +91,14 @@ public class TaskChain {
             plots.add(new PlotDTO(plotTitle, color.next(), plotPointsSet));
         });
 
-        GNUPlotAdapter ga = new GNUPlotAdapter(Context.getInstance().GNUPLOT_PATH);
-        ga.drawData(imgTitle, plots, Context.getInstance().IMG_FOLDER + File.separator + imgTitle.replaceAll("\\W+", "") + ".png");
+        GNUPlotAdapter ga = new GNUPlotAdapter(ContextProvider.getInstance().getContext().getGnuplotPath());
+        ga.drawData(imgTitle, plots, ContextProvider.getInstance().getContext().getImgFolder() + File.separator + imgTitle.replaceAll("^[\\w ]+", "") + ".png");
 
         return this;
     }
 
     public TaskChain write(String filename) {
-        String path = Context.getInstance().IMG_FOLDER + File.separator + filename + ".txt";
+        String path = ContextProvider.getInstance().getContext().getImgFolder() + File.separator + filename + ".txt";
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(path))) {
             for (Task task : tasks) {
                 MetricWrapper metricWrapper = task.getMetricWrapper();

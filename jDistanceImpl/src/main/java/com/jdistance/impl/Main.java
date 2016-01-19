@@ -1,11 +1,9 @@
 package com.jdistance.impl;
 
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.ClusteredGraphGenerator;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
-import com.jdistance.graph.Graph;
-import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.adapter.dcrgenerator.DCRGeneratorAdapter;
-import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.TaskChain;
 import com.jdistance.impl.workflow.checker.MinSpanningTreeChecker;
 import com.jdistance.impl.workflow.checker.WardChecker;
@@ -16,25 +14,13 @@ import com.jdistance.metric.MetricWrapper;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        initContext();
         drawGraphsScenarioNew();
-    }
-
-    private static void initContext() {
-        Context context = Context.getInstance();
-        context.GNUPLOT_PATH = "c:\\cygwin64\\bin\\gnuplot.exe";
-        context.IMG_FOLDER = "pictures";
-        new File("./pictures").mkdir();
-        context.COMPETITION_FOLDER = "tournament";
-        new File("./tournament").mkdir();
-        context.PARALLEL = true;
     }
 
     private static void compareClusterers() throws ParserConfigurationException, SAXException, IOException {
