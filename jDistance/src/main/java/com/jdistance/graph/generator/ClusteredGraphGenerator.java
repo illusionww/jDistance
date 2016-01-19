@@ -3,10 +3,9 @@ package com.jdistance.graph.generator;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class ClusteredGraphGenerator extends GraphGenerator {
     private static ClusteredGraphGenerator instance;
@@ -26,12 +25,12 @@ public class ClusteredGraphGenerator extends GraphGenerator {
     }
 
     protected Graph generateGraph(GeneratorPropertiesDTO generatorPropertiesDTO) {
-        List<Integer> sizeClusters = generatorPropertiesDTO.getSizeOfClusters();
+        int[] sizeClusters = generatorPropertiesDTO.getSizeOfClusters();
         double[][] probabilityMatrix = generatorPropertiesDTO.getProbabilityMatrix();
         int numberOfVertices = 0;
-        List<Integer> borderClusters = new LinkedList<>(sizeClusters);
-        for (int i = 0; i < sizeClusters.size(); ++i) {
-            numberOfVertices += sizeClusters.get(i);
+        List<Integer> borderClusters = new LinkedList<>(IntStream.of(sizeClusters).boxed().collect(Collectors.toList()));
+        for (int i = 0; i < sizeClusters.length; ++i) {
+            numberOfVertices += sizeClusters[i];
             if (i > 0) {
                 borderClusters.set(i, borderClusters.get(i - 1) + borderClusters.get(i));
             }
@@ -68,11 +67,11 @@ public class ClusteredGraphGenerator extends GraphGenerator {
         return probabilityMatrix[fromCluster][toCluster];
     }
 
-    private ArrayList<Node> generateSimpleNodeDatas(List<Integer> sizeClusters) {
+    private ArrayList<Node> generateSimpleNodeDatas(int[] sizeClusters) {
         ArrayList<Node> nodes = new ArrayList<>();
         Integer vertex = 0;
-        for (Integer i = 0; i < sizeClusters.size(); ++i) {
-            for (int j = 0; j < sizeClusters.get(i); ++j) {
+        for (Integer i = 0; i < sizeClusters.length; ++i) {
+            for (int j = 0; j < sizeClusters[i]; ++j) {
                 nodes.add(new Node(vertex.toString(), i.toString()));
                 vertex++;
             }

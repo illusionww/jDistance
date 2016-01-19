@@ -1,6 +1,6 @@
 package com.jdistance.graph.generator;
 
-import java.util.List;
+import java.util.stream.IntStream;
 
 public class GeneratorPropertiesDTO {
     private int graphsCount;
@@ -8,27 +8,28 @@ public class GeneratorPropertiesDTO {
     private int clustersCount;
     private double p_in;
     private double p_out;
-    private List<Integer> sizeOfClusters;
+    private int[] sizeOfClusters;
     private double[][] probabilityMatrix;
 
-    public GeneratorPropertiesDTO(int graphsCount, int nodesCount, int clusterCount, double p_in, double p_out) {
+    public GeneratorPropertiesDTO(int graphsCount, int nodesCount, int clustersCount, double p_in, double p_out) {
         this.graphsCount = graphsCount;
         this.nodesCount = nodesCount;
-        this.clustersCount = clusterCount;
+        this.clustersCount = clustersCount;
         this.p_in = p_in;
         this.p_out = p_out;
-        this.probabilityMatrix = new double[clusterCount][clusterCount];
-        for (int i = 0; i < clusterCount; i++) {
-            for (int j = 0; j < clusterCount; j++) {
+        this.sizeOfClusters = IntStream.of(nodesCount / clustersCount).limit(clustersCount).toArray();
+        this.probabilityMatrix = new double[clustersCount][clustersCount];
+        for (int i = 0; i < clustersCount; i++) {
+            for (int j = 0; j < clustersCount; j++) {
                 probabilityMatrix[i][j] = i == j ? p_in : p_out;
             }
         }
     }
 
-    public GeneratorPropertiesDTO(int graphsCount, List<Integer> sizeOfClusters, double[][] probabilityMatrix) {
+    public GeneratorPropertiesDTO(int graphsCount, int[] sizeOfClusters, double[][] probabilityMatrix) {
         this.graphsCount = graphsCount;
-        this.nodesCount = sizeOfClusters.stream().mapToInt(Integer::intValue).sum();
-        this.clustersCount = sizeOfClusters.size();
+        this.nodesCount = IntStream.of(sizeOfClusters).sum();
+        this.clustersCount = sizeOfClusters.length;
         this.p_in = Double.NaN;
         this.p_out = Double.NaN;
         this.sizeOfClusters = sizeOfClusters;
@@ -55,7 +56,7 @@ public class GeneratorPropertiesDTO {
         return p_out;
     }
 
-    public List<Integer> getSizeOfClusters() {
+    public int[] getSizeOfClusters() {
         return sizeOfClusters;
     }
 

@@ -92,7 +92,7 @@ public class TaskChain {
         });
 
         GNUPlotAdapter ga = new GNUPlotAdapter(ContextProvider.getInstance().getContext().getGnuplotPath());
-        ga.drawData(imgTitle, plots, ContextProvider.getInstance().getContext().getImgFolder() + File.separator + imgTitle.replaceAll("^[\\w ]+", "") + ".png");
+        ga.drawData(imgTitle, plots, ContextProvider.getInstance().getContext().getImgFolder() + File.separator + imgTitle.replaceAll("[^\\w\\- ]+", "") + ".png");
 
         return this;
     }
