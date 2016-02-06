@@ -24,7 +24,7 @@ public class DCRGeneratorAdapter extends GraphGenerator {
 
     private static final String[] keys = new String[]{"t_max", "n", "p_in", "p_out", "p_inList", "k", "beta", "D_s", "p_chi", "p_nu", "eta", "p_omega", "p_mu", "sigma", "theta", "enp", "graphml", "binary", "log", "outDir", "fileName"};
     private static final String[] defaultValues = new String[]{"100", "60", "0.2", "0.01", "", "2", "1.0", "", "0.5", "0.5", "1", "0.02", "0.5", "2.0", "0.25", "false", "false", "false", "false", "", ""};
-    private static final Boolean graphFilesIsTemp = false;
+    private static final Boolean graphFilesIsTemp = true;
 
     private static final String PREFIX = "temp_dcr_graph";
     private static final String SUFFIX = ".graphml";
@@ -100,11 +100,11 @@ public class DCRGeneratorAdapter extends GraphGenerator {
     private Graph dcrGraphToGraph(DCRGraph dcrGraph) throws IOException, ParserConfigurationException, SAXException {
         GraphJournal journal = dcrGraph.getGraphJournal();
 
-        File tempFile = graphFilesIsTemp ? File.createTempFile(PREFIX, SUFFIX) : new File(PREFIX + new Random().nextInt(1000) + SUFFIX);
+        File tempFile = graphFilesIsTemp ? File.createTempFile(PREFIX, SUFFIX) : new File(PREFIX + new Random().nextInt(10000) + SUFFIX);
         VisoneGraphMLWriter fileOutputStream = new VisoneGraphMLWriter();
         fileOutputStream.writeGraph(journal, new FileOutputStream(tempFile));
 
-        DCRGraphMLReager graphMLParser = new DCRGraphMLReager();
+        DCRGraphMLReader graphMLParser = new DCRGraphMLReader();
         return graphMLParser.importGraph(tempFile);
     }
 

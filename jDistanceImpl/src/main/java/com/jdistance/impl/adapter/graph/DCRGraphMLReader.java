@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-public class DCRGraphMLReager {
+public class DCRGraphMLReader {
     public Graph importGraph(File file) throws ParserConfigurationException, IOException, SAXException {
         LinkedList<NodeData> linkedList = new LinkedList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();

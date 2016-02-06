@@ -32,8 +32,7 @@ public class Node implements Comparable<Node>, Cloneable<Node> {
             return false;
         }
         Node that = (Node) o;
-        return label != null ? label.equals(that.label) : that.label == null &&
-                name != null ? name.equals(that.name) : that.name == null;
+        return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
