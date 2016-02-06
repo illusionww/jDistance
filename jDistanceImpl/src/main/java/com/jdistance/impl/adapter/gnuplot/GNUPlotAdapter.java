@@ -1,6 +1,7 @@
 package com.jdistance.impl.adapter.gnuplot;
 
 import com.panayotis.gnuplot.JavaPlot;
+import com.panayotis.gnuplot.dataset.Point;
 import com.panayotis.gnuplot.plot.DataSetPlot;
 import com.panayotis.gnuplot.style.NamedPlotColor;
 import com.panayotis.gnuplot.style.PlotColor;
@@ -14,7 +15,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 public class GNUPlotAdapter {
     public static final PlotColor[] colors = {
@@ -41,6 +42,16 @@ public class GNUPlotAdapter {
 
     public GNUPlotAdapter(String gnuplotPath) {
         this.gnuplotPath = gnuplotPath;
+    }
+
+    public static List<Point<Double>> mapToPoints(Map<Double, Double> results) {
+        List<Point<Double>> list = new ArrayList<>();
+        SortedSet<Double> keys = new TreeSet<>(results.keySet());
+        for (Double key : keys) {
+            Double value = results.get(key);
+            list.add(new Point<>(key, value));
+        }
+        return list;
     }
 
     public void drawData(String title, List<PlotDTO> data, String outputPath) {

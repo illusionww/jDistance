@@ -1,3 +1,6 @@
+# Windows
+*.db
+
 # Java
 *.class
 

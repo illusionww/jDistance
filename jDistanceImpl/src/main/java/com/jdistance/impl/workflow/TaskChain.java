@@ -1,6 +1,5 @@
 package com.jdistance.impl.workflow;
 
-import com.jdistance.impl.adapter.gnuplot.ArrayUtils;
 import com.jdistance.impl.adapter.gnuplot.GNUPlotAdapter;
 import com.jdistance.impl.adapter.gnuplot.PlotDTO;
 import com.jdistance.impl.workflow.context.ContextProvider;
@@ -86,7 +85,7 @@ public class TaskChain {
             Map<Double, Double> points = task.getResults();
 
             String plotTitle = metricWrapper.getName();
-            List<Point<Double>> plotPoints = ArrayUtils.mapToPoints(points);
+            List<Point<Double>> plotPoints = GNUPlotAdapter.mapToPoints(points);
             PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
             plots.add(new PlotDTO(plotTitle, color.next(), plotPointsSet));
         });

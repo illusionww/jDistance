@@ -3,7 +3,6 @@ package com.jdistance;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.ClusteredGraphGenerator;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
-import com.jdistance.helper.Constants;
 import com.jdistance.impl.ScenarioHelper;
 import com.jdistance.impl.workflow.TaskChain;
 import com.jdistance.impl.workflow.checker.Checker;

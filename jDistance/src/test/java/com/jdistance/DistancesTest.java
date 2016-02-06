@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.jdistance.helper.TestHelperLib.*;
+import static com.jdistance.TestHelperLib.*;
 import static org.junit.Assert.assertTrue;
 
 public class DistancesTest {

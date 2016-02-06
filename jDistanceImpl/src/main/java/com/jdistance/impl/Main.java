@@ -22,25 +22,23 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, TransformerConfigurationException {
-        compareGeneratorGraphs();
+        compareClusterers();
     }
 
     private static void compareClusterers() throws ParserConfigurationException, SAXException, IOException {
-        int graphCount = 10;
+        int graphCount = 5;
         int nodesCount = 250;
         int clustersCount = 5;
         double pIn = 0.30;
-        double pOut = 0.05;
-        int pointsCount = 100;
+        double pOut = 0.10;
+        int pointsCount = 70;
 
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
-        GraphBundle graphs = DCRGeneratorAdapter.getInstance().generate(properties);
+        GraphBundle graphs = ClusteredGraphGenerator.getInstance().generate(properties);
 
-        TaskChain chain = new TaskChain("Compare Clusterers FE, logComm 0.35 0.03");
+        TaskChain chain = new TaskChain("Compare Clusterers logComm 0.30 0.10");
         List<Task> tasks = new ArrayList<>();
-        tasks.add(new DefaultTask(new WardChecker(graphs, clustersCount), new MetricWrapper("Ward FE", Metric.FREE_ENERGY), pointsCount));
         tasks.add(new DefaultTask(new WardChecker(graphs, clustersCount), new MetricWrapper("Ward logComm", Metric.LOG_COMM_D), pointsCount));
-        tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphs, clustersCount), new MetricWrapper("Tree FE", Metric.FREE_ENERGY), pointsCount));
         tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphs, clustersCount), new MetricWrapper("Tree logComm", Metric.LOG_COMM_D), pointsCount));
         chain.addTasks(tasks).execute().draw();
     }
@@ -79,7 +77,7 @@ public class Main {
     }
 
     private static void compareGenerators() {
-        int graphCount = 30;
+        int graphCount = 10;
         int nodesCount = 250;
         int clustersCount = 5;
         double pIn = 0.3;
