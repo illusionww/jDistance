@@ -3,5 +3,6 @@
     <gnuplotPath>c:\cygwin64\bin\gnuplot.exe</gnuplotPath>
     <imgFolder>out\pictures</imgFolder>
 	<competitionFolder>out\tournament</competitionFolder>
+	<tempFolder>out\temp</tempFolder>
 	<parallel>true</parallel>
 </context>

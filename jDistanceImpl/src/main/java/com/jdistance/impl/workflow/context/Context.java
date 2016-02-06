@@ -8,6 +8,7 @@ public class Context {
     private String gnuplotPath;
     private String imgFolder;
     private String competitionFolder;
+    private String tempFolder;
     private Boolean parallel;
 
     public String getGnuplotPath() {
@@ -35,6 +36,15 @@ public class Context {
     @XmlElement
     public void setCompetitionFolder(String competitionFolder) {
         this.competitionFolder = competitionFolder;
+    }
+
+    public String getTempFolder() {
+        return tempFolder;
+    }
+
+    @XmlElement
+    public void setTempFolder(String tempFolder) {
+        this.tempFolder = tempFolder;
     }
 
     public Boolean getParallel() {

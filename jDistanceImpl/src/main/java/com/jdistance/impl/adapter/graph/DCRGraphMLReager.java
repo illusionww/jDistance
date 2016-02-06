@@ -1,4 +1,4 @@
-package com.jdistance.graph.parser;
+package com.jdistance.impl.adapter.graph;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
@@ -17,9 +17,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.stream.Collectors;
 
-public class GraphMLParser extends Parser {
-    @Override
-    public Graph parse(File file) throws ParserConfigurationException, IOException, SAXException {
+public class DCRGraphMLReager {
+    public Graph importGraph(File file) throws ParserConfigurationException, IOException, SAXException {
         LinkedList<NodeData> linkedList = new LinkedList<>();
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         dbf.setValidating(false);

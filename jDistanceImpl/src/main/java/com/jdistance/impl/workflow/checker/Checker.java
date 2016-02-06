@@ -47,7 +47,7 @@ public abstract class Checker implements Cloneable {
         List<CheckerTestResultDTO> results = new ArrayList<>();
         try {
             for (Graph graph : getGraphBundle().getGraphs()) {
-                ArrayList<Node> nodesData = graph.getNode();
+                ArrayList<Node> nodesData = graph.getNodes();
 
                 DenseMatrix A = graph.getSparseMatrix();
                 Double parameter = metricWrapper.getScale().calc(A, base);

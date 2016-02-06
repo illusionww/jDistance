@@ -40,7 +40,7 @@ public class MetricCompetitionTask extends CompetitionTask {
 
             for (int c = 0; c < D.cols; c++) {
                 for (int r = c + 1; r < D.rows; r++) {
-                    if (graph.getNode().get(c).getLabel().equals(graph.getNode().get(r).getLabel())) {
+                    if (graph.getNodes().get(c).getLabel().equals(graph.getNodes().get(r).getLabel())) {
                         same.add(D.get(c, r));
                     } else {
                         different.add(D.get(c, r));

@@ -34,7 +34,7 @@ public class MetricChecker extends Checker {
         double[][] class_match = new double[D.cols][D.rows]; // 1 если объекты в разных кластерах, 0 если в одном
         for (int c = 0; c < D.cols; c++) {
             for (int r = 0; r < D.rows; r++) {
-                class_match[c][r] = graph.getNode().get(c).getLabel().equals(graph.getNode().get(r).getLabel())
+                class_match[c][r] = graph.getNodes().get(c).getLabel().equals(graph.getNodes().get(r).getLabel())
                         ? 0d : 1d;
             }
         }

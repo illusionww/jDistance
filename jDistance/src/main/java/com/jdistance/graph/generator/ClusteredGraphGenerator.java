@@ -24,9 +24,9 @@ public class ClusteredGraphGenerator extends GraphGenerator {
         return instance;
     }
 
-    protected Graph generateGraph(GeneratorPropertiesDTO generatorPropertiesDTO) {
-        int[] sizeClusters = generatorPropertiesDTO.getSizeOfClusters();
-        double[][] probabilityMatrix = generatorPropertiesDTO.getProbabilityMatrix();
+    protected Graph generateGraph(GeneratorPropertiesDTO properties) {
+        int[] sizeClusters = properties.getSizeOfClusters();
+        double[][] probabilityMatrix = properties.getProbabilityMatrix();
         int numberOfVertices = 0;
         List<Integer> borderClusters = new LinkedList<>(IntStream.of(sizeClusters).boxed().collect(Collectors.toList()));
         for (int i = 0; i < sizeClusters.length; ++i) {

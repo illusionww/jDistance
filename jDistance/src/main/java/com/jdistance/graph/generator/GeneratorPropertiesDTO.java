@@ -17,7 +17,7 @@ public class GeneratorPropertiesDTO {
         this.clustersCount = clustersCount;
         this.p_in = p_in;
         this.p_out = p_out;
-        this.sizeOfClusters = IntStream.of(nodesCount / clustersCount).limit(clustersCount).toArray();
+        this.sizeOfClusters = IntStream.iterate(nodesCount / clustersCount, i -> i).limit(clustersCount).toArray();
         this.probabilityMatrix = new double[clustersCount][clustersCount];
         for (int i = 0; i < clustersCount; i++) {
             for (int j = 0; j < clustersCount; j++) {

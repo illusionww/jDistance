@@ -34,26 +34,16 @@
             <version>1.7.12</version>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
-        </dependency>
-        <dependency>
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
             <version>4.2.0</version>
         </dependency>
         <dependency>
-            <groupId>Jeigen-win-linux-32-64</groupId>
-            <artifactId>Jeigen-win-linux-32-64</artifactId>
-            <version>1.0</version>
+            <groupId>Jeigen-onefat</groupId>
+            <artifactId>Jeigen-onefat</artifactId>
+            <version>1.2</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/Jeigen-win-linux-32-64.jar</systemPath>
+            <systemPath>${project.basedir}/../lib/Jeigen-onefat.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>JavaPlot</groupId>
@@ -68,6 +58,18 @@
             <version>1.0</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/../lib/dcrgenerator.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

@@ -6,18 +6,18 @@ import java.util.ArrayList;
 
 public class Graph {
     private DenseMatrix sparseMatrix;
-    private ArrayList<Node> node;
+    private ArrayList<Node> nodes;
 
-    public Graph(double[][] sparseMatrix, ArrayList<Node> node) {
+    public Graph(double[][] sparseMatrix, ArrayList<Node> nodes) {
         this.sparseMatrix = new DenseMatrix(sparseMatrix);
-        this.node = node;
+        this.nodes = nodes;
     }
 
     public DenseMatrix getSparseMatrix() {
         return sparseMatrix;
     }
 
-    public ArrayList<Node> getNode() {
-        return node;
+    public ArrayList<Node> getNodes() {
+        return nodes;
     }
 }

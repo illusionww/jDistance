@@ -1,10 +1,9 @@
-package com.jdistance.impl.adapter.dcrgenerator;
+package com.jdistance.impl.adapter.graph;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
 import com.jdistance.graph.generator.GraphGenerator;
-import com.jdistance.graph.parser.GraphMLParser;
 import de.uka.algo.generator.accessory.StandaloneDCRArguments;
 import de.uka.algo.generator.standalone.generators.DCRGenerator;
 import de.uka.algo.generator.standalone.graph.DCRGraph;
@@ -25,9 +24,10 @@ public class DCRGeneratorAdapter extends GraphGenerator {
 
     private static final String[] keys = new String[]{"t_max", "n", "p_in", "p_out", "p_inList", "k", "beta", "D_s", "p_chi", "p_nu", "eta", "p_omega", "p_mu", "sigma", "theta", "enp", "graphml", "binary", "log", "outDir", "fileName"};
     private static final String[] defaultValues = new String[]{"100", "60", "0.2", "0.01", "", "2", "1.0", "", "0.5", "0.5", "1", "0.02", "0.5", "2.0", "0.25", "false", "false", "false", "false", "", ""};
+    private static final Boolean graphFilesIsTemp = false;
 
-    private static final String PREFIX = "dcr2graph";
-    private static final String SUFFIX = ".tmp";
+    private static final String PREFIX = "temp_dcr_graph";
+    private static final String SUFFIX = ".graphml";
     private static final int ATTEMPTS = 5;
     private static final double DEVIATION = 0.03;
 
@@ -100,32 +100,28 @@ public class DCRGeneratorAdapter extends GraphGenerator {
     private Graph dcrGraphToGraph(DCRGraph dcrGraph) throws IOException, ParserConfigurationException, SAXException {
         GraphJournal journal = dcrGraph.getGraphJournal();
 
-        File tempFile = File.createTempFile(PREFIX, SUFFIX);
+        File tempFile = graphFilesIsTemp ? File.createTempFile(PREFIX, SUFFIX) : new File(PREFIX + new Random().nextInt(1000) + SUFFIX);
         VisoneGraphMLWriter fileOutputStream = new VisoneGraphMLWriter();
         fileOutputStream.writeGraph(journal, new FileOutputStream(tempFile));
 
-        GraphMLParser graphMLParser = new GraphMLParser();
-        return graphMLParser.parse(tempFile);
+        DCRGraphMLReager graphMLParser = new DCRGraphMLReager();
+        return graphMLParser.importGraph(tempFile);
     }
 
     private boolean validate(Graph graph, int numOfNodes, int numOfClusters, double deviation) {
-        List<Node> data = graph.getNode();
-        boolean valid = true;
-
+        List<Node> data = graph.getNodes();
         // validate number of nodes
         if (data.size() < numOfNodes * (1 - deviation) || data.size() > numOfNodes * (1 + deviation)) {
             log.info("Validation failed: numOfNodes - expected: {} but {} found", numOfNodes, data.size());
-            valid = false;
+            return false;
         }
-
         // validate number of clusters
         Set<String> labels = new HashSet<>();
         data.forEach(item -> labels.add(item.getLabel()));
         if (labels.size() != numOfClusters) {
             log.info("Validation failed: numOfClusters - expected: {} but {} found", numOfClusters, labels.size());
-            valid = false;
+            return false;
         }
-
-        return valid;
+        return true;
     }
 }
