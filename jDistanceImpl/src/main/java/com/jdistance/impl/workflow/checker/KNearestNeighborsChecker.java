@@ -1,12 +1,13 @@
 package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.Node;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.graph.Node;
 import com.jdistance.learning.classifier.KNearestNeighbors;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class KNearestNeighborsChecker extends Checker {
     private GraphBundle graphs;
@@ -49,7 +50,7 @@ public class KNearestNeighborsChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
         Integer countErrors = 0;
 
         final KNearestNeighbors classifier = new KNearestNeighbors(D, node);

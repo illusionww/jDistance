@@ -6,6 +6,7 @@ import com.jdistance.graph.GraphBundle;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiffusionChecker extends Checker {
     private GraphBundle graphs;
@@ -27,7 +28,7 @@ public class DiffusionChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
         double count = 0;
         double error = 0;
         for (int i = 0; i < D.cols; ++i) {

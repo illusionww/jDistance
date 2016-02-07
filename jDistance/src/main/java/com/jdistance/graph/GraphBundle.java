@@ -17,9 +17,10 @@ public class GraphBundle implements Cloneable<GraphBundle> {
     }
 
     public String getName() {
-        return "Graphs: sizes=" + Arrays.toString(properties.getSizeOfClusters()) +
-                ", probabilities=" + Arrays.deepToString(properties.getProbabilityMatrix()) +
-                ", numOfClusters =  " + properties.getSizeOfClusters().length +
+        return "Graphs: " +
+//                "sizes=" + Arrays.toString(properties.getSizeOfClusters()) +
+//                ", probabilities=" + Arrays.deepToString(properties.getProbabilityMatrix()) +
+                ", numOfClusters=" + properties.getSizeOfClusters().length +
                 ", count=" + getCount();
     }
 

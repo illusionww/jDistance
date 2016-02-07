@@ -35,6 +35,20 @@ public class TaskChain {
         this.tasks = new ArrayList<>(tasks);
     }
 
+    public static String buildPNGFullNameByImgTitle(String imgTitle) {
+        return ContextProvider.getInstance().getContext().getImgFolder() +
+                File.separator +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "") +
+                ".png";
+    }
+
+    public static String buildTXTFullNameByImgTitle(String imgTitle) {
+        return ContextProvider.getInstance().getContext().getImgFolder() +
+                File.separator +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "") +
+                ".txt";
+    }
+
     public String getName() {
         return name;
     }
@@ -72,8 +86,8 @@ public class TaskChain {
     }
 
     public TaskChain draw() {
-        write(name);
-        return draw(name);
+        draw(name);
+        return this;
     }
 
     public TaskChain draw(String imgTitle) {
@@ -91,14 +105,18 @@ public class TaskChain {
         });
 
         GNUPlotAdapter ga = new GNUPlotAdapter(ContextProvider.getInstance().getContext().getGnuplotPath());
-        ga.drawData(imgTitle, plots, ContextProvider.getInstance().getContext().getImgFolder() + File.separator + imgTitle.replaceAll("[^\\w\\- ]+", "") + ".png");
+        ga.drawData(imgTitle, plots, buildPNGFullNameByImgTitle(imgTitle));
 
         return this;
     }
 
+    public TaskChain write() {
+        write(name);
+        return this;
+    }
+
     public TaskChain write(String filename) {
-        String path = ContextProvider.getInstance().getContext().getImgFolder() + File.separator + filename + ".txt";
-        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(path))) {
+        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(buildTXTFullNameByImgTitle(filename)))) {
             for (Task task : tasks) {
                 MetricWrapper metricWrapper = task.getMetricWrapper();
                 outputWriter.write(metricWrapper.getName() + "\t");

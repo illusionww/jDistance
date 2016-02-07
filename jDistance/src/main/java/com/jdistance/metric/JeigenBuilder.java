@@ -62,6 +62,10 @@ public class JeigenBuilder {
         return dm.div(avg);
     }
 
+    public static DenseMatrix sqrtD(DenseMatrix D) {
+        return D.sqrt();
+    }
+
     public DenseMatrix getL(DenseMatrix A) {
         return diag(A.sumOverRows().t()).sub(A);
     }
@@ -168,14 +172,29 @@ public class JeigenBuilder {
         // S = (Z(C ◦ W)Z)÷Z; ÷ is element-wise /
         DenseMatrix S = Z.mmul(C.mul(W)).mmul(Z).div(Z);
         // C_ = S - e(d_S)^T; d_S = diag(S)
-        DenseMatrix C_ =  S.sub(e.mmul(diagToVector(S).t()));
+        DenseMatrix C_ = S.sub(e.mmul(diagToVector(S).t()));
         // Δ_RSP = (C_ + C_^T)/2
         DenseMatrix Δ_RSP = C_.add(C_.t()).div(2);
 
         return Δ_RSP.sub(diag(diagToVector(Δ_RSP)));
     }
 
-    public DenseMatrix sqrtD(DenseMatrix D) {
-        return D.sqrt();
+    // K_CCT = K_CT + HD^{-1}AD^{-1}H
+    public DenseMatrix getH_SCCT(DenseMatrix A) {
+        int d = A.cols;
+
+        // K_CT = H_resistance
+        DenseMatrix L = getL(A);
+        DenseMatrix K_CT = getHResistance(L);
+
+        // H = (I - ee^T/n)
+        DenseMatrix I = eye(d);
+        DenseMatrix H = I.sub(ones(d, d).mul(1.0 / d));
+
+        // D = L + A
+        DenseMatrix D = diag(A.sumOverRows().t());
+        DenseMatrix pinvD = pinv(D);
+
+        return K_CT.add(H.mmul(pinvD).mmul(A).mmul(pinvD).mmul(H));
     }
 }

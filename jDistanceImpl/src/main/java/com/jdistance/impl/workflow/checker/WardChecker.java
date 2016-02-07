@@ -2,13 +2,13 @@ package com.jdistance.impl.workflow.checker;
 
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.Node;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.graph.Node;
 import com.jdistance.learning.clusterer.Ward;
 import jeigen.DenseMatrix;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class WardChecker extends Checker {
     private GraphBundle graphs;
@@ -31,7 +31,7 @@ public class WardChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
         Integer countErrors = 0;
 
         final Ward clusterer = new Ward(D);

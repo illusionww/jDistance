@@ -3,10 +3,7 @@ package com.jdistance.impl.adapter.gnuplot;
 import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.dataset.Point;
 import com.panayotis.gnuplot.plot.DataSetPlot;
-import com.panayotis.gnuplot.style.NamedPlotColor;
-import com.panayotis.gnuplot.style.PlotColor;
-import com.panayotis.gnuplot.style.PlotStyle;
-import com.panayotis.gnuplot.style.Style;
+import com.panayotis.gnuplot.style.*;
 import com.panayotis.gnuplot.terminal.ImageTerminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +53,7 @@ public class GNUPlotAdapter {
 
     public void drawData(String title, List<PlotDTO> data, String outputPath) {
         ImageTerminal png = new ImageTerminal();
-        png.set("size", "1280,768");
+        png.set("size", "1440,900");
         File file = new File(outputPath);
         try {
             file.createNewFile();
@@ -82,6 +79,8 @@ public class GNUPlotAdapter {
         }
 
         gnuplot.setTitle(title);
+        gnuplot.setKey(JavaPlot.Key.OUTSIDE);
+        gnuplot.set("yrange", "[0.2 : 1.0]");
         gnuplot.plot();
 
         try {

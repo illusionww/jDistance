@@ -21,7 +21,6 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertTrue;
 
@@ -77,9 +76,8 @@ public class ProcessingTest {
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(2, 200, 5, 0.3, 0.1);
         GraphBundle bundle = ClusteredGraphGenerator.getInstance().generate(properties);
         Checker checker = new KNearestNeighborsChecker(bundle, 4, 0.3);
-        TaskChain chain = ScenarioHelper.defaultTasks(checker, Metric.getAll().stream().map(MetricWrapper::new).collect(Collectors.toList()), 10);
-        List<Task> result = chain.execute().getTasks();
-        result.forEach(i -> {
+        List<Task> tasks = ScenarioHelper.defaultTasks(checker, Metric.getDefaultDistances(), 10);
+        tasks.forEach(i -> {
             Map.Entry<Double, Double> bestResult = i.getBestResult();
             assertTrue("For " + i.getName() + " lambda = " + bestResult.getKey() + " best result - NaN", !bestResult.getValue().isNaN());
         });

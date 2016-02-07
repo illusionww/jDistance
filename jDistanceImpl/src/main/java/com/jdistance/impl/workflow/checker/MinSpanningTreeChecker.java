@@ -1,14 +1,14 @@
 package com.jdistance.impl.workflow.checker;
 
 
-import com.jdistance.learning.clusterer.MinSpanningTree;
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.Node;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.graph.Node;
+import com.jdistance.learning.clusterer.MinSpanningTree;
 import jeigen.DenseMatrix;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MinSpanningTreeChecker extends Checker {
     private GraphBundle graphs;
@@ -30,7 +30,7 @@ public class MinSpanningTreeChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
         Integer countErrors = 0;
 
         final MinSpanningTree clusterer = new MinSpanningTree(D);

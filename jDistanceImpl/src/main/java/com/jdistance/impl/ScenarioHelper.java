@@ -14,14 +14,12 @@ import java.util.List;
 public class ScenarioHelper {
     private static final Logger log = LoggerFactory.getLogger(ScenarioHelper.class);
 
-    public static TaskChain defaultTasks(Checker checker, List<MetricWrapper> metricWrappers, Integer pointsCount) {
-        String name = checker.getName() + ", pointsCount=" + pointsCount;
-        TaskChain chain = new TaskChain(name);
+    public static List<Task> defaultTasks(Checker checker, List<MetricWrapper> metricWrappers, Integer pointsCount) {
         List<Task> tasks = new ArrayList<>();
         metricWrappers.forEach(metricWrapper -> {
             Checker checkerClone = checker.clone();
             tasks.add(new DefaultTask(checkerClone, metricWrapper, pointsCount));
         });
-        return chain.addTasks(tasks);
+        return tasks;
     }
 }

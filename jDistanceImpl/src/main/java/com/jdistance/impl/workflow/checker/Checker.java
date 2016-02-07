@@ -47,7 +47,7 @@ public abstract class Checker implements Cloneable {
         List<CheckerTestResultDTO> results = new ArrayList<>();
         try {
             for (Graph graph : getGraphBundle().getGraphs()) {
-                ArrayList<Node> nodesData = graph.getNodes();
+                List<Node> nodesData = graph.getNodes();
 
                 DenseMatrix A = graph.getSparseMatrix();
                 Double parameter = metricWrapper.getScale().calc(A, base);
@@ -66,7 +66,7 @@ public abstract class Checker implements Cloneable {
         return rate;
     }
 
-    protected abstract CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node);
+    protected abstract CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node);
 
     protected Double rate(List<CheckerTestResultDTO> results) {
         Double sum = 0.0;

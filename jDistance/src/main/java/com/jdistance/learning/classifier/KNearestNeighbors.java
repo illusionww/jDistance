@@ -12,7 +12,7 @@ public class KNearestNeighbors {
     private int countColoredNodes;
 
 
-    public KNearestNeighbors(DenseMatrix matrixWithWeights, ArrayList<Node> realData) {
+    public KNearestNeighbors(DenseMatrix matrixWithWeights, List<Node> realData) {
         this.matrixWithWeights = MatrixUtils.toArray2(matrixWithWeights);
         this.realData = new ArrayList<>(realData);
         countColoredNodes = 0;

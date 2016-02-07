@@ -1,13 +1,16 @@
 package com.jdistance.impl;
 
+import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.ClusteredGraphGenerator;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
+import com.jdistance.impl.adapter.graph.CSVReader;
 import com.jdistance.impl.adapter.graph.DCRGeneratorAdapter;
 import com.jdistance.impl.adapter.graph.GraphMLWriter;
 import com.jdistance.impl.workflow.TaskChain;
 import com.jdistance.impl.workflow.checker.MinSpanningTreeChecker;
 import com.jdistance.impl.workflow.checker.WardChecker;
+import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.Metric;
@@ -26,21 +29,63 @@ public class Main {
     }
 
     private static void compareClusterers() throws ParserConfigurationException, SAXException, IOException {
-        int graphCount = 5;
-        int nodesCount = 250;
+        int graphCount = 10;
+        int nodesCount = 200;
         int clustersCount = 5;
         double pIn = 0.30;
-        double pOut = 0.10;
-        int pointsCount = 70;
+        double pOut = 0.04;
+        int pointsCount = 100;
 
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
-        GraphBundle graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        GraphBundle graphs;
 
-        TaskChain chain = new TaskChain("Compare Clusterers logComm 0.30 0.10");
-        List<Task> tasks = new ArrayList<>();
-        tasks.add(new DefaultTask(new WardChecker(graphs, clustersCount), new MetricWrapper("Ward logComm", Metric.LOG_COMM_D), pointsCount));
-        tasks.add(new DefaultTask(new MinSpanningTreeChecker(graphs, clustersCount), new MetricWrapper("Tree logComm", Metric.LOG_COMM_D), pointsCount));
-        chain.addTasks(tasks).execute().draw();
+        properties.setP_out(0.03);
+        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        new TaskChain("MinSpanningTree: 200 nodes, 5 clusters, 10 graphs, pIn=0.3, pOut=0.03")
+                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        properties.setP_out(0.04);
+        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        new TaskChain("MinSpanningTree: 200 nodes, 5 clusters, 10 graphs, pIn=0.3, pOut=0.04")
+                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        properties.setP_out(0.05);
+        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        new TaskChain("MinSpanningTree: 200 nodes, 5 clusters, 10 graphs, pIn=0.3, pOut=0.05")
+                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        properties.setP_out(0.1);
+        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        new TaskChain("MinSpanningTree: 200 nodes, 5 clusters, 10 graphs, pIn=0.3, pOut=0.1")
+                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        properties.setP_out(0.03);
+        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        new TaskChain("Ward: 200 nodes, 5 clusters, 10 graphs, pIn=0.3, pOut=0.03")
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        properties.setP_out(0.04);
+        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        new TaskChain("Ward: 200 nodes, 5 clusters, 10 graphs, pIn=0.3, pOut=0.04")
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        properties.setP_out(0.05);
+        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        new TaskChain("Ward: 200 nodes, 5 clusters, 10 graphs, pIn=0.3, pOut=0.05")
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        properties.setP_out(0.1);
+        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        new TaskChain("Ward: 200 nodes, 5 clusters, 10 graphs, pIn=0.3, pOut=0.1")
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
     }
 
     private static void drawGraphsScenarioOld() throws ParserConfigurationException, SAXException, IOException {
@@ -53,7 +98,10 @@ public class Main {
 
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
         GraphBundle graphs = DCRGeneratorAdapter.getInstance().generate(properties);
-        ScenarioHelper.defaultTasks(new WardChecker(graphs, clustersCount), Metric.getDefaultDistances(), pointsCount).execute().draw();
+        TaskChain chain = new TaskChain("");
+        chain.addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, clustersCount), Metric.getDefaultDistances(), pointsCount))
+                .execute()
+                .draw();
     }
 
     private static void drawGraphsScenarioNew() {
@@ -109,6 +157,27 @@ public class Main {
         GraphMLWriter writer = new GraphMLWriter();
         writer.writeGraph(graphsOldGen.getGraphs().get(0), "old.graphml");
         writer.writeGraph(graphsNewGen.getGraphs().get(0), "new.graphml");
+    }
+
+    private static void drawCSVGraphsPoliticalBooks() throws IOException, SAXException, ParserConfigurationException, TransformerConfigurationException {
+        int pointsCount = 150;
+
+        Graph graph = new CSVReader().importGraph("data/polbooks_nodes.csv", "data/polbooks_edges.csv");
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(1, 105, 3, 0, 0);
+        GraphBundle graphs = new GraphBundle(new ArrayList<Graph>() {{
+            add(graph);
+        }}, properties);
+
+        new TaskChain("Political books: 105 nodes, 3 clusters, Ward")
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, 3), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        new TaskChain("Political books: 105 nodes, 3 clusters, MinSpanningTree")
+                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 3), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw();
+
+        GraphMLWriter writer = new GraphMLWriter();
+        writer.writeGraph(graphs.getGraphs().get(0), ContextProvider.getInstance().getContext().getImgFolder() + "/polbooks.graphml");
     }
 }
 

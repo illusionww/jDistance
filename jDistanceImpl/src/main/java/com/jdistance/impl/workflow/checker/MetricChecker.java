@@ -1,12 +1,12 @@
 package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.Node;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.graph.Node;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class MetricChecker extends Checker {
     private GraphBundle graphs;
@@ -28,7 +28,7 @@ public class MetricChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
         double[] vector1 = StandardizeHelper.standardize(D).getValues(); //вытягиваем матрицу в вектор
 
         double[][] class_match = new double[D.cols][D.rows]; // 1 если объекты в разных кластерах, 0 если в одном

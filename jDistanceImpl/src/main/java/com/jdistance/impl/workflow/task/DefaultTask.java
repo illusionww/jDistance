@@ -35,7 +35,8 @@ public class DefaultTask extends Task {
 
     @Override
     public Task execute() {
-        Map<Double, Double> distanceResult = checker.seriesOfTests(metricWrapper, 0.00001, 0.99999, pointsCount);
+        double bordersOffset = metricWrapper.getMetric().getBordersOffset();
+        Map<Double, Double> distanceResult = checker.seriesOfTests(metricWrapper, 0.0 + bordersOffset, 1.0 - bordersOffset, pointsCount);
         result = removeNaN(distanceResult);
         return this;
     }

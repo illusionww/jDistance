@@ -1,14 +1,17 @@
 package com.jdistance.impl.workflow.checker;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.Node;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.graph.Node;
 import com.jdistance.metric.Metric;
-import com.jdistance.utils.NodesDistanceDTO;
 import com.jdistance.utils.MatrixUtils;
+import com.jdistance.utils.NodesDistanceDTO;
 import jeigen.DenseMatrix;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class DeviationChecker extends Checker {
     private GraphBundle graphs;
@@ -36,7 +39,7 @@ public class DeviationChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, ArrayList<Node> node) {
+    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
         NodesDistanceDTO nodesDistanceSP = bestBySP.get(graph);
         double[][] arrD = MatrixUtils.toArray2(D);
         Double nodesDistance = arrD[nodesDistanceSP.getFirstNodeIdx()][nodesDistanceSP.getSecondNodeIdx()];
