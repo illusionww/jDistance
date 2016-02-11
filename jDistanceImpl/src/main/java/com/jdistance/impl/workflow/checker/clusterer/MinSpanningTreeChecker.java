@@ -1,9 +1,11 @@
-package com.jdistance.impl.workflow.checker;
+package com.jdistance.impl.workflow.checker.clusterer;
 
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
+import com.jdistance.impl.workflow.checker.Checker;
+import com.jdistance.impl.workflow.checker.CheckerTestResultDTO;
 import com.jdistance.learning.clusterer.MinSpanningTree;
 import jeigen.DenseMatrix;
 

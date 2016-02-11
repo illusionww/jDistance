@@ -2,19 +2,12 @@ package com.jdistance.impl.workflow.task;
 
 import com.jdistance.impl.workflow.checker.Checker;
 import com.jdistance.metric.MetricWrapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class DefaultTask extends Task {
-    private static final Logger log = LoggerFactory.getLogger(DefaultTask.class);
-
-    private MetricWrapper metricWrapper;
-    private Checker checker;
     private Integer pointsCount;
-    private Map<Double, Double> result;
 
     public DefaultTask(Checker checker, MetricWrapper metricWrapper, Integer pointsCount) {
         this.metricWrapper = metricWrapper;
@@ -42,7 +35,7 @@ public class DefaultTask extends Task {
     }
 
     @Override
-    public Map<Double, Double> getResults() {
+    public Map<Double, Double> getResult() {
         return result;
     }
 

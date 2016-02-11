@@ -1,13 +1,22 @@
-package com.jdistance.impl.workflow.checker;
+package com.jdistance.impl.workflow.checker.nolearning;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
+import com.jdistance.impl.workflow.checker.Checker;
+import com.jdistance.impl.workflow.checker.CheckerTestResultDTO;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
 
 import java.util.List;
 
+/**
+ *  Берем вектор всех расстояний (с оптим. параметром семейства) - результат вытягивания матрицы в вектор.
+ *  Стандартизуем его, вычтя среднее компонент и поделив на ср.-кв. отклонение.
+ *  Для сравнения берем вектор с компонентой, равной 0, когда пара вершин входит в один кластер и 1, если в разные.
+ *  В качестве грубоватого показателя связи берем корреляцию этого вектора и вектора расстояний.
+ *  (Для него и стандартизация не нужна - он инвариантен к линейным преобразованиям).
+ */
 public class MetricChecker extends Checker {
     private GraphBundle graphs;
     private Integer k;

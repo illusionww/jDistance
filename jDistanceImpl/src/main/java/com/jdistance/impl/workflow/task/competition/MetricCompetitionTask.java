@@ -3,7 +3,7 @@ package com.jdistance.impl.workflow.task.competition;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.MetricChecker;
+import com.jdistance.impl.workflow.checker.nolearning.MetricChecker;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
 

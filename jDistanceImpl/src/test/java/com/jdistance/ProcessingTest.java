@@ -6,8 +6,8 @@ import com.jdistance.graph.generator.GeneratorPropertiesDTO;
 import com.jdistance.impl.ScenarioHelper;
 import com.jdistance.impl.workflow.TaskChain;
 import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.KNearestNeighborsChecker;
-import com.jdistance.impl.workflow.checker.MinSpanningTreeChecker;
+import com.jdistance.impl.workflow.checker.classifier.KNearestNeighborsChecker;
+import com.jdistance.impl.workflow.checker.clusterer.MinSpanningTreeChecker;
 import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.MetricTask;
@@ -78,7 +78,7 @@ public class ProcessingTest {
         Checker checker = new KNearestNeighborsChecker(bundle, 4, 0.3);
         List<Task> tasks = ScenarioHelper.defaultTasks(checker, Metric.getDefaultDistances(), 10);
         tasks.forEach(i -> {
-            Map.Entry<Double, Double> bestResult = i.getBestResult();
+            Map.Entry<Double, Double> bestResult = i.getMaxResult();
             assertTrue("For " + i.getName() + " lambda = " + bestResult.getKey() + " best result - NaN", !bestResult.getValue().isNaN());
         });
     }

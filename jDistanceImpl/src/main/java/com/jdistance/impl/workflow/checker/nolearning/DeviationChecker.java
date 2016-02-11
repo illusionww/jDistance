@@ -1,8 +1,10 @@
-package com.jdistance.impl.workflow.checker;
+package com.jdistance.impl.workflow.checker.nolearning;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
+import com.jdistance.impl.workflow.checker.Checker;
+import com.jdistance.impl.workflow.checker.CheckerTestResultDTO;
 import com.jdistance.metric.Metric;
 import com.jdistance.utils.MatrixUtils;
 import com.jdistance.utils.NodesDistanceDTO;
@@ -16,7 +18,6 @@ import java.util.Map;
 public class DeviationChecker extends Checker {
     private GraphBundle graphs;
     private Map<Graph, NodesDistanceDTO> bestBySP;
-
 
     public DeviationChecker(GraphBundle graphs) {
         this.graphs = graphs;

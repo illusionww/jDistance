@@ -2,7 +2,7 @@ package com.jdistance.impl.workflow.task.competition;
 
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.KNearestNeighborsChecker;
+import com.jdistance.impl.workflow.checker.classifier.KNearestNeighborsChecker;
 
 import java.util.List;
 

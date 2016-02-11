@@ -40,55 +40,27 @@ public class GeneratorPropertiesDTO {
         return graphsCount;
     }
 
-    public void setGraphsCount(int graphsCount) {
-        this.graphsCount = graphsCount;
-    }
-
     public int getNodesCount() {
         return nodesCount;
-    }
-
-    public void setNodesCount(int nodesCount) {
-        this.nodesCount = nodesCount;
     }
 
     public int getClustersCount() {
         return clustersCount;
     }
 
-    public void setClustersCount(int clustersCount) {
-        this.clustersCount = clustersCount;
-    }
-
     public double getP_in() {
         return p_in;
-    }
-
-    public void setP_in(double p_in) {
-        this.p_in = p_in;
     }
 
     public double getP_out() {
         return p_out;
     }
 
-    public void setP_out(double p_out) {
-        this.p_out = p_out;
-    }
-
     public int[] getSizeOfClusters() {
         return sizeOfClusters;
     }
 
-    public void setSizeOfClusters(int[] sizeOfClusters) {
-        this.sizeOfClusters = sizeOfClusters;
-    }
-
     public double[][] getProbabilityMatrix() {
         return probabilityMatrix;
-    }
-
-    public void setProbabilityMatrix(double[][] probabilityMatrix) {
-        this.probabilityMatrix = probabilityMatrix;
     }
 }

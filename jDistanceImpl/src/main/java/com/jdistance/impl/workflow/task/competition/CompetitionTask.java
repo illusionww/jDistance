@@ -52,7 +52,7 @@ public abstract class CompetitionTask {
             log.info("{}...", dto.metricWrapper.getName());
             Checker checker = getChecker(forLearning, dto);
             Task task = new DefaultTask(checker, dto.metricWrapper, pointsCount);
-            dto.pLearn = task.execute().getBestResult();
+            dto.pLearn = task.execute().getMaxResult();
         });
     }
 

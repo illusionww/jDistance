@@ -36,21 +36,21 @@ public enum Metric {
             return jb.getD(H);
         }
     },
-    COMM("Comm", Scale.FRACTION_REVERSED, 0.0001) {
+    COMM("Comm", Scale.FRACTION_REVERSED, 0.0) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = jb.getH0Communicability(A, t);
             DenseMatrix D = jb.getD(H);
             return jb.sqrtD(D);
         }
     },
-    COMM_D("Comm", Scale.FRACTION_REVERSED, 0.0001) {
+    COMM_D("Comm", Scale.FRACTION_REVERSED, 0.0) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = jb.getH0DummyCommunicability(A, t);
             DenseMatrix D = jb.getD(H);
             return jb.sqrtD(D);
         }
     },
-    LOG_COMM("logComm", Scale.FRACTION_REVERSED, 0.0001) {
+    LOG_COMM("logComm", Scale.FRACTION_REVERSED, 0.0) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H0 = jb.getH0Communicability(A, t);
             DenseMatrix H = jb.H0toH(H0);
@@ -58,7 +58,7 @@ public enum Metric {
             return jb.sqrtD(D);
         }
     },
-    LOG_COMM_D("logComm", Scale.FRACTION_REVERSED, 0.0001) {
+    LOG_COMM_D("logComm", Scale.FRACTION_REVERSED, 0.0) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H0 = jb.getH0DummyCommunicability(A, t);
             DenseMatrix H = jb.H0toH(H0);
@@ -80,12 +80,12 @@ public enum Metric {
             return Ds.mul(1 - lambda).add(Dr.mul(lambda * norm));
         }
     },
-    FREE_ENERGY("FE", Scale.FRACTION_BETA, 0.0001) {
+    FREE_ENERGY("FE", Scale.FRACTION_BETA, 0.0) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return jb.getDFreeEnergy(A, beta);
         }
     },
-    RSP("RSP", Scale.FRACTION_BETA, 0.0001) {
+    RSP("RSP", Scale.FRACTION_BETA, 0.0) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return jb.getD_RSP(A, beta);
         }

@@ -96,7 +96,7 @@ public class TaskChain {
         List<PlotDTO> plots = new ArrayList<>();
         tasks.forEach(task -> {
             MetricWrapper metricWrapper = task.getMetricWrapper();
-            Map<Double, Double> points = task.getResults();
+            Map<Double, Double> points = task.getResult();
 
             String plotTitle = metricWrapper.getName();
             List<Point<Double>> plotPoints = GNUPlotAdapter.mapToPoints(points);
@@ -117,20 +117,43 @@ public class TaskChain {
 
     public TaskChain write(String filename) {
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(buildTXTFullNameByImgTitle(filename)))) {
+            outputWriter.write("\t");
             for (Task task : tasks) {
                 MetricWrapper metricWrapper = task.getMetricWrapper();
                 outputWriter.write(metricWrapper.getName() + "\t");
             }
             outputWriter.newLine();
-            Set<Double> points = new TreeMap<>(tasks.get(0).getResults()).keySet();
+            Set<Double> points = new TreeMap<>(tasks.get(0).getResult()).keySet();
             for (Double key : points) {
                 outputWriter.write(key + "\t");
                 for (Task task : tasks) {
-                    outputWriter.write(task.getResults().get(key) + "\t");
+                    outputWriter.write(task.getResult().get(key) + "\t");
                 }
                 outputWriter.newLine();
             }
+            outputWriter.write("MIN_param\t");
+            for (Task task : tasks) {
+                outputWriter.write(task.getMinResult().getKey() + "\t");
+            }
+            outputWriter.newLine();
 
+            outputWriter.write("MIN_value\t");
+            for (Task task : tasks) {
+                outputWriter.write(task.getMinResult().getValue() + "\t");
+            }
+            outputWriter.newLine();
+
+            outputWriter.write("MAX_param\t");
+            for (Task task : tasks) {
+                outputWriter.write(task.getMaxResult().getKey() + "\t");
+            }
+            outputWriter.newLine();
+
+            outputWriter.write("MAX_value\t");
+            for (Task task : tasks) {
+                outputWriter.write(task.getMaxResult().getValue() + "\t");
+            }
+            outputWriter.newLine();
         } catch (IOException e) {
             System.err.println("IOException while write results");
         }
@@ -139,6 +162,6 @@ public class TaskChain {
     }
 
     public Map<Task, Map<Double, Double>> getData() {
-        return tasks.stream().collect(Collectors.toMap(task -> task, Task::getResults));
+        return tasks.stream().collect(Collectors.toMap(task -> task, Task::getResult));
     }
 }
