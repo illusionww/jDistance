@@ -38,25 +38,40 @@ public class DiffusionChecker extends Checker {
 
     @Override
     protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
-        double count = 0;
-        double error = 0;
-        for (int i = 0; i < D.cols; ++i) {
-            for (int j = i + 1; j < D.rows; ++j) {
-                if (node.get(i).getLabel().equals(node.get(j).getLabel())) {
-                    for (int p = 0; p < D.cols; ++p) {
-                        for (int q = p + 1; q < D.rows; ++q) {
-                            if (!node.get(p).getLabel().equals(node.get(q).getLabel())) {
-                                count++;
-                                if (D.get(i, j) > D.get(p, q)) {
-                                    error++;
-                                }
-                            }
+        int n = D.rows;
+        long count = n * (n * (n * (n - 6) + 11) - 6) / 8;
+        long error = 0;
+        for (int i = 0; i < n; i++) {
+            Node nodeI = node.get(i);
+            for (int j = i + 1; j < n; j++) {
+                Node nodeJ = node.get(j);
+                for (int p = j + 1; p < n; p++) {
+                    Node nodeP = node.get(p);
+                    for (int q = p + 1; q < n; q++) {
+                        Node nodeQ = node.get(q);
+                        if (trueIfError(D, i, j, p, q, nodeI, nodeJ, nodeP, nodeQ)) {
+                            error++;
+                        }
+                        if (trueIfError(D, i, p, j, q, nodeI, nodeP, nodeJ, nodeQ)) {
+                            error++;
+                        }
+                        if (trueIfError(D, i, q, p, j, nodeI, nodeQ, nodeP, nodeJ)) {
+                            error++;
                         }
                     }
                 }
             }
         }
-        return new CheckerTestResultDTO(count, error);
+        return new CheckerTestResultDTO((double) count, (double) error);
+    }
+
+    private boolean trueIfError(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
+        if (nodeA1.getLabel().equals(nodeA2.getLabel()) && !nodeB1.getLabel().equals(nodeB2.getLabel())) {
+            return D.get(b1, b2) < D.get(a1, a2);
+        } else if (!nodeA1.getLabel().equals(nodeA2.getLabel()) && nodeB1.getLabel().equals(nodeB2.getLabel())) {
+            return D.get(a1, a2) < D.get(b1, b2);
+        }
+        return false;
     }
 
     @Override

@@ -38,14 +38,14 @@ public class TaskChain {
     public static String buildPNGFullNameByImgTitle(String imgTitle) {
         return ContextProvider.getInstance().getContext().getImgFolder() +
                 File.separator +
-                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "") +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") +
                 ".png";
     }
 
     public static String buildTXTFullNameByImgTitle(String imgTitle) {
         return ContextProvider.getInstance().getContext().getImgFolder() +
                 File.separator +
-                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "") +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") +
                 ".txt";
     }
 
@@ -123,7 +123,8 @@ public class TaskChain {
                 outputWriter.write(metricWrapper.getName() + "\t");
             }
             outputWriter.newLine();
-            Set<Double> points = new TreeMap<>(tasks.get(0).getResult()).keySet();
+            Set<Double> points = new TreeSet<>();
+            tasks.forEach(task -> points.addAll(task.getResult().keySet()));
             for (Double key : points) {
                 outputWriter.write(key + "\t");
                 for (Task task : tasks) {

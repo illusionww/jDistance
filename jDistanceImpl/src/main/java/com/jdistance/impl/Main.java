@@ -26,36 +26,29 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, TransformerConfigurationException {
-        drawDiffusionGraph();
+        drawCSVGraphsPoliticalBooks();
+        drawCSVGraphsFootball();
     }
 
     private static void compareClusterers() throws ParserConfigurationException, SAXException, IOException {
-        int graphCount = 3;
+        int graphCount = 10;
         int nodesCount = 200;
         int clustersCount = 5;
         double pIn = 0.30;
+        double pOut = 0.05;
         int pointsCount = 100;
 
-        GeneratorPropertiesDTO properties;
-        GraphBundle graphs;
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
+        GraphBundle graphs1 = ClusteredGraphGenerator.getInstance().generate(properties);
+        GraphBundle graphs2 = graphs1.clone();
 
-        properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, 0.03);
-        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
-        new TaskChain("MinSpanningTree: 200 nodes, 5 clusters, 10 graphs, pIn=0.30, pOut=0.03")
-                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
-                .execute().draw();
+//        new TaskChain("MinSpanningTree: 200 nodes, 5 clusters, 10 graphs, pIn=0.30, pOut=0.05")
+//                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs1, clustersCount), Metric.getDefaultDistances(), pointsCount))
+//                .execute().draw().write();
 
-        properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, 0.05);
-        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
-        new TaskChain("MinSpanningTree: 200 nodes, 5 clusters, 10 graphs, pIn=0.30, pOut=0.05")
-                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
-                .execute().draw();
-
-        properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, 0.1);
-        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
-        new TaskChain("MinSpanningTree: 200 nodes, 5 clusters, 10 graphs, pIn=0.30, pOut=0.10")
-                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 5), Metric.getDefaultDistances(), pointsCount))
-                .execute().draw();
+        new TaskChain("Ward: 200 nodes, 5 clusters, 10 graphs, pIn=0.30, pOut=0.05")
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs2, clustersCount), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
     }
 
     private static void drawGraphsScenarioOld() throws ParserConfigurationException, SAXException, IOException {
@@ -129,7 +122,32 @@ public class Main {
     }
 
     private static void drawCSVGraphsPoliticalBooks() throws IOException, SAXException, ParserConfigurationException, TransformerConfigurationException {
-        int pointsCount = 150;
+        int pointsCount = 200;
+
+        Graph graph = new CSVReader().importGraph("data/polbooks_nodes.csv", "data/polbooks_edges.csv");
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(1, 105, 3, 0, 0);
+        GraphBundle graphs = new GraphBundle(new ArrayList<Graph>() {{
+            add(graph);
+        }}, properties);
+
+//        new TaskChain("Polbooks: 105 nodes, 3 clusters, Ward")
+//                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, 3), Metric.getDefaultDistances(), pointsCount))
+//                .execute().draw().write();
+//
+//        new TaskChain("Polbooks: 105 nodes, 3 clusters, MinSpanningTree")
+//                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 3), Metric.getDefaultDistances(), pointsCount))
+//                .execute().draw().write();
+
+                new TaskChain("Polbooks: 105 nodes, 3 clusters, Diffusion")
+                .addTasks(ScenarioHelper.defaultTasks(new DiffusionChecker(graphs), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
+
+//        GraphMLWriter writer = new GraphMLWriter();
+//        writer.writeGraph(graphs.getGraphs().get(0), ContextProvider.getInstance().getContext().getImgFolder() + "/polbooks.graphml");
+    }
+
+    private static void drawCSVGraphsFootball() throws IOException, SAXException, ParserConfigurationException, TransformerConfigurationException {
+        int pointsCount = 200;
 
         Graph graph = new CSVReader().importGraph("data/football_nodes.csv", "data/football_edges.csv");
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(1, 115, 12, 0, 0);
@@ -139,23 +157,87 @@ public class Main {
 
 //        new TaskChain("Football: 115 nodes, 12 clusters, Ward")
 //                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, 12), Metric.getDefaultDistances(), pointsCount))
-//                .execute().draw();
+//                .execute().draw().write();
+//
+//        new TaskChain("Football: 115 nodes, 12 clusters, MinSpanningTree")
+//                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 12), Metric.getDefaultDistances(), pointsCount))
+//                .execute().draw().write();
 
-        new TaskChain("Football: 115 nodes, 12 clusters, MinSpanningTree")
-                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, 12), Metric.getDefaultDistances(), pointsCount))
-                .execute().draw();
+        new TaskChain("Football: 115 nodes, 12 clusters, Diffusion")
+                .addTasks(ScenarioHelper.defaultTasks(new DiffusionChecker(graphs), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
 
-        GraphMLWriter writer = new GraphMLWriter();
-        writer.writeGraph(graphs.getGraphs().get(0), ContextProvider.getInstance().getContext().getImgFolder() + "/football.graphml");
+//        GraphMLWriter writer = new GraphMLWriter();
+//        writer.writeGraph(graphs.getGraphs().get(0), ContextProvider.getInstance().getContext().getImgFolder() + "/football.graphml");
     }
 
-    private static void drawDiffusionGraph() {
+    private static void drawDiffusionGraph01() {
         int graphCount = 3;
+        int nodesCount = 200;
+        int clustersCount = 5;
+        double pIn = 0.30;
+        double pOut = 0.05;
+        int pointsCount = 100;
+
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
+        GraphBundle graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+
+        new TaskChain("MinSpanningTree: " + nodesCount + " nodes, " + clustersCount + " clusters, " + graphCount + " graphs, pIn=" + pIn + ", pOut=" + pOut)
+                .addTasks(ScenarioHelper.defaultTasks(new MinSpanningTreeChecker(graphs, clustersCount), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
+        new TaskChain("Diffusion: " + nodesCount + " nodes, " + clustersCount + " clusters, " + graphCount + " graphs, pIn=" + pIn + ", pOut=" + pOut)
+                .addTasks(ScenarioHelper.defaultTasks(new DiffusionChecker(graphs), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
+        new TaskChain("Ward: " + nodesCount + " nodes, " + clustersCount + " clusters, " + graphCount + " graphs, pIn=" + pIn + ", pOut=" + pOut)
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, clustersCount), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
+    }
+
+    private static void drawDiffusionGraph005() {
+        int graphCount = 5;
         int nodesCount = 100;
         int clustersCount = 5;
         double pIn = 0.30;
+        double pOut = 0.05;
+        int pointsCount = 100;
+
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
+        GraphBundle graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+
+        new TaskChain("Ward: " + nodesCount + " nodes, " + clustersCount + " clusters, " + graphCount + " graphs, pIn=" + pIn + ", pOut=" + pOut)
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, clustersCount), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
+        new TaskChain("Diffusion: " + nodesCount + " nodes, " + clustersCount + " clusters, " + graphCount + " graphs, pIn=" + pIn + ", pOut=" + pOut)
+                .addTasks(ScenarioHelper.defaultTasks(new DiffusionChecker(graphs), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
+    }
+
+    private static void drawDiffusionGraph20001() {
+        int graphCount = 2;
+        int nodesCount = 200;
+        int clustersCount = 5;
+        double pIn = 0.30;
         double pOut = 0.10;
-        int pointsCount = 70;
+        int pointsCount = 100;
+
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
+        GraphBundle graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+
+        new TaskChain("Ward: " + nodesCount + " nodes, " + clustersCount + " clusters, " + graphCount + " graphs, pIn=" + pIn + ", pOut=" + pOut)
+                .addTasks(ScenarioHelper.defaultTasks(new WardChecker(graphs, clustersCount), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
+        new TaskChain("Diffusion: " + nodesCount + " nodes, " + clustersCount + " clusters, " + graphCount + " graphs, pIn=" + pIn + ", pOut=" + pOut)
+                .addTasks(ScenarioHelper.defaultTasks(new DiffusionChecker(graphs), Metric.getDefaultDistances(), pointsCount))
+                .execute().draw().write();
+    }
+
+    private static void drawDiffusionGraph200005() {
+        int graphCount = 2;
+        int nodesCount = 200;
+        int clustersCount = 5;
+        double pIn = 0.30;
+        double pOut = 0.05;
+        int pointsCount = 100;
 
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
         GraphBundle graphs = ClusteredGraphGenerator.getInstance().generate(properties);

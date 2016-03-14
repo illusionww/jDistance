@@ -8,27 +8,27 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Metric {
-    PLAIN_WALK("pWalk", Scale.RHO, 0.0) {
+    PLAIN_WALK("pWalk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = jb.getH0Walk(A, t);
             return jb.getD(H);
         }
     },
-    WALK("Walk", Scale.RHO, 0.0) {
+    WALK("Walk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H0 = jb.getH0Walk(A, t);
             DenseMatrix H = jb.H0toH(H0);
             return jb.getD(H);
         }
     },
-    FOREST("For", Scale.FRACTION_REVERSED, 0.0) {
+    FOREST("For", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix L = jb.getL(A);
             DenseMatrix H = jb.getH0Forest(L, t);
             return jb.getD(H);
         }
     },
-    LOG_FOREST("logFor", Scale.FRACTION_REVERSED, 0.0) {
+    LOG_FOREST("logFor", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix L = jb.getL(A);
             DenseMatrix H0 = jb.getH0Forest(L, t);
@@ -36,37 +36,37 @@ public enum Metric {
             return jb.getD(H);
         }
     },
-    COMM("Comm", Scale.FRACTION_REVERSED, 0.0) {
+    COMM("Comm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = jb.getH0Communicability(A, t);
             DenseMatrix D = jb.getD(H);
-            return jb.sqrtD(D);
+            return JeigenBuilder.sqrtD(D);
         }
     },
-    COMM_D("Comm", Scale.FRACTION_REVERSED, 0.0) {
+    COMM_D("Comm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = jb.getH0DummyCommunicability(A, t);
             DenseMatrix D = jb.getD(H);
-            return jb.sqrtD(D);
+            return JeigenBuilder.sqrtD(D);
         }
     },
-    LOG_COMM("logComm", Scale.FRACTION_REVERSED, 0.0) {
+    LOG_COMM("logComm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H0 = jb.getH0Communicability(A, t);
             DenseMatrix H = jb.H0toH(H0);
             DenseMatrix D = jb.getD(H);
-            return jb.sqrtD(D);
+            return JeigenBuilder.sqrtD(D);
         }
     },
-    LOG_COMM_D("logComm", Scale.FRACTION_REVERSED, 0.0) {
+    LOG_COMM_D("logComm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H0 = jb.getH0DummyCommunicability(A, t);
             DenseMatrix H = jb.H0toH(H0);
             DenseMatrix D = jb.getD(H);
-            return jb.sqrtD(D);
+            return JeigenBuilder.sqrtD(D);
         }
     },
-    SP_CT("SP-CT", Scale.LINEAR, 0.0) {
+    SP_CT("SP-CT", Scale.LINEAR) {
         public DenseMatrix getD(DenseMatrix A, double lambda) {
             DenseMatrix Ds = jb.getDShortestPath(A);
 
@@ -80,17 +80,17 @@ public enum Metric {
             return Ds.mul(1 - lambda).add(Dr.mul(lambda * norm));
         }
     },
-    FREE_ENERGY("FE", Scale.FRACTION_BETA, 0.0) {
+    FREE_ENERGY("FE", Scale.FRACTION_BETA) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return jb.getDFreeEnergy(A, beta);
         }
     },
-    RSP("RSP", Scale.FRACTION_BETA, 0.0) {
+    RSP("RSP", Scale.FRACTION_BETA) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return jb.getD_RSP(A, beta);
         }
     },
-    SCCT_CT("SCCT-CT", Scale.LINEAR, 0.0) {
+    SCCT_CT("SCCT-CT", Scale.LINEAR) {
         public DenseMatrix getD(DenseMatrix A, double lambda) {
             DenseMatrix K_CCT = jb.getH_SCCT(A);
             DenseMatrix Dcct = jb.getD(K_CCT);
@@ -109,12 +109,10 @@ public enum Metric {
     private static JeigenBuilder jb = new JeigenBuilder();
     private String name;
     private Scale scale;
-    private double bordersOffset;
 
-    Metric(String name, Scale scale, double bordersOffset) {
+    Metric(String name, Scale scale) {
         this.name = name;
         this.scale = scale;
-        this.bordersOffset = bordersOffset;
     }
 
     public static List<Metric> getAll() {
@@ -142,10 +140,6 @@ public enum Metric {
 
     public Scale getScale() {
         return scale;
-    }
-
-    public double getBordersOffset() {
-        return bordersOffset;
     }
 
     public abstract DenseMatrix getD(DenseMatrix A, double t);
