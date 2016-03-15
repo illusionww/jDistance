@@ -68,7 +68,7 @@ public class TaskChain {
 
     public TaskChain execute() {
         Date start = new Date();
-        log.info("START task CHAIN {}", name);
+        log.info("START TASK_CHAIN \"{}\"", name);
         Stream<Task> stream = ContextProvider.getInstance().getContext().getParallel() ? tasks.parallelStream() : tasks.stream();
 
         stream.forEach(task -> {
@@ -81,7 +81,8 @@ public class TaskChain {
         });
         Date finish = new Date();
         long diff = finish.getTime() - start.getTime();
-        log.info("Task CHAIN DONE. Time: {}", diff);
+        log.info("TASK_CHAIN DONE. Time: {}", diff);
+        log.info("---------------------------------------------------------------------------------------------", diff);
         return this;
     }
 

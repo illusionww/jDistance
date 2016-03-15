@@ -39,7 +39,7 @@ public class DiffusionChecker extends Checker {
     @Override
     protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
         int n = D.rows;
-        long count = n * (n * (n * (n - 6) + 11) - 6) / 8;
+        long count = n * (n * (n * (n - 6L) + 11L) - 6L) / 8L;
         long error = 0;
         for (int i = 0; i < n; i++) {
             Node nodeI = node.get(i);

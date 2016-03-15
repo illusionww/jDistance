@@ -18,10 +18,13 @@ public class GraphBundle implements Cloneable<GraphBundle> {
 
     public String getName() {
         return "Graphs: " +
-//                "sizes=" + Arrays.toString(properties.getSizeOfClusters()) +
-//                ", probabilities=" + Arrays.deepToString(properties.getProbabilityMatrix()) +
-                ", numOfClusters=" + properties.getSizeOfClusters().length +
-                ", count=" + getCount();
+            "graphsCount=" + properties.getGraphsCount() + ", " +
+            "nodesCount=" + properties.getNodesCount() + ", " +
+            "clustersCount=" + properties.getClustersCount();
+    }
+
+    public GeneratorPropertiesDTO getProperties() {
+        return properties;
     }
 
     public Integer getCount() {
@@ -35,6 +38,8 @@ public class GraphBundle implements Cloneable<GraphBundle> {
     public void setGraphs(List<Graph> graphs) {
         this.graphs = graphs;
     }
+
+
 
     @Override
     public GraphBundle clone() {
