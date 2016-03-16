@@ -45,17 +45,17 @@ public class Main {
     }
 
     private static void CSVGraphsNewsgroup() throws IOException, ParserConfigurationException, SAXException {
-        int pointsCount = 50;
+        int pointsCount = 100;
         GraphBundle graphs = new CSVGraphBuilder()
                 .importNodesClassOnly("data/newsgroup/news_2cl_1_classeo.csv")
                 .importAdjacencyMatrix("data/newsgroup/news_2cl_1_Docr.csv")
                 .buildBundle();
 //        new TaskChainBuilder("news_2cl_1, MinSpanningTree", Metric.getDefaultDistances(), pointsCount)
 //                .setGraphs(graphs).generateMinSpanningTreeTasks().build().execute().write().draw();
-        new TaskChainBuilder("news_2cl_1, Diffusion", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw();
-//        new TaskChainBuilder("news_2cl_1, Ward", Metric.getDefaultDistances(), pointsCount)
-//                .setGraphs(graphs).generateWardTasks().build().execute().write().draw();
+//        new TaskChainBuilder("news_2cl_1, Diffusion", Metric.getDefaultDistances(), pointsCount)
+//                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw();
+        new TaskChainBuilder("news_2cl_1, Ward", Metric.getDefaultDistances(), pointsCount)
+                .setGraphs(graphs).generateWardTasks().build().execute().write().draw();
     }
 
 }
