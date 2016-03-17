@@ -45,16 +45,14 @@ public class JeigenBuilder {
     }
 
     public static DenseMatrix dummy_mexp(DenseMatrix A, int nSteps) {
-        DenseMatrix runtot = eye(A.rows);
-        DenseMatrix sum = eye(A.rows);
+        DenseMatrix totalSum = eye(A.rows);
+        DenseMatrix currentElement = eye(A.rows);
 
-        double factorial = 1;
         for (int i = 1; i <= nSteps; i++) {
-            factorial /= (double) i;
-            sum = sum.mmul(A);
-            runtot = runtot.add(sum.mul(factorial));
+            currentElement = currentElement.mmul(A.div(i));
+            totalSum = totalSum.add(currentElement);
         }
-        return runtot;
+        return totalSum;
     }
 
     public static DenseMatrix normalization(DenseMatrix dm) {

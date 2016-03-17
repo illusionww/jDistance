@@ -3,7 +3,10 @@ package com.jdistance.impl;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.adapter.graph.CSVGraphBuilder;
 import com.jdistance.impl.workflow.TaskChainBuilder;
+import com.jdistance.impl.workflow.checker.clusterer.WardChecker;
+import com.jdistance.impl.workflow.task.CustomTask;
 import com.jdistance.metric.Metric;
+import com.jdistance.metric.MetricWrapper;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -11,7 +14,7 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        CSVGraphsNewsgroup();
+        testLogCom();
     }
 
     private static void CSVGraphsPoliticalBooks() throws IOException, SAXException, ParserConfigurationException {
@@ -56,6 +59,18 @@ public class Main {
 //                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw();
         new TaskChainBuilder("news_2cl_1, Ward", Metric.getDefaultDistances(), pointsCount)
                 .setGraphs(graphs).generateWardTasks().build().execute().write().draw();
+    }
+
+    private static void testLogCom() throws IOException, ParserConfigurationException, SAXException {
+        int pointsCount = 100;
+        GraphBundle graphs = new CSVGraphBuilder()
+                .importNodesClassOnly("data/newsgroup/news_2cl_1_classeo.csv")
+                .importAdjacencyMatrix("data/newsgroup/news_2cl_1_Docr.csv")
+                .buildBundle();
+        new TaskChainBuilder("news_2cl_1, Ward", Metric.getDefaultDistances(), pointsCount)
+                .setGraphs(graphs)
+                .addTask(new CustomTask(new WardChecker(graphs, 2), new MetricWrapper(Metric.LOG_COMM_D), 0.5, 0.9, 40))
+                .build().execute().write().draw();
     }
 
 }
