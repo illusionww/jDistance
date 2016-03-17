@@ -11,6 +11,12 @@ public class MetricWrapper {
         this.metric = metric;
     }
 
+    public MetricWrapper(String name, Metric metric) {
+        this.name = name;
+        this.scale = metric.getScale();
+        this.metric = metric;
+    }
+
     public MetricWrapper(String name, Scale scale, Metric metric) {
         this.name = name;
         this.scale = scale;

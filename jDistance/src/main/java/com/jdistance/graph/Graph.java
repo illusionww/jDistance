@@ -3,21 +3,26 @@ package com.jdistance.graph;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Graph {
     private DenseMatrix sparseMatrix;
-    private ArrayList<NodeData> nodeData;
+    private List<Node> nodes;
 
-    public Graph(double[][] sparseMatrix, ArrayList<NodeData> nodeData) {
-        this.sparseMatrix = new DenseMatrix(sparseMatrix);
-        this.nodeData = nodeData;
+    public Graph(double[][] sparseMatrix, List<Node> nodes) {
+        this(new DenseMatrix(sparseMatrix), nodes);
+    }
+
+    public Graph(DenseMatrix sparseMatrix, List<Node> nodes) {
+        this.sparseMatrix = sparseMatrix;
+        this.nodes = nodes;
     }
 
     public DenseMatrix getSparseMatrix() {
         return sparseMatrix;
     }
 
-    public ArrayList<NodeData> getNodeData() {
-        return nodeData;
+    public List<Node> getNodes() {
+        return nodes;
     }
 }

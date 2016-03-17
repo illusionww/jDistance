@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<context>
+    <gnuplotPath>c:\cygwin64\bin\gnuplot.exe</gnuplotPath>
+    <imgFolder>results\pictures</imgFolder>
+	<competitionFolder>results\tournament</competitionFolder>
+	<tempFolder>results\temp</tempFolder>
+	<parallel>true</parallel>
+</context>

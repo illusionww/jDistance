@@ -6,12 +6,9 @@ import com.jdistance.metric.MetricWrapper;
 import java.util.Map;
 
 public class CustomTask extends Task {
-    private Checker checker;
-    private MetricWrapper metricWrapper;
     private Double from;
     private Double to;
     private Integer pointsCount;
-    private Map<Double, Double> result;
 
     public CustomTask(Checker checker, MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
         this.checker = checker;
@@ -38,7 +35,7 @@ public class CustomTask extends Task {
     }
 
     @Override
-    public Map<Double, Double> getResults() {
+    public Map<Double, Double> getResult() {
         return result;
     }
 }

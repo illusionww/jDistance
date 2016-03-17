@@ -1,8 +1,8 @@
 package com.jdistance.impl.workflow.task.competition;
 
-import com.jdistance.impl.adapter.generator.GraphBundle;
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.ClassifierChecker;
+import com.jdistance.impl.workflow.checker.classifier.KNearestNeighborsChecker;
 
 import java.util.List;
 
@@ -13,6 +13,6 @@ public class ClassifierCompetitionTask extends CompetitionTask {
 
     @Override
     protected Checker getChecker(GraphBundle graphs, CompetitionDTO dto) {
-        return new ClassifierChecker(graphs, dto.k, 0.3, dto.x);
+        return new KNearestNeighborsChecker(graphs, dto.k, 0.3, dto.x);
     }
 }

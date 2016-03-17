@@ -26,7 +26,7 @@ public enum Scale {
             return t;
         }
     },
-    FRACTION { // forest, logForest, comm, logComm
+    FRACTION_REVERSED { // forest, logForest, comm, logComm
         @Override
         public Double calc(DenseMatrix A, Double t) {
             return t / (1.0 - t);

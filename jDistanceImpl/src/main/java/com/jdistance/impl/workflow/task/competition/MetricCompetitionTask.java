@@ -1,9 +1,9 @@
 package com.jdistance.impl.workflow.task.competition;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.impl.adapter.generator.GraphBundle;
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.MetricChecker;
+import com.jdistance.impl.workflow.checker.nolearning.MetricChecker;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
 
@@ -40,7 +40,7 @@ public class MetricCompetitionTask extends CompetitionTask {
 
             for (int c = 0; c < D.cols; c++) {
                 for (int r = c + 1; r < D.rows; r++) {
-                    if (graph.getNodeData().get(c).getLabel().equals(graph.getNodeData().get(r).getLabel())) {
+                    if (graph.getNodes().get(c).getLabel().equals(graph.getNodes().get(r).getLabel())) {
                         same.add(D.get(c, r));
                     } else {
                         different.add(D.get(c, r));

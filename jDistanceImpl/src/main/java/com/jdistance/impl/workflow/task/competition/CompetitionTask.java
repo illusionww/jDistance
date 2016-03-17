@@ -1,8 +1,8 @@
 package com.jdistance.impl.workflow.task.competition;
 
-import com.jdistance.impl.adapter.generator.GraphBundle;
-import com.jdistance.impl.workflow.Context;
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.checker.Checker;
+import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.impl.workflow.task.ClassifierBestParamTask;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.Task;
@@ -47,12 +47,12 @@ public abstract class CompetitionTask {
     }
 
     protected void learning() {
-        Stream<CompetitionDTO> stream = Context.getInstance().PARALLEL ? competitionDTOs.parallelStream() : competitionDTOs.stream();
+        Stream<CompetitionDTO> stream = ContextProvider.getInstance().getContext().getParallel() ? competitionDTOs.parallelStream() : competitionDTOs.stream();
         stream.forEach(dto -> {
             log.info("{}...", dto.metricWrapper.getName());
             Checker checker = getChecker(forLearning, dto);
             Task task = new DefaultTask(checker, dto.metricWrapper, pointsCount);
-            dto.pLearn = task.execute().getBestResult();
+            dto.pLearn = task.execute().getMaxResult();
         });
     }
 
@@ -73,7 +73,7 @@ public abstract class CompetitionTask {
     }
 
     public CompetitionTask write() {
-        String path = Context.getInstance().COMPETITION_FOLDER + File.separator + fileName + ".txt";
+        String path = ContextProvider.getInstance().getContext().getCompetitionFolder() + File.separator + fileName + ".txt";
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(path))) {
             outputWriter.write("Name\tlearnedP\tlearnedQuality\tScore\tAdditionalInfo");
             outputWriter.newLine();

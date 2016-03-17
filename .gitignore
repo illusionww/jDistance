@@ -1,3 +1,6 @@
+# Windows
+*.db
+
 # Java
 *.class
 
@@ -11,9 +14,7 @@ target/
 *.iws
 
 # Output files
-/out/
-/pictures/
-/cache/
-/temp_test/
-/logs/
-/tournament/
+*.png
+*.txt
+*.log
+*.graphml

@@ -1,11 +1,9 @@
 package com.jdistance.impl.adapter.gnuplot;
 
 import com.panayotis.gnuplot.JavaPlot;
+import com.panayotis.gnuplot.dataset.Point;
 import com.panayotis.gnuplot.plot.DataSetPlot;
-import com.panayotis.gnuplot.style.NamedPlotColor;
-import com.panayotis.gnuplot.style.PlotColor;
-import com.panayotis.gnuplot.style.PlotStyle;
-import com.panayotis.gnuplot.style.Style;
+import com.panayotis.gnuplot.style.*;
 import com.panayotis.gnuplot.terminal.ImageTerminal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +12,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.List;
+import java.util.*;
 
 public class GNUPlotAdapter {
     public static final PlotColor[] colors = {
@@ -43,9 +41,19 @@ public class GNUPlotAdapter {
         this.gnuplotPath = gnuplotPath;
     }
 
-    public void drawData(String title, List<Plot> data, String outputPath) {
+    public static List<Point<Double>> mapToPoints(Map<Double, Double> results) {
+        List<Point<Double>> list = new ArrayList<>();
+        SortedSet<Double> keys = new TreeSet<>(results.keySet());
+        for (Double key : keys) {
+            Double value = results.get(key);
+            list.add(new Point<>(key, value));
+        }
+        return list;
+    }
+
+    public void drawData(String title, List<PlotDTO> data, String outputPath) {
         ImageTerminal png = new ImageTerminal();
-        png.set("size", "1280,768");
+        png.set("size", "1440,900");
         File file = new File(outputPath);
         try {
             file.createNewFile();
@@ -57,7 +65,7 @@ public class GNUPlotAdapter {
         JavaPlot gnuplot = new JavaPlot(gnuplotPath);
         gnuplot.setTerminal(png);
 
-        for (Plot plot : data) {
+        for (PlotDTO plot : data) {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
@@ -71,6 +79,8 @@ public class GNUPlotAdapter {
         }
 
         gnuplot.setTitle(title);
+        gnuplot.setKey(JavaPlot.Key.OUTSIDE);
+        gnuplot.set("yrange", "[0.2 : 1.0]");
         gnuplot.plot();
 
         try {

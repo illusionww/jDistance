@@ -62,6 +62,10 @@ public class JeigenBuilder {
         return dm.div(avg);
     }
 
+    public static DenseMatrix sqrtD(DenseMatrix D) {
+        return D.sqrt();
+    }
+
     public DenseMatrix getL(DenseMatrix A) {
         return diag(A.sumOverRows().t()).sub(A);
     }
@@ -95,9 +99,12 @@ public class JeigenBuilder {
     }
 
     // H0 = exp(tA)
-    public DenseMatrix getH0Communicability(DenseMatrix A, double t) {
-//        return A.mul(t).mexp();
+    public DenseMatrix getH0DummyCommunicability(DenseMatrix A, double t) {
         return dummy_mexp(A.mul(t), 30);
+    }
+
+    public DenseMatrix getH0Communicability(DenseMatrix A, double t) {
+        return A.mul(t).mexp();
     }
 
     // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
@@ -134,15 +141,60 @@ public class JeigenBuilder {
         DenseMatrix Zh = Z.mmul(pinv(Dh));
 
         // Φ = -1/β * log(Z^h)
-        DenseMatrix F = log(Zh).div(-beta);
+        DenseMatrix Φ = log(Zh).div(-beta);
 
         // Δ_FE = (Φ + Φ^T)/2
-        DenseMatrix FE = F.add(F.t()).div(2);
+        DenseMatrix Δ_FE = Φ.add(Φ.t()).div(2);
 
-        return FE.sub(diag(diagToVector(FE)));
+        return Δ_FE.sub(diag(diagToVector(Δ_FE)));
     }
 
-    public DenseMatrix sqrtD(DenseMatrix D) {
-        return D.sqrt();
+    public DenseMatrix getD_RSP(DenseMatrix A, double beta) {
+        int d = A.cols;
+
+        // P^{ref} = D^{-1}*A, D = Diag(A*e)
+        DenseMatrix e = ones(d, 1);
+        DenseMatrix D = diag(A.mmul(e));
+        DenseMatrix Pref = pinv(D).mmul(A);
+
+        // W = P^{ref} ◦ exp(-βC); ◦ is element-wise *
+        DenseMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
+        DenseMatrix W = Pref.mul(exp(C.mul(-beta)));
+
+        // Z = (I - W)^{-1}
+        DenseMatrix I = eye(d);
+        DenseMatrix Z = pinv(I.sub(W));
+
+        // Z^h = Z * D_h^{-1}, D_h = Diag(Z)
+        DenseMatrix Dh = diag(diagToVector(Z));
+        DenseMatrix Zh = Z.mmul(pinv(Dh));
+
+        // S = (Z(C ◦ W)Z)÷Z; ÷ is element-wise /
+        DenseMatrix S = Z.mmul(C.mul(W)).mmul(Z).div(Z);
+        // C_ = S - e(d_S)^T; d_S = diag(S)
+        DenseMatrix C_ = S.sub(e.mmul(diagToVector(S).t()));
+        // Δ_RSP = (C_ + C_^T)/2
+        DenseMatrix Δ_RSP = C_.add(C_.t()).div(2);
+
+        return Δ_RSP.sub(diag(diagToVector(Δ_RSP)));
+    }
+
+    // K_CCT = K_CT + HD^{-1}AD^{-1}H
+    public DenseMatrix getH_SCCT(DenseMatrix A) {
+        int d = A.cols;
+
+        // K_CT = H_resistance
+        DenseMatrix L = getL(A);
+        DenseMatrix K_CT = getHResistance(L);
+
+        // H = (I - ee^T/n)
+        DenseMatrix I = eye(d);
+        DenseMatrix H = I.sub(ones(d, d).mul(1.0 / d));
+
+        // D = L + A
+        DenseMatrix D = diag(A.sumOverRows().t());
+        DenseMatrix pinvD = pinv(D);
+
+        return K_CT.add(H.mmul(pinvD).mmul(A).mmul(pinvD).mmul(H));
     }
 }
