@@ -1,6 +1,3 @@
-# Windows
-*.db
-
 # Java
 *.class
 
@@ -14,7 +11,5 @@ target/
 *.iws
 
 # Output files
-*.png
-*.txt
-*.log
-*.graphml
+/out/
+/results/
