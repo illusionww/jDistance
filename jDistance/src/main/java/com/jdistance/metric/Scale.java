@@ -1,13 +1,13 @@
 package com.jdistance.metric;
 
-import jeigen.ComplexDenseMatrix;
+import jeigen.DenseMatrixComplex;
 import jeigen.DenseMatrix;
 
 public enum Scale {
     alphaToT { // ? > 0 -> 0 < t < ?^{-1}
         @Override
         public Double calc(DenseMatrix A, Double alpha) {
-            ComplexDenseMatrix cfm = new ComplexDenseMatrix(A.eig().values);
+            DenseMatrixComplex cfm = A.eig().values;
             double ro = cfm.abs().maxOverCols().s();
             return 1.0 / (1.0 / alpha + ro);
         }
@@ -15,7 +15,7 @@ public enum Scale {
     RHO { //walk, pWalk
         @Override
         public Double calc(DenseMatrix A, Double t) {
-            ComplexDenseMatrix cfm = new ComplexDenseMatrix(A.eig().values);
+            DenseMatrixComplex cfm = A.eig().values;
             double rho = cfm.abs().maxOverCols().s();
             return t / rho;
         }
