@@ -3,7 +3,7 @@ package com.jdistance.impl;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.adapter.graph.CSVGraphBuilder;
 import com.jdistance.impl.workflow.TaskChainBuilder;
-import com.jdistance.impl.workflow.checker.clusterer.WardChecker;
+import com.jdistance.impl.workflow.gridsearch.clusterer.WardGridSearch;
 import com.jdistance.impl.workflow.task.CustomTask;
 import com.jdistance.metric.Metric;
 import com.jdistance.metric.MetricWrapper;
@@ -11,10 +11,20 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        testLogCom();
+        compareSquaredAndNonSquaredComm();
+    }
+
+    private static void compareSquaredAndNonSquaredComm() {
+        new TaskChainBuilder(Arrays.asList(
+                new MetricWrapper("Comm", Metric.COMM_D),
+                new MetricWrapper("Comm not squared", Metric.COMM_D_NOT_SQUARED),
+                new MetricWrapper("logComm", Metric.LOG_COMM_D),
+                new MetricWrapper("logComm not squared", Metric.LOG_COMM_D_NOT_SQUARED)
+        ), 120).generateGraphs(2, 100, 5, 0.3, 0.1).generateWardTasks().build().execute().write().draw();
     }
 
     private static void CSVGraphsPoliticalBooks() throws IOException, SAXException, ParserConfigurationException {
@@ -69,7 +79,7 @@ public class Main {
                 .buildBundle();
         new TaskChainBuilder("news_2cl_1, Ward", Metric.getDefaultDistances(), pointsCount)
                 .setGraphs(graphs)
-                .addTask(new CustomTask(new WardChecker(graphs, 2), new MetricWrapper(Metric.LOG_COMM_D), 0.5, 0.9, 40))
+                .addTask(new CustomTask(new WardGridSearch(graphs, 2), new MetricWrapper(Metric.LOG_COMM_D), 0.5, 0.9, 40))
                 .build().execute().write().draw();
     }
 

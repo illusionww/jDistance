@@ -86,14 +86,14 @@ public class Ward implements Clusterer {
         DenseMatrix h;
         int n;
 
-        public Cluster(List<Integer> nodes, int length) {
+        Cluster(List<Integer> nodes, int length) {
             this.nodes = nodes;
             n = nodes.size();
             h = DenseMatrix.zeros(length, 1);
             refreshH();
         }
 
-        public void refreshH() {
+        void refreshH() {
             h = DenseMatrix.zeros(h.rows, 1);
             for (Integer node : nodes) {
                 h.set(node, 0, 1 / (double) n);

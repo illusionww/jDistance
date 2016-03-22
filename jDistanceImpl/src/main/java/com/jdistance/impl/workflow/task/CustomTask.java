@@ -1,6 +1,6 @@
 package com.jdistance.impl.workflow.task;
 
-import com.jdistance.impl.workflow.checker.Checker;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.metric.MetricWrapper;
 
 import java.util.Map;
@@ -10,8 +10,8 @@ public class CustomTask extends Task {
     private Double to;
     private Integer pointsCount;
 
-    public CustomTask(Checker checker, MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
-        this.checker = checker;
+    public CustomTask(GridSearch gridSearch, MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
+        this.gridSearch = gridSearch;
         this.metricWrapper = metricWrapper;
         this.from = from;
         this.to = to;
@@ -20,7 +20,7 @@ public class CustomTask extends Task {
 
     @Override
     public String getName() {
-        return metricWrapper.getName() + " " + checker.getName();
+        return metricWrapper.getName() + " " + gridSearch.getName();
     }
 
     @Override
@@ -30,7 +30,7 @@ public class CustomTask extends Task {
 
     @Override
     public Task execute() {
-        result = checker.seriesOfTests(metricWrapper, from, to, pointsCount);
+        result = gridSearch.seriesOfTests(metricWrapper, from, to, pointsCount);
         return this;
     }
 

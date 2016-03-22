@@ -69,11 +69,6 @@
             <artifactId>jgrapht-ext</artifactId>
             <version>0.9.1</version>
         </dependency>
-        <dependency>
-            <groupId>dk.aaue.sna</groupId>
-            <artifactId>jgrapht-sna</artifactId>
-            <version>1.2</version>
-        </dependency>
 
         <dependency>
             <groupId>junit</groupId>

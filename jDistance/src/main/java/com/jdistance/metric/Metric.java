@@ -36,26 +36,32 @@ public enum Metric {
             return jb.getD(H);
         }
     },
-    COMM("Comm", Scale.FRACTION_REVERSED) {
+    COMM("Comm fair", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = jb.getH0Communicability(A, t);
             DenseMatrix D = jb.getD(H);
-            return JeigenBuilder.sqrtD(D);
+            return MetricBuilder.sqrtD(D);
         }
     },
     COMM_D("Comm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = jb.getH0DummyCommunicability(A, t);
             DenseMatrix D = jb.getD(H);
-            return JeigenBuilder.sqrtD(D);
+            return MetricBuilder.sqrtD(D);
         }
     },
-    LOG_COMM("logComm", Scale.FRACTION_REVERSED) {
+    COMM_D_NOT_SQUARED("Comm not squared", Scale.FRACTION_REVERSED) {
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix H = jb.getH0DummyCommunicability(A, t);
+            return jb.getD(H);
+        }
+    },
+    LOG_COMM("logComm fair", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H0 = jb.getH0Communicability(A, t);
             DenseMatrix H = jb.H0toH(H0);
             DenseMatrix D = jb.getD(H);
-            return JeigenBuilder.sqrtD(D);
+            return MetricBuilder.sqrtD(D);
         }
     },
     LOG_COMM_D("logComm", Scale.FRACTION_REVERSED) {
@@ -63,7 +69,14 @@ public enum Metric {
             DenseMatrix H0 = jb.getH0DummyCommunicability(A, t);
             DenseMatrix H = jb.H0toH(H0);
             DenseMatrix D = jb.getD(H);
-            return JeigenBuilder.sqrtD(D);
+            return MetricBuilder.sqrtD(D);
+        }
+    },
+    LOG_COMM_D_NOT_SQUARED("logComm not squared", Scale.FRACTION_REVERSED) {
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix H0 = jb.getH0DummyCommunicability(A, t);
+            DenseMatrix H = jb.H0toH(H0);
+            return jb.getD(H);
         }
     },
     SP_CT("SP-CT", Scale.LINEAR) {
@@ -106,7 +119,7 @@ public enum Metric {
         }
     };
 
-    private static JeigenBuilder jb = new JeigenBuilder();
+    private static MetricBuilder jb = new MetricBuilder();
     private String name;
     private Scale scale;
 

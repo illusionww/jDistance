@@ -97,7 +97,7 @@ public class DCRGraphMLReader {
                 .map(aActiveNodeData -> new Node(aActiveNodeData.getNodeId(), aActiveNodeData.getColor()))
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        return new Graph(sparseM, simpleNode);
+        return new Graph(simpleNode, sparseM);
     }
 
     class EdgeData {

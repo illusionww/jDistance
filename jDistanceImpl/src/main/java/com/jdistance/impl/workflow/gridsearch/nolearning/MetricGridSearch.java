@@ -1,10 +1,9 @@
-package com.jdistance.impl.workflow.checker.nolearning;
+package com.jdistance.impl.workflow.gridsearch.nolearning;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
-import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.CheckerTestResultDTO;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
 
@@ -17,11 +16,11 @@ import java.util.List;
  *  В качестве грубоватого показателя связи берем корреляцию этого вектора и вектора расстояний.
  *  (Для него и стандартизация не нужна - он инвариантен к линейным преобразованиям).
  */
-public class MetricChecker extends Checker {
+public class MetricGridSearch extends GridSearch {
     private GraphBundle graphs;
     private Integer k;
 
-    public MetricChecker(GraphBundle graphs, Integer k) {
+    public MetricGridSearch(GraphBundle graphs, Integer k) {
         this.graphs = graphs;
         this.k = k;
     }
@@ -37,7 +36,7 @@ public class MetricChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
+    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
         double[] vector1 = StandardizeHelper.standardize(D).getValues(); //вытягиваем матрицу в вектор
 
         double[][] class_match = new double[D.cols][D.rows]; // 1 если объекты в разных кластерах, 0 если в одном
@@ -54,12 +53,11 @@ public class MetricChecker extends Checker {
         for (int i = 0; i < vector1.length; i++) {
             cov += vector1[i] * vector2[i]; // скалярное произведение и даст ковариацию
         }
-        cov /= (double) D.cols * (D.rows - 1);
-        return new CheckerTestResultDTO(1.0d, -cov + 1);
+        return 1.0 - cov / (double) D.cols * (D.rows - 1);
     }
 
     @Override
-    public Checker clone() {
-        return new MetricChecker(graphs, k);
+    public GridSearch clone() {
+        return new MetricGridSearch(graphs, k);
     }
 }

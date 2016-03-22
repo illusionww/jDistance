@@ -1,6 +1,6 @@
 package com.jdistance.impl.workflow.task;
 
-import com.jdistance.impl.workflow.checker.Checker;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.metric.MetricWrapper;
 
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public abstract class Task {
-    protected Checker checker;
+    protected GridSearch gridSearch;
     protected MetricWrapper metricWrapper;
     protected Map<Double, Double> result = new HashMap<>();
     private Map.Entry<Double, Double> minResult;

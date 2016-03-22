@@ -56,11 +56,11 @@ public class GeneratorPropertiesDTO {
         return p_out;
     }
 
-    public int[] getSizeOfClusters() {
+    int[] getSizeOfClusters() {
         return sizeOfClusters;
     }
 
-    public double[][] getProbabilityMatrix() {
+    double[][] getProbabilityMatrix() {
         return probabilityMatrix;
     }
 }

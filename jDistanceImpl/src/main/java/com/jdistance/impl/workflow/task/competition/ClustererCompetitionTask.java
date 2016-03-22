@@ -1,8 +1,8 @@
 package com.jdistance.impl.workflow.task.competition;
 
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.clusterer.MinSpanningTreeChecker;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
+import com.jdistance.impl.workflow.gridsearch.clusterer.MinSpanningTreeGridSearch;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class ClustererCompetitionTask extends CompetitionTask {
     }
 
     @Override
-    protected Checker getChecker(GraphBundle graphs, CompetitionDTO dto) {
-        return new MinSpanningTreeChecker(graphs, dto.k);
+    protected GridSearch getChecker(GraphBundle graphs, CompetitionDTO dto) {
+        return new MinSpanningTreeGridSearch(graphs, dto.k);
     }
 }

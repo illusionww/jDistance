@@ -7,19 +7,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ClusteredGraphGenerator extends GraphGenerator {
-    private static ClusteredGraphGenerator instance;
+public class GnPInPOutGraphGenerator extends GraphGenerator {
+    private static GnPInPOutGraphGenerator instance;
     private final Random random;
     private boolean biDirectional;
 
-    private ClusteredGraphGenerator() {
+    private GnPInPOutGraphGenerator() {
         random = new Random();
         biDirectional = true;
     }
 
-    public static ClusteredGraphGenerator getInstance() {
+    public static GnPInPOutGraphGenerator getInstance() {
         if (instance == null) {
-            instance = new ClusteredGraphGenerator();
+            instance = new GnPInPOutGraphGenerator();
         }
         return instance;
     }
@@ -47,7 +47,9 @@ public class ClusteredGraphGenerator extends GraphGenerator {
                 }
             }
         }
-        return new Graph(sparseMatrix, generateSimpleNodeDatas(sizeClusters));
+        Graph graph = new Graph(generateSimpleNodeDatas(sizeClusters), sparseMatrix);
+        shuffle(graph, 2*graph.getNodes().size());
+        return graph;
     }
 
     private double getProbabilityEdge(List<Integer> borderClusters, double[][] probabilityMatrix, int from, int to) {
@@ -77,5 +79,28 @@ public class ClusteredGraphGenerator extends GraphGenerator {
             }
         }
         return nodes;
+    }
+
+    private static void shuffle(Graph graph, int swapCount) {
+        int size = graph.getNodes().size();
+
+        Random random = new Random();
+        for (int i = 0; i < swapCount; i++) {
+            replaceTwoNodes(graph, random.nextInt(size), random.nextInt(size));
+        }
+    }
+
+    private static void replaceTwoNodes(Graph graph, int i, int j) {
+        Collections.swap(graph.getNodes(), i, j);
+        for (int k = 0; k < graph.getA().rows; k++) {
+            double temp = graph.getA().get(i, k);
+            graph.getA().set(i, k, graph.getA().get(j, k));
+            graph.getA().set(j, k, temp);
+        }
+        for (int k = 0; k < graph.getA().rows; k++) {
+            double temp = graph.getA().get(k, i);
+            graph.getA().set(k, i, graph.getA().get(k, j));
+            graph.getA().set(k, j, temp);
+        }
     }
 }

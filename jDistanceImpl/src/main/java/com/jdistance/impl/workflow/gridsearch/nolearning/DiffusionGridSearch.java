@@ -1,10 +1,9 @@
-package com.jdistance.impl.workflow.checker.nolearning;
+package com.jdistance.impl.workflow.gridsearch.nolearning;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
-import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.CheckerTestResultDTO;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import jeigen.DenseMatrix;
 
 import java.util.List;
@@ -19,10 +18,10 @@ import java.util.List;
  * Показатель равен n/N.
  * Легко понять, что чем этот показатель меньше, тем метрика лучше.
  */
-public class DiffusionChecker extends Checker {
+public class DiffusionGridSearch extends GridSearch {
     private GraphBundle graphs;
 
-    public DiffusionChecker(GraphBundle graphs) {
+    public DiffusionGridSearch(GraphBundle graphs) {
         this.graphs = graphs;
     }
 
@@ -37,10 +36,9 @@ public class DiffusionChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
+    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
         int n = D.rows;
-        long count = n * (n * (n * (n - 6L) + 11L) - 6L) / 8L;
-        long error = 0;
+        long countErrors = 0;
         for (int i = 0; i < n; i++) {
             Node nodeI = node.get(i);
             for (int j = i + 1; j < n; j++) {
@@ -50,19 +48,20 @@ public class DiffusionChecker extends Checker {
                     for (int q = p + 1; q < n; q++) {
                         Node nodeQ = node.get(q);
                         if (trueIfError(D, i, j, p, q, nodeI, nodeJ, nodeP, nodeQ)) {
-                            error++;
+                            countErrors++;
                         }
                         if (trueIfError(D, i, p, j, q, nodeI, nodeP, nodeJ, nodeQ)) {
-                            error++;
+                            countErrors++;
                         }
                         if (trueIfError(D, i, q, p, j, nodeI, nodeQ, nodeP, nodeJ)) {
-                            error++;
+                            countErrors++;
                         }
                     }
                 }
             }
         }
-        return new CheckerTestResultDTO((double) count, (double) error);
+        double total =  n * (n * (n * (n - 6L) + 11L) - 6L) / 8L;
+        return 1.0 - countErrors / total;
     }
 
     private boolean trueIfError(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
@@ -75,7 +74,7 @@ public class DiffusionChecker extends Checker {
     }
 
     @Override
-    public DiffusionChecker clone() {
-        return new DiffusionChecker(graphs);
+    public DiffusionGridSearch clone() {
+        return new DiffusionGridSearch(graphs);
     }
 }

@@ -1,12 +1,12 @@
 package com.jdistance.impl.workflow;
 
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.graph.generator.ClusteredGraphGenerator;
+import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
-import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.clusterer.MinSpanningTreeChecker;
-import com.jdistance.impl.workflow.checker.clusterer.WardChecker;
-import com.jdistance.impl.workflow.checker.nolearning.DiffusionChecker;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
+import com.jdistance.impl.workflow.gridsearch.clusterer.MinSpanningTreeGridSearch;
+import com.jdistance.impl.workflow.gridsearch.clusterer.WardGridSearch;
+import com.jdistance.impl.workflow.gridsearch.nolearning.DiffusionGridSearch;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.MetricWrapper;
@@ -38,7 +38,7 @@ public class TaskChainBuilder {
 
     public TaskChainBuilder generateGraphs(int graphCount, int nodesCount, int clustersCount, double pIn, double pOut) {
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(graphCount, nodesCount, clustersCount, pIn, pOut);
-        graphs = ClusteredGraphGenerator.getInstance().generate(properties);
+        graphs = GnPInPOutGraphGenerator.getInstance().generate(properties);
         return this;
     }
 
@@ -59,22 +59,22 @@ public class TaskChainBuilder {
 
     public TaskChainBuilder generateMinSpanningTreeTasks() {
         if (name == null) name = generateName("MinSpanningTree", graphs.getProperties());
-        Checker checker = new MinSpanningTreeChecker(graphs, graphs.getProperties().getClustersCount());
-        tasks.addAll(generateDefaultTasks(checker));
+        GridSearch gridSearch = new MinSpanningTreeGridSearch(graphs, graphs.getProperties().getClustersCount());
+        tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
         return this;
     }
 
     public TaskChainBuilder generateWardTasks() {
         if (name == null) name = generateName("Ward", graphs.getProperties());
-        Checker checker = new WardChecker(graphs, graphs.getProperties().getClustersCount());
-        tasks.addAll(generateDefaultTasks(checker));
+        GridSearch gridSearch = new WardGridSearch(graphs, graphs.getProperties().getClustersCount());
+        tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
         return this;
     }
 
     public TaskChainBuilder generateDiffusionTasks() {
         if (name == null) name = generateName("Diffusion", graphs.getProperties());
-        Checker checker = new DiffusionChecker(graphs);
-        tasks.addAll(generateDefaultTasks(checker));
+        GridSearch gridSearch = new DiffusionGridSearch(graphs);
+        tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
         return this;
     }
 
@@ -87,11 +87,11 @@ public class TaskChainBuilder {
         return chain;
     }
 
-    private List<Task> generateDefaultTasks(Checker checker) {
+    public static List<Task> generateDefaultTasks(GridSearch gridSearch, List<MetricWrapper> metricWrappers, int pointsCount) {
         List<Task> tasks = new ArrayList<>();
         metricWrappers.forEach(metricWrapper -> {
-            Checker checkerClone = checker.clone();
-            tasks.add(new DefaultTask(checkerClone, metricWrapper, pointsCount));
+            GridSearch gridSearchClone = gridSearch.clone();
+            tasks.add(new DefaultTask(gridSearchClone, metricWrapper, pointsCount));
         });
         return tasks;
     }
@@ -102,6 +102,6 @@ public class TaskChainBuilder {
                 properties.getClustersCount() + " clusters, " +
                 "pIn=" + properties.getP_in() + ", " +
                 "pOut=" + properties.getP_out() + ", " +
-                properties.getGraphsCount() + "graphs";
+                properties.getGraphsCount() + " graphs";
     }
 }

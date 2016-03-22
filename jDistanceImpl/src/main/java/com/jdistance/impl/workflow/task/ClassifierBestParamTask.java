@@ -1,11 +1,10 @@
 package com.jdistance.impl.workflow.task;
 
-import com.jdistance.impl.workflow.checker.classifier.KNearestNeighborsChecker;
+import com.jdistance.impl.workflow.gridsearch.classifier.KNearestNeighborsGridSearch;
 import com.jdistance.metric.MetricWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -18,8 +17,8 @@ public class ClassifierBestParamTask extends Task {
     private Integer checkerPointsCount;
     private Integer pointsCount;
 
-    public ClassifierBestParamTask(KNearestNeighborsChecker checker, MetricWrapper metricWrapper, Double from, Double to, int checkerPointsCount, int pointsCount) {
-        this.checker = checker;
+    public ClassifierBestParamTask(KNearestNeighborsGridSearch checker, MetricWrapper metricWrapper, Double from, Double to, int checkerPointsCount, int pointsCount) {
+        this.gridSearch = checker;
         this.metricWrapper = metricWrapper;
         this.from = from;
         this.to = to;
@@ -29,7 +28,7 @@ public class ClassifierBestParamTask extends Task {
 
     @Override
     public String getName() {
-        return metricWrapper.getName() + " " + checker.getName();
+        return metricWrapper.getName() + " " + gridSearch.getName();
     }
 
     @Override
@@ -42,9 +41,9 @@ public class ClassifierBestParamTask extends Task {
         double step = (to - from) / (pointsCount - 1);
         IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double x = from + idx * step;
-            ((KNearestNeighborsChecker)checker).setX(x);
+            ((KNearestNeighborsGridSearch) gridSearch).setX(x);
             log.info("distance {}, x: {}", metricWrapper.getName(), x);
-            Task task = new DefaultTask(checker, metricWrapper, checkerPointsCount);
+            Task task = new DefaultTask(gridSearch, metricWrapper, checkerPointsCount);
             Map.Entry<Double, Double> best = task.execute().getMaxResult();
             result.put(x, best.getValue());
         });

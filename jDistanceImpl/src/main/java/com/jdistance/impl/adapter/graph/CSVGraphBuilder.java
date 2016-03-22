@@ -78,11 +78,11 @@ public class CSVGraphBuilder {
     }
 
     public Graph build() {
-        return new Graph(sparseMatrix, nodes);
+        return new Graph(nodes, sparseMatrix);
     }
 
     public GraphBundle buildBundle() {
-        Graph graph = new Graph(sparseMatrix, nodes);
+        Graph graph = new Graph(nodes, sparseMatrix);
         int nodesCount = nodes.size();
         int classesCount = nodes.stream().map(Node::getLabel).collect(Collectors.toSet()).size();
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(1, nodesCount, classesCount, 0, 0);

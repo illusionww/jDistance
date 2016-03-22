@@ -8,12 +8,12 @@ import java.util.function.UnaryOperator;
 
 import static jeigen.Shortcuts.*;
 
-public class JeigenBuilder {
-    public static DenseMatrix log(DenseMatrix A) {
+public class MetricBuilder {
+    private static DenseMatrix log(DenseMatrix A) {
         return elementWise(A, Math::log);
     }
 
-    public static DenseMatrix exp(DenseMatrix A) {
+    private static DenseMatrix exp(DenseMatrix A) {
         return elementWise(A, Math::exp);
     }
 
@@ -27,7 +27,7 @@ public class JeigenBuilder {
         return new DenseMatrix(values);
     }
 
-    public static DenseMatrix diagToVector(DenseMatrix A) {
+    private static DenseMatrix diagToVector(DenseMatrix A) {
         DenseMatrix diag = new DenseMatrix(A.rows, 1);
         double[] values = A.getValues();
         for (int i = 0; i < A.rows; i++) {
@@ -36,7 +36,7 @@ public class JeigenBuilder {
         return diag;
     }
 
-    public static DenseMatrix pinv(DenseMatrix A) {
+    private static DenseMatrix pinv(DenseMatrix A) {
         if (A.cols != A.rows) {
             throw new RuntimeException("pinv matrix size error: must be square matrix");
         }
@@ -44,7 +44,7 @@ public class JeigenBuilder {
         return A.fullPivHouseholderQRSolve(diag(ones(A.cols, 1)));
     }
 
-    public static DenseMatrix dummy_mexp(DenseMatrix A, int nSteps) {
+    private static DenseMatrix dummy_mexp(DenseMatrix A, int nSteps) {
         DenseMatrix totalSum = eye(A.rows);
         DenseMatrix currentElement = eye(A.rows);
 
@@ -60,7 +60,7 @@ public class JeigenBuilder {
         return dm.div(avg);
     }
 
-    public static DenseMatrix sqrtD(DenseMatrix D) {
+    static DenseMatrix sqrtD(DenseMatrix D) {
         return D.sqrt();
     }
 
@@ -69,7 +69,7 @@ public class JeigenBuilder {
     }
 
     // H = element-wise log(H0)
-    public DenseMatrix H0toH(DenseMatrix H0) {
+    DenseMatrix H0toH(DenseMatrix H0) {
         return log(H0);
     }
 
@@ -82,7 +82,7 @@ public class JeigenBuilder {
     }
 
     // H0 = (I - tA)^{-1}
-    public DenseMatrix getH0Walk(DenseMatrix A, double t) {
+    DenseMatrix getH0Walk(DenseMatrix A, double t) {
         int d = A.cols;
         DenseMatrix I = eye(d);
         DenseMatrix ins = I.sub(A.mul(t));
@@ -97,11 +97,11 @@ public class JeigenBuilder {
     }
 
     // H0 = exp(tA)
-    public DenseMatrix getH0DummyCommunicability(DenseMatrix A, double t) {
+    DenseMatrix getH0DummyCommunicability(DenseMatrix A, double t) {
         return dummy_mexp(A.mul(t), 30);
     }
 
-    public DenseMatrix getH0Communicability(DenseMatrix A, double t) {
+    DenseMatrix getH0Communicability(DenseMatrix A, double t) {
         return A.mul(t).mexp();
     }
 
@@ -118,7 +118,7 @@ public class JeigenBuilder {
         return JohnsonsAlgorithm.getAllShortestPaths(A);
     }
 
-    public DenseMatrix getDFreeEnergy(DenseMatrix A, double beta) {
+    DenseMatrix getDFreeEnergy(DenseMatrix A, double beta) {
         int d = A.cols;
 
         // P^{ref} = D^{-1}*A, D = Diag(A*e)
@@ -147,7 +147,7 @@ public class JeigenBuilder {
         return Δ_FE.sub(diag(diagToVector(Δ_FE)));
     }
 
-    public DenseMatrix getD_RSP(DenseMatrix A, double beta) {
+    DenseMatrix getD_RSP(DenseMatrix A, double beta) {
         int d = A.cols;
 
         // P^{ref} = D^{-1}*A, D = Diag(A*e)
@@ -178,7 +178,7 @@ public class JeigenBuilder {
     }
 
     // K_CCT = K_CT + HD^{-1}AD^{-1}H
-    public DenseMatrix getH_SCCT(DenseMatrix A) {
+    DenseMatrix getH_SCCT(DenseMatrix A) {
         int d = A.cols;
 
         // K_CT = H_resistance

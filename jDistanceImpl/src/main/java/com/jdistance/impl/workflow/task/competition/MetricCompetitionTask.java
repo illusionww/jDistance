@@ -2,8 +2,8 @@ package com.jdistance.impl.workflow.task.competition;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.nolearning.MetricChecker;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
+import com.jdistance.impl.workflow.gridsearch.nolearning.MetricGridSearch;
 import com.jdistance.impl.workflow.util.StandardizeHelper;
 import jeigen.DenseMatrix;
 
@@ -17,8 +17,8 @@ public class MetricCompetitionTask extends CompetitionTask {
     }
 
     @Override
-    protected Checker getChecker(GraphBundle graphs, CompetitionDTO dto) {
-        return new MetricChecker(graphs, dto.k);
+    protected GridSearch getChecker(GraphBundle graphs, CompetitionDTO dto) {
+        return new MetricGridSearch(graphs, dto.k);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class MetricCompetitionTask extends CompetitionTask {
     private void additionalInformation() {
         Graph graph = forCompetitions.getGraphs().get(0);
         competitionDTOs.stream().forEach(dto -> {
-            DenseMatrix A = new DenseMatrix(graph.getSparseMatrix());
+            DenseMatrix A = new DenseMatrix(graph.getA());
             Double parameter = dto.metricWrapper.getScale().calc(A, dto.pLearn.getKey());
             DenseMatrix D = dto.metricWrapper.getMetric().getD(A, parameter);
             D = StandardizeHelper.standardize(D);

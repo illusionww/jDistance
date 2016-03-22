@@ -16,23 +16,16 @@ import java.util.*;
 
 public class GNUPlotAdapter {
     public static final PlotColor[] colors = {
+            NamedPlotColor.BLACK,
             NamedPlotColor.RED,
-            NamedPlotColor.GREEN,
             NamedPlotColor.BLUE,
-            NamedPlotColor.YELLOW,
-            NamedPlotColor.GREY,
-            NamedPlotColor.BLACK,
-            NamedPlotColor.ORANGE,
+            NamedPlotColor.MAGENTA,
+            NamedPlotColor.FOREST_GREEN,
+            NamedPlotColor.NAVY,
             NamedPlotColor.VIOLET,
-            NamedPlotColor.CYAN,
-            NamedPlotColor.BROWN,
-
-            NamedPlotColor.BLUE,
-            NamedPlotColor.YELLOW,
-            NamedPlotColor.GREY,
-            NamedPlotColor.BLACK,
-            NamedPlotColor.ORANGE,
-            NamedPlotColor.VIOLET
+            NamedPlotColor.PURPLE,
+            NamedPlotColor.DARK_RED,
+            NamedPlotColor.DARK_YELLOW
     };
     private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
     private String gnuplotPath;
@@ -53,7 +46,8 @@ public class GNUPlotAdapter {
 
     public void drawData(String title, List<PlotDTO> data, String outputPath) {
         ImageTerminal png = new ImageTerminal();
-        png.set("size", "1440,900");
+        png.set("size", "3216,2461");
+        png.set("enhanced font", "'Verdana,60'");
         File file = new File(outputPath);
         try {
             file.createNewFile();
@@ -64,12 +58,22 @@ public class GNUPlotAdapter {
 
         JavaPlot gnuplot = new JavaPlot(gnuplotPath);
         gnuplot.setTerminal(png);
+        gnuplot.set("border", "31 lw 8.0");
+        gnuplot.set("xtics", "0,0.2,1");
+        gnuplot.set("ytics", "0,0.2,1");
+        gnuplot.set("mxtics", "2");
+        gnuplot.set("mytics", "2");
+        gnuplot.set("grid mytics ytics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
+        gnuplot.set("grid mxtics xtics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
+        gnuplot.set("xrange", "[0.0:1.0]");
+        gnuplot.set("yrange", "[0.2:1.0]");
 
         for (PlotDTO plot : data) {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
-            plotStyle.setLineWidth(2);
+            plotStyle.setLineWidth(5);
+            plotStyle.set("smooth", "bezier");
 
             DataSetPlot dataSetPlot = new DataSetPlot(plot.getData());
             dataSetPlot.setPlotStyle(plotStyle);
@@ -78,9 +82,8 @@ public class GNUPlotAdapter {
             gnuplot.addPlot(dataSetPlot);
         }
 
-        gnuplot.setTitle(title);
-        gnuplot.setKey(JavaPlot.Key.OUTSIDE);
-        gnuplot.set("yrange", "[0.2 : 1.0]");
+//        gnuplot.setTitle(title);
+        gnuplot.setKey(JavaPlot.Key.TOP_RIGHT);
         gnuplot.plot();
 
         try {

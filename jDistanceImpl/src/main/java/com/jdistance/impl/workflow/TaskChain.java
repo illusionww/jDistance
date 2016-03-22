@@ -35,14 +35,14 @@ public class TaskChain {
         this.tasks = new ArrayList<>(tasks);
     }
 
-    public static String buildPNGFullNameByImgTitle(String imgTitle) {
+    private static String buildPNGFullNameByImgTitle(String imgTitle) {
         return ContextProvider.getInstance().getContext().getImgFolder() +
                 File.separator +
                 imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") +
                 ".png";
     }
 
-    public static String buildTXTFullNameByImgTitle(String imgTitle) {
+    private static String buildTXTFullNameByImgTitle(String imgTitle) {
         return ContextProvider.getInstance().getContext().getImgFolder() +
                 File.separator +
                 imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") +

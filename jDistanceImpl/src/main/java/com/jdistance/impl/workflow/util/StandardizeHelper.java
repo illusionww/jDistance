@@ -20,7 +20,7 @@ public class StandardizeHelper {
         return D.div(deviation);
     }
 
-    public static double getDeviation(DenseMatrix D) {
+    private static double getDeviation(DenseMatrix D) {
         Double deviationRaw = 0d;
         for (int c = 0; c < D.cols; c++) {
             for (int r = c + 1; r < D.rows; r++) {

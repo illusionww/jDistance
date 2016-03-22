@@ -1,24 +1,23 @@
-package com.jdistance.impl.workflow.checker.classifier;
+package com.jdistance.impl.workflow.gridsearch.classifier;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
-import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.CheckerTestResultDTO;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.learning.classifier.KNearestNeighbors;
 import jeigen.DenseMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KNearestNeighborsChecker extends Checker {
+public class KNearestNeighborsGridSearch extends GridSearch {
     private GraphBundle graphs;
     private Integer k;
     private Double p;
     private Double x;
 
 
-    public KNearestNeighborsChecker(GraphBundle graphs, Integer k, Double p) {
+    public KNearestNeighborsGridSearch(GraphBundle graphs, Integer k, Double p) {
         this.graphs = graphs;
         this.k = k;
         this.p = p;
@@ -30,7 +29,7 @@ public class KNearestNeighborsChecker extends Checker {
      * @param p - доля заранее размеченных вершин
      * @param x - параметр, влияющий на вес соседей
      */
-    public KNearestNeighborsChecker(GraphBundle graphs, Integer k, Double p, Double x) {
+    public KNearestNeighborsGridSearch(GraphBundle graphs, Integer k, Double p, Double x) {
         this.graphs = graphs;
         this.k = k;
         this.p = p;
@@ -52,7 +51,7 @@ public class KNearestNeighborsChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
+    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
         Integer countErrors = 0;
 
         final KNearestNeighbors classifier = new KNearestNeighbors(D, node);
@@ -66,11 +65,12 @@ public class KNearestNeighborsChecker extends Checker {
             }
         }
 
-        return new CheckerTestResultDTO(data.size(), countErrors, classifier.getCountColoredNodes());
+        double total = data.size() - classifier.getCountColoredNodes();
+        return 1.0 - countErrors / total;
     }
 
     @Override
-    public KNearestNeighborsChecker clone() {
-        return new KNearestNeighborsChecker(graphs, k, p, x);
+    public KNearestNeighborsGridSearch clone() {
+        return new KNearestNeighborsGridSearch(graphs, k, p, x);
     }
 }

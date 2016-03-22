@@ -1,30 +1,28 @@
-package com.jdistance.impl.workflow.checker.clusterer;
+package com.jdistance.impl.workflow.gridsearch.clusterer;
 
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
-import com.jdistance.impl.workflow.checker.Checker;
-import com.jdistance.impl.workflow.checker.CheckerTestResultDTO;
-import com.jdistance.learning.clusterer.Ward;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
+import com.jdistance.learning.clusterer.MinSpanningTree;
 import jeigen.DenseMatrix;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class WardChecker extends Checker {
+public class MinSpanningTreeGridSearch extends GridSearch {
     private GraphBundle graphs;
     private Integer k;
 
-    // k - count of clusters
-    public WardChecker(GraphBundle graphs, Integer k) {
+    public MinSpanningTreeGridSearch(GraphBundle graphs, Integer k) {
         this.graphs = graphs;
         this.k = k;
     }
 
     @Override
     public String getName() {
-        return "Ward: k=" + k + "; " + graphs.getName();
+        return "MinSpanningTree: k=" + k + "; " + graphs.getName();
     }
 
     @Override
@@ -33,10 +31,10 @@ public class WardChecker extends Checker {
     }
 
     @Override
-    protected CheckerTestResultDTO roundErrors(Graph graph, DenseMatrix D, List<Node> node) {
+    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
         Integer countErrors = 0;
 
-        final Ward clusterer = new Ward(D);
+        final MinSpanningTree clusterer = new MinSpanningTree(D);
         final HashMap<Integer, Integer> data = clusterer.predict(k);
 
         for (int i = 0; i < data.size(); ++i) {
@@ -48,11 +46,11 @@ public class WardChecker extends Checker {
         }
 
         double total = ((double) data.size() * (double) (data.size() - 1)) / 2.0;
-        return new CheckerTestResultDTO(total, (double) countErrors);
+        return 1.0 - countErrors / total;
     }
 
     @Override
-    public WardChecker clone() {
-        return new WardChecker(graphs, k);
+    public MinSpanningTreeGridSearch clone() {
+        return new MinSpanningTreeGridSearch(graphs, k);
     }
 }

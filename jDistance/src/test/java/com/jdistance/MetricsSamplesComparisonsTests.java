@@ -1,89 +1,22 @@
 package com.jdistance;
 
-import com.jdistance.metric.JeigenBuilder;
 import com.jdistance.metric.Metric;
+import com.jdistance.metric.MetricBuilder;
 import com.jdistance.metric.Scale;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static com.jdistance.TestHelperLib.*;
+import static com.jdistance.TestHelperLib.chainGraph;
+import static com.jdistance.TestHelperLib.equalDoubleStrict;
 import static org.junit.Assert.assertTrue;
 
-public class DistancesTest {
-
-    @Test
-    public void testChainGraphAllDistancesItemsMoreThanZero() {
-        double from = 0.0001;
-        double to = 0.5;
-        int pointsCount = 30;
-
-        Metric values[] = Metric.values();
-        Arrays.asList(values).forEach(metric -> {
-            double step = (to - from) / (pointsCount - 1);
-            IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
-                Double base = from + idx * step;
-                Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.getD(chainGraph, i);
-                for (double item : result.getValues()) {
-                    assertTrue(metric.getName() + ", parameter = " + i + ":  matrix element less than zero or NaN:\n" + result, item >= 0);
-                }
-            });
-        });
-    }
-
-    @Test
-    public void testChainGraphAllDistancesSymmetryMatrix() {
-        double from = 0.005;
-        double to = 0.5;
-        int pointsCount = 30;
-
-        Metric values[] = Metric.values();
-        Arrays.asList(values).forEach(metric -> {
-            double step = (to - from) / (pointsCount - 1);
-            IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
-                Double base = from + idx * step;
-                Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.getD(chainGraph, i);
-                double resultArray[][] = toArray2(result);
-                int d = resultArray.length;
-                for (int j = 1; j < d - 1; j++) {
-                    for (int k = j + 1; k < d; k++) {
-                        assertTrue(metric.getName() + ", parameter = " + i + " (" + base + "):  matrix isn't symmetry:\n" + resultArray,
-                                equalDoubleStrict(resultArray[j][k], resultArray[k][j]));
-                    }
-                }
-            });
-        });
-    }
-
-    @Test
-    public void testChainGraphAllDistancesMainDiagonalZero() {
-        double from = 0.0001;
-        double to = 0.5;
-        int pointsCount = 30;
-
-        Metric values[] = Metric.values();
-        Arrays.asList(values).forEach(metric -> {
-            double step = (to - from) / (pointsCount - 1);
-            IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
-                Double base = from + idx * step;
-                Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.getD(chainGraph, i);
-                double resultArray[][] = toArray2(result);
-                for (int j = 0; j < resultArray.length; j++) {
-                    assertTrue(metric.getName() + ", parameter = " + i + " diagonal not zero:\n" + result, resultArray[j][j] == 0);
-                }
-            });
-        });
-    }
-
+public class MetricsSamplesComparisonsTests {
     @Test
     public void testChainGraphShortestPathDistance() {
-        JeigenBuilder db = new JeigenBuilder();
+        MetricBuilder db = new MetricBuilder();
         DenseMatrix D = db.getDShortestPath(chainGraph);
         double multiplier = 1.0 / D.get(0, 1);
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.000));
@@ -94,7 +27,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphResistanceDistance() {
-        JeigenBuilder db = new JeigenBuilder();
+        MetricBuilder db = new MetricBuilder();
         DenseMatrix L = db.getL(chainGraph);
         DenseMatrix H = db.getHResistance(L);
         DenseMatrix D = db.getD(H);
@@ -107,7 +40,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphResistanceDistanceNormalization() {
-        JeigenBuilder db = new JeigenBuilder();
+        MetricBuilder db = new MetricBuilder();
         DenseMatrix L = db.getL(triangleGraph);
         DenseMatrix H = db.getHResistance(L);
         DenseMatrix D = db.getD(H);
@@ -221,7 +154,7 @@ public class DistancesTest {
 
     @Test
     public void testChainGraphForestDistance() {
-        JeigenBuilder builder = new JeigenBuilder();
+        MetricBuilder builder = new MetricBuilder();
 
         DenseMatrix L = builder.getL(chainGraph);
         DenseMatrix H0 = builder.getH0Forest(L, 0);
@@ -243,7 +176,7 @@ public class DistancesTest {
 
     @Test
     public void testTriangleGraphForestDistance() {
-        JeigenBuilder builder = new JeigenBuilder();
+        MetricBuilder builder = new MetricBuilder();
 
         DenseMatrix L = builder.getL(triangleGraph);
         DenseMatrix H0 = builder.getH0Forest(L, 0.2);
@@ -253,72 +186,5 @@ public class DistancesTest {
                 {0.01851852, 0.11111111, 0.74768519, 0.12268519},
                 {0.01851852, 0.11111111, 0.12268519, 0.74768519}};
         assertTrue(Arrays.deepToString(forChain02), equalArraysStrict(forChain02, forChain0etalon));
-    }
-
-    @Test
-    public void testChainGraphSP_CTEquality() {
-        Metric distance = Metric.SP_CT;
-        double[][] SP = toArray2(distance.getD(chainGraph, 0));
-        double[][] CT = toArray2(distance.getD(chainGraph, 1));
-        for (int i = 0; i < chainGraph.cols; i++) {
-            for (int j = 0; j < chainGraph.cols; j++) {
-                assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
-                        equalDoubleStrict(SP[i][j], CT[i][j]));
-            }
-        }
-    }
-
-    @Test
-    public void testBigChainGraphSP_CTEquality() {
-        double[][] bigChain = new double[100][100];
-        for (int i = 0; i < 100; i++) {
-            if (i + 1 < 100) {
-                bigChain[i][i + 1] = 1.0;
-            }
-            if (i - 1 >= 0) {
-                bigChain[i][i - 1] = 1.0;
-            }
-        }
-        DenseMatrix chainGraph = new DenseMatrix(bigChain);
-        Metric distance = Metric.SP_CT;
-        double[][] SP = toArray2(distance.getD(chainGraph, 0));
-        double[][] CT = toArray2(distance.getD(chainGraph, 1));
-        for (int i = 0; i < chainGraph.cols; i++) {
-            for (int j = 0; j < chainGraph.cols; j++) {
-                assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
-                        equalDoubleStrict(SP[i][j], CT[i][j]));
-            }
-        }
-    }
-
-    @Test
-    public void testFullGraphSP_CTEquality() {
-        Metric distance = Metric.SP_CT;
-        double[][] SP = toArray2(distance.getD(fullGraph, 0));
-        double[][] CT = toArray2(distance.getD(fullGraph, 1));
-
-        for (int i = 0; i < fullGraph.cols; i++) {
-            for (int j = 0; j < fullGraph.cols; j++) {
-                assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
-                        equalDoubleStrict(SP[i][j], CT[i][j]));
-            }
-        }
-    }
-
-    @Test
-    public void testFullGraphSPLogForWalkEquality() {
-        DenseMatrix graph = fullGraph;
-        Double parameter = 0.000001;
-
-        double[][] SP = toArray2(JeigenBuilder.normalization(Metric.SP_CT.getD(graph, parameter)));
-        double[][] logFor = toArray2(JeigenBuilder.normalization(Metric.LOG_FOREST.getD(graph, parameter)));
-        double[][] Walk = toArray2(JeigenBuilder.normalization(Metric.WALK.getD(graph, parameter)));
-
-        for (int i = 0; i < chainGraph.cols; i++) {
-            for (int j = 0; j < chainGraph.cols; j++) {
-                assertTrue("SP, logFor and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", logFor=" + logFor[i][j] + ", Walk=" + Walk[i][j],
-                        equalDoubleStrict(SP[i][j], logFor[i][j]) && equalDoubleStrict(SP[i][j], Walk[i][j]));
-            }
-        }
     }
 }

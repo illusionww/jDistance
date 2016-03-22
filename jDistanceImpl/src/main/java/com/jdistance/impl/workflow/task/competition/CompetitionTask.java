@@ -1,7 +1,7 @@
 package com.jdistance.impl.workflow.task.competition;
 
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.impl.workflow.checker.Checker;
+import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.impl.workflow.task.ClassifierBestParamTask;
 import com.jdistance.impl.workflow.task.DefaultTask;
@@ -13,10 +13,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Stream;
 
 public abstract class CompetitionTask {
@@ -50,8 +47,8 @@ public abstract class CompetitionTask {
         Stream<CompetitionDTO> stream = ContextProvider.getInstance().getContext().getParallel() ? competitionDTOs.parallelStream() : competitionDTOs.stream();
         stream.forEach(dto -> {
             log.info("{}...", dto.metricWrapper.getName());
-            Checker checker = getChecker(forLearning, dto);
-            Task task = new DefaultTask(checker, dto.metricWrapper, pointsCount);
+            GridSearch gridSearch = getChecker(forLearning, dto);
+            Task task = new DefaultTask(gridSearch, dto.metricWrapper, pointsCount);
             dto.pLearn = task.execute().getMaxResult();
         });
     }
@@ -62,8 +59,8 @@ public abstract class CompetitionTask {
             competitionDTOs.stream().forEach(dto -> {
                 GraphBundle bundle = forCompetitions.clone();
                 bundle.setGraphs(Collections.singletonList(graph));
-                Checker checker = getChecker(bundle, dto);
-                dto.tempResult = checker.test(dto.metricWrapper, dto.pLearn.getKey());
+                GridSearch gridSearch = getChecker(bundle, dto);
+                dto.tempResult = gridSearch.validate(dto.metricWrapper, dto.pLearn.getKey());
             });
             Collections.sort(competitionDTOs, Comparator.comparingDouble(i -> i.tempResult));
             for (int i = 0; i < competitionDTOs.size(); i++) {
@@ -91,5 +88,5 @@ public abstract class CompetitionTask {
         return this;
     }
 
-    protected abstract Checker getChecker(GraphBundle graphs, CompetitionDTO dto);
+    protected abstract GridSearch getChecker(GraphBundle graphs, CompetitionDTO dto);
 }
