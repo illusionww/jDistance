@@ -3,85 +3,48 @@ package com.jdistance.impl;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.adapter.graph.CSVGraphBuilder;
 import com.jdistance.impl.workflow.TaskChainBuilder;
-import com.jdistance.impl.workflow.gridsearch.clusterer.WardGridSearch;
-import com.jdistance.impl.workflow.task.CustomTask;
 import com.jdistance.metric.Metric;
-import com.jdistance.metric.MetricWrapper;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        compareSquaredAndNonSquaredComm();
+        allNewsGroups();
     }
 
-    private static void compareSquaredAndNonSquaredComm() {
-        new TaskChainBuilder(Arrays.asList(
-                new MetricWrapper("Comm", Metric.COMM_D),
-                new MetricWrapper("Comm not squared", Metric.COMM_D_NOT_SQUARED),
-                new MetricWrapper("logComm", Metric.LOG_COMM_D),
-                new MetricWrapper("logComm not squared", Metric.LOG_COMM_D_NOT_SQUARED)
-        ), 120).generateGraphs(2, 100, 5, 0.3, 0.1).generateWardTasks().build().execute().write().draw();
+    private static void allNewsGroups() throws ParserConfigurationException, SAXException, IOException {
+        List<String[]> newsgroups = Arrays.asList(
+                new String[] {"news_2cl_1", "data/newsgroup/news_2cl_1_classeo.csv", "data/newsgroup/news_2cl_1_Docr.csv", "[0.49:1.0]"},
+                new String[] {"news_2cl_2", "data/newsgroup/news_2cl_2_classeo.csv", "data/newsgroup/news_2cl_2_Docr.csv", "[0.49:1.0]"},
+                new String[] {"news_2cl_3", "data/newsgroup/news_2cl_3_classeo.csv", "data/newsgroup/news_2cl_3_Docr.csv", "[0.49:1.0]"},
+                new String[] {"news_3cl_1", "data/newsgroup/news_3cl_1_classeo.csv", "data/newsgroup/news_3cl_1_Docr.csv", "[0.33:1.0]"},
+                new String[] {"news_3cl_2", "data/newsgroup/news_3cl_2_classeo.csv", "data/newsgroup/news_3cl_2_Docr.csv", "[0.33:1.0]"},
+                new String[] {"news_3cl_3", "data/newsgroup/news_3cl_3_classeo.csv", "data/newsgroup/news_3cl_3_Docr.csv", "[0.33:1.0]"},
+                new String[] {"news_5cl_1", "data/newsgroup/news_5cl_1_classeo.csv", "data/newsgroup/news_5cl_1_Docr.csv", "[0.2:1.0]"},
+                new String[] {"news_5cl_2", "data/newsgroup/news_5cl_2_classeo.csv", "data/newsgroup/news_5cl_2_Docr.csv", "[0.2:1.0]"},
+                new String[] {"news_5cl_3", "data/newsgroup/news_5cl_3_classeo.csv", "data/newsgroup/news_5cl_3_Docr.csv", "[0.2:1.0]"}
+        );
+        for (String[] array : newsgroups) {
+            CSVGraphsNewsgroup(array[0], array[1], array[2], array[3]);
+        }
     }
 
-    private static void CSVGraphsPoliticalBooks() throws IOException, SAXException, ParserConfigurationException {
-        int pointsCount = 200;
-        GraphBundle graphs = new CSVGraphBuilder()
-                .importNodesIdNameClass("data/polbooks_nodes.csv")
-                .importEdgesList("data/polbooks_edges.csv")
-                .buildBundle();
-        new TaskChainBuilder("Polbooks: 105 nodes, 3 clusters, MinSpanningTree", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateMinSpanningTreeTasks().build().execute().write().draw();
-        new TaskChainBuilder("Polbooks: 105 nodes, 3 clusters, Diffusion", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw();
-        new TaskChainBuilder("Polbooks: 105 nodes, 3 clusters, Ward", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateWardTasks().build().execute().write().draw();
-    }
-
-    private static void CSVGraphsFootball() throws IOException, SAXException, ParserConfigurationException {
-        int pointsCount = 200;
-        GraphBundle graphs = new CSVGraphBuilder()
-                .importNodesIdNameClass("data/football_nodes.csv")
-                .importEdgesList("data/football_edges.csv")
-                .buildBundle();
-        new TaskChainBuilder("Football: 115 nodes, 12 clusters, MinSpanningTree", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateMinSpanningTreeTasks().build().execute().write().draw();
-        new TaskChainBuilder("Football: 115 nodes, 12 clusters, Diffusion", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw();
-        new TaskChainBuilder("Football: 115 nodes, 12 clusters, Ward", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateWardTasks().build().execute().write().draw();
-//        GraphMLWriter writer = new GraphMLWriter();
-//        writer.writeGraph(graphs.getGraphs().get(0), ContextProvider.getInstance().getContext().getImgFolder() + "/football.graphml");
-    }
-
-    private static void CSVGraphsNewsgroup() throws IOException, ParserConfigurationException, SAXException {
+    private static void CSVGraphsNewsgroup(String name, String pathToClasses, String pathToA, String yrange) throws IOException, ParserConfigurationException, SAXException {
         int pointsCount = 100;
         GraphBundle graphs = new CSVGraphBuilder()
-                .importNodesClassOnly("data/newsgroup/news_2cl_1_classeo.csv")
-                .importAdjacencyMatrix("data/newsgroup/news_2cl_1_Docr.csv")
+                .importNodesClassOnly(pathToClasses)
+                .importAdjacencyMatrix(pathToA)
                 .buildBundle();
-//        new TaskChainBuilder("news_2cl_1, MinSpanningTree", Metric.getDefaultDistances(), pointsCount)
-//                .setGraphs(graphs).generateMinSpanningTreeTasks().build().execute().write().draw();
-//        new TaskChainBuilder("news_2cl_1, Diffusion", Metric.getDefaultDistances(), pointsCount)
-//                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw();
-        new TaskChainBuilder("news_2cl_1, Ward", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateWardTasks().build().execute().write().draw();
+        new TaskChainBuilder(name + ", MinSpanningTree", Metric.getDefaultDistances(), pointsCount)
+                .setGraphs(graphs).generateMinSpanningTreeTasks().build().execute().write().draw(yrange);
+        new TaskChainBuilder(name + ", Diffusion", Metric.getDefaultDistances(), pointsCount)
+                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw(yrange);
+        new TaskChainBuilder(name + ", Ward", Metric.getDefaultDistances(), pointsCount)
+                .setGraphs(graphs).generateWardTasks().build().execute().write().draw(yrange);
     }
-
-    private static void testLogCom() throws IOException, ParserConfigurationException, SAXException {
-        int pointsCount = 100;
-        GraphBundle graphs = new CSVGraphBuilder()
-                .importNodesClassOnly("data/newsgroup/news_2cl_1_classeo.csv")
-                .importAdjacencyMatrix("data/newsgroup/news_2cl_1_Docr.csv")
-                .buildBundle();
-        new TaskChainBuilder("news_2cl_1, Ward", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs)
-                .addTask(new CustomTask(new WardGridSearch(graphs, 2), new MetricWrapper(Metric.LOG_COMM_D), 0.5, 0.9, 40))
-                .build().execute().write().draw();
-    }
-
 }
 

@@ -1,7 +1,5 @@
 package com.jdistance.impl.workflow.context;
 
-import com.jdistance.metric.Scale;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -12,8 +10,7 @@ public class ContextProvider {
     private Context context;
 
     private ContextProvider() {
-        ClassLoader classLoader = getClass().getClassLoader();
-        File contextFile = new File(classLoader.getResource("context.xml").getFile());
+        File contextFile = new File("context.xml");
         unmarshalContext(contextFile);
         checkContext();
     }
@@ -51,9 +48,13 @@ public class ContextProvider {
             throw new RuntimeException("Context is not filled properly");
         }
 
-        File gnuplotPathFile = new File(context.getGnuplotPath());
-        if (!gnuplotPathFile.exists()) {
-            throw new RuntimeException("Gnuplot not found");
+        if (!"auto".equals(context.getGnuplotPath())) {
+            File gnuplotPathFile = new File(context.getGnuplotPath());
+            if (!gnuplotPathFile.exists()) {
+                throw new RuntimeException("Gnuplot not found");
+            }
+        } else {
+            context.setGnuplotPath(null);
         }
 
         File imgFolderFile = new File(context.getImgFolder());

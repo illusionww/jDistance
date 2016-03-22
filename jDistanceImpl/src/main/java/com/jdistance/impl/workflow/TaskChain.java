@@ -35,20 +35,6 @@ public class TaskChain {
         this.tasks = new ArrayList<>(tasks);
     }
 
-    private static String buildPNGFullNameByImgTitle(String imgTitle) {
-        return ContextProvider.getInstance().getContext().getImgFolder() +
-                File.separator +
-                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") +
-                ".png";
-    }
-
-    private static String buildTXTFullNameByImgTitle(String imgTitle) {
-        return ContextProvider.getInstance().getContext().getImgFolder() +
-                File.separator +
-                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") +
-                ".txt";
-    }
-
     public String getName() {
         return name;
     }
@@ -86,12 +72,12 @@ public class TaskChain {
         return this;
     }
 
-    public TaskChain draw() {
-        draw(name);
+    public TaskChain draw(String yrange) {
+        draw(name, yrange);
         return this;
     }
 
-    public TaskChain draw(String imgTitle) {
+    public TaskChain draw(String imgTitle, String yrange) {
         Iterator<PlotColor> color = Arrays.asList(GNUPlotAdapter.colors).iterator();
 
         List<PlotDTO> plots = new ArrayList<>();
@@ -106,7 +92,7 @@ public class TaskChain {
         });
 
         GNUPlotAdapter ga = new GNUPlotAdapter(ContextProvider.getInstance().getContext().getGnuplotPath());
-        ga.drawData(imgTitle, plots, buildPNGFullNameByImgTitle(imgTitle));
+        ga.drawData(imgTitle, plots, buildFullNameByImgTitle(imgTitle, "png"), buildFullNameByImgTitle(imgTitle, "gnu"), yrange);
 
         return this;
     }
@@ -117,7 +103,7 @@ public class TaskChain {
     }
 
     public TaskChain write(String filename) {
-        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(buildTXTFullNameByImgTitle(filename)))) {
+        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(buildFullNameByImgTitle(filename, "txt")))) {
             outputWriter.write("\t");
             for (Task task : tasks) {
                 MetricWrapper metricWrapper = task.getMetricWrapper();
@@ -133,29 +119,7 @@ public class TaskChain {
                 }
                 outputWriter.newLine();
             }
-            outputWriter.write("MIN_param\t");
-            for (Task task : tasks) {
-                outputWriter.write(task.getMinResult().getKey() + "\t");
-            }
-            outputWriter.newLine();
-
-            outputWriter.write("MIN_value\t");
-            for (Task task : tasks) {
-                outputWriter.write(task.getMinResult().getValue() + "\t");
-            }
-            outputWriter.newLine();
-
-            outputWriter.write("MAX_param\t");
-            for (Task task : tasks) {
-                outputWriter.write(task.getMaxResult().getKey() + "\t");
-            }
-            outputWriter.newLine();
-
-            outputWriter.write("MAX_value\t");
-            for (Task task : tasks) {
-                outputWriter.write(task.getMaxResult().getValue() + "\t");
-            }
-            outputWriter.newLine();
+//            writeMaxMinValues(outputWriter);
         } catch (IOException e) {
             System.err.println("IOException while write results");
         }
@@ -163,7 +127,40 @@ public class TaskChain {
         return this;
     }
 
+    public void writeMaxMinValues(BufferedWriter outputWriter) throws IOException {
+        outputWriter.write("MIN_param\t");
+        for (Task task : tasks) {
+            outputWriter.write(task.getMinResult().getKey() + "\t");
+        }
+        outputWriter.newLine();
+
+        outputWriter.write("MIN_value\t");
+        for (Task task : tasks) {
+            outputWriter.write(task.getMinResult().getValue() + "\t");
+        }
+        outputWriter.newLine();
+
+        outputWriter.write("MAX_param\t");
+        for (Task task : tasks) {
+            outputWriter.write(task.getMaxResult().getKey() + "\t");
+        }
+        outputWriter.newLine();
+
+        outputWriter.write("MAX_value\t");
+        for (Task task : tasks) {
+            outputWriter.write(task.getMaxResult().getValue() + "\t");
+        }
+        outputWriter.newLine();
+    }
+
     public Map<Task, Map<Double, Double>> getData() {
         return tasks.stream().collect(Collectors.toMap(task -> task, Task::getResult));
+    }
+
+    private static String buildFullNameByImgTitle(String imgTitle, String extension) {
+        return ContextProvider.getInstance().getContext().getImgFolder() +
+                File.separator +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") +
+                "." + extension;
     }
 }

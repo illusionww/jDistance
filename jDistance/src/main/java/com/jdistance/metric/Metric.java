@@ -134,16 +134,15 @@ public enum Metric {
 
     public static List<MetricWrapper> getDefaultDistances() {
         return Arrays.asList(
-                new MetricWrapper(Metric.FREE_ENERGY),
-                new MetricWrapper(Metric.RSP),
+                new MetricWrapper(Metric.PLAIN_WALK),
+                new MetricWrapper(Metric.WALK),
+                new MetricWrapper(Metric.FOREST),
+                new MetricWrapper(Metric.LOG_FOREST),
                 new MetricWrapper(Metric.COMM_D),
                 new MetricWrapper(Metric.LOG_COMM_D),
-                new MetricWrapper(Metric.SP_CT),
-                new MetricWrapper(Metric.WALK),
-                new MetricWrapper(Metric.LOG_FOREST),
-                new MetricWrapper(Metric.FOREST),
-                new MetricWrapper(Metric.PLAIN_WALK),
-                new MetricWrapper(Metric.SCCT_CT)
+                new MetricWrapper(Metric.RSP),
+                new MetricWrapper(Metric.FREE_ENERGY),
+                new MetricWrapper(Metric.SP_CT)
         );
     }
 

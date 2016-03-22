@@ -44,7 +44,7 @@ public class ProcessingTest {
     @Test
     public void testDrawSP_CTAttitude() {
         new TaskChain("validate SP-CT attitude", new MetricTask(new MetricWrapper(Metric.SP_CT), Constants.triangleGraph, 100, 0.0, 1.0))
-                .execute().draw();
+                .execute().draw("[0.0:1.0]");
         String filePath = ContextProvider.getInstance().getContext().getImgFolder() + "/validate SP-CT attitude.png";
         File file = new File(filePath);
         assertTrue(file.exists());

@@ -1,5 +1,6 @@
 package com.jdistance.impl.adapter.gnuplot;
 
+import com.panayotis.gnuplot.GNUPlot;
 import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.dataset.Point;
 import com.panayotis.gnuplot.plot.DataSetPlot;
@@ -9,9 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class GNUPlotAdapter {
@@ -44,7 +43,14 @@ public class GNUPlotAdapter {
         return list;
     }
 
-    public void drawData(String title, List<PlotDTO> data, String outputPath) {
+    public void drawData(String title, List<PlotDTO> data, String outputPath, String scriptPath, String yrange) {
+        try {
+            GNUPlot.getDebugger().setLevel(40);
+            GNUPlot.getDebugger().setWriter(new PrintWriter(scriptPath));
+        } catch (FileNotFoundException e) {
+            log.error("Can't write script");
+        }
+
         ImageTerminal png = new ImageTerminal();
         png.set("size", "3216,2461");
         png.set("enhanced font", "'Verdana,60'");
@@ -56,7 +62,7 @@ public class GNUPlotAdapter {
             log.error("Error while open file for writing", ex);
         }
 
-        JavaPlot gnuplot = new JavaPlot(gnuplotPath);
+        JavaPlot gnuplot = gnuplotPath != null ? new JavaPlot(gnuplotPath) : new JavaPlot();
         gnuplot.setTerminal(png);
         gnuplot.set("border", "31 lw 8.0");
         gnuplot.set("xtics", "0,0.2,1");
@@ -66,7 +72,7 @@ public class GNUPlotAdapter {
         gnuplot.set("grid mytics ytics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
         gnuplot.set("grid mxtics xtics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
         gnuplot.set("xrange", "[0.0:1.0]");
-        gnuplot.set("yrange", "[0.2:1.0]");
+        gnuplot.set("yrange", yrange);
 
         for (PlotDTO plot : data) {
             PlotStyle plotStyle = new PlotStyle();
@@ -85,7 +91,6 @@ public class GNUPlotAdapter {
 //        gnuplot.setTitle(title);
         gnuplot.setKey(JavaPlot.Key.TOP_RIGHT);
         gnuplot.plot();
-
         try {
             ImageIO.write(png.getImage(), "png", file);
         } catch (IOException ex) {
