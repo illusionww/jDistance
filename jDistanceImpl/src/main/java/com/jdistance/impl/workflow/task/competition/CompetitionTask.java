@@ -44,7 +44,7 @@ public abstract class CompetitionTask {
     }
 
     protected void learning() {
-        Stream<CompetitionDTO> stream = ContextProvider.getInstance().getContext().getParallel() ? competitionDTOs.parallelStream() : competitionDTOs.stream();
+        Stream<CompetitionDTO> stream = ContextProvider.getInstance().getContext().getParallelTasks() ? competitionDTOs.parallelStream() : competitionDTOs.stream();
         stream.forEach(dto -> {
             log.info("{}...", dto.metricWrapper.getName());
             GridSearch gridSearch = getChecker(forLearning, dto);

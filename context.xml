@@ -4,5 +4,6 @@
     <imgFolder>results/pictures</imgFolder>
 	<competitionFolder>results/tournament</competitionFolder>
 	<tempFolder>results/temp</tempFolder>
-	<parallel>true</parallel>
+	<parallelTasks>false</parallelTasks>
+	<parallelGrid>true</parallelGrid>
 </context>

@@ -9,7 +9,8 @@ public class Context {
     private String imgFolder;
     private String competitionFolder;
     private String tempFolder;
-    private Boolean parallel;
+    private Boolean parallelTasks;
+    private Boolean parallelGrid;
 
     public String getGnuplotPath() {
         return gnuplotPath;
@@ -47,12 +48,21 @@ public class Context {
         this.tempFolder = tempFolder;
     }
 
-    public Boolean getParallel() {
-        return parallel;
+    public Boolean getParallelTasks() {
+        return parallelTasks;
     }
 
     @XmlElement
-    public void setParallel(Boolean parallel) {
-        this.parallel = parallel;
+    public void setParallelTasks(Boolean parallelTasks) {
+        this.parallelTasks = parallelTasks;
+    }
+
+    public Boolean getParallelGrid() {
+        return parallelGrid;
+    }
+
+    @XmlElement
+    public void setParallelGrid(Boolean parallelGrid) {
+        this.parallelGrid = parallelGrid;
     }
 }

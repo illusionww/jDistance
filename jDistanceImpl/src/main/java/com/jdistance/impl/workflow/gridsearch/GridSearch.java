@@ -3,6 +3,7 @@ package com.jdistance.impl.workflow.gridsearch;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.metric.MetricWrapper;
 import com.jdistance.utils.Cloneable;
 import jeigen.DenseMatrix;
@@ -10,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public abstract class GridSearch implements Cloneable {
     private static final Logger log = LoggerFactory.getLogger(GridSearch.class);
@@ -25,8 +28,11 @@ public abstract class GridSearch implements Cloneable {
         log.debug("START {}", metricWrapper.getName());
 
         double step = (to - from) / (pointsCount - 1);
-        final Map<Double, Double> validationScores = new HashMap<>();
-        IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
+        List<Integer> grid = IntStream.range(0, pointsCount).boxed().collect(Collectors.toList());
+        Stream<Integer> stream = ContextProvider.getInstance().getContext().getParallelGrid() ? grid.parallelStream() : grid.stream();
+
+        final Map<Double, Double> validationScores = new ConcurrentHashMap<>();
+        stream.forEach(idx -> {
             Double base = from + idx * step;
             Double validationScore = validate(metricWrapper, base);
             log.info("{}: {} {}", metricWrapper.getName(), base, validationScore);

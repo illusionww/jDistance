@@ -3,6 +3,7 @@ package com.jdistance.impl;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.adapter.graph.CSVGraphBuilder;
 import com.jdistance.impl.workflow.TaskChainBuilder;
+import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.metric.Metric;
 import org.xml.sax.SAXException;
 
@@ -18,9 +19,6 @@ public class Main {
 
     private static void allNewsGroups() throws ParserConfigurationException, SAXException, IOException {
         List<String[]> newsgroups = Arrays.asList(
-                new String[] {"news_2cl_1", "data/newsgroup/news_2cl_1_classeo.csv", "data/newsgroup/news_2cl_1_Docr.csv", "[0.49:1.0]"},
-                new String[] {"news_2cl_2", "data/newsgroup/news_2cl_2_classeo.csv", "data/newsgroup/news_2cl_2_Docr.csv", "[0.49:1.0]"},
-                new String[] {"news_2cl_3", "data/newsgroup/news_2cl_3_classeo.csv", "data/newsgroup/news_2cl_3_Docr.csv", "[0.49:1.0]"},
                 new String[] {"news_3cl_1", "data/newsgroup/news_3cl_1_classeo.csv", "data/newsgroup/news_3cl_1_Docr.csv", "[0.33:1.0]"},
                 new String[] {"news_3cl_2", "data/newsgroup/news_3cl_2_classeo.csv", "data/newsgroup/news_3cl_2_Docr.csv", "[0.33:1.0]"},
                 new String[] {"news_3cl_3", "data/newsgroup/news_3cl_3_classeo.csv", "data/newsgroup/news_3cl_3_Docr.csv", "[0.33:1.0]"},
@@ -34,7 +32,7 @@ public class Main {
     }
 
     private static void CSVGraphsNewsgroup(String name, String pathToClasses, String pathToA, String yrange) throws IOException, ParserConfigurationException, SAXException {
-        int pointsCount = 100;
+        int pointsCount = 101;
         GraphBundle graphs = new CSVGraphBuilder()
                 .importNodesClassOnly(pathToClasses)
                 .importAdjacencyMatrix(pathToA)
@@ -45,6 +43,11 @@ public class Main {
                 .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw(yrange);
         new TaskChainBuilder(name + ", Ward", Metric.getDefaultDistances(), pointsCount)
                 .setGraphs(graphs).generateWardTasks().build().execute().write().draw(yrange);
+    }
+
+    private static void testPerformance() {
+        new TaskChainBuilder("parallel_grid", Metric.getDefaultDistances(), 50).generateGraphs(2, 100, 5, 0.3, 0.1)
+                .generateWardTasks().build().execute().draw("[0.2:1.0]");
     }
 }
 

@@ -43,8 +43,8 @@ public class ContextProvider {
     }
 
     private void checkContext() {
-        if (context.getGnuplotPath() == null || context.getImgFolder() == null
-                || context.getCompetitionFolder() == null || context.getParallel() == null) {
+        if (context.getGnuplotPath() == null || context.getImgFolder() == null || context.getCompetitionFolder() == null
+                || context.getParallelTasks() == null || context.getParallelGrid() == null) {
             throw new RuntimeException("Context is not filled properly");
         }
 
