@@ -3,7 +3,6 @@ package com.jdistance.impl;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.adapter.graph.CSVGraphBuilder;
 import com.jdistance.impl.workflow.TaskChainBuilder;
-import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.metric.Metric;
 import org.xml.sax.SAXException;
 
@@ -37,17 +36,12 @@ public class Main {
                 .importNodesClassOnly(pathToClasses)
                 .importAdjacencyMatrix(pathToA)
                 .buildBundle();
-        new TaskChainBuilder(name + ", MinSpanningTree", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateMinSpanningTreeTasks().build().execute().write().draw(yrange);
-        new TaskChainBuilder(name + ", Diffusion", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw(yrange);
+//        new TaskChainBuilder(name + ", MinSpanningTree", Metric.getDefaultDistances(), pointsCount)
+//                .setGraphs(graphs).generateMinSpanningTreeTasks().build().execute().write().draw(yrange);
+//        new TaskChainBuilder(name + ", Diffusion", Metric.getDefaultDistances(), pointsCount)
+//                .setGraphs(graphs).generateDiffusionTasks().build().execute().write().draw(yrange);
         new TaskChainBuilder(name + ", Ward", Metric.getDefaultDistances(), pointsCount)
                 .setGraphs(graphs).generateWardTasks().build().execute().write().draw(yrange);
-    }
-
-    private static void testPerformance() {
-        new TaskChainBuilder("parallel_grid", Metric.getDefaultDistances(), 50).generateGraphs(2, 100, 5, 0.3, 0.1)
-                .generateWardTasks().build().execute().draw("[0.2:1.0]");
     }
 }
 
