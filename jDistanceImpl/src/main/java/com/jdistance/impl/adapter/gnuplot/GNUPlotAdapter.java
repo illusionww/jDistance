@@ -78,8 +78,8 @@ public class GNUPlotAdapter {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
-            plotStyle.setLineWidth(5);
-//            plotStyle.set("smooth", "bezier");
+            plotStyle.setLineWidth(6);
+            plotStyle.set("smooth", "bezier");
 
             DataSetPlot dataSetPlot = new DataSetPlot(plot.getData());
             dataSetPlot.setPlotStyle(plotStyle);
