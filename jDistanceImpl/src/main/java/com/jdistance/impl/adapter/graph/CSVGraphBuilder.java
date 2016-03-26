@@ -3,24 +3,20 @@ package com.jdistance.impl.adapter.graph;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
-import com.jdistance.graph.generator.GeneratorPropertiesDTO;
 import jeigen.DenseMatrix;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CSVGraphBuilder {
     private List<Node> nodes;
-    private DenseMatrix sparseMatrix;
+    private DenseMatrix A;
 
     public CSVGraphBuilder importNodesIdNameClass(String nodesFile) throws IOException {
         nodes = new ArrayList<>();
@@ -46,22 +42,22 @@ public class CSVGraphBuilder {
         return this;
     }
 
-    public CSVGraphBuilder importEdgesList(String edgesFile) throws ParserConfigurationException, IOException, SAXException {
+    public CSVGraphBuilder importEdgesList(String edgesFile) throws IOException {
         int count = nodes.size();
-        sparseMatrix = DenseMatrix.zeros(count, count);
+        A = DenseMatrix.zeros(count, count);
         try (Stream<String> stream = Files.lines(Paths.get(edgesFile))) {
             stream.forEach(line -> {
                 String[] rawEdge = line.split("[\t;]");
-                sparseMatrix.set(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
-                sparseMatrix.set(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
+                A.set(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
+                A.set(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
             });
         }
         return this;
     }
 
-    public CSVGraphBuilder importAdjacencyMatrix(String edgesFile) throws ParserConfigurationException, IOException, SAXException {
+    public CSVGraphBuilder importAdjacencyMatrix(String edgesFile) throws IOException {
         int count = nodes.size();
-        sparseMatrix = DenseMatrix.zeros(count, count);
+        A = DenseMatrix.zeros(count, count);
         List<Double> rawSparseMatrix = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(edgesFile))) {
             stream.forEach(line -> {
@@ -72,21 +68,22 @@ public class CSVGraphBuilder {
             });
         }
         for (int i = 0; i < rawSparseMatrix.size(); i++) {
-            sparseMatrix.set(i, rawSparseMatrix.get(i));
+            A.set(i, rawSparseMatrix.get(i));
         }
         return this;
     }
 
     public Graph build() {
-        return new Graph(nodes, sparseMatrix);
+        return new Graph(nodes, A);
     }
 
     public GraphBundle buildBundle() {
-        Graph graph = new Graph(nodes, sparseMatrix);
-        int nodesCount = nodes.size();
-        int classesCount = nodes.stream().map(Node::getLabel).collect(Collectors.toSet()).size();
-        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(1, nodesCount, classesCount, 0, 0);
-        return new GraphBundle(Collections.singletonList(graph), properties);
+        return new Graph(nodes, A).toBundle();
     }
 
+    public GraphBundle shuffleAndBuildBundle() {
+        Graph graph = new Graph(nodes, A);
+        graph.shuffle(10*nodes.size());
+        return graph.toBundle();
+    }
 }

@@ -22,13 +22,13 @@ public class ContextProvider {
         return instance;
     }
 
+    public static Context getContext() {
+        return getInstance().context;
+    }
+
     public void useCustomContext(File contextFile) {
         unmarshalContext(contextFile);
         checkContext();
-    }
-
-    public Context getContext() {
-        return context;
     }
 
     private void unmarshalContext(File file) {
@@ -43,8 +43,10 @@ public class ContextProvider {
     }
 
     private void checkContext() {
-        if (context.getGnuplotPath() == null || context.getImgFolder() == null || context.getCompetitionFolder() == null
-                || context.getParallelTasks() == null || context.getParallelGrid() == null) {
+        if (context.getGnuplotPath() == null || context.getParallelTasks() == null || context.getParallelGrid() == null
+                || context.getTempFolder() == null || context.getCalculationsResultFolder() == null
+                || context.getImgFolder() == null || context.getCompetitionFolder() == null
+                || context.getWriteGnuplotScripts() == null) {
             throw new RuntimeException("Context is not filled properly");
         }
 
@@ -55,6 +57,11 @@ public class ContextProvider {
             }
         } else {
             context.setGnuplotPath(null);
+        }
+
+        File dataFolderFile = new File(context.getCalculationsResultFolder());
+        if (!dataFolderFile.exists() && !dataFolderFile.mkdirs()) {
+            throw new RuntimeException("Folder " + dataFolderFile.getAbsolutePath() + " is not exist");
         }
 
         File imgFolderFile = new File(context.getImgFolder());

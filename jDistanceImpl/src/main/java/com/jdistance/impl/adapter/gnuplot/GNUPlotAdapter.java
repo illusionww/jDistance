@@ -1,5 +1,6 @@
 package com.jdistance.impl.adapter.gnuplot;
 
+import com.jdistance.impl.workflow.context.ContextProvider;
 import com.panayotis.gnuplot.GNUPlot;
 import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.dataset.Point;
@@ -43,12 +44,14 @@ public class GNUPlotAdapter {
         return list;
     }
 
-    public void drawData(String title, List<PlotDTO> data, String outputPath, String scriptPath, String yrange) {
-        try {
-            GNUPlot.getDebugger().setLevel(40);
-            GNUPlot.getDebugger().setWriter(new PrintWriter(scriptPath));
-        } catch (FileNotFoundException e) {
-            log.error("Can't write script");
+    public void drawData(List<PlotDTO> data, String outputPath, String scriptPath, String yrange, String yticks, Smooth smooth) {
+        if (ContextProvider.getContext().getWriteGnuplotScripts()) {
+            try {
+                GNUPlot.getDebugger().setLevel(40);
+                GNUPlot.getDebugger().setWriter(new PrintWriter(scriptPath));
+            } catch (FileNotFoundException e) {
+                log.error("Can't write script");
+            }
         }
 
         ImageTerminal png = new ImageTerminal();
@@ -66,7 +69,7 @@ public class GNUPlotAdapter {
         gnuplot.setTerminal(png);
         gnuplot.set("border", "31 lw 8.0");
         gnuplot.set("xtics", "0,0.2,1");
-        gnuplot.set("ytics", "0,0.2,1");
+        gnuplot.set("ytics", yticks);
         gnuplot.set("mxtics", "2");
         gnuplot.set("mytics", "2");
         gnuplot.set("grid mytics ytics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
@@ -79,16 +82,15 @@ public class GNUPlotAdapter {
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
             plotStyle.setLineWidth(6);
-            plotStyle.set("smooth", "bezier");
 
             DataSetPlot dataSetPlot = new DataSetPlot(plot.getData());
             dataSetPlot.setPlotStyle(plotStyle);
+            dataSetPlot.setSmooth(smooth);
             dataSetPlot.setTitle(plot.getName());
 
             gnuplot.addPlot(dataSetPlot);
         }
 
-//        gnuplot.setTitle(title);
         gnuplot.setKey(JavaPlot.Key.TOP_RIGHT);
         gnuplot.plot();
         try {

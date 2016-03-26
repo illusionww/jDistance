@@ -29,7 +29,7 @@ public abstract class GridSearch implements Cloneable {
 
         double step = (to - from) / (pointsCount - 1);
         List<Integer> grid = IntStream.range(0, pointsCount).boxed().collect(Collectors.toList());
-        Stream<Integer> stream = ContextProvider.getInstance().getContext().getParallelGrid() ? grid.parallelStream() : grid.stream();
+        Stream<Integer> stream = ContextProvider.getContext().getParallelGrid() ? grid.parallelStream() : grid.stream();
 
         final Map<Double, Double> validationScores = new ConcurrentHashMap<>();
         stream.forEach(idx -> {

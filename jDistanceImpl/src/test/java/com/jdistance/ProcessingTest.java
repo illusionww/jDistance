@@ -10,10 +10,11 @@ import com.jdistance.impl.workflow.gridsearch.classifier.KNearestNeighborsGridSe
 import com.jdistance.impl.workflow.gridsearch.clusterer.MinSpanningTreeGridSearch;
 import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.impl.workflow.task.DefaultTask;
-import com.jdistance.impl.workflow.task.MetricTask;
+import com.jdistance.impl.workflow.task.competition.MetricTask;
 import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.Metric;
 import com.jdistance.metric.MetricWrapper;
+import com.panayotis.gnuplot.style.Smooth;
 import jeigen.DenseMatrix;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +33,7 @@ public class ProcessingTest {
         File contextFile = new File(classLoader.getResource("test_context.xml").getFile());
         ContextProvider.getInstance().useCustomContext(contextFile);
 
-        File testFolder = new File(ContextProvider.getInstance().getContext().getImgFolder());
+        File testFolder = new File(ContextProvider.getContext().getImgFolder());
         if (testFolder.exists()) {
             for (File file : testFolder.listFiles()) {
                 file.delete();
@@ -44,8 +45,8 @@ public class ProcessingTest {
     @Test
     public void testDrawSP_CTAttitude() {
         new TaskChain("validate SP-CT attitude", new MetricTask(new MetricWrapper(Metric.SP_CT), Constants.triangleGraph, 100, 0.0, 1.0))
-                .execute().draw("[0.0:1.0]");
-        String filePath = ContextProvider.getInstance().getContext().getImgFolder() + "/validate SP-CT attitude.png";
+                .execute().drawUnique("[0.0:1.0]", "0,0.2,1");
+        String filePath = ContextProvider.getContext().getImgFolder() + "/validate SP-CT attitude.png";
         File file = new File(filePath);
         assertTrue(file.exists());
     }

@@ -11,6 +11,7 @@ public abstract class GraphGenerator {
         List<Graph> graphs = new ArrayList<>();
         for (int i = 0; i < properties.getGraphsCount(); i++) {
             Graph graph = generateGraph(properties);
+            graph.shuffle(10*properties.getNodesCount());
             graphs.add(graph);
         }
         return new GraphBundle(graphs, properties);

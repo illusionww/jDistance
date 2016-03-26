@@ -7,14 +7,24 @@ import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.MinSpanningTreeGridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.WardGridSearch;
 import com.jdistance.impl.workflow.gridsearch.nolearning.DiffusionGridSearch;
+import com.jdistance.impl.workflow.task.CustomTask;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.MetricWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TaskChainBuilder {
+    private static final Logger log = LoggerFactory.getLogger(TaskChainBuilder.class);
+
     private String name;
     private GraphBundle graphs;
     private List<MetricWrapper> metricWrappers;
@@ -75,6 +85,36 @@ public class TaskChainBuilder {
         if (name == null) name = generateName("Diffusion", graphs.getProperties());
         GridSearch gridSearch = new DiffusionGridSearch(graphs);
         tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
+        return this;
+    }
+
+    public TaskChainBuilder importDataFromFile(String fileName) {
+        List<String> lines;
+        try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
+            lines = br.lines().collect(Collectors.toList());
+        } catch (IOException e) {
+            log.error("Can't read file to import");
+            throw new RuntimeException("Can't read file to import");
+        }
+        String[] tasksNames = lines.get(0).split("\t");
+        int tasksCount = tasksNames.length - 1;
+        int pointsCount = lines.size() - 1;
+        double from = Double.valueOf(lines.get(1).split("\t")[0]);
+        double to = Double.valueOf(lines.get(pointsCount).split("\t")[0]);
+        List<Task> tasks = new ArrayList<>();
+        for (int i = 0; i < tasksCount; i++) {
+            tasks.add(new CustomTask(tasksNames[i + 1], null, null, from, to, pointsCount));
+        }
+        for (int i = 0; i < pointsCount; i++) {
+            String[] values = lines.get(i + 1).split("\t");
+            for (int j = 0; j < tasksCount; j++) {
+                if (!"null".equals(values[j+1])) {
+                    tasks.get(j).getResult().put(Double.valueOf(values[0]), Double.valueOf(values[j+1]));
+                }
+            }
+        }
+        this.tasks.addAll(tasks);
+
         return this;
     }
 

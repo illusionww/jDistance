@@ -48,7 +48,7 @@ public class GnPInPOutGraphGenerator extends GraphGenerator {
             }
         }
         Graph graph = new Graph(generateSimpleNodeDatas(sizeClusters), sparseMatrix);
-        shuffle(graph, 2*graph.getNodes().size());
+        graph.shuffle(2*graph.getNodes().size());
         return graph;
     }
 
@@ -79,28 +79,5 @@ public class GnPInPOutGraphGenerator extends GraphGenerator {
             }
         }
         return nodes;
-    }
-
-    private static void shuffle(Graph graph, int swapCount) {
-        int size = graph.getNodes().size();
-
-        Random random = new Random();
-        for (int i = 0; i < swapCount; i++) {
-            replaceTwoNodes(graph, random.nextInt(size), random.nextInt(size));
-        }
-    }
-
-    private static void replaceTwoNodes(Graph graph, int i, int j) {
-        Collections.swap(graph.getNodes(), i, j);
-        for (int k = 0; k < graph.getA().rows; k++) {
-            double temp = graph.getA().get(i, k);
-            graph.getA().set(i, k, graph.getA().get(j, k));
-            graph.getA().set(j, k, temp);
-        }
-        for (int k = 0; k < graph.getA().rows; k++) {
-            double temp = graph.getA().get(k, i);
-            graph.getA().set(k, i, graph.getA().get(k, j));
-            graph.getA().set(k, j, temp);
-        }
     }
 }

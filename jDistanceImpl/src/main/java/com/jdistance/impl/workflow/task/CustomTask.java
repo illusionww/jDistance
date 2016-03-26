@@ -6,11 +6,18 @@ import com.jdistance.metric.MetricWrapper;
 import java.util.Map;
 
 public class CustomTask extends Task {
+    private String name;
     private Double from;
     private Double to;
     private Integer pointsCount;
 
+    public CustomTask(String name, GridSearch gridSearch, MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
+        this(gridSearch, metricWrapper, from, to, pointsCount);
+        this.name = name;
+    }
+
     public CustomTask(GridSearch gridSearch, MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
+        this.name = metricWrapper != null && gridSearch != null ? metricWrapper.getName() + " " + gridSearch.getName() : null;
         this.gridSearch = gridSearch;
         this.metricWrapper = metricWrapper;
         this.from = from;
@@ -20,7 +27,7 @@ public class CustomTask extends Task {
 
     @Override
     public String getName() {
-        return metricWrapper.getName() + " " + gridSearch.getName();
+        return name;
     }
 
     @Override

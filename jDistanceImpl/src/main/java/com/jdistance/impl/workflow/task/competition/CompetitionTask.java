@@ -3,7 +3,6 @@ package com.jdistance.impl.workflow.task.competition;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.impl.workflow.context.ContextProvider;
-import com.jdistance.impl.workflow.task.ClassifierBestParamTask;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.Task;
 import org.slf4j.Logger;
@@ -44,7 +43,7 @@ public abstract class CompetitionTask {
     }
 
     protected void learning() {
-        Stream<CompetitionDTO> stream = ContextProvider.getInstance().getContext().getParallelTasks() ? competitionDTOs.parallelStream() : competitionDTOs.stream();
+        Stream<CompetitionDTO> stream = ContextProvider.getContext().getParallelTasks() ? competitionDTOs.parallelStream() : competitionDTOs.stream();
         stream.forEach(dto -> {
             log.info("{}...", dto.metricWrapper.getName());
             GridSearch gridSearch = getChecker(forLearning, dto);
@@ -70,7 +69,7 @@ public abstract class CompetitionTask {
     }
 
     public CompetitionTask write() {
-        String path = ContextProvider.getInstance().getContext().getCompetitionFolder() + File.separator + fileName + ".txt";
+        String path = ContextProvider.getContext().getCompetitionFolder() + File.separator + fileName + ".txt";
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(path))) {
             outputWriter.write("Name\tlearnedP\tlearnedQuality\tScore\tAdditionalInfo");
             outputWriter.newLine();

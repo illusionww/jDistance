@@ -8,6 +8,7 @@ import com.jdistance.metric.MetricWrapper;
 import com.panayotis.gnuplot.dataset.Point;
 import com.panayotis.gnuplot.dataset.PointDataSet;
 import com.panayotis.gnuplot.style.PlotColor;
+import com.panayotis.gnuplot.style.Smooth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +57,7 @@ public class TaskChain {
         Date start = new Date();
         log.info("START TASK_CHAIN \"{}\"", name);
 
-        Stream<Task> stream = ContextProvider.getInstance().getContext().getParallelTasks() ? tasks.parallelStream() : tasks.stream();
+        Stream<Task> stream = ContextProvider.getContext().getParallelTasks() ? tasks.parallelStream() : tasks.stream();
         stream.forEach(task -> {
             Date startTask = new Date();
             log.info("Task START: {}", task.getName());
@@ -73,27 +74,36 @@ public class TaskChain {
         return this;
     }
 
-    public TaskChain draw(String yrange) {
-        draw(name, yrange);
+    public TaskChain drawUniqueAndBezier(String yrange, String yticks) {
+        drawUnique(yrange, yticks);
+        drawBezier(yrange, yticks);
         return this;
     }
 
-    public TaskChain draw(String imgTitle, String yrange) {
+    public TaskChain drawUnique(String yrange, String yticks) {
+        draw(name + ".UNIQUE", yrange, yticks, Smooth.UNIQUE);
+        return this;
+    }
+
+    public TaskChain drawBezier(String yrange, String yticks) {
+        draw(name + ".BEZIER", yrange, yticks, Smooth.BEZIER);
+        return this;
+    }
+
+    public TaskChain draw(String imgTitle, String yrange, String yticks, Smooth smooth) {
         Iterator<PlotColor> color = Arrays.asList(GNUPlotAdapter.colors).iterator();
 
         List<PlotDTO> plots = new ArrayList<>();
         tasks.forEach(task -> {
-            MetricWrapper metricWrapper = task.getMetricWrapper();
+            String plotTitle = task.getMetricWrapper() != null ? task.getMetricWrapper().getName() : task.getName();
             Map<Double, Double> points = task.getResult();
-
-            String plotTitle = metricWrapper.getName();
             List<Point<Double>> plotPoints = GNUPlotAdapter.mapToPoints(points);
             PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
             plots.add(new PlotDTO(plotTitle, color.next(), plotPointsSet));
         });
 
-        GNUPlotAdapter ga = new GNUPlotAdapter(ContextProvider.getInstance().getContext().getGnuplotPath());
-        ga.drawData(imgTitle, plots, buildFullNameByImgTitle(imgTitle, "png"), buildFullNameByImgTitle(imgTitle, "gnu"), yrange);
+        GNUPlotAdapter ga = new GNUPlotAdapter(ContextProvider.getContext().getGnuplotPath());
+        ga.drawData(plots, buildFullImgNameByImgTitle(imgTitle, "png"), buildFullImgNameByImgTitle(imgTitle, "gnu"), yrange, yticks, smooth);
 
         return this;
     }
@@ -104,7 +114,7 @@ public class TaskChain {
     }
 
     public TaskChain write(String filename) {
-        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(buildFullNameByImgTitle(filename, "txt")))) {
+        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(buildFullDataNameByImgTitle(filename, "csv")))) {
             outputWriter.write("\t");
             for (Task task : tasks) {
                 MetricWrapper metricWrapper = task.getMetricWrapper();
@@ -158,10 +168,14 @@ public class TaskChain {
         return tasks.stream().collect(Collectors.toMap(task -> task, Task::getResult));
     }
 
-    private static String buildFullNameByImgTitle(String imgTitle, String extension) {
-        return ContextProvider.getInstance().getContext().getImgFolder() +
-                File.separator +
-                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") +
-                "." + extension;
+    private static String buildFullDataNameByImgTitle(String imgTitle, String extension) {
+        return ContextProvider.getContext().getCalculationsResultFolder() + File.separator +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") + "." + extension;
     }
+
+    private static String buildFullImgNameByImgTitle(String imgTitle, String extension) {
+        return ContextProvider.getContext().getImgFolder() + File.separator +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") + "." + extension;
+    }
+
 }

@@ -117,6 +117,25 @@ public enum Metric {
             Double norm = avgDcct / avgDr;
             return Dcct.mul(1 - lambda).add(Dr.mul(lambda * norm));
         }
+    },
+    HEAT_KERNEL("Heat", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H = jb.getH0DummyCommunicability(L, -t);
+            DenseMatrix D = jb.getD(H);
+            return MetricBuilder.sqrtD(D);
+        }
+    },
+    LOG_HEAT_KERNEL("logHeat", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H0 = jb.getH0DummyCommunicability(L, -t);
+            DenseMatrix H = jb.H0toH(H0);
+            DenseMatrix D = jb.getD(H);
+            return MetricBuilder.sqrtD(D);
+        }
     };
 
     private static MetricBuilder jb = new MetricBuilder();
@@ -134,15 +153,17 @@ public enum Metric {
 
     public static List<MetricWrapper> getDefaultDistances() {
         return Arrays.asList(
-                new MetricWrapper(Metric.PLAIN_WALK),
-                new MetricWrapper(Metric.WALK),
-                new MetricWrapper(Metric.FOREST),
-                new MetricWrapper(Metric.LOG_FOREST),
+//                new MetricWrapper(Metric.PLAIN_WALK),
+//                new MetricWrapper(Metric.WALK),
+//                new MetricWrapper(Metric.FOREST),
+//                new MetricWrapper(Metric.LOG_FOREST),
                 new MetricWrapper(Metric.COMM_D),
                 new MetricWrapper(Metric.LOG_COMM_D),
-                new MetricWrapper(Metric.RSP),
+//                new MetricWrapper(Metric.RSP),
                 new MetricWrapper(Metric.FREE_ENERGY),
-                new MetricWrapper(Metric.SP_CT)
+                new MetricWrapper(Metric.SP_CT),
+                new MetricWrapper(Metric.HEAT_KERNEL),
+                new MetricWrapper(Metric.LOG_HEAT_KERNEL)
         );
     }
 

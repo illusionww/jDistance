@@ -1,6 +1,8 @@
-package com.jdistance.impl.workflow.task;
+package com.jdistance.impl.workflow.task.competition;
 
 import com.jdistance.impl.workflow.gridsearch.classifier.KNearestNeighborsGridSearch;
+import com.jdistance.impl.workflow.task.DefaultTask;
+import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.MetricWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

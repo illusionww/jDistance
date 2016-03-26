@@ -1,5 +1,6 @@
-package com.jdistance.impl.workflow.task;
+package com.jdistance.impl.workflow.task.competition;
 
+import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.MetricWrapper;
 import jeigen.DenseMatrix;
 
