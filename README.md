@@ -33,4 +33,4 @@ Module jDistanceImpl contains:
 * adapter for [JavaPlot](http://javaplot.panayotis.com/);
 * GraphML and CSV export/import
 
-and also some experimental stuff to learn how metrics works
+and also some experimental stuff to learn how metrics work.
