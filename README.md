@@ -2,24 +2,35 @@
 jDistance is a library for computing distances in graphs.
 
 ## Requirements:
-* Java 1.8
-* [jEigen](https://github.com/hughperkins/jeigen)
+* Oracle Java 8
+* Gnuplot
 
 ## About
 Module jDistance contains:
 * Distances:
-  * Walk distances;
-  * "Plain" Walk Distances;
-  * Logarithmic Forest distances;
-  * ["Plain"] Forest Distances;
-  * Logarithmic Communicability Distances;
-  * Communicability Distances;
-  * Helmholtz free energy distances;
-  * SP-CT.
-* kNN classifier;
-* Clusterer.
+  * "Plain" Walk;
+  * Walk;
+* ["Plain"] Forest;
+  * Logarithmic Forest;
+  * Communicability;
+  * Logarithmic Communicability;
+  * Randomized Shortest Path;
+  * Helmholtz Free Energy;
+  * Shortest Path - Commute Time combination.
+* Classifying:
+  * kNN classifier;
+* Clustering:
+  * Min Spanning Tree method;
+  * Ward method;
+* Graph generators:
+  * G(n, p_{in}, p_{out}) clustered graph generator
 
-Module jDistanceImpl contains some examples how to use the library.
-It contains common scenario to check the quality of classification or clusterization.
-Also, it contains adapters for [dcrgenerator](http://i11www.iti.uni-karlsruhe.de/en/projects/spp1307/dyngen),
-[JavaPlot](http://javaplot.panayotis.com/), and also parsers for GraphML and SimpleGraph formats.
+Module jDistanceImpl contains:
+* parallel GridSearch;
+* competitions;
+* methods to check the quality of classification or clusterization;
+* adapter for [dcrgenerator](http://i11www.iti.uni-karlsruhe.de/en/projects/spp1307/dyngen);
+* adapter for [JavaPlot](http://javaplot.panayotis.com/);
+* GraphML and CSV export/import
+
+and also some experimental stuff to learn how metrics works
