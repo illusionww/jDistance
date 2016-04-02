@@ -19,7 +19,7 @@ import static com.jdistance.impl.workflow.context.ContextProvider.*;
 
 public class GNUPlotAdapter {
     private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
-    public static final PlotColor[] colors = {
+    private static final PlotColor[] colors = {
             NamedPlotColor.BLACK,
             NamedPlotColor.RED,
             NamedPlotColor.BLUE,
@@ -28,8 +28,8 @@ public class GNUPlotAdapter {
             NamedPlotColor.ORANGE,
             NamedPlotColor.VIOLET,
             NamedPlotColor.PURPLE,
-            NamedPlotColor.DARK_RED,
-            NamedPlotColor.DARK_YELLOW,
+            NamedPlotColor.DARK_GOLDENROD,
+            NamedPlotColor.DARK_GREEN,
             NamedPlotColor.BROWN
     };
     private String gnuplotPath;

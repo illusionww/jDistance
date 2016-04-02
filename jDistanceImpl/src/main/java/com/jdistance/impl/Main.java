@@ -21,13 +21,13 @@ public class Main {
         List<String[]> newsgroups = Arrays.asList(
                 new String[] {"news_2cl_1", "data/newsgroup/news_2cl_1_classeo.csv", "data/newsgroup/news_2cl_1_Docr.csv", "[0.49:1.0]", "0.1"},
                 new String[] {"news_2cl_2", "data/newsgroup/news_2cl_2_classeo.csv", "data/newsgroup/news_2cl_2_Docr.csv", "[0.49:1.0]", "0.1"},
-                new String[] {"news_2cl_3", "data/newsgroup/news_2cl_3_classeo.csv", "data/newsgroup/news_2cl_3_Docr.csv", "[0.49:1.0]", "0.1"},
-                new String[] {"news_3cl_1", "data/newsgroup/news_3cl_1_classeo.csv", "data/newsgroup/news_3cl_1_Docr.csv", "[0.33:1.0]", "0.1"},
-                new String[] {"news_3cl_2", "data/newsgroup/news_3cl_2_classeo.csv", "data/newsgroup/news_3cl_2_Docr.csv", "[0.33:1.0]", "0.1"},
-                new String[] {"news_3cl_3", "data/newsgroup/news_3cl_3_classeo.csv", "data/newsgroup/news_3cl_3_Docr.csv", "[0.33:1.0]", "0.1"},
-                new String[] {"news_5cl_1", "data/newsgroup/news_5cl_1_classeo.csv", "data/newsgroup/news_5cl_1_Docr.csv", "[0.2:1.0]", "0.2"},
-                new String[] {"news_5cl_2", "data/newsgroup/news_5cl_2_classeo.csv", "data/newsgroup/news_5cl_2_Docr.csv", "[0.2:1.0]", "0.2"},
-                new String[] {"news_5cl_3", "data/newsgroup/news_5cl_3_classeo.csv", "data/newsgroup/news_5cl_3_Docr.csv", "[0.2:1.0]", "0.2"}
+//                new String[] {"news_2cl_3", "data/newsgroup/news_2cl_3_classeo.csv", "data/newsgroup/news_2cl_3_Docr.csv", "[0.49:1.0]", "0.1"}
+                new String[] {"news_3cl_1", "data/newsgroup/news_3cl_1_classeo.csv", "data/newsgroup/news_3cl_1_Docr.csv", "[0.33:1.0]", "0.1"}
+//                new String[] {"news_3cl_2", "data/newsgroup/news_3cl_2_classeo.csv", "data/newsgroup/news_3cl_2_Docr.csv", "[0.33:1.0]", "0.1"},
+//                new String[] {"news_3cl_3", "data/newsgroup/news_3cl_3_classeo.csv", "data/newsgroup/news_3cl_3_Docr.csv", "[0.33:1.0]", "0.1"},
+//                new String[] {"news_5cl_1", "data/newsgroup/news_5cl_1_classeo.csv", "data/newsgroup/news_5cl_1_Docr.csv", "[0.2:1.0]", "0.2"},
+//                new String[] {"news_5cl_2", "data/newsgroup/news_5cl_2_classeo.csv", "data/newsgroup/news_5cl_2_Docr.csv", "[0.2:1.0]", "0.2"},
+//                new String[] {"news_5cl_3", "data/newsgroup/news_5cl_3_classeo.csv", "data/newsgroup/news_5cl_3_Docr.csv", "[0.2:1.0]", "0.2"}
         );
         for (String[] array : newsgroups) {
             CSVGraphsNewsgroup(array[0], array[1], array[2], array[3], array[4]);
@@ -56,12 +56,15 @@ public class Main {
                 .importNodesIdNameClass("data/football_nodes.csv")
                 .importEdgesList("data/football_edges.csv")
                 .shuffleAndBuildBundle();
-        new TaskChainBuilder("football_minspanningtree", Metric.getDefaultDistances(), 201)
-                .setGraphs(football).generateMinSpanningTreeTasks().build().execute().writeData().drawUniqueAndBezier("[0.2:1.0]", "0.2");
-        new TaskChainBuilder("football_diffusion", Metric.getDefaultDistances(), 201)
-                .setGraphs(football).generateDiffusionTasks().build().execute().writeData().drawUnique("[0.97:1.0]", "0.01");
-        new TaskChainBuilder("football_ward", Metric.getDefaultDistances(), 201)
-                .setGraphs(football).generateWardTasks().build().execute().writeData().drawUniqueAndBezier("[0.8:1.0]", "0.05");
+//        new TaskChainBuilder("football_minspanningtree", Metric.getDefaultDistances(), 201)
+//                .setGraphs(football).generateMinSpanningTreeTasks().build().execute().writeData().drawUniqueAndBezier("[0.2:1.0]", "0.2");
+//        new TaskChainBuilder("football_diffusion", Metric.getDefaultDistances(), 201)
+//                .setGraphs(football).generateDiffusionTasks().build().execute().writeData().drawUnique("[0.97:1.0]", "0.01");
+//        new TaskChainBuilder("football_ward", Metric.getDefaultDistances(), 201)
+//                .setGraphs(football).generateWardTasks().build().execute().writeData().drawUniqueAndBezier("[0.8:1.0]", "0.05");
+        new TaskChainBuilder("football_sta", Metric.getDefaultDistances(), 201)
+                .setGraphs(football).generateStubTasks().build().execute().writeStatistics();
+
     }
 
     private static void politicalBooks() throws IOException {
@@ -103,6 +106,10 @@ public class Main {
 //                .generateGraphs(3, 200, 4, 0.3, 0.1).generateWardTasks().build().execute().drawUniqueAndBezier("[0.3:1]", "0.2");
 //        new TaskChainBuilder("250 Heat 31", Metric.getDefaultDistances(), 101)
 //                .generateGraphs(3, 250, 4, 0.3, 0.1).generateWardTasks().build().execute().drawUniqueAndBezier("[0.3:1]", "0.2");
+    }
+
+    public static void testKernels() {
+
     }
 }
 

@@ -129,8 +129,8 @@ public class TaskChain {
     }
 
     public TaskChain writeStatistics(String filename) {
-        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(getContext().buildDataFullName(filename + "_statistics", "csv")))) {
-            for (Task task : tasks) {
+        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(getContext().buildDataFullName(filename + "_metric-statistics", "csv")))) {
+                for (Task task : tasks) {
                 outputWriter.write("Metric " + task.getName() + "\n");
                 for (Map<Double, MetricStatisticsDTO> statisticsForGraph : task.getMetricStatistics().values()) {
                     List<Map.Entry<Double, MetricStatisticsDTO>> sortedList = new ArrayList<>(statisticsForGraph.entrySet());

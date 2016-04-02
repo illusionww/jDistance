@@ -13,7 +13,6 @@ public class MetricStatisticsDTO {
     private Double minValue;
     private Double maxValue;
     private Double avgValue;
-    private Map<String, MetricStatisticsDTO> interCluster;
     private Map<Pair<String, String>, MetricStatisticsDTO> intraCluster;
 
     private MetricStatisticsDTO(Double minValue, Double maxValue, Double avgValue) {
@@ -36,22 +35,6 @@ public class MetricStatisticsDTO {
                 .map(Node::getLabel)
                 .collect(Collectors.toSet());
 
-        interCluster = new TreeMap<>();
-        for (String label : clusterLabels) {
-            List<Node> clusterNodes = graph.getNodes().stream()
-                    .filter(node -> label.equals(node.getLabel()))
-                    .collect(Collectors.toList());
-
-            List<Double> interClusterResults = new ArrayList<>();
-            for (Node oneNode : clusterNodes) {
-                interClusterResults.addAll(clusterNodes.stream()
-                        .map(twoNode -> D.get(oneNode.getId(), twoNode.getId()))
-                        .collect(Collectors.toList()));
-            }
-            MetricStatisticsDTO interClusterStatistics = getMinMaxAvgOfStream(interClusterResults);
-            interCluster.put(label, interClusterStatistics);
-        }
-
         intraCluster = new TreeMap<>();
         for (String oneLabel : clusterLabels) {
             List<Node> oneClusterNodes = graph.getNodes().stream()
@@ -59,7 +42,7 @@ public class MetricStatisticsDTO {
                     .collect(Collectors.toList());
             for (String twoLabel : clusterLabels) {
                 List<Node> twoClusterNodes = graph.getNodes().stream()
-                        .filter(node -> oneLabel.equals(node.getLabel()))
+                        .filter(node -> twoLabel.equals(node.getLabel()))
                         .collect(Collectors.toList());
 
                 List<Double> intraClusterResults = new ArrayList<>();
@@ -84,10 +67,6 @@ public class MetricStatisticsDTO {
 
     public Double getAvgValue() {
         return avgValue;
-    }
-
-    public Map<String, MetricStatisticsDTO> getInterCluster() {
-        return interCluster;
     }
 
     public Map<Pair<String, String>, MetricStatisticsDTO> getIntraCluster() {
