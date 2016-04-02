@@ -1,11 +1,14 @@
 package com.jdistance.impl.workflow.task;
 
+import com.jdistance.graph.Graph;
 import com.jdistance.impl.workflow.gridsearch.GridSearch;
+import com.jdistance.impl.workflow.gridsearch.MetricStatisticsDTO;
 import com.jdistance.metric.MetricWrapper;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.OptionalDouble;
 
 public abstract class Task {
     protected GridSearch gridSearch;
@@ -22,6 +25,10 @@ public abstract class Task {
 
     public abstract Task execute();
 
+    public  Map<Graph, Map<Double, MetricStatisticsDTO>> getMetricStatistics() {
+        return gridSearch.getMetricStatistics();
+    };
+
     public Map.Entry<Double, Double> getMinResult() {
         if (minResult == null) {
             Optional<Map.Entry<Double, Double>> maxOptional = result.entrySet().stream().min(Map.Entry.comparingByValue(Double::compareTo));
@@ -36,5 +43,10 @@ public abstract class Task {
             maxResult = maxOptional.isPresent() ? maxOptional.get() : null;
         }
         return maxResult;
+    }
+
+    public Double getAvgResult() {
+        OptionalDouble avgOptional = result.values().stream().mapToDouble(p -> p).average();
+        return avgOptional.isPresent() ? avgOptional.getAsDouble() : null;
     }
 }

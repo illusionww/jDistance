@@ -1,9 +1,10 @@
 package com.jdistance.impl.adapter.gnuplot;
 
-import com.jdistance.impl.workflow.context.ContextProvider;
+import com.jdistance.impl.workflow.TaskChain;
 import com.panayotis.gnuplot.GNUPlot;
 import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.dataset.Point;
+import com.panayotis.gnuplot.dataset.PointDataSet;
 import com.panayotis.gnuplot.plot.DataSetPlot;
 import com.panayotis.gnuplot.style.*;
 import com.panayotis.gnuplot.terminal.ImageTerminal;
@@ -14,7 +15,10 @@ import javax.imageio.ImageIO;
 import java.io.*;
 import java.util.*;
 
+import static com.jdistance.impl.workflow.context.ContextProvider.*;
+
 public class GNUPlotAdapter {
+    private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
     public static final PlotColor[] colors = {
             NamedPlotColor.BLACK,
             NamedPlotColor.RED,
@@ -25,9 +29,9 @@ public class GNUPlotAdapter {
             NamedPlotColor.VIOLET,
             NamedPlotColor.PURPLE,
             NamedPlotColor.DARK_RED,
-            NamedPlotColor.DARK_YELLOW
+            NamedPlotColor.DARK_YELLOW,
+            NamedPlotColor.BROWN
     };
-    private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
     private String gnuplotPath;
 
     public GNUPlotAdapter(String gnuplotPath) {
@@ -44,13 +48,29 @@ public class GNUPlotAdapter {
         return list;
     }
 
+    public void draw(TaskChain taskChain, String imgTitle, String yrange, String yticks, Smooth smooth) {
+        Iterator<PlotColor> color = Arrays.asList(GNUPlotAdapter.colors).iterator();
+
+        List<PlotDTO> plots = new ArrayList<>();
+        taskChain.getTasks().forEach(task -> {
+            String plotTitle = task.getMetricWrapper() != null ? task.getMetricWrapper().getName() : task.getName();
+            Map<Double, Double> points = task.getResult();
+            List<Point<Double>> plotPoints = GNUPlotAdapter.mapToPoints(points);
+            PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
+            plots.add(new PlotDTO(plotTitle, color.next(), plotPointsSet));
+        });
+
+        GNUPlotAdapter ga = new GNUPlotAdapter(getContext().getGnuplotPath());
+        ga.drawData(plots, getContext().buildImgFullName(imgTitle, "png"), getContext().buildImgFullName(imgTitle, "gnu"), yrange, yticks, smooth);
+    }
+
     public void drawData(List<PlotDTO> data, String outputPath, String scriptPath, String yrange, String yticks, Smooth smooth) {
-        if (ContextProvider.getContext().getWriteGnuplotScripts()) {
+        if (getContext().getWriteGnuplotScripts()) {
             try {
                 GNUPlot.getDebugger().setLevel(40);
                 GNUPlot.getDebugger().setWriter(new PrintWriter(scriptPath));
             } catch (FileNotFoundException e) {
-                log.error("Can't write script");
+                log.error("Can't writeData script");
             }
         }
 
@@ -96,7 +116,7 @@ public class GNUPlotAdapter {
         try {
             ImageIO.write(png.getImage(), "png", file);
         } catch (IOException ex) {
-            log.error("Error while write image", ex);
+            log.error("Error while writeData image", ex);
         }
     }
 }

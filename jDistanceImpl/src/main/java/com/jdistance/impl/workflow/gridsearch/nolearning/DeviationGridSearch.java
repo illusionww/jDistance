@@ -15,11 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 public class DeviationGridSearch extends GridSearch {
-    private GraphBundle graphs;
     private Map<Graph, NodesDistanceDTO> bestBySP;
 
     public DeviationGridSearch(GraphBundle graphs) {
-        this.graphs = graphs;
+        super(graphs);
         this.bestBySP = new HashMap<>();
 
         graphs.getGraphs().forEach(graph -> {
@@ -34,12 +33,7 @@ public class DeviationGridSearch extends GridSearch {
     }
 
     @Override
-    public GraphBundle getGraphBundle() {
-        return graphs;
-    }
-
-    @Override
-    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
+    protected double roundScore(Graph graph, DenseMatrix D) {
         NodesDistanceDTO nodesDistanceSP = bestBySP.get(graph);
         double[][] arrD = MatrixUtils.toArray2(D);
         double nodesDistance = arrD[nodesDistanceSP.getFirstNodeIdx()][nodesDistanceSP.getSecondNodeIdx()];

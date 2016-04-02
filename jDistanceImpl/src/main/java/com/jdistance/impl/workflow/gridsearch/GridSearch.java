@@ -1,9 +1,7 @@
 package com.jdistance.impl.workflow.gridsearch;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.Node;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.metric.MetricWrapper;
 import com.jdistance.utils.Cloneable;
 import jeigen.DenseMatrix;
@@ -16,12 +14,19 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import static com.jdistance.impl.workflow.context.ContextProvider.getContext;
+
 public abstract class GridSearch implements Cloneable {
     private static final Logger log = LoggerFactory.getLogger(GridSearch.class);
+    private Map<Graph, Map<Double, MetricStatisticsDTO>> metricStatistics;
+    protected GraphBundle graphs;
+
+    public GridSearch(GraphBundle graphs) {
+        this.graphs = graphs;
+        metricStatistics = graphs.getGraphs().stream().collect(Collectors.toMap(g -> g, g -> new HashMap<>()));
+    }
 
     public abstract String getName();
-
-    public abstract GraphBundle getGraphBundle();
 
     public Map<Double, Double> seriesOfTests(final MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
         Date start = new Date();
@@ -29,7 +34,7 @@ public abstract class GridSearch implements Cloneable {
 
         double step = (to - from) / (pointsCount - 1);
         List<Integer> grid = IntStream.range(0, pointsCount).boxed().collect(Collectors.toList());
-        Stream<Integer> stream = ContextProvider.getContext().getParallelGrid() ? grid.parallelStream() : grid.stream();
+        Stream<Integer> stream = getContext().getParallelGrid() ? grid.parallelStream() : grid.stream();
 
         final Map<Double, Double> validationScores = new ConcurrentHashMap<>();
         stream.forEach(idx -> {
@@ -51,13 +56,15 @@ public abstract class GridSearch implements Cloneable {
     public Double validate(MetricWrapper metricWrapper, Double base) {
         List<Double> validationScoresByGraph = new ArrayList<>();
         try {
-            for (Graph graph : getGraphBundle().getGraphs()) {
-                List<Node> nodesData = graph.getNodes();
+            for (Graph graph : graphs.getGraphs()) {
                 DenseMatrix A = graph.getA();
                 Double parameter = metricWrapper.getScale().calc(A, base);
                 DenseMatrix D = metricWrapper.getMetric().getD(A, parameter);
                 if (!hasNaN(D)) {
-                    validationScoresByGraph.add(roundScore(graph, D, nodesData));
+                    validationScoresByGraph.add(roundScore(graph, D));
+                }
+                if (getContext().getMetricsStatistics()) {
+                    metricStatistics.get(graph).put(base, new MetricStatisticsDTO(D, graph));
                 }
             }
         } catch (RuntimeException e) {
@@ -70,7 +77,11 @@ public abstract class GridSearch implements Cloneable {
         return sum != 0.0 ? sum / validationScoresByGraph.size() : null;
     }
 
-    protected abstract double roundScore(Graph graph, DenseMatrix D, List<Node> node);
+    public Map<Graph, Map<Double, MetricStatisticsDTO>> getMetricStatistics() {
+        return metricStatistics;
+    }
+
+    protected abstract double roundScore(Graph graph, DenseMatrix D);
 
     private boolean hasNaN(DenseMatrix D) {
         for (double item : D.getValues()) {

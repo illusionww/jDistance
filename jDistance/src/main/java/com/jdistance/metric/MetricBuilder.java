@@ -97,8 +97,8 @@ public class MetricBuilder {
     }
 
     // H0 = exp(tA)
-    DenseMatrix getH0DummyCommunicability(DenseMatrix A, double t) {
-        return dummy_mexp(A.mul(t), 30);
+    DenseMatrix getH0DummyCommunicability(DenseMatrix A, double t, int nSteps) {
+        return dummy_mexp(A.mul(t), nSteps);
     }
 
     DenseMatrix getH0Communicability(DenseMatrix A, double t) {

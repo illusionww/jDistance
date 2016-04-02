@@ -33,7 +33,7 @@ public class DCRGraphMLReader {
                     String prefix = childNodes.item(k).getAttributes().getNamedItem("key").getNodeValue();
                     String value = childNodes.item(k).getFirstChild().getNodeValue();
                     if ("d102".equals(prefix)) {
-                        nodeData.setNodeId(value);
+                        nodeData.setNodeId(Integer.valueOf(value));
                     } else if ("d7".equals(prefix)) {
                         nodeData.setActive(Boolean.valueOf(value));
                     } else if ("d4".equals(prefix)) {
@@ -78,9 +78,9 @@ public class DCRGraphMLReader {
                 color = aActiveNodeData.getColor();
             }
         }
-        HashMap<String, Integer> order = new HashMap<>();
+        HashMap<Integer, Integer> order = new HashMap<>();
         for (int i = 0; i < activeNodeData.size(); ++i) {
-            order.put('n' + activeNodeData.get(i).getNodeId(), i);
+            order.put(activeNodeData.get(i).getNodeId(), i);
         }
 
         double[][] sparseM = new double[activeNodeData.size()][activeNodeData.size()];
@@ -100,62 +100,62 @@ public class DCRGraphMLReader {
         return new Graph(simpleNode, sparseM);
     }
 
-    class EdgeData {
+    private class EdgeData {
         String source;
         String target;
         Boolean active;
 
-        public Boolean getActive() {
+        Boolean getActive() {
             return active;
         }
 
-        public void setActive(Boolean active) {
+        void setActive(Boolean active) {
             this.active = active;
         }
 
-        public String getSource() {
+        String getSource() {
             return source;
         }
 
-        public void setSource(String source) {
+        void setSource(String source) {
             this.source = source;
         }
 
-        public String getTarget() {
+        String getTarget() {
             return target;
         }
 
-        public void setTarget(String target) {
+        void setTarget(String target) {
             this.target = target;
         }
     }
 
-    class NodeData implements Comparable<NodeData> {
-        private String nodeId;
+    private class NodeData implements Comparable<NodeData> {
+        private int nodeId;
         private String color;
         private Boolean active;
 
-        public Boolean getActive() {
+        Boolean getActive() {
             return active;
         }
 
-        public void setActive(Boolean active) {
+        void setActive(Boolean active) {
             this.active = active;
         }
 
-        public String getNodeId() {
+        int getNodeId() {
             return nodeId;
         }
 
-        public void setNodeId(String nodeId) {
+        void setNodeId(int nodeId) {
             this.nodeId = nodeId;
         }
 
-        public String getColor() {
+        String getColor() {
             return color;
         }
 
-        public void setColor(String color) {
+        void setColor(String color) {
             this.color = color;
         }
 

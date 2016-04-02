@@ -2,6 +2,7 @@ package com.jdistance.impl.workflow.context;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.File;
 
 @XmlRootElement
 public class Context {
@@ -9,6 +10,7 @@ public class Context {
 
     private Boolean parallelTasks;
     private Boolean parallelGrid;
+    private Boolean metricsStatistics;
     private String tempFolder;
 
     private String calculationsResultFolder;
@@ -41,6 +43,15 @@ public class Context {
     @XmlElement
     public void setParallelGrid(Boolean parallelGrid) {
         this.parallelGrid = parallelGrid;
+    }
+
+    public Boolean getMetricsStatistics() {
+        return metricsStatistics;
+    }
+
+    @XmlElement
+    public void setMetricsStatistics(Boolean metricsStatistics) {
+        this.metricsStatistics = metricsStatistics;
     }
 
     public String getTempFolder() {
@@ -86,5 +97,15 @@ public class Context {
     @XmlElement
     public void setWriteGnuplotScripts(Boolean writeGnuplotScripts) {
         this.writeGnuplotScripts = writeGnuplotScripts;
+    }
+
+    public String buildDataFullName(String imgTitle, String extension) {
+        return ContextProvider.getContext().getCalculationsResultFolder() + File.separator +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") + "." + extension;
+    }
+
+    public String buildImgFullName(String imgTitle, String extension) {
+        return ContextProvider.getContext().getImgFolder() + File.separator +
+                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") + "." + extension;
     }
 }

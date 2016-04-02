@@ -11,12 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class WardGridSearch extends GridSearch {
-    private GraphBundle graphs;
     private Integer k;
 
     // k - count of clusters
     public WardGridSearch(GraphBundle graphs, Integer k) {
-        this.graphs = graphs;
+        super(graphs);
         this.k = k;
     }
 
@@ -26,19 +25,15 @@ public class WardGridSearch extends GridSearch {
     }
 
     @Override
-    public GraphBundle getGraphBundle() {
-        return graphs;
-    }
-
-    @Override
-    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
+    protected double roundScore(Graph graph, DenseMatrix D) {
+        final List<Node> nodes = graph.getNodes();
         final HashMap<Integer, Integer> predictedNodes = new Ward(D).predict(k);
 
         // Rate Index
         long countErrors = 0;
         for (int i = 0; i < predictedNodes.size(); ++i) {
             for (int j = i + 1; j < predictedNodes.size(); ++j) {
-                if (predictedNodes.get(i).equals(predictedNodes.get(j)) != node.get(i).getLabel().equals(node.get(j).getLabel())) {
+                if (predictedNodes.get(i).equals(predictedNodes.get(j)) != nodes.get(i).getLabel().equals(nodes.get(j).getLabel())) {
                     countErrors += 1;
                 }
             }

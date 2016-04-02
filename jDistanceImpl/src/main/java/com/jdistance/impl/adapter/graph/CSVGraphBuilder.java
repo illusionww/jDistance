@@ -23,7 +23,7 @@ public class CSVGraphBuilder {
         try (Stream<String> stream = Files.lines(Paths.get(nodesFile))) {
             stream.forEach(line -> {
                 String[] rawNode = line.split("[\t;]");
-                nodes.add(new Node(rawNode[0], rawNode[2]));
+                nodes.add(new Node(Integer.valueOf(rawNode[0]), rawNode[2]));
             });
         }
         return this;
@@ -35,7 +35,7 @@ public class CSVGraphBuilder {
             List<String> lines = stream.collect(Collectors.toList());
             for (int i = 0; i < lines.size(); i++) {
                 String clazz = lines.get(i);
-                nodes.add(new Node(Integer.toString(i), clazz));
+                nodes.add(new Node(i, clazz));
             }
             ;
         }

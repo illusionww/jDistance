@@ -56,7 +56,7 @@ public class ProcessingTest {
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(2, 200, 5, 0.3, 0.1);
         GraphBundle bundle = GnPInPOutGraphGenerator.getInstance().generate(properties);
         GridSearch gridSearch = new KNearestNeighborsGridSearch(bundle, 4, 0.3);
-        Task task = new DefaultTask(gridSearch, new MetricWrapper(Metric.COMM_D), 10);
+        Task task = new DefaultTask(gridSearch, new MetricWrapper(Metric.COMM30), 10);
         Map<Double, Double> result = new TaskChain("validate", Collections.singletonList(task)).execute().getData().get(task);
         long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();
         assertTrue("countDistinct should be > 1, but it = " + countDistinct, countDistinct > 1);
@@ -67,7 +67,7 @@ public class ProcessingTest {
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(2, 200, 5, 0.3, 0.1);
         GraphBundle bundle = GnPInPOutGraphGenerator.getInstance().generate(properties);
         GridSearch gridSearch = new MinSpanningTreeGridSearch(bundle, 4);
-        Task task = new DefaultTask(gridSearch, new MetricWrapper(Metric.COMM_D), 10);
+        Task task = new DefaultTask(gridSearch, new MetricWrapper(Metric.COMM30), 10);
         Map<Double, Double> result = new TaskChain("validate", Collections.singletonList(task)).execute().getData().get(task);
         long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();
         assertTrue("countDistinct should be > 1, but it = " + countDistinct, countDistinct > 1);

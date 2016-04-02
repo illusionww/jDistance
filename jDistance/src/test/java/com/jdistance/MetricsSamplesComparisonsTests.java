@@ -103,7 +103,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphCommunicabilityDistance() {
-        Metric distance = Metric.COMM;
+        Metric distance = Metric.COMM_FAIR;
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 0.964 / D.get(0, 1);
         assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.964));

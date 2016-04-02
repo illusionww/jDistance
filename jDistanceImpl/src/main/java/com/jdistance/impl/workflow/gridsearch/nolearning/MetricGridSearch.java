@@ -17,11 +17,10 @@ import java.util.List;
  *  (Для него и стандартизация не нужна - он инвариантен к линейным преобразованиям).
  */
 public class MetricGridSearch extends GridSearch {
-    private GraphBundle graphs;
     private Integer k;
 
     public MetricGridSearch(GraphBundle graphs, Integer k) {
-        this.graphs = graphs;
+        super(graphs);
         this.k = k;
     }
 
@@ -31,19 +30,15 @@ public class MetricGridSearch extends GridSearch {
     }
 
     @Override
-    public GraphBundle getGraphBundle() {
-        return graphs;
-    }
+    protected double roundScore(Graph graph, DenseMatrix D) {
+        final List<Node> nodes = graph.getNodes();
 
-    @Override
-    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
         double[] vector1 = StandardizeHelper.standardize(D).getValues(); //вытягиваем матрицу в вектор
 
         double[][] class_match = new double[D.cols][D.rows]; // 1 если объекты в разных кластерах, 0 если в одном
         for (int c = 0; c < D.cols; c++) {
             for (int r = 0; r < D.rows; r++) {
-                class_match[c][r] = graph.getNodes().get(c).getLabel().equals(graph.getNodes().get(r).getLabel())
-                        ? 0d : 1d;
+                class_match[c][r] = nodes.get(c).getLabel().equals(nodes.get(r).getLabel()) ? 0d : 1d;
             }
         }
         DenseMatrix B = new DenseMatrix(class_match);

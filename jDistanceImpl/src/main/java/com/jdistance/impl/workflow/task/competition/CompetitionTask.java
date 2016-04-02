@@ -82,7 +82,7 @@ public abstract class CompetitionTask {
                 }
             });
         } catch (IOException e) {
-            System.err.println("IOException while write results");
+            System.err.println("IOException while writeData results");
         }
         return this;
     }

@@ -1,24 +1,22 @@
 package com.jdistance.impl.workflow;
 
 import com.jdistance.impl.adapter.gnuplot.GNUPlotAdapter;
-import com.jdistance.impl.adapter.gnuplot.PlotDTO;
-import com.jdistance.impl.workflow.context.ContextProvider;
+import com.jdistance.impl.workflow.gridsearch.MetricStatisticsDTO;
 import com.jdistance.impl.workflow.task.Task;
 import com.jdistance.metric.MetricWrapper;
-import com.panayotis.gnuplot.dataset.Point;
-import com.panayotis.gnuplot.dataset.PointDataSet;
-import com.panayotis.gnuplot.style.PlotColor;
 import com.panayotis.gnuplot.style.Smooth;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static com.jdistance.impl.workflow.context.ContextProvider.getContext;
 
 public class TaskChain {
     private static final Logger log = LoggerFactory.getLogger(TaskChain.class);
@@ -57,7 +55,7 @@ public class TaskChain {
         Date start = new Date();
         log.info("START TASK_CHAIN \"{}\"", name);
 
-        Stream<Task> stream = ContextProvider.getContext().getParallelTasks() ? tasks.parallelStream() : tasks.stream();
+        Stream<Task> stream = getContext().getParallelTasks() ? tasks.parallelStream() : tasks.stream();
         stream.forEach(task -> {
             Date startTask = new Date();
             log.info("Task START: {}", task.getName());
@@ -91,30 +89,18 @@ public class TaskChain {
     }
 
     public TaskChain draw(String imgTitle, String yrange, String yticks, Smooth smooth) {
-        Iterator<PlotColor> color = Arrays.asList(GNUPlotAdapter.colors).iterator();
-
-        List<PlotDTO> plots = new ArrayList<>();
-        tasks.forEach(task -> {
-            String plotTitle = task.getMetricWrapper() != null ? task.getMetricWrapper().getName() : task.getName();
-            Map<Double, Double> points = task.getResult();
-            List<Point<Double>> plotPoints = GNUPlotAdapter.mapToPoints(points);
-            PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
-            plots.add(new PlotDTO(plotTitle, color.next(), plotPointsSet));
-        });
-
-        GNUPlotAdapter ga = new GNUPlotAdapter(ContextProvider.getContext().getGnuplotPath());
-        ga.drawData(plots, buildFullImgNameByImgTitle(imgTitle, "png"), buildFullImgNameByImgTitle(imgTitle, "gnu"), yrange, yticks, smooth);
-
+        GNUPlotAdapter ga = new GNUPlotAdapter(getContext().getGnuplotPath());
+        ga.draw(this, imgTitle, yrange, yticks, smooth);
         return this;
     }
 
-    public TaskChain write() {
-        write(name);
+    public TaskChain writeData() {
+        writeData(name);
         return this;
     }
 
-    public TaskChain write(String filename) {
-        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(buildFullDataNameByImgTitle(filename, "csv")))) {
+    public TaskChain writeData(String filename) {
+        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(getContext().buildDataFullName(filename, "csv")))) {
             outputWriter.write("\t");
             for (Task task : tasks) {
                 MetricWrapper metricWrapper = task.getMetricWrapper();
@@ -130,52 +116,65 @@ public class TaskChain {
                 }
                 outputWriter.newLine();
             }
-//            writeMaxMinValues(outputWriter);
         } catch (IOException e) {
-            System.err.println("IOException while write results");
+            System.err.println("IOException while writeData results");
         }
 
         return this;
     }
 
-    public void writeMaxMinValues(BufferedWriter outputWriter) throws IOException {
-        outputWriter.write("MIN_param\t");
-        for (Task task : tasks) {
-            outputWriter.write(task.getMinResult().getKey() + "\t");
-        }
-        outputWriter.newLine();
+    public TaskChain writeStatistics() {
+        writeStatistics(name);
+        return this;
+    }
 
-        outputWriter.write("MIN_value\t");
-        for (Task task : tasks) {
-            outputWriter.write(task.getMinResult().getValue() + "\t");
-        }
-        outputWriter.newLine();
+    public TaskChain writeStatistics(String filename) {
+        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(getContext().buildDataFullName(filename + "_statistics", "csv")))) {
+            for (Task task : tasks) {
+                outputWriter.write("Metric " + task.getName() + "\n");
+                for (Map<Double, MetricStatisticsDTO> statisticsForGraph : task.getMetricStatistics().values()) {
+                    List<Map.Entry<Double, MetricStatisticsDTO>> sortedList = new ArrayList<>(statisticsForGraph.entrySet());
+                    Collections.sort(sortedList, Comparator.comparingDouble(Map.Entry::getKey));
 
-        outputWriter.write("MAX_param\t");
-        for (Task task : tasks) {
-            outputWriter.write(task.getMaxResult().getKey() + "\t");
+                    outputWriter.write("param\tmin\tmax\tavg\tscore\t");
+                    for (String label : sortedList.get(0).getValue().getInterCluster().keySet()) {
+                        outputWriter.write(label + "_min\t" + label + "_max\t" + label + "_avg\t");
+                    }
+                    for (Pair<String, String> pair : sortedList.get(0).getValue().getIntraCluster().keySet()) {
+                        String label = pair.getLeft() + "&" + pair.getRight();
+                        outputWriter.write(label + "_min\t" + label + "_max\t" + label + "_avg\t");
+                    }
+                    outputWriter.newLine();
+                    for (Map.Entry<Double, MetricStatisticsDTO> metricStatistics : sortedList) {
+                        outputWriter.write(metricStatistics.getKey() + "\t" +
+                                metricStatistics.getValue().getMinValue() + "\t" +
+                                metricStatistics.getValue().getMaxValue() + "\t" +
+                                metricStatistics.getValue().getAvgValue() + "\t" +
+                                task.getResult().get(metricStatistics.getKey()) + "\t");
+                        for (Map.Entry<String, MetricStatisticsDTO> interCluster : metricStatistics.getValue().getInterCluster().entrySet()) {
+                            outputWriter.write(interCluster.getValue().getMinValue() + "\t" +
+                                            interCluster.getValue().getMaxValue() + "\t" +
+                                            interCluster.getValue().getAvgValue() + "\t");
+                        }
+                        for (Map.Entry<Pair<String, String>, MetricStatisticsDTO> intraCluster : metricStatistics.getValue().getIntraCluster().entrySet()) {
+                            outputWriter.write(intraCluster.getValue().getMinValue() + "\t" +
+                                    intraCluster.getValue().getMaxValue() + "\t" +
+                                    intraCluster.getValue().getAvgValue() + "\t");
+                        }
+                        outputWriter.newLine();
+                    }
+                }
+                outputWriter.newLine();
+            }
+        } catch (IOException e) {
+            System.err.println("IOException while writeData results");
         }
-        outputWriter.newLine();
-
-        outputWriter.write("MAX_value\t");
-        for (Task task : tasks) {
-            outputWriter.write(task.getMaxResult().getValue() + "\t");
-        }
-        outputWriter.newLine();
+        return this;
     }
 
     public Map<Task, Map<Double, Double>> getData() {
         return tasks.stream().collect(Collectors.toMap(task -> task, Task::getResult));
     }
 
-    private static String buildFullDataNameByImgTitle(String imgTitle, String extension) {
-        return ContextProvider.getContext().getCalculationsResultFolder() + File.separator +
-                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") + "." + extension;
-    }
-
-    private static String buildFullImgNameByImgTitle(String imgTitle, String extension) {
-        return ContextProvider.getContext().getImgFolder() + File.separator +
-                imgTitle.replaceAll("[^\\w\\-\\.,= ]+", "_") + "." + extension;
-    }
 
 }

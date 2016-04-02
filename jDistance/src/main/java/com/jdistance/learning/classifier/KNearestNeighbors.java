@@ -7,7 +7,7 @@ import jeigen.DenseMatrix;
 import java.util.*;
 
 public class KNearestNeighbors {
-    private ArrayList<Node> realData; //  name and cluster
+    private ArrayList<Node> realData; //  id and cluster
     private double[][] matrixWithWeights;
     private int countColoredNodes;
 
@@ -20,10 +20,10 @@ public class KNearestNeighbors {
 
     //p - процент известных данных, т.е. те которые не надо предсказывать, или же если p > 1 то количество вершин о которых мы знаем их принадлежность
     public ArrayList<Node> predictLabel(Integer k, Double p, Double x) {
-        HashMap<String, Integer> order = new HashMap<>();
+        HashMap<Integer, Integer> order = new HashMap<>();
 
         for (int i = 0; i < realData.size(); ++i) {
-            order.put(realData.get(i).getName(), i);
+            order.put(realData.get(i).getId(), i);
         }
 
         //выбираем вершины о которых будем знать их принадлежность к опеределенному классу
@@ -39,7 +39,7 @@ public class KNearestNeighbors {
         for (int i = 0; i < realData.size(); ++i) {
             boolean flag = false;
             for (Node coloredNode : coloredNodes) {
-                if (realData.get(i).getName().equals(coloredNode.getName())) {
+                if (realData.get(i).getId().equals(coloredNode.getId())) {
                     predictedDatas.add(realData.get(i));
                     flag = true;
                     break;
@@ -48,16 +48,16 @@ public class KNearestNeighbors {
             if (!flag) {
                 ArrayList<DataForClassifier> weights = new ArrayList<>();
                 for (Node coloredNode : coloredNodes) {
-                    if (matrixWithWeights[i][order.get(coloredNode.getName())] != 0) {
-                        weights.add(new DataForClassifier(coloredNode.getName(), matrixWithWeights[i][order.get(coloredNode.getName())], coloredNode.getLabel()));
+                    if (matrixWithWeights[i][order.get(coloredNode.getId())] != 0) {
+                        weights.add(new DataForClassifier(coloredNode.getId(), matrixWithWeights[i][order.get(coloredNode.getId())], coloredNode.getLabel()));
                     } else
-                        weights.add(new DataForClassifier(coloredNode.getName(), Double.MAX_VALUE, coloredNode.getLabel()));
+                        weights.add(new DataForClassifier(coloredNode.getId(), Double.MAX_VALUE, coloredNode.getLabel()));
                 }
                 Collections.sort(weights);
                 if (k > weights.size()) {
-                    predictedDatas.add(new Node(realData.get(i).getName(), predictLabel(weights, x)));
+                    predictedDatas.add(new Node(realData.get(i).getId(), predictLabel(weights, x)));
                 } else {
-                    predictedDatas.add(new Node(realData.get(i).getName(), predictLabel(weights.subList(0, k), x)));
+                    predictedDatas.add(new Node(realData.get(i).getId(), predictLabel(weights.subList(0, k), x)));
                 }
             }
         }
@@ -130,30 +130,30 @@ public class KNearestNeighbors {
     }
 
     private class DataForClassifier implements Comparable<DataForClassifier> {
-        String name;
+        Integer id;
         Double value;
         String label;
 
-        DataForClassifier(String name, Double value, String label) {
-            this.name = name;
+        DataForClassifier(Integer id, Double value, String label) {
+            this.id = id;
             this.value = value;
             this.label = label;
         }
 
-        public String getLabel() {
+        String getLabel() {
             return label;
         }
 
-        public Double getValue() {
+        Double getValue() {
             return value;
         }
 
-        public String getName() {
-            return name;
+        Integer getId() {
+            return id;
         }
 
-        public void setName(String name) {
-            this.name = name;
+        void setId(Integer id) {
+            this.id = id;
         }
 
         @Override

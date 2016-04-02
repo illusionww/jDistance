@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <context>
-	<!--<gnuplotPath>auto</gnuplotPath>-->
-	<gnuplotPath>C:\Program Files\gnuplot\bin\gnuplot.exe</gnuplotPath>
+	<gnuplotPath>auto</gnuplotPath>
+	<!--<gnuplotPath>C:\Program Files\gnuplot\bin\gnuplot.exe</gnuplotPath>-->
 
     <parallelTasks>false</parallelTasks>
 	<parallelGrid>true</parallelGrid>
+    <metricsStatistics>true</metricsStatistics>
     <tempFolder>results/temp</tempFolder>
 
     <calculationsResultFolder>results/data</calculationsResultFolder>

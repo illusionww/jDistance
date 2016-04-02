@@ -12,11 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MinSpanningTreeGridSearch extends GridSearch {
-    private GraphBundle graphs;
     private Integer k;
 
     public MinSpanningTreeGridSearch(GraphBundle graphs, Integer k) {
-        this.graphs = graphs;
+        super(graphs);
         this.k = k;
     }
 
@@ -26,12 +25,8 @@ public class MinSpanningTreeGridSearch extends GridSearch {
     }
 
     @Override
-    public GraphBundle getGraphBundle() {
-        return graphs;
-    }
-
-    @Override
-    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
+    protected double roundScore(Graph graph, DenseMatrix D) {
+        final List<Node> nodes = graph.getNodes();
         Integer countErrors = 0;
 
         final MinSpanningTree clusterer = new MinSpanningTree(D);
@@ -39,7 +34,7 @@ public class MinSpanningTreeGridSearch extends GridSearch {
 
         for (int i = 0; i < data.size(); ++i) {
             for (int j = i + 1; j < data.size(); ++j) {
-                if (data.get(i).equals(data.get(j)) != node.get(i).getLabel().equals(node.get(j).getLabel())) {
+                if (data.get(i).equals(data.get(j)) != nodes.get(i).getLabel().equals(nodes.get(j).getLabel())) {
                     countErrors += 1;
                 }
             }

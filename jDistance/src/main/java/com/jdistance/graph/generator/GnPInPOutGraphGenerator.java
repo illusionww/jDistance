@@ -47,7 +47,7 @@ public class GnPInPOutGraphGenerator extends GraphGenerator {
                 }
             }
         }
-        Graph graph = new Graph(generateSimpleNodeDatas(sizeClusters), sparseMatrix);
+        Graph graph = new Graph(generateNodes(sizeClusters), sparseMatrix);
         graph.shuffle(2*graph.getNodes().size());
         return graph;
     }
@@ -69,13 +69,13 @@ public class GnPInPOutGraphGenerator extends GraphGenerator {
         return probabilityMatrix[fromCluster][toCluster];
     }
 
-    private ArrayList<Node> generateSimpleNodeDatas(int[] sizeClusters) {
+    private ArrayList<Node> generateNodes(int[] sizeClusters) {
         ArrayList<Node> nodes = new ArrayList<>();
-        Integer vertex = 0;
+        Integer id = 0;
         for (Integer i = 0; i < sizeClusters.length; ++i) {
             for (int j = 0; j < sizeClusters[i]; ++j) {
-                nodes.add(new Node(vertex.toString(), i.toString()));
-                vertex++;
+                nodes.add(new Node(id, i.toString()));
+                id++;
             }
         }
         return nodes;

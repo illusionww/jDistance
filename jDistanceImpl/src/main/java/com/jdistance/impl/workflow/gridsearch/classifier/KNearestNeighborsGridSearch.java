@@ -11,14 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class KNearestNeighborsGridSearch extends GridSearch {
-    private GraphBundle graphs;
     private Integer k;
     private Double p;
     private Double x;
 
 
     public KNearestNeighborsGridSearch(GraphBundle graphs, Integer k, Double p) {
-        this.graphs = graphs;
+        super(graphs);
         this.k = k;
         this.p = p;
         this.x = 0.0;
@@ -30,7 +29,7 @@ public class KNearestNeighborsGridSearch extends GridSearch {
      * @param x - параметр, влияющий на вес соседей
      */
     public KNearestNeighborsGridSearch(GraphBundle graphs, Integer k, Double p, Double x) {
-        this.graphs = graphs;
+        super(graphs);
         this.k = k;
         this.p = p;
         this.x = x;
@@ -41,26 +40,22 @@ public class KNearestNeighborsGridSearch extends GridSearch {
         return "Classifier: k=" + k + ", p=" + p + ", x=" + x + "; " + graphs.getName();
     }
 
-    @Override
-    public GraphBundle getGraphBundle() {
-        return graphs;
-    }
-
     public void setX(Double x) {
         this.x = x;
     }
 
     @Override
-    protected double roundScore(Graph graph, DenseMatrix D, List<Node> node) {
+    protected double roundScore(Graph graph, DenseMatrix D) {
+        final List<Node> nodes = graph.getNodes();
         Integer countErrors = 0;
 
-        final KNearestNeighbors classifier = new KNearestNeighbors(D, node);
+        final KNearestNeighbors classifier = new KNearestNeighbors(D, nodes);
         ArrayList<Node> data = classifier.predictLabel(k, p, x);
 
         for (int q = 0; q < data.size(); ++q) {
-            Node original = node.get(q);
+            Node original = nodes.get(q);
             Node calculated = data.get(q);
-            if (original.getName().equals(calculated.getName()) && !original.getLabel().equals(calculated.getLabel())) {
+            if (original.getId().equals(calculated.getId()) && !original.getLabel().equals(calculated.getLabel())) {
                 countErrors += 1;
             }
         }

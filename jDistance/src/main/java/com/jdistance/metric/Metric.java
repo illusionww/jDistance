@@ -36,27 +36,27 @@ public enum Metric {
             return jb.getD(H);
         }
     },
-    COMM("Comm fair", Scale.FRACTION_REVERSED) {
+    COMM_FAIR("Comm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = jb.getH0Communicability(A, t);
             DenseMatrix D = jb.getD(H);
             return MetricBuilder.sqrtD(D);
         }
     },
-    COMM_D("Comm", Scale.FRACTION_REVERSED) {
+    COMM30("Comm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = jb.getH0DummyCommunicability(A, t);
+            DenseMatrix H = jb.getH0DummyCommunicability(A, t, 30);
             DenseMatrix D = jb.getD(H);
             return MetricBuilder.sqrtD(D);
         }
     },
-    COMM_D_NOT_SQUARED("Comm not squared", Scale.FRACTION_REVERSED) {
+    COMM30_NOT_SQUARED("Comm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = jb.getH0DummyCommunicability(A, t);
+            DenseMatrix H = jb.getH0DummyCommunicability(A, t, 30);
             return jb.getD(H);
         }
     },
-    LOG_COMM("logComm fair", Scale.FRACTION_REVERSED) {
+    LOG_COMM_FAIR("logComm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H0 = jb.getH0Communicability(A, t);
             DenseMatrix H = jb.H0toH(H0);
@@ -64,19 +64,86 @@ public enum Metric {
             return MetricBuilder.sqrtD(D);
         }
     },
-    LOG_COMM_D("logComm", Scale.FRACTION_REVERSED) {
+    LOG_COMM30("logComm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H0 = jb.getH0DummyCommunicability(A, t);
+            DenseMatrix H0 = jb.getH0DummyCommunicability(A, t, 30);
             DenseMatrix H = jb.H0toH(H0);
             DenseMatrix D = jb.getD(H);
             return MetricBuilder.sqrtD(D);
         }
     },
-    LOG_COMM_D_NOT_SQUARED("logComm not squared", Scale.FRACTION_REVERSED) {
+    LOG_COMM30_NOT_SQUARED("logComm", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H0 = jb.getH0DummyCommunicability(A, t);
+            DenseMatrix H0 = jb.getH0DummyCommunicability(A, t, 30);
             DenseMatrix H = jb.H0toH(H0);
             return jb.getD(H);
+        }
+    },
+    HEAT_FAIR("Heat", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H = jb.getH0Communicability(L, -t);
+            DenseMatrix D = jb.getD(H);
+            return MetricBuilder.sqrtD(D);
+        }
+    },
+    HEAT30("Heat", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H = jb.getH0DummyCommunicability(L, -t, 30);
+            DenseMatrix D = jb.getD(H);
+            return MetricBuilder.sqrtD(D);
+        }
+    },
+    HEAT31("Heat", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H = jb.getH0DummyCommunicability(L, -t, 31);
+            DenseMatrix D = jb.getD(H);
+            return MetricBuilder.sqrtD(D);
+        }
+    },
+    LOG_HEAT_FAIR("logHeat", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H0 = jb.getH0Communicability(L, -t);
+            DenseMatrix H = jb.H0toH(H0);
+            DenseMatrix D = jb.getD(H);
+            return MetricBuilder.sqrtD(D);
+        }
+    },
+    LOG_HEAT30("logHeat", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H0 = jb.getH0DummyCommunicability(L, -t, 30);
+            DenseMatrix H = jb.H0toH(H0);
+            DenseMatrix D = jb.getD(H);
+            return MetricBuilder.sqrtD(D);
+        }
+    },
+    LOG_HEAT31("logHeat", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getD(DenseMatrix A, double t) {
+            DenseMatrix L = jb.getL(A);
+            DenseMatrix H0 = jb.getH0DummyCommunicability(L, -t, 31);
+            DenseMatrix H = jb.H0toH(H0);
+            DenseMatrix D = jb.getD(H);
+            return MetricBuilder.sqrtD(D);
+        }
+    },
+    FREE_ENERGY("FE", Scale.FRACTION_BETA) {
+        public DenseMatrix getD(DenseMatrix A, double beta) {
+            return jb.getDFreeEnergy(A, beta);
+        }
+    },
+    RSP("RSP", Scale.FRACTION_BETA) {
+        public DenseMatrix getD(DenseMatrix A, double beta) {
+            return jb.getD_RSP(A, beta);
         }
     },
     SP_CT("SP-CT", Scale.LINEAR) {
@@ -91,50 +158,6 @@ public enum Metric {
             Double avgDr = Dr.sum().sum().s() / (Dr.cols * (Dr.cols - 1));
             Double norm = avgDs / avgDr;
             return Ds.mul(1 - lambda).add(Dr.mul(lambda * norm));
-        }
-    },
-    FREE_ENERGY("FE", Scale.FRACTION_BETA) {
-        public DenseMatrix getD(DenseMatrix A, double beta) {
-            return jb.getDFreeEnergy(A, beta);
-        }
-    },
-    RSP("RSP", Scale.FRACTION_BETA) {
-        public DenseMatrix getD(DenseMatrix A, double beta) {
-            return jb.getD_RSP(A, beta);
-        }
-    },
-    SCCT_CT("SCCT-CT", Scale.LINEAR) {
-        public DenseMatrix getD(DenseMatrix A, double lambda) {
-            DenseMatrix K_CCT = jb.getH_SCCT(A);
-            DenseMatrix Dcct = jb.getD(K_CCT);
-
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H = jb.getHResistance(L);
-            DenseMatrix Dr = jb.getD(H);
-
-            Double avgDcct = Dcct.sum().sum().s() / (Dcct.cols * (Dcct.cols - 1));
-            Double avgDr = Dr.sum().sum().s() / (Dr.cols * (Dr.cols - 1));
-            Double norm = avgDcct / avgDr;
-            return Dcct.mul(1 - lambda).add(Dr.mul(lambda * norm));
-        }
-    },
-    HEAT_KERNEL("Heat", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H = jb.getH0DummyCommunicability(L, -t);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
-        }
-    },
-    LOG_HEAT_KERNEL("logHeat", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H0 = jb.getH0DummyCommunicability(L, -t);
-            DenseMatrix H = jb.H0toH(H0);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
         }
     };
 
@@ -153,17 +176,17 @@ public enum Metric {
 
     public static List<MetricWrapper> getDefaultDistances() {
         return Arrays.asList(
-//                new MetricWrapper(Metric.PLAIN_WALK),
-//                new MetricWrapper(Metric.WALK),
-//                new MetricWrapper(Metric.FOREST),
-//                new MetricWrapper(Metric.LOG_FOREST),
-                new MetricWrapper(Metric.COMM_D),
-                new MetricWrapper(Metric.LOG_COMM_D),
-//                new MetricWrapper(Metric.RSP),
+                new MetricWrapper(Metric.PLAIN_WALK),
+                new MetricWrapper(Metric.WALK),
+                new MetricWrapper(Metric.FOREST),
+                new MetricWrapper(Metric.LOG_FOREST),
+                new MetricWrapper(Metric.COMM30),
+                new MetricWrapper(Metric.LOG_COMM30),
+                new MetricWrapper(Metric.HEAT_FAIR),
+                new MetricWrapper(Metric.LOG_HEAT_FAIR),
+                new MetricWrapper(Metric.RSP),
                 new MetricWrapper(Metric.FREE_ENERGY),
-                new MetricWrapper(Metric.SP_CT),
-                new MetricWrapper(Metric.HEAT_KERNEL),
-                new MetricWrapper(Metric.LOG_HEAT_KERNEL)
+                new MetricWrapper(Metric.SP_CT)
         );
     }
 
