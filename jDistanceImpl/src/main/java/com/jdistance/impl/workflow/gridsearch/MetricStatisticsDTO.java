@@ -8,7 +8,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 
 public class MetricStatisticsDTO {
     private Double minValue;
@@ -28,7 +27,7 @@ public class MetricStatisticsDTO {
     }
 
     private void fill(DenseMatrix D, Graph graph) {
-        MetricStatisticsDTO temp = getMinMaxAvgOfStream(Arrays.stream(D.getValues()));
+        MetricStatisticsDTO temp = getMinMaxAvgOfStream(Arrays.stream(D.getValues()).boxed().collect(Collectors.toList()));
         minValue = temp.minValue;
         maxValue = temp.maxValue;
         avgValue = temp.avgValue;
@@ -49,7 +48,7 @@ public class MetricStatisticsDTO {
                         .map(twoNode -> D.get(oneNode.getId(), twoNode.getId()))
                         .collect(Collectors.toList()));
             }
-            MetricStatisticsDTO interClusterStatistics = getMinMaxAvgOfStream(interClusterResults.stream().mapToDouble(i -> i));
+            MetricStatisticsDTO interClusterStatistics = getMinMaxAvgOfStream(interClusterResults);
             interCluster.put(label, interClusterStatistics);
         }
 
@@ -69,7 +68,7 @@ public class MetricStatisticsDTO {
                             .map(twoNode -> D.get(oneNode.getId(), twoNode.getId()))
                             .collect(Collectors.toList()));
                 }
-                MetricStatisticsDTO intraClusterStatistics = getMinMaxAvgOfStream(intraClusterResults.stream().mapToDouble(i -> i));
+                MetricStatisticsDTO intraClusterStatistics = getMinMaxAvgOfStream(intraClusterResults);
                 intraCluster.put(new ImmutablePair<>(oneLabel, twoLabel), intraClusterStatistics);
             }
         }
@@ -95,12 +94,12 @@ public class MetricStatisticsDTO {
         return intraCluster;
     }
 
-    private MetricStatisticsDTO getMinMaxAvgOfStream(DoubleStream stream) {
-        OptionalDouble optionalMin = stream.filter(p -> !Double.isNaN(p) && p != 0).min();
+    private MetricStatisticsDTO getMinMaxAvgOfStream(List<Double> list) {
+        OptionalDouble optionalMin = list.stream().mapToDouble(i -> i).filter(p -> !Double.isNaN(p) && p != 0).min();
         Double minValue = optionalMin.isPresent() ? optionalMin.getAsDouble() : null;
-        OptionalDouble optionalMax = stream.filter(p -> !Double.isNaN(p)).max();
+        OptionalDouble optionalMax = list.stream().mapToDouble(i -> i).filter(p -> !Double.isNaN(p)).max();
         Double maxValue = optionalMax.isPresent() ? optionalMax.getAsDouble() : null;
-        OptionalDouble optionalAvg = stream.filter(p -> !Double.isNaN(p)).average();
+        OptionalDouble optionalAvg = list.stream().mapToDouble(i -> i).filter(p -> !Double.isNaN(p)).average();
         Double avgValue = optionalAvg.isPresent() ? optionalAvg.getAsDouble() : null;
         return new MetricStatisticsDTO(minValue, maxValue, avgValue);
     }

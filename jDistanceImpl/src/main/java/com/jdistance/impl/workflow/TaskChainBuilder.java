@@ -7,6 +7,7 @@ import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.MinSpanningTreeGridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.WardGridSearch;
 import com.jdistance.impl.workflow.gridsearch.nolearning.DiffusionGridSearch;
+import com.jdistance.impl.workflow.gridsearch.nolearning.StubGridSearch;
 import com.jdistance.impl.workflow.task.CustomTask;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.Task;
@@ -64,6 +65,13 @@ public class TaskChainBuilder {
 
     public TaskChainBuilder addTask(Task task) {
         tasks.add(task);
+        return this;
+    }
+
+    public TaskChainBuilder generateStubTasks() {
+        if (name == null) name = generateName("Stub", graphs.getProperties());
+        GridSearch gridSearch = new StubGridSearch(graphs);
+        tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
         return this;
     }
 

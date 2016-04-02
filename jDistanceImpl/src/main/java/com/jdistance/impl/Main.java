@@ -47,7 +47,7 @@ public class Main {
 //        new TaskChainBuilder(name + ", Ward", Metric.getDefaultDistances(), pointsCount)
 //                .setGraphs(graphs).generateWardTasks().build().execute().writeData().drawUniqueAndBezier(yrange, yticks).writeStatistics();
           new TaskChainBuilder(name + ", Statistics", Metric.getDefaultDistances(), pointsCount)
-                .setGraphs(graphs).generateWardTasks().build().execute().writeStatistics();
+                .setGraphs(graphs).generateStubTasks().build().execute().writeStatistics();
 
     }
 
