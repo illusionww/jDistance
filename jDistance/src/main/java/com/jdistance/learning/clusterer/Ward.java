@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Ward implements Clusterer {
-    private DenseMatrix K;
-    private List<Cluster> clusters;
-    private Map<Pair<Cluster, Cluster>, Double> ΔJ;
+    protected DenseMatrix K;
+    protected List<Cluster> clusters;
+    protected Map<Pair<Cluster, Cluster>, Double> ΔJ;
 
     public Ward(DenseMatrix K) {
         this.K = K;
@@ -31,7 +31,6 @@ public class Ward implements Clusterer {
     public HashMap<Integer, Integer> predict(Integer k) {
         for (int i = 0; i < K.cols - k; i++) {
             iteration();
-//            System.out.println("done " + i);
         }
         HashMap<Integer, Integer> result = new HashMap<>();
         for (int clusterId = 0; clusterId < clusters.size(); clusterId++) {
@@ -42,8 +41,7 @@ public class Ward implements Clusterer {
         return result;
     }
 
-    // ΔJ = (n_k * n_l)/(n_k + n_l) * (h_k - h_l)^T * K * (h_k - h_l)
-    private void iteration() {
+    protected void iteration() {
         Cluster minCk = null;
         Cluster minCl = null;
         double minΔJ = Double.MAX_VALUE;
@@ -65,7 +63,7 @@ public class Ward implements Clusterer {
         merge(minCk, minCl);
     }
 
-    private void merge(Cluster Ck, Cluster Cl) {
+    protected void merge(Cluster Ck, Cluster Cl) {
         List<Integer> union = new ArrayList<>(Ck.nodes);
         union.addAll(Cl.nodes);
         clusters.remove(Cl);
@@ -73,7 +71,8 @@ public class Ward implements Clusterer {
         clusters.add(new Cluster(union, K.rows));
     }
 
-    private double calcΔJ(Cluster Ck, Cluster Cl) {
+    // ΔJ = (n_k * n_l)/(n_k + n_l) * (h_k - h_l)^T * K * (h_k - h_l)
+    protected double calcΔJ(Cluster Ck, Cluster Cl) {
         double norm = Ck.n * Cl.n / (double) (Ck.n + Cl.n);
         DenseMatrix hkhl = (Ck.h).sub(Cl.h);
         double currentΔJ = -hkhl.t().mmul(K).mmul(hkhl).mul(norm).s();
@@ -81,7 +80,7 @@ public class Ward implements Clusterer {
         return currentΔJ;
     }
 
-    private class Cluster {
+    protected class Cluster {
         List<Integer> nodes;
         DenseMatrix h;
         int n;

@@ -1,5 +1,7 @@
 package com.jdistance.metric;
 
+import jeigen.DenseMatrix;
+
 public class MetricWrapper extends AbstractDistanceWrapper {
     private Metric metric;
 
@@ -18,7 +20,8 @@ public class MetricWrapper extends AbstractDistanceWrapper {
         this.metric = metric;
     }
 
-    public Metric getMetric() {
-        return metric;
+    @Override
+    public DenseMatrix calc(DenseMatrix A, double param) {
+        return metric.getD(A, param);
     }
 }

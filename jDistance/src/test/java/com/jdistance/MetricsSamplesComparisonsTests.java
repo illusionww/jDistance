@@ -159,18 +159,22 @@ public class MetricsSamplesComparisonsTests {
         DenseMatrix L = builder.getL(chainGraph);
         DenseMatrix H0 = builder.getH0Forest(L, 0);
         double[][] forChain0 = toArray2(H0);
-        double[][] forChain0etalon = {{1, 0, 0, 0},
+        double[][] forChain0etalon = {
+                {1, 0, 0, 0},
                 {0, 1, 0, 0},
                 {0, 0, 1, 0},
-                {0, 0, 0, 1}};
+                {0, 0, 0, 1}
+        };
         assertTrue(Arrays.deepToString(forChain0), equalArraysStrict(forChain0, forChain0etalon));
 
         DenseMatrix H05 = builder.getH0Forest(L, 0.5);
         double[][] forChain05 = toArray2(H05);
-        double[][] forChain05etalon = {{0.73214286, 0.19642857, 0.05357143, 0.01785714},
+        double[][] forChain05etalon = {
+                {0.73214286, 0.19642857, 0.05357143, 0.01785714},
                 {0.19642857, 0.58928571, 0.16071429, 0.05357143},
                 {0.05357143, 0.16071429, 0.58928571, 0.19642857},
-                {0.01785714, 0.05357143, 0.19642857, 0.73214286}};
+                {0.01785714, 0.05357143, 0.19642857, 0.73214286}
+        };
         assertTrue(Arrays.deepToString(forChain05), equalArraysStrict(forChain05, forChain05etalon));
     }
 

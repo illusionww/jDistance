@@ -2,7 +2,7 @@ package com.jdistance.impl.workflow.gridsearch;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.metric.MetricWrapper;
+import com.jdistance.metric.AbstractDistanceWrapper;
 import com.jdistance.utils.Cloneable;
 import jeigen.DenseMatrix;
 import org.slf4j.Logger;
@@ -28,7 +28,7 @@ public abstract class GridSearch implements Cloneable {
 
     public abstract String getName();
 
-    public Map<Double, Double> seriesOfTests(final MetricWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
+    public Map<Double, Double> seriesOfTests(final AbstractDistanceWrapper metricWrapper, Double from, Double to, Integer pointsCount) {
         Date start = new Date();
         log.debug("START {}", metricWrapper.getName());
 
@@ -53,13 +53,13 @@ public abstract class GridSearch implements Cloneable {
         return validationScores;
     }
 
-    public Double validate(MetricWrapper metricWrapper, Double base) {
+    public Double validate(AbstractDistanceWrapper metricWrapper, Double base) {
         List<Double> validationScoresByGraph = new ArrayList<>();
         try {
             for (Graph graph : graphs.getGraphs()) {
                 DenseMatrix A = graph.getA();
                 Double parameter = metricWrapper.getScale().calc(A, base);
-                DenseMatrix D = metricWrapper.getMetric().getD(A, parameter);
+                DenseMatrix D = metricWrapper.calc(A, parameter);
                 if (!hasNaN(D)) {
                     validationScoresByGraph.add(roundScore(graph, D));
                 }

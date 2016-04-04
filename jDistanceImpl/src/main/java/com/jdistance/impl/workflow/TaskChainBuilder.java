@@ -4,6 +4,7 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
 import com.jdistance.impl.workflow.gridsearch.GridSearch;
+import com.jdistance.impl.workflow.gridsearch.clusterer.KernelWardGridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.MinSpanningTreeGridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.WardGridSearch;
 import com.jdistance.impl.workflow.gridsearch.nolearning.DiffusionGridSearch;
@@ -11,6 +12,7 @@ import com.jdistance.impl.workflow.gridsearch.nolearning.StubGridSearch;
 import com.jdistance.impl.workflow.task.CustomTask;
 import com.jdistance.impl.workflow.task.DefaultTask;
 import com.jdistance.impl.workflow.task.Task;
+import com.jdistance.metric.AbstractDistanceWrapper;
 import com.jdistance.metric.MetricWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,16 +30,16 @@ public class TaskChainBuilder {
 
     private String name;
     private GraphBundle graphs;
-    private List<MetricWrapper> metricWrappers;
+    private List<? extends AbstractDistanceWrapper> metricWrappers;
     private Integer pointsCount;
     private List<Task> tasks;
 
-    public TaskChainBuilder(String name, List<MetricWrapper> metricWrappers, Integer pointsCount) {
+    public TaskChainBuilder(String name, List<? extends AbstractDistanceWrapper> metricWrappers, Integer pointsCount) {
         this(metricWrappers, pointsCount);
         this.name = name;
     }
 
-    public TaskChainBuilder(List<MetricWrapper> metricWrappers, Integer pointsCount) {
+    public TaskChainBuilder(List<? extends AbstractDistanceWrapper> metricWrappers, Integer pointsCount) {
         this.metricWrappers = metricWrappers;
         this.pointsCount = pointsCount;
         this.tasks = new ArrayList<>();
@@ -84,8 +86,12 @@ public class TaskChainBuilder {
 
     public TaskChainBuilder generateWardTasks() {
         if (name == null) name = generateName("Ward", graphs.getProperties());
-        GridSearch gridSearch = new WardGridSearch(graphs, graphs.getProperties().getClustersCount());
-        tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
+        metricWrappers.forEach(metricWrapper -> {
+            GridSearch gridSearch = !metricWrapper.isKernel()
+                ? new WardGridSearch(graphs, graphs.getProperties().getClustersCount())
+                : new KernelWardGridSearch(graphs, graphs.getProperties().getClustersCount());
+            tasks.add(new DefaultTask(gridSearch, metricWrapper, pointsCount));
+        });
         return this;
     }
 
@@ -135,7 +141,7 @@ public class TaskChainBuilder {
         return chain;
     }
 
-    public static List<Task> generateDefaultTasks(GridSearch gridSearch, List<MetricWrapper> metricWrappers, int pointsCount) {
+    public static List<Task> generateDefaultTasks(GridSearch gridSearch, List<? extends AbstractDistanceWrapper> metricWrappers, int pointsCount) {
         List<Task> tasks = new ArrayList<>();
         metricWrappers.forEach(metricWrapper -> {
             GridSearch gridSearchClone = gridSearch.clone();

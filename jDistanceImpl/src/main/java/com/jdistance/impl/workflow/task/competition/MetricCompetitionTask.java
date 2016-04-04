@@ -32,7 +32,7 @@ public class MetricCompetitionTask extends CompetitionTask {
         competitionDTOs.stream().forEach(dto -> {
             DenseMatrix A = new DenseMatrix(graph.getA());
             Double parameter = dto.metricWrapper.getScale().calc(A, dto.pLearn.getKey());
-            DenseMatrix D = dto.metricWrapper.getMetric().getD(A, parameter);
+            DenseMatrix D = dto.metricWrapper.calc(A, parameter);
             D = StandardizeHelper.standardize(D);
 
             ArrayList<Double> same = new ArrayList<>(); //для одинаковых кластеров

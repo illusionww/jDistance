@@ -3,6 +3,7 @@ package com.jdistance.impl.workflow;
 import com.jdistance.impl.adapter.gnuplot.GNUPlotAdapter;
 import com.jdistance.impl.workflow.gridsearch.MetricStatisticsDTO;
 import com.jdistance.impl.workflow.task.Task;
+import com.jdistance.metric.AbstractDistanceWrapper;
 import com.jdistance.metric.MetricWrapper;
 import com.panayotis.gnuplot.style.Smooth;
 import org.apache.commons.lang3.tuple.Pair;
@@ -103,7 +104,7 @@ public class TaskChain {
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(getContext().buildDataFullName(filename, "csv")))) {
             outputWriter.write("\t");
             for (Task task : tasks) {
-                MetricWrapper metricWrapper = task.getMetricWrapper();
+                AbstractDistanceWrapper metricWrapper = task.getMetricWrapper();
                 outputWriter.write(metricWrapper.getName() + "\t");
             }
             outputWriter.newLine();
@@ -137,9 +138,6 @@ public class TaskChain {
                     Collections.sort(sortedList, Comparator.comparingDouble(Map.Entry::getKey));
 
                     outputWriter.write("param\tmin\tmax\tavg\tscore\t");
-                    for (String label : sortedList.get(0).getValue().getInterCluster().keySet()) {
-                        outputWriter.write(label + "_min\t" + label + "_max\t" + label + "_avg\t");
-                    }
                     for (Pair<String, String> pair : sortedList.get(0).getValue().getIntraCluster().keySet()) {
                         String label = pair.getLeft() + "&" + pair.getRight();
                         outputWriter.write(label + "_min\t" + label + "_max\t" + label + "_avg\t");
@@ -151,11 +149,6 @@ public class TaskChain {
                                 metricStatistics.getValue().getMaxValue() + "\t" +
                                 metricStatistics.getValue().getAvgValue() + "\t" +
                                 task.getResult().get(metricStatistics.getKey()) + "\t");
-                        for (Map.Entry<String, MetricStatisticsDTO> interCluster : metricStatistics.getValue().getInterCluster().entrySet()) {
-                            outputWriter.write(interCluster.getValue().getMinValue() + "\t" +
-                                            interCluster.getValue().getMaxValue() + "\t" +
-                                            interCluster.getValue().getAvgValue() + "\t");
-                        }
                         for (Map.Entry<Pair<String, String>, MetricStatisticsDTO> intraCluster : metricStatistics.getValue().getIntraCluster().entrySet()) {
                             outputWriter.write(intraCluster.getValue().getMinValue() + "\t" +
                                     intraCluster.getValue().getMaxValue() + "\t" +

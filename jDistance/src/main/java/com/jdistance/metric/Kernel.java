@@ -62,6 +62,6 @@ public enum Kernel {
     private DenseMatrix makeK(DenseMatrix D) {
         int size = D.rows;
         DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
-        return H.mmul(D).mmul(H).mul(-0.5);
+        return H.mmul(D.mul(D)).mmul(H).mul(0.5);
     }
 }

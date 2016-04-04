@@ -1,6 +1,7 @@
 package com.jdistance.impl.workflow.task.competition;
 
 import com.jdistance.impl.workflow.task.Task;
+import com.jdistance.metric.AbstractDistanceWrapper;
 import com.jdistance.metric.MetricWrapper;
 import jeigen.DenseMatrix;
 
@@ -28,7 +29,7 @@ public class MetricTask extends Task {
     }
 
     @Override
-    public MetricWrapper getMetricWrapper() {
+    public AbstractDistanceWrapper getMetricWrapper() {
         return metricWrapper;
     }
 
@@ -38,7 +39,7 @@ public class MetricTask extends Task {
         IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
             Double base = from + idx * step;
             Double i = metricWrapper.getScale().calc(A, base);
-            DenseMatrix current_result = metricWrapper.getMetric().getD(A, i);
+            DenseMatrix current_result = metricWrapper.calc(A, i);
             result.put(base, current_result.get(0, 1) / current_result.get(1, 2));
         });
 

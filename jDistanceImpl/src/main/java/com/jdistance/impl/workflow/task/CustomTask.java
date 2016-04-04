@@ -1,6 +1,7 @@
 package com.jdistance.impl.workflow.task;
 
 import com.jdistance.impl.workflow.gridsearch.GridSearch;
+import com.jdistance.metric.AbstractDistanceWrapper;
 import com.jdistance.metric.MetricWrapper;
 
 import java.util.Map;
@@ -31,7 +32,7 @@ public class CustomTask extends Task {
     }
 
     @Override
-    public MetricWrapper getMetricWrapper() {
+    public AbstractDistanceWrapper getMetricWrapper() {
         return metricWrapper;
     }
 

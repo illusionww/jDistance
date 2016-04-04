@@ -1,5 +1,7 @@
 package com.jdistance.metric;
 
+import jeigen.DenseMatrix;
+
 public abstract class AbstractDistanceWrapper {
     private String name;
     private Scale scale;
@@ -22,4 +24,6 @@ public abstract class AbstractDistanceWrapper {
     public boolean isKernel() {
         return isKernel;
     }
+
+    public abstract DenseMatrix calc(DenseMatrix A, double param);
 }

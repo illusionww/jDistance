@@ -3,6 +3,7 @@ package com.jdistance.impl.workflow.task;
 import com.jdistance.graph.Graph;
 import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.impl.workflow.gridsearch.MetricStatisticsDTO;
+import com.jdistance.metric.AbstractDistanceWrapper;
 import com.jdistance.metric.MetricWrapper;
 
 import java.util.HashMap;
@@ -12,14 +13,14 @@ import java.util.OptionalDouble;
 
 public abstract class Task {
     protected GridSearch gridSearch;
-    protected MetricWrapper metricWrapper;
+    protected AbstractDistanceWrapper metricWrapper;
     protected Map<Double, Double> result = new HashMap<>();
     private Map.Entry<Double, Double> minResult;
     private Map.Entry<Double, Double> maxResult;
 
     public abstract String getName();
 
-    public abstract MetricWrapper getMetricWrapper();
+    public abstract AbstractDistanceWrapper getMetricWrapper();
 
     public abstract Map<Double, Double> getResult();
 

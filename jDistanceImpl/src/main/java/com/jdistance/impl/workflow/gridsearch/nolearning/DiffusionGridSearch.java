@@ -35,6 +35,8 @@ public class DiffusionGridSearch extends GridSearch {
 
         int n = D.rows;
         double countErrors = 0;
+        double total = 0;
+
         for (int i = 0; i < n; i++) {
             Node nodeI = nodes.get(i);
             for (int j = i + 1; j < n; j++) {
@@ -43,24 +45,35 @@ public class DiffusionGridSearch extends GridSearch {
                     Node nodeP = nodes.get(p);
                     for (int q = p + 1; q < n; q++) {
                         Node nodeQ = nodes.get(q);
-                        countErrors += trueIfError(D, i, j, p, q, nodeI, nodeJ, nodeP, nodeQ);
-                        countErrors += trueIfError(D, i, p, j, q, nodeI, nodeP, nodeJ, nodeQ);
-                        countErrors += trueIfError(D, i, q, p, j, nodeI, nodeQ, nodeP, nodeJ);
+                        Double result = trueIfError(D, i, j, p, q, nodeI, nodeJ, nodeP, nodeQ);
+                        if (result != null) {
+                            countErrors += result;
+                            total++;
+                        }
+                        result = trueIfError(D, i, p, j, q, nodeI, nodeP, nodeJ, nodeQ);
+                        if (result != null) {
+                            countErrors += result;
+                            total++;
+                        }
+                        result = trueIfError(D, i, q, p, j, nodeI, nodeQ, nodeP, nodeJ);
+                        if (result != null) {
+                            countErrors += result;
+                            total++;
+                        }
                     }
                 }
             }
         }
-        double total =  n * (n * (n * (n - 6L) + 11L) - 6L) / 8L;
         return 1.0 - countErrors / total;
     }
 
-    private double trueIfError(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
+    private Double trueIfError(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
         if (nodeA1.getLabel().equals(nodeA2.getLabel()) && !nodeB1.getLabel().equals(nodeB2.getLabel())) {
             return D.get(b1, b2) < D.get(a1, a2) ? 1.0 : D.get(b1, b2) == D.get(a1, a2) ? 0.5 : 0.0;
         } else if (!nodeA1.getLabel().equals(nodeA2.getLabel()) && nodeB1.getLabel().equals(nodeB2.getLabel())) {
             return D.get(a1, a2) < D.get(b1, b2) ? 1.0 : D.get(a1, a2) == D.get(b1, b2) ? 0.5 : 0.0;
         }
-        return 0.0;
+        return null;
     }
 
     @Override

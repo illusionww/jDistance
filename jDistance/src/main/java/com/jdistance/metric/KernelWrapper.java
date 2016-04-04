@@ -1,5 +1,7 @@
 package com.jdistance.metric;
 
+import jeigen.DenseMatrix;
+
 public class KernelWrapper extends AbstractDistanceWrapper {
     private Kernel kernel;
 
@@ -18,7 +20,8 @@ public class KernelWrapper extends AbstractDistanceWrapper {
         this.kernel = kernel;
     }
 
-    public Kernel getKernel() {
-        return kernel;
+    @Override
+    public DenseMatrix calc(DenseMatrix A, double param) {
+        return kernel.getK(A, param);
     }
 }
