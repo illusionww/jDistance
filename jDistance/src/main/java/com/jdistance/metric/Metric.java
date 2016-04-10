@@ -6,6 +6,7 @@ import jeigen.DenseMatrix;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum Metric {
     PLAIN_WALK("pWalk", Scale.RHO) {
@@ -94,23 +95,14 @@ public enum Metric {
         this.scale = scale;
     }
 
-    public static List<Metric> getAll() {
-        return Arrays.asList(Metric.values());
+    public static List<MetricWrapper> getAll() {
+        return Arrays.asList(Metric.values()).stream().map(MetricWrapper::new).collect(Collectors.toList());
     }
 
     public static List<MetricWrapper> getDefaultDistances() {
         return Arrays.asList(
-//                new MetricWrapper(Metric.PLAIN_WALK),
-//                new MetricWrapper(Metric.WALK),
-//                new MetricWrapper(Metric.FOREST),
-//                new MetricWrapper(Metric.LOG_FOREST),
-//                new MetricWrapper(Metric.COMM30),
-//                new MetricWrapper(Metric.HEAT_FAIR),
-//                new MetricWrapper(Metric.LOG_HEAT_FAIR),
-//                new MetricWrapper(Metric.RSP),
-//                new MetricWrapper(Metric.FE),
-//                new MetricWrapper(Metric.SP_CT)
-        );
+                PLAIN_WALK, WALK, FOREST, LOG_FOREST, COMM, LOG_COMM, HEAT, LOG_HEAT, RSP, FE, SP_CT
+        ).stream().map(MetricWrapper::new).collect(Collectors.toList());
     }
 
     public String getName() {
