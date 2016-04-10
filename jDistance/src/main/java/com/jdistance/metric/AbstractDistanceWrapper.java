@@ -21,6 +21,10 @@ public abstract class AbstractDistanceWrapper {
         return scale;
     }
 
+    public void setScale(Scale scale) {
+        this.scale = scale;
+    }
+
     public boolean isKernel() {
         return isKernel;
     }

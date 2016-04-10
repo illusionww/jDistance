@@ -4,12 +4,14 @@ import jeigen.DenseMatrix;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.jdistance.metric.Shortcuts.*;
 import static jeigen.Shortcuts.eye;
 
 public enum Kernel {
     PLAIN_WALK("pWalk", Scale.RHO) { // H0 = (I - tA)^{-1}
+
         @Override
         public DenseMatrix getH(DenseMatrix A, double t) {
             int d = A.cols;
@@ -26,6 +28,7 @@ public enum Kernel {
         }
     },
     FOREST("For", Scale.FRACTION) { // H0 = (I + tL)^{-1}
+
         @Override
         public DenseMatrix getH(DenseMatrix A, double t) {
             DenseMatrix L = getL(A);
@@ -58,6 +61,7 @@ public enum Kernel {
         }
     },
     HEAT("Heat", Scale.FRACTION) { // H0 = exp(-tL)
+
         @Override
         public DenseMatrix getH(DenseMatrix A, double t) {
             DenseMatrix L = getL(A);
@@ -108,24 +112,14 @@ public enum Kernel {
         this.scale = scale;
     }
 
-    public static List<Kernel> getAll() {
-        return Arrays.asList(Kernel.values());
+    public static List<KernelWrapper> getAll() {
+        return Arrays.asList(Kernel.values()).stream().map(KernelWrapper::new).collect(Collectors.toList());
     }
 
     public static List<KernelWrapper> getDefaultKernels() {
         return Arrays.asList(
-                new KernelWrapper(Kernel.PLAIN_WALK),
-                new KernelWrapper(Kernel.WALK),
-                new KernelWrapper(Kernel.FOREST),
-                new KernelWrapper(Kernel.LOG_FOREST),
-                new KernelWrapper(Kernel.COMM),
-                new KernelWrapper(Kernel.LOG_COMM),
-                new KernelWrapper(Kernel.HEAT),
-                new KernelWrapper(Kernel.LOG_HEAT),
-                new KernelWrapper(Kernel.RSP),
-                new KernelWrapper(Kernel.FE),
-                new KernelWrapper(Kernel.SP_CT)
-        );
+                PLAIN_WALK, WALK, FOREST, LOG_FOREST, COMM, LOG_COMM, HEAT, LOG_HEAT, RSP, FE, SP_CT
+        ).stream().map(KernelWrapper::new).collect(Collectors.toList());
     }
 
     public String getName() {

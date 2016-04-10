@@ -93,7 +93,7 @@ public class ProcessingTest {
             for (double base = 0; base <= 1; base += 0.01) {
                 DenseMatrix A = graph.getA();
                 Double param = metric.getScale().calc(A, base);
-                DenseMatrix D = metric.getD(graph.getA(), param);
+                DenseMatrix D = metric.calc(graph.getA(), param);
 
                 int size = D.rows;
                 for (int i = 0; i < size; i++) {

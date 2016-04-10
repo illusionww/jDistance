@@ -1,10 +1,13 @@
 package com.jdistance;
 
 import com.jdistance.metric.Metric;
+import com.jdistance.metric.MetricWrapper;
+import com.jdistance.metric.Scale;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -16,16 +19,18 @@ public class MetricsCommonTests {
     @Test
     public void testChainGraphAllDistancesItemsMoreThanZero() {
         double from = 0.0001;
-        double to = 0.5;
+        double to = 0.95;
         int pointsCount = 30;
 
-        Metric values[] = Metric.values();
-        Arrays.asList(values).forEach(metric -> {
+        List<MetricWrapper> values = Metric.getAll();
+        values.stream().filter(value -> Metric.RSP.getName().equals(value.getName()) || Metric.FE.getName().equals(value.getName())).forEach(value -> value.setScale(Scale.FRACTION));
+
+        values.forEach(metric -> {
             double step = (to - from) / (pointsCount - 1);
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
                 Double base = from + idx * step;
                 Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.getD(chainGraph, i);
+                DenseMatrix result = metric.calc(chainGraph, i);
                 for (double item : result.getValues()) {
                     assertTrue(metric.getName() + ", parameter = " + i + ":  matrix element less than zero or NaN:\n" + result, item >= 0);
                 }
