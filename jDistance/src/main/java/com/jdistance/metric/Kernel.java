@@ -5,25 +5,107 @@ import jeigen.DenseMatrix;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.jdistance.metric.Shortcuts.*;
+import static jeigen.Shortcuts.eye;
+
 public enum Kernel {
-    PLAIN_WALK("pWalk", Metric.PLAIN_WALK),
-    WALK("Walk", Metric.WALK),
-    FOREST("For", Metric.FOREST),
-    LOG_FOREST("logFor", Metric.LOG_FOREST),
-    COMM30("Comm", Metric.COMM30),
-    LOG_COMM30("logComm", Metric.LOG_COMM30),
-    HEAT_FAIR("Heat", Metric.HEAT_FAIR),
-    LOG_HEAT_FAIR("logHeat", Metric.LOG_HEAT_FAIR),
-    FREE_ENERGY("FE", Metric.FREE_ENERGY),
-    RSP("RSP", Metric.RSP),
-    SP_CT("SP-CT", Metric.SP_CT);
+    PLAIN_WALK("pWalk", Scale.RHO) { // H0 = (I - tA)^{-1}
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            int d = A.cols;
+            DenseMatrix I = eye(d);
+            DenseMatrix ins = I.sub(A.mul(t));
+            return pinv(ins);
+        }
+    },
+    WALK("Walk", Scale.RHO) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix H0 = PLAIN_WALK.getH(A, t);
+            return H0toH(H0);
+        }
+    },
+    FOREST("For", Scale.FRACTION) { // H0 = (I + tL)^{-1}
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix L = getL(A);
+
+            int d = L.cols;
+            DenseMatrix I = eye(d);
+            DenseMatrix ins = I.add(L.mul(t));
+            return pinv(ins);
+        }
+    },
+    LOG_FOREST("logFor", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix H0 = FOREST.getH(A, t);
+            return H0toH(H0);
+        }
+    },
+    COMM("Comm", Scale.FRACTION) { // H0 = exp(tA)
+
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            return A.mul(t).mexp();
+        }
+    },
+    LOG_COMM("logComm", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix H0 = COMM.getH(A, t);
+            return H0toH(H0);
+        }
+    },
+    HEAT("Heat", Scale.FRACTION) { // H0 = exp(-tL)
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix L = getL(A);
+            return L.mul(-t).mexp();
+        }
+    },
+    LOG_HEAT("logHeat", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix H0 = HEAT.getH(A, t);
+            return H0toH(H0);
+        }
+    },
+    RSP("RSP", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix distance = Metric.RSP.getD(A, t);
+            return DtoH(distance);
+        }
+    },
+    FE("FE", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix distance = Metric.FE.getD(A, t);
+            return DtoH(distance);
+        }
+    },
+    SP_CT("SP-CT", Scale.LINEAR) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double lambda) {
+            DenseMatrix D = Shortcuts.getD_ShortestPath(A);
+            DenseMatrix Hs = Shortcuts.DtoH(D);
+            Hs = Shortcuts.normalize(Hs);
+
+            DenseMatrix L = Shortcuts.getL(A);
+            DenseMatrix Hr = Shortcuts.getH_Resistance(L);
+            Hr = Shortcuts.normalize(Hr);
+
+            return Hs.mul(1 - lambda).add(Hr.mul(lambda));
+        }
+    };
 
     private String name;
-    private Metric metric;
+    private Scale scale;
 
-    Kernel(String name, Metric metric) {
+    Kernel(String name, Scale scale) {
         this.name = name;
-        this.metric = metric;
+        this.scale = scale;
     }
 
     public static List<Kernel> getAll() {
@@ -36,12 +118,12 @@ public enum Kernel {
                 new KernelWrapper(Kernel.WALK),
                 new KernelWrapper(Kernel.FOREST),
                 new KernelWrapper(Kernel.LOG_FOREST),
-                new KernelWrapper(Kernel.COMM30),
-                new KernelWrapper(Kernel.LOG_COMM30),
-                new KernelWrapper(Kernel.HEAT_FAIR),
-                new KernelWrapper(Kernel.LOG_HEAT_FAIR),
+                new KernelWrapper(Kernel.COMM),
+                new KernelWrapper(Kernel.LOG_COMM),
+                new KernelWrapper(Kernel.HEAT),
+                new KernelWrapper(Kernel.LOG_HEAT),
                 new KernelWrapper(Kernel.RSP),
-                new KernelWrapper(Kernel.FREE_ENERGY),
+                new KernelWrapper(Kernel.FE),
                 new KernelWrapper(Kernel.SP_CT)
         );
     }
@@ -50,18 +132,9 @@ public enum Kernel {
         return name;
     }
 
-    public Metric getMetric() {
-        return metric;
+    public Scale getScale() {
+        return scale;
     }
 
-    public DenseMatrix getK(DenseMatrix A, double t) {
-        DenseMatrix D = metric.getD(A, t);
-        return makeK(D);
-    }
-
-    private DenseMatrix makeK(DenseMatrix D) {
-        int size = D.rows;
-        DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
-        return H.mmul(D.mul(D)).mmul(H).mul(0.5);
-    }
+    public abstract DenseMatrix getH(DenseMatrix A, double t);
 }

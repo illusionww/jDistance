@@ -63,7 +63,7 @@ public class TaskChain {
             task.execute();
             Date finishTask = new Date();
             long diffTask = finishTask.getTime() - startTask.getTime();
-            log.info("Task DONE: {}.\n\tTime: {} ", task.getName(), diffTask);
+            log.info("Task DONE: {}. Time: {} ", task.getName(), diffTask);
         });
 
         Date finish = new Date();

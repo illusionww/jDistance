@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -33,8 +34,14 @@ public abstract class GridSearch implements Cloneable {
         log.debug("START {}", metricWrapper.getName());
 
         double step = (to - from) / (pointsCount - 1);
-        List<Integer> grid = IntStream.range(0, pointsCount).boxed().collect(Collectors.toList());
-        Stream<Integer> stream = getContext().getParallelGrid() ? grid.parallelStream() : grid.stream();
+        List<Double> grid = DoubleStream.iterate(0, i -> i+1).limit(pointsCount).boxed().collect(Collectors.toList());
+        grid.add(0.1);
+        grid.add(0.5);
+        grid.add(1.5);
+        grid.add(pointsCount - 2.5);
+        grid.add(pointsCount - 1.5);
+        grid.add(pointsCount - 1.1);
+        Stream<Double> stream = getContext().getParallelGrid() ? grid.parallelStream() : grid.stream();
 
         final Map<Double, Double> validationScores = new ConcurrentHashMap<>();
         stream.forEach(idx -> {
@@ -85,7 +92,7 @@ public abstract class GridSearch implements Cloneable {
 
     private boolean hasNaN(DenseMatrix D) {
         for (double item : D.getValues()) {
-            if (Double.isNaN(item) || Double.isInfinite(item)) {
+            if (Double.isNaN(item)) {
                 return true;
             }
         }

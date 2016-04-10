@@ -1,7 +1,8 @@
 package com.jdistance;
 
+import com.jdistance.metric.Kernel;
 import com.jdistance.metric.Metric;
-import com.jdistance.metric.MetricBuilder;
+import com.jdistance.metric.Shortcuts;
 import com.jdistance.metric.Scale;
 import jeigen.DenseMatrix;
 import org.junit.Test;
@@ -16,8 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class MetricsSamplesComparisonsTests {
     @Test
     public void testChainGraphShortestPathDistance() {
-        MetricBuilder db = new MetricBuilder();
-        DenseMatrix D = db.getDShortestPath(chainGraph);
+        DenseMatrix D = Shortcuts.getD_ShortestPath(chainGraph);
         double multiplier = 1.0 / D.get(0, 1);
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.000));
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(1, 2), equalDouble(multiplier * D.get(1, 2), 1.000));
@@ -27,24 +27,14 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphResistanceDistance() {
-        MetricBuilder db = new MetricBuilder();
-        DenseMatrix L = db.getL(chainGraph);
-        DenseMatrix H = db.getHResistance(L);
-        DenseMatrix D = db.getD(H);
+        DenseMatrix L = Shortcuts.getL(chainGraph);
+        DenseMatrix H = Shortcuts.getH_Resistance(L);
+        DenseMatrix D = Shortcuts.HtoD(H);
         double multiplier = 1.0 / D.get(0, 1);
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.000));
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(1, 2), equalDouble(multiplier * D.get(1, 2), 1.000));
         assertTrue("distances not equal: 2.000 != " + multiplier * D.get(0, 2), equalDouble(multiplier * D.get(0, 2), 2.000));
         assertTrue("distances not equal: 3.000 != " + multiplier * D.get(0, 3), equalDouble(multiplier * D.get(0, 3), 3.000));
-    }
-
-    @Test
-    public void testChainGraphResistanceDistanceNormalization() {
-        MetricBuilder db = new MetricBuilder();
-        DenseMatrix L = db.getL(triangleGraph);
-        DenseMatrix H = db.getHResistance(L);
-        DenseMatrix D = db.getD(H);
-        assertTrue("distances not equal: 1.000 != " + D.get(0, 1), equalDouble(D.get(0, 1), 1.000));
     }
 
     @Test
@@ -103,7 +93,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphCommunicabilityDistance() {
-        Metric distance = Metric.COMM_FAIR;
+        Metric distance = Metric.COMM;
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 0.964 / D.get(0, 1);
         assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.964));
@@ -132,7 +122,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testTriangleGraphFEDistance() {
-        Metric distance = Metric.FREE_ENERGY;
+        Metric distance = Metric.FE;
         DenseMatrix D = distance.getD(triangleGraph, 0.0001);
         assertTrue("Free Energy distance attitude not equal 1.5: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.5));
         D = distance.getD(triangleGraph, 30.0);
@@ -154,10 +144,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphForestDistance() {
-        MetricBuilder builder = new MetricBuilder();
-
-        DenseMatrix L = builder.getL(chainGraph);
-        DenseMatrix H0 = builder.getH0Forest(L, 0);
+        DenseMatrix H0 = Kernel.FOREST.getH(chainGraph, 0);
         double[][] forChain0 = toArray2(H0);
         double[][] forChain0etalon = {
                 {1, 0, 0, 0},
@@ -167,7 +154,7 @@ public class MetricsSamplesComparisonsTests {
         };
         assertTrue(Arrays.deepToString(forChain0), equalArraysStrict(forChain0, forChain0etalon));
 
-        DenseMatrix H05 = builder.getH0Forest(L, 0.5);
+        DenseMatrix H05 = Kernel.FOREST.getH(chainGraph, 0.5);
         double[][] forChain05 = toArray2(H05);
         double[][] forChain05etalon = {
                 {0.73214286, 0.19642857, 0.05357143, 0.01785714},
@@ -180,10 +167,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testTriangleGraphForestDistance() {
-        MetricBuilder builder = new MetricBuilder();
-
-        DenseMatrix L = builder.getL(triangleGraph);
-        DenseMatrix H0 = builder.getH0Forest(L, 0.2);
+        DenseMatrix H0 = Kernel.FOREST.getH(triangleGraph, 0.2);
         double[][] forChain02 = toArray2(H0);
         double[][] forChain0etalon = {{0.85185185, 0.11111111, 0.01851852, 0.01851852},
                 {0.11111111, 0.66666667, 0.11111111, 0.11111111},

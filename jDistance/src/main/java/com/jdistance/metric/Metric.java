@@ -10,158 +10,82 @@ import java.util.List;
 public enum Metric {
     PLAIN_WALK("pWalk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = jb.getH0Walk(A, t);
-            return jb.getD(H);
+            DenseMatrix H = Kernel.PLAIN_WALK.getH(A, t);
+            return Shortcuts.HtoD(H);
         }
     },
     WALK("Walk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H0 = jb.getH0Walk(A, t);
-            DenseMatrix H = jb.H0toH(H0);
-            return jb.getD(H);
+            DenseMatrix H = Kernel.WALK.getH(A, t);
+            return Shortcuts.HtoD(H);
         }
     },
-    FOREST("For", Scale.FRACTION_REVERSED) {
+    FOREST("For", Scale.FRACTION) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H = jb.getH0Forest(L, t);
-            return jb.getD(H);
+            DenseMatrix H = Kernel.FOREST.getH(A, t);
+            return Shortcuts.HtoD(H);
         }
     },
-    LOG_FOREST("logFor", Scale.FRACTION_REVERSED) {
+    LOG_FOREST("logFor", Scale.FRACTION) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H0 = jb.getH0Forest(L, t);
-            DenseMatrix H = jb.H0toH(H0);
-            return jb.getD(H);
+            DenseMatrix H = Kernel.LOG_FOREST.getH(A, t);
+            return Shortcuts.HtoD(H);
         }
     },
-    COMM_FAIR("Comm", Scale.FRACTION_REVERSED) {
+    COMM("Comm", Scale.FRACTION) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = jb.getH0Communicability(A, t);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
+            DenseMatrix H = Kernel.COMM.getH(A, t);
+            DenseMatrix D = Shortcuts.HtoD(H);
+            return D.sqrt();
         }
     },
-    COMM30("Comm", Scale.FRACTION_REVERSED) {
+    LOG_COMM("logComm", Scale.FRACTION) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = jb.getH0DummyCommunicability(A, t, 30);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
+            DenseMatrix H = Kernel.LOG_COMM.getH(A, t);
+            DenseMatrix D = Shortcuts.HtoD(H);
+            return D.sqrt();
         }
     },
-    COMM30_NOT_SQUARED("Comm", Scale.FRACTION_REVERSED) {
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = jb.getH0DummyCommunicability(A, t, 30);
-            return jb.getD(H);
-        }
-    },
-    LOG_COMM_FAIR("logComm", Scale.FRACTION_REVERSED) {
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H0 = jb.getH0Communicability(A, t);
-            DenseMatrix H = jb.H0toH(H0);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
-        }
-    },
-    LOG_COMM30("logComm", Scale.FRACTION_REVERSED) {
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H0 = jb.getH0DummyCommunicability(A, t, 30);
-            DenseMatrix H = jb.H0toH(H0);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
-        }
-    },
-    LOG_COMM30_NOT_SQUARED("logComm", Scale.FRACTION_REVERSED) {
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H0 = jb.getH0DummyCommunicability(A, t, 30);
-            DenseMatrix H = jb.H0toH(H0);
-            return jb.getD(H);
-        }
-    },
-    HEAT_FAIR("Heat", Scale.FRACTION_REVERSED) {
+    HEAT("Heat", Scale.FRACTION) {
         @Override
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H = jb.getH0Communicability(L, -t);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
+            DenseMatrix H = Kernel.HEAT.getH(A, t);
+            DenseMatrix D = Shortcuts.HtoD(H);
+            return D.sqrt();
         }
     },
-    HEAT30("Heat", Scale.FRACTION_REVERSED) {
+    LOG_HEAT("logHeat", Scale.FRACTION) {
         @Override
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H = jb.getH0DummyCommunicability(L, -t, 30);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
+            DenseMatrix H = Kernel.LOG_HEAT.getH(A, t);
+            DenseMatrix D = Shortcuts.HtoD(H);
+            return D.sqrt();
         }
     },
-    HEAT31("Heat", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H = jb.getH0DummyCommunicability(L, -t, 31);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
-        }
-    },
-    LOG_HEAT_FAIR("logHeat", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H0 = jb.getH0Communicability(L, -t);
-            DenseMatrix H = jb.H0toH(H0);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
-        }
-    },
-    LOG_HEAT30("logHeat", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H0 = jb.getH0DummyCommunicability(L, -t, 30);
-            DenseMatrix H = jb.H0toH(H0);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
-        }
-    },
-    LOG_HEAT31("logHeat", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H0 = jb.getH0DummyCommunicability(L, -t, 31);
-            DenseMatrix H = jb.H0toH(H0);
-            DenseMatrix D = jb.getD(H);
-            return MetricBuilder.sqrtD(D);
-        }
-    },
-    FREE_ENERGY("FE", Scale.FRACTION_BETA) {
+    RSP("RSP", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
-            return jb.getDFreeEnergy(A, beta);
+            return Shortcuts.getD_RSP(A, beta);
         }
     },
-    RSP("RSP", Scale.FRACTION_BETA) {
+    FE("FE", Scale.FRACTION_REVERSED) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
-            return jb.getD_RSP(A, beta);
+            return Shortcuts.getD_FE(A, beta);
         }
     },
     SP_CT("SP-CT", Scale.LINEAR) {
         public DenseMatrix getD(DenseMatrix A, double lambda) {
-            DenseMatrix Ds = jb.getDShortestPath(A);
+            DenseMatrix Ds = Shortcuts.getD_ShortestPath(A);
+            Ds = Shortcuts.normalize(Ds);
 
-            DenseMatrix L = jb.getL(A);
-            DenseMatrix H = jb.getHResistance(L);
-            DenseMatrix Dr = jb.getD(H);
+            DenseMatrix L = Shortcuts.getL(A);
+            DenseMatrix H = Shortcuts.getH_Resistance(L);
+            DenseMatrix Dr = Shortcuts.HtoD(H);
+            Dr = Shortcuts.normalize(Dr);
 
-            Double avgDs = Ds.sum().sum().s() / (Ds.cols * (Ds.cols - 1));
-            Double avgDr = Dr.sum().sum().s() / (Dr.cols * (Dr.cols - 1));
-            Double norm = avgDs / avgDr;
-            return Ds.mul(1 - lambda).add(Dr.mul(lambda * norm));
+            return Ds.mul(1 - lambda).add(Dr.mul(lambda));
         }
     };
 
-    private static MetricBuilder jb = new MetricBuilder();
     private String name;
     private Scale scale;
 
@@ -176,17 +100,16 @@ public enum Metric {
 
     public static List<MetricWrapper> getDefaultDistances() {
         return Arrays.asList(
-                new MetricWrapper(Metric.PLAIN_WALK),
-                new MetricWrapper(Metric.WALK),
-                new MetricWrapper(Metric.FOREST),
-                new MetricWrapper(Metric.LOG_FOREST),
-                new MetricWrapper(Metric.COMM30),
-                new MetricWrapper(Metric.LOG_COMM30),
-                new MetricWrapper(Metric.HEAT_FAIR),
-                new MetricWrapper(Metric.LOG_HEAT_FAIR),
-                new MetricWrapper(Metric.RSP),
-                new MetricWrapper(Metric.FREE_ENERGY),
-                new MetricWrapper(Metric.SP_CT)
+//                new MetricWrapper(Metric.PLAIN_WALK),
+//                new MetricWrapper(Metric.WALK),
+//                new MetricWrapper(Metric.FOREST),
+//                new MetricWrapper(Metric.LOG_FOREST),
+//                new MetricWrapper(Metric.COMM30),
+//                new MetricWrapper(Metric.HEAT_FAIR),
+//                new MetricWrapper(Metric.LOG_HEAT_FAIR),
+//                new MetricWrapper(Metric.RSP),
+//                new MetricWrapper(Metric.FE),
+//                new MetricWrapper(Metric.SP_CT)
         );
     }
 

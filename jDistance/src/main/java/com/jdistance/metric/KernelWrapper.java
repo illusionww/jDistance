@@ -6,12 +6,12 @@ public class KernelWrapper extends AbstractDistanceWrapper {
     private Kernel kernel;
 
     public KernelWrapper(Kernel kernel) {
-        super(kernel.getName(), kernel.getMetric().getScale(), true);
+        super(kernel.getName(), kernel.getScale(), true);
         this.kernel = kernel;
     }
 
     public KernelWrapper(String name, Kernel kernel) {
-        super(name, kernel.getMetric().getScale(), true);
+        super(name, kernel.getScale(), true);
         this.kernel = kernel;
     }
 
@@ -22,6 +22,6 @@ public class KernelWrapper extends AbstractDistanceWrapper {
 
     @Override
     public DenseMatrix calc(DenseMatrix A, double param) {
-        return kernel.getK(A, param);
+        return kernel.getH(A, param);
     }
 }

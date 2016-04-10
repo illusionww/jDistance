@@ -1,7 +1,7 @@
 package com.jdistance;
 
 import com.jdistance.metric.Metric;
-import com.jdistance.metric.MetricBuilder;
+import com.jdistance.metric.Shortcuts;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 
@@ -66,9 +66,9 @@ public class MetricsBoundariesComparisonTests {
         DenseMatrix graph = fullGraph;
         Double parameter = 0.000001;
 
-        double[][] SP = toArray2(MetricBuilder.normalization(Metric.SP_CT.getD(graph, parameter)));
-        double[][] logFor = toArray2(MetricBuilder.normalization(Metric.LOG_FOREST.getD(graph, parameter)));
-        double[][] Walk = toArray2(MetricBuilder.normalization(Metric.WALK.getD(graph, parameter)));
+        double[][] SP = toArray2(Shortcuts.normalize(Metric.SP_CT.getD(graph, parameter)));
+        double[][] logFor = toArray2(Shortcuts.normalize(Metric.LOG_FOREST.getD(graph, parameter)));
+        double[][] Walk = toArray2(Shortcuts.normalize(Metric.WALK.getD(graph, parameter)));
 
         for (int i = 0; i < chainGraph.cols; i++) {
             for (int j = 0; j < chainGraph.cols; j++) {

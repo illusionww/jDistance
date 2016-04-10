@@ -17,7 +17,7 @@ public class DefaultTask extends Task {
 
     @Override
     public String getName() {
-        return metricWrapper.getName() + " " + metricWrapper.getScale() + "; pointsCount = " + pointsCount + ";\n" +
+        return metricWrapper.getName() + " " + metricWrapper.getScale() + "; pointsCount=" + pointsCount + "; " +
                 "GridSearch: " + gridSearch.getName();
     }
 

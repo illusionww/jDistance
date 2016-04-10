@@ -4,11 +4,12 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.impl.adapter.graph.CSVGraphBuilder;
-import com.jdistance.impl.adapter.graph.DCRGraphMLReader;
 import com.jdistance.impl.adapter.graph.GraphMLWriter;
 import com.jdistance.impl.workflow.TaskChainBuilder;
 import com.jdistance.metric.Kernel;
 import com.jdistance.metric.Metric;
+import jeigen.DenseMatrix;
+import org.apache.commons.math.stat.correlation.PearsonsCorrelation;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,16 +20,19 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, TransformerConfigurationException {
-        testKernels();
+        testFor(2, 100, "[0.49:1]", "0.1");
+        testFor(2, 200, "[0.49:1]", "0.1");
+        testFor(2, 300, "[0.49:1]", "0.1");
+        testFor(2, 400, "[0.49:1]", "0.1");
     }
 
     private static void allNewsGroups() throws ParserConfigurationException, SAXException, IOException {
         List<String[]> newsgroups = Arrays.asList(
 //                new String[] {"news_2cl_1", "data/newsgroup/news_2cl_1_classeo.csv", "data/newsgroup/news_2cl_1_Docr.csv", "[0.49:1.0]", "0.1"},
 //                new String[] {"news_2cl_2", "data/newsgroup/news_2cl_2_classeo.csv", "data/newsgroup/news_2cl_2_Docr.csv", "[0.49:1.0]", "0.1"},
-                new String[] {"news_2cl_3", "data/newsgroup/news_2cl_3_classeo.csv", "data/newsgroup/news_2cl_3_Docr.csv", "[0.49:1.0]", "0.1"},
+                new String[]{"news_2cl_3", "data/newsgroup/news_2cl_3_classeo.csv", "data/newsgroup/news_2cl_3_Docr.csv", "[0.49:1.0]", "0.1"},
 //                new String[] {"news_3cl_1", "data/newsgroup/news_3cl_1_classeo.csv", "data/newsgroup/news_3cl_1_Docr.csv", "[0.33:1.0]", "0.1"}
-                new String[] {"news_3cl_2", "data/newsgroup/news_3cl_2_classeo.csv", "data/newsgroup/news_3cl_2_Docr.csv", "[0.33:1.0]", "0.1"}
+                new String[]{"news_3cl_2", "data/newsgroup/news_3cl_2_classeo.csv", "data/newsgroup/news_3cl_2_Docr.csv", "[0.33:1.0]", "0.1"}
 //                new String[] {"news_3cl_3", "data/newsgroup/news_3cl_3_classeo.csv", "data/newsgroup/news_3cl_3_Docr.csv", "[0.33:1.0]", "0.1"},
 //                new String[] {"news_5cl_1", "data/newsgroup/news_5cl_1_classeo.csv", "data/newsgroup/news_5cl_1_Docr.csv", "[0.2:1.0]", "0.2"},
 //                new String[] {"news_5cl_2", "data/newsgroup/news_5cl_2_classeo.csv", "data/newsgroup/news_5cl_2_Docr.csv", "[0.2:1.0]", "0.2"},
@@ -92,35 +96,40 @@ public class Main {
                 .drawUniqueAndBezier(yrange, yticks);
     }
 
-    public static void testHeatKernel() {
-        GraphBundle graphs = GnPInPOutGraphGenerator.getInstance().generate(new GeneratorPropertiesDTO(3, 100, 2, 0.3, 0.1));
-        new TaskChainBuilder("Kernel", Kernel.getDefaultKernels(), 101)
-                .setGraphs(graphs)
-                .generateWardTasks().build().execute()
-                .drawUniqueAndBezier("[0.3:1]", "0.2");
-        new TaskChainBuilder("Metric", Metric.getDefaultDistances(), 101)
-                .setGraphs(graphs)
-                .generateWardTasks().build().execute()
-                .drawUniqueAndBezier("[0.3:1]", "0.2");
-        new TaskChainBuilder("Diffusion", Metric.getDefaultDistances(), 101)
-                .setGraphs(graphs)
-                .generateDiffusionTasks().build().execute()
-                .drawUniqueAndBezier("[0.3:1]", "0.2");
+    public static void testFor(int clustersCount, int nodesCount, String yrange, String yticks) {
+        GraphBundle graphs = GnPInPOutGraphGenerator.getInstance().generate(new GeneratorPropertiesDTO(2, nodesCount, clustersCount, 0.3, 0.18));
 
-//        new TaskChainBuilder("150 Heat 31", Metric.getDefaultDistances(), 101)
-//                .generateGraphs(3, 150, 4, 0.3, 0.1).generateWardTasks().build().execute().drawUniqueAndBezier("[0.3:1]", "0.2");
-//        new TaskChainBuilder("200 Heat 31", Metric.getDefaultDistances(), 101)
-//                .generateGraphs(3, 200, 4, 0.3, 0.1).generateWardTasks().build().execute().drawUniqueAndBezier("[0.3:1]", "0.2");
-//        new TaskChainBuilder("250 Heat 31", Metric.getDefaultDistances(), 101)
-//                .generateGraphs(3, 250, 4, 0.3, 0.1).generateWardTasks().build().execute().drawUniqueAndBezier("[0.3:1]", "0.2");
+        TaskChainBuilder kernelBuilder = new TaskChainBuilder(Metric.getDefaultDistances(), 22);
+        kernelBuilder.setGraphs(graphs).generateWardTasks().setName("Kernel2without " + kernelBuilder.getName()).build()
+                .execute()
+                .drawUniqueAndBezier(yrange, yticks)
+                .writeData();
+
+//        TaskChainBuilder metricBuilder = new TaskChainBuilder(Metric.getDefaultDistances(), 101);
+//        metricBuilder.setGraphs(graphs).generateWardTasks().setName("Metric " + metricBuilder.getName()).build()
+//                .execute()
+//                .drawUniqueAndBezier(yrange, yticks)
+//                .writeData();
     }
 
     public static void testKernels() throws IOException, SAXException, TransformerConfigurationException {
-            GraphBundle graphs = new CSVGraphBuilder()
+        GraphBundle graphs = new CSVGraphBuilder()
                 .importNodesClassOnly("data/newsgroup/news_2cl_1_classeo.csv")
                 .importAdjacencyMatrix("data/newsgroup/news_2cl_1_Docr.csv")
                 .shuffleAndBuildBundle();
         new GraphMLWriter().writeGraph(graphs.getGraphs().get(0), "results/out.graphml");
+    }
+
+    public static void findCorellation() throws IOException {
+        GraphBundle graphs = new CSVGraphBuilder()
+                .importNodesClassOnly("data/newsgroup/news_2cl_1_classeo.csv")
+                .importAdjacencyMatrix("data/newsgroup/news_2cl_1_Docr.csv")
+                .shuffleAndBuildBundle();
+        DenseMatrix A = graphs.getGraphs().get(0).getA();
+        DenseMatrix forest = Metric.FOREST.getD(A, 10000);
+        DenseMatrix spct = Metric.SP_CT.getD(A, 1.0);
+        double corr = new PearsonsCorrelation().correlation(forest.getValues(), spct.getValues());
+        System.out.println(corr);
     }
 }
 

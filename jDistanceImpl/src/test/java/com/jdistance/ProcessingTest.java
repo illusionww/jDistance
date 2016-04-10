@@ -1,20 +1,19 @@
 package com.jdistance;
 
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
+import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.impl.workflow.TaskChain;
 import com.jdistance.impl.workflow.TaskChainBuilder;
+import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.impl.workflow.gridsearch.GridSearch;
 import com.jdistance.impl.workflow.gridsearch.classifier.KNearestNeighborsGridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.MinSpanningTreeGridSearch;
-import com.jdistance.impl.workflow.context.ContextProvider;
 import com.jdistance.impl.workflow.task.DefaultTask;
-import com.jdistance.impl.workflow.task.competition.MetricTask;
 import com.jdistance.impl.workflow.task.Task;
+import com.jdistance.impl.workflow.task.competition.MetricTask;
 import com.jdistance.metric.Metric;
 import com.jdistance.metric.MetricWrapper;
-import com.panayotis.gnuplot.style.Smooth;
 import jeigen.DenseMatrix;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +55,7 @@ public class ProcessingTest {
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(2, 200, 5, 0.3, 0.1);
         GraphBundle bundle = GnPInPOutGraphGenerator.getInstance().generate(properties);
         GridSearch gridSearch = new KNearestNeighborsGridSearch(bundle, 4, 0.3);
-        Task task = new DefaultTask(gridSearch, new MetricWrapper(Metric.COMM30), 10);
+        Task task = new DefaultTask(gridSearch, new MetricWrapper(Metric.COMM), 10);
         Map<Double, Double> result = new TaskChain("validate", Collections.singletonList(task)).execute().getData().get(task);
         long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();
         assertTrue("countDistinct should be > 1, but it = " + countDistinct, countDistinct > 1);
@@ -67,7 +66,7 @@ public class ProcessingTest {
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(2, 200, 5, 0.3, 0.1);
         GraphBundle bundle = GnPInPOutGraphGenerator.getInstance().generate(properties);
         GridSearch gridSearch = new MinSpanningTreeGridSearch(bundle, 4);
-        Task task = new DefaultTask(gridSearch, new MetricWrapper(Metric.COMM30), 10);
+        Task task = new DefaultTask(gridSearch, new MetricWrapper(Metric.COMM), 10);
         Map<Double, Double> result = new TaskChain("validate", Collections.singletonList(task)).execute().getData().get(task);
         long countDistinct = result.entrySet().stream().mapToDouble(Map.Entry::getValue).distinct().count();
         assertTrue("countDistinct should be > 1, but it = " + countDistinct, countDistinct > 1);
@@ -98,8 +97,8 @@ public class ProcessingTest {
 
                 int size = D.rows;
                 for (int i = 0; i < size; i++) {
-                    for (int j = i+1; j < size; j++) {
-                        for (int k = j+1; k < size; k++) {
+                    for (int j = i + 1; j < size; j++) {
+                        for (int k = j + 1; k < size; k++) {
                             double distIJ = D.get(i, j);
                             double distJK = D.get(j, k);
                             double distIK = D.get(i, k);
