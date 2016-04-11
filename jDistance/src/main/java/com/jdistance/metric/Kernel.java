@@ -10,10 +10,9 @@ import static com.jdistance.metric.Shortcuts.*;
 import static jeigen.Shortcuts.eye;
 
 public enum Kernel {
-    PLAIN_WALK("pWalk", Scale.RHO) { // H0 = (I - tA)^{-1}
-
+    PLAIN_WALK("pWalk", Scale.RHO) {
         @Override
-        public DenseMatrix getH(DenseMatrix A, double t) {
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = (I - tA)^{-1}
             int d = A.cols;
             DenseMatrix I = eye(d);
             DenseMatrix ins = I.sub(A.mul(t));
@@ -27,14 +26,12 @@ public enum Kernel {
             return H0toH(H0);
         }
     },
-    FOREST("For", Scale.FRACTION) { // H0 = (I + tL)^{-1}
-
+    FOREST("For", Scale.FRACTION) {
         @Override
-        public DenseMatrix getH(DenseMatrix A, double t) {
-            DenseMatrix L = getL(A);
-
-            int d = L.cols;
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = (I + tL)^{-1}
+            int d = A.cols;
             DenseMatrix I = eye(d);
+            DenseMatrix L = getL(A);
             DenseMatrix ins = I.add(L.mul(t));
             return pinv(ins);
         }
@@ -46,10 +43,9 @@ public enum Kernel {
             return H0toH(H0);
         }
     },
-    COMM("Comm", Scale.FRACTION) { // H0 = exp(tA)
-
+    COMM("Comm", Scale.FRACTION) {
         @Override
-        public DenseMatrix getH(DenseMatrix A, double t) {
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = exp(tA)
             return A.mul(t).mexp();
         }
     },
@@ -60,10 +56,9 @@ public enum Kernel {
             return H0toH(H0);
         }
     },
-    HEAT("Heat", Scale.FRACTION) { // H0 = exp(-tL)
-
+    HEAT("Heat", Scale.FRACTION) {
         @Override
-        public DenseMatrix getH(DenseMatrix A, double t) {
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = exp(-tL)
             DenseMatrix L = getL(A);
             return L.mul(-t).mexp();
         }

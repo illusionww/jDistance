@@ -90,8 +90,14 @@ public class TaskChain {
     }
 
     public TaskChain draw(String imgTitle, String yrange, String yticks, Smooth smooth) {
+        draw(imgTitle, "[0:1]", "0.2", yrange, yticks, smooth);
+        return this;
+    }
+
+
+    public TaskChain draw(String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
         GNUPlotAdapter ga = new GNUPlotAdapter(getContext().getGnuplotPath());
-        ga.draw(this, imgTitle, yrange, yticks, smooth);
+        ga.draw(this, imgTitle, xrange, xticks, yrange, yticks, smooth);
         return this;
     }
 

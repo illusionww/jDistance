@@ -22,6 +22,6 @@ public class KernelWrapper extends AbstractDistanceWrapper {
 
     @Override
     public DenseMatrix calc(DenseMatrix A, double param) {
-        return kernel.getH(A, param);
+        return kernel.getH(A, param).mul(-1);
     }
 }

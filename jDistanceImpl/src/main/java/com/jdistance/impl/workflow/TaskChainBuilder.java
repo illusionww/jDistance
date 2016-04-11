@@ -4,7 +4,6 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesDTO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.impl.workflow.gridsearch.GridSearch;
-import com.jdistance.impl.workflow.gridsearch.clusterer.KernelWardGridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.MinSpanningTreeGridSearch;
 import com.jdistance.impl.workflow.gridsearch.clusterer.WardGridSearch;
 import com.jdistance.impl.workflow.gridsearch.nolearning.DiffusionGridSearch;
@@ -84,32 +83,28 @@ public class TaskChainBuilder {
     }
 
     public TaskChainBuilder generateStubTasks() {
-        if (name == null) name = generateName("Stub", graphs.getProperties());
+        if (name == null) name = generateName("Stub", metricWrappers, graphs.getProperties());
         GridSearch gridSearch = new StubGridSearch(graphs);
         tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
         return this;
     }
 
     public TaskChainBuilder generateMinSpanningTreeTasks() {
-        if (name == null) name = generateName("MinSpanningTree", graphs.getProperties());
+        if (name == null) name = generateName("MinSpanningTree", metricWrappers, graphs.getProperties());
         GridSearch gridSearch = new MinSpanningTreeGridSearch(graphs, graphs.getProperties().getClustersCount());
         tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
         return this;
     }
 
     public TaskChainBuilder generateWardTasks() {
-        if (name == null) name = generateName("Ward", graphs.getProperties());
-        metricWrappers.forEach(metricWrapper -> {
-            GridSearch gridSearch = !metricWrapper.isKernel()
-                    ? new WardGridSearch(graphs, graphs.getProperties().getClustersCount())
-                    : new KernelWardGridSearch(graphs, graphs.getProperties().getClustersCount());
-            tasks.add(new DefaultTask(gridSearch, metricWrapper, pointsCount));
-        });
+        if (name == null) name = generateName("Ward", metricWrappers, graphs.getProperties());
+        GridSearch gridSearch = new WardGridSearch(graphs, graphs.getProperties().getClustersCount());
+        tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
         return this;
     }
 
     public TaskChainBuilder generateDiffusionTasks() {
-        if (name == null) name = generateName("Diffusion", graphs.getProperties());
+        if (name == null) name = generateName("Diffusion", metricWrappers, graphs.getProperties());
         GridSearch gridSearch = new DiffusionGridSearch(graphs);
         tasks.addAll(generateDefaultTasks(gridSearch, metricWrappers, pointsCount));
         return this;
@@ -154,8 +149,9 @@ public class TaskChainBuilder {
         return chain;
     }
 
-    private String generateName(String checkerName, GeneratorPropertiesDTO properties) {
-        return checkerName + ": " +
+    private String generateName(String checkerName, List<? extends AbstractDistanceWrapper> metricWrappers, GeneratorPropertiesDTO properties) {
+        String metricOrKernel = metricWrappers.get(0).isKernel() ? "kernels" : "metrics";
+        return checkerName + " " + metricOrKernel + ": " +
                 properties.getNodesCount() + " nodes, " +
                 properties.getClustersCount() + " clusters, " +
                 "pIn=" + properties.getP_in() + ", " +

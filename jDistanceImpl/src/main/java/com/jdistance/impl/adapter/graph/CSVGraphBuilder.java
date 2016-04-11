@@ -15,8 +15,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CSVGraphBuilder {
+    private String name;
     private List<Node> nodes;
     private DenseMatrix A;
+
+    public CSVGraphBuilder setName(String name) {
+        this.name = name;
+        return this;
+    }
 
     public CSVGraphBuilder importNodesIdNameClass(String nodesFile) throws IOException {
         nodes = new ArrayList<>();
@@ -78,7 +84,7 @@ public class CSVGraphBuilder {
     }
 
     public GraphBundle buildBundle() {
-        return new Graph(nodes, A).toBundle();
+        return new Graph(nodes, A).toBundle(name);
     }
 
     public GraphBundle shuffleAndBuildBundle() {

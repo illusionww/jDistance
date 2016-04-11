@@ -20,16 +20,16 @@ import static com.jdistance.impl.workflow.context.ContextProvider.*;
 public class GNUPlotAdapter {
     private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
     private static final PlotColor[] colors = {
-            NamedPlotColor.BLACK,
             NamedPlotColor.RED,
             NamedPlotColor.BLUE,
-            NamedPlotColor.MAGENTA,
-            NamedPlotColor.FOREST_GREEN,
+            NamedPlotColor.GREEN,
+            NamedPlotColor.CYAN,
+            NamedPlotColor.DARK_VIOLET,
             NamedPlotColor.ORANGE,
-            NamedPlotColor.VIOLET,
-            NamedPlotColor.PURPLE,
-            NamedPlotColor.DARK_GOLDENROD,
-            NamedPlotColor.DARK_GREEN,
+            NamedPlotColor.YELLOW,
+            NamedPlotColor.LIGHT_GREEN,
+            NamedPlotColor.GREY50,
+            NamedPlotColor.MAGENTA,
             NamedPlotColor.BROWN
     };
     private String gnuplotPath;
@@ -48,7 +48,7 @@ public class GNUPlotAdapter {
         return list;
     }
 
-    public void draw(TaskChain taskChain, String imgTitle, String yrange, String yticks, Smooth smooth) {
+    public void draw(TaskChain taskChain, String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
         Iterator<PlotColor> color = Arrays.asList(GNUPlotAdapter.colors).iterator();
 
         List<PlotDTO> plots = new ArrayList<>();
@@ -61,10 +61,10 @@ public class GNUPlotAdapter {
         });
 
         GNUPlotAdapter ga = new GNUPlotAdapter(getContext().getGnuplotPath());
-        ga.drawData(plots, getContext().buildImgFullName(imgTitle, "png"), getContext().buildImgFullName(imgTitle, "gnu"), yrange, yticks, smooth);
+        ga.drawData(plots, getContext().buildImgFullName(imgTitle, "png"), getContext().buildImgFullName(imgTitle, "gnu"), xrange, xticks, yrange, yticks, smooth);
     }
 
-    public void drawData(List<PlotDTO> data, String outputPath, String scriptPath, String yrange, String yticks, Smooth smooth) {
+    private void drawData(List<PlotDTO> data, String outputPath, String scriptPath, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
         if (getContext().getWriteGnuplotScripts()) {
             try {
                 GNUPlot.getDebugger().setLevel(40);
@@ -88,20 +88,20 @@ public class GNUPlotAdapter {
         JavaPlot gnuplot = gnuplotPath != null ? new JavaPlot(gnuplotPath) : new JavaPlot();
         gnuplot.setTerminal(png);
         gnuplot.set("border", "31 lw 8.0");
-        gnuplot.set("xtics", "0,0.2,1");
+        gnuplot.set("xtics", xticks);
         gnuplot.set("ytics", yticks);
         gnuplot.set("mxtics", "2");
         gnuplot.set("mytics", "2");
         gnuplot.set("grid mytics ytics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
         gnuplot.set("grid mxtics xtics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
-        gnuplot.set("xrange", "[0.0:1.0]");
+        gnuplot.set("xrange", xrange);
         gnuplot.set("yrange", yrange);
 
         for (PlotDTO plot : data) {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
-            plotStyle.setLineWidth(6);
+            plotStyle.setLineWidth(7);
 
             DataSetPlot dataSetPlot = new DataSetPlot(plot.getData());
             dataSetPlot.setPlotStyle(plotStyle);

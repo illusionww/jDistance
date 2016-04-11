@@ -3,6 +3,7 @@ package com.jdistance.metric;
 import com.jdistance.utils.MatrixUtils;
 import com.keithschwarz.johnsons.JohnsonsAlgorithm;
 import jeigen.DenseMatrix;
+import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 
 import java.util.function.UnaryOperator;
 
@@ -14,8 +15,8 @@ public class Shortcuts {
     }
 
     public static DenseMatrix normalize(DenseMatrix dm) {
-        Double avg = dm.sum().sum().s() / (dm.cols * (dm.cols - 1));
-        return dm.div(avg);
+        double deviation = new StandardDeviation().evaluate(dm.getValues());
+        return dm.div(deviation);
     }
 
     static DenseMatrix pinv(DenseMatrix A) {
@@ -48,7 +49,7 @@ public class Shortcuts {
     static DenseMatrix DtoH(DenseMatrix D) {
         int size = D.rows;
         DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
-        return H.mmul(D.mul(D)).mmul(H).mul(0.5);
+        return H.mmul(D.mul(D)).mmul(H).mul(-0.5);
     }
 
     // Johnson's Algorithm
@@ -161,5 +162,4 @@ public class Shortcuts {
         }
         return totalSum;
     }
-
 }

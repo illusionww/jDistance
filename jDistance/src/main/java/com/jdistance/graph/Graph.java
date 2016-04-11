@@ -52,10 +52,18 @@ public class Graph {
         }
     }
 
+
     public GraphBundle toBundle() {
         int nodesCount = nodes.size();
         int classesCount = nodes.stream().map(Node::getLabel).collect(Collectors.toSet()).size();
         GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(1, nodesCount, classesCount, 0, 0);
         return new GraphBundle(Collections.singletonList(this), properties);
+    }
+
+    public GraphBundle toBundle(String name) {
+        int nodesCount = nodes.size();
+        int classesCount = nodes.stream().map(Node::getLabel).collect(Collectors.toSet()).size();
+        GeneratorPropertiesDTO properties = new GeneratorPropertiesDTO(1, nodesCount, classesCount, 0, 0);
+        return new GraphBundle(name, Collections.singletonList(this), properties);
     }
 }

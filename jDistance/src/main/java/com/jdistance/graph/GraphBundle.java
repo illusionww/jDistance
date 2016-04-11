@@ -8,19 +8,27 @@ import java.util.Arrays;
 import java.util.List;
 
 public class GraphBundle implements Cloneable<GraphBundle> {
-    private List<Graph> graphs = new ArrayList<>();
+    private String name;
+    private List<Graph> graphs;
     private GeneratorPropertiesDTO properties;
 
     public GraphBundle(List<Graph> graphs, GeneratorPropertiesDTO properties) {
         this.graphs = graphs;
         this.properties = properties;
-    }
-
-    public String getName() {
-        return "Graphs: " +
+        this.name = "Graphs: " +
             "graphsCount=" + properties.getGraphsCount() + ", " +
             "nodesCount=" + properties.getNodesCount() + ", " +
             "clustersCount=" + properties.getClustersCount();
+    }
+
+    public GraphBundle(String name, List<Graph> graphs, GeneratorPropertiesDTO properties) {
+        this.name = name;
+        this.graphs = graphs;
+        this.properties = properties;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public GeneratorPropertiesDTO getProperties() {

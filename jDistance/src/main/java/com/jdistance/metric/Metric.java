@@ -74,16 +74,35 @@ public enum Metric {
         }
     },
     SP_CT("SP-CT", Scale.LINEAR) {
-        public DenseMatrix getD(DenseMatrix A, double lambda) {
-            DenseMatrix Ds = Shortcuts.getD_ShortestPath(A);
-            Ds = Shortcuts.normalize(Ds);
+        private DenseMatrix cachedA = null;
+        private DenseMatrix cachedSP;
+        private DenseMatrix cachedCT;
 
+        public DenseMatrix getD(DenseMatrix A, double lambda) {
+            DenseMatrix D_SP, D_CP;
+            if (A == cachedA) {
+                D_SP = cachedSP;
+                D_CP = cachedCT;
+            } else {
+                D_SP = calcShortestPath(A);
+                D_CP = calcCommuteTime(A);
+                cachedA = A;
+                cachedSP = D_SP;
+                cachedCT = D_CP;
+            }
+            return D_SP.mul(1 - lambda).add(D_CP.mul(lambda));
+        }
+
+        private DenseMatrix calcShortestPath(DenseMatrix A) {
+            DenseMatrix Ds = Shortcuts.getD_ShortestPath(A);
+            return Shortcuts.normalize(Ds);
+        }
+
+        private DenseMatrix calcCommuteTime(DenseMatrix A) {
             DenseMatrix L = Shortcuts.getL(A);
             DenseMatrix H = Shortcuts.getH_Resistance(L);
             DenseMatrix Dr = Shortcuts.HtoD(H);
-            Dr = Shortcuts.normalize(Dr);
-
-            return Ds.mul(1 - lambda).add(Dr.mul(lambda));
+            return Shortcuts.normalize(Dr);
         }
     };
 
