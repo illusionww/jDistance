@@ -13,3 +13,5 @@ target/
 # Output files
 /out/
 /results/
+*.png
+*.log
