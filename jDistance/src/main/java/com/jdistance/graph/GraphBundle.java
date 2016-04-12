@@ -1,18 +1,16 @@
 package com.jdistance.graph;
 
-import com.jdistance.graph.generator.GeneratorPropertiesDTO;
-import com.jdistance.utils.Cloneable;
+import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class GraphBundle implements Cloneable<GraphBundle> {
+public class GraphBundle implements Cloneable {
     private String name;
     private List<Graph> graphs;
-    private GeneratorPropertiesDTO properties;
+    private GeneratorPropertiesPOJO properties;
 
-    public GraphBundle(List<Graph> graphs, GeneratorPropertiesDTO properties) {
+    public GraphBundle(List<Graph> graphs, GeneratorPropertiesPOJO properties) {
         this.graphs = graphs;
         this.properties = properties;
         this.name = "Graphs: " +
@@ -21,7 +19,7 @@ public class GraphBundle implements Cloneable<GraphBundle> {
             "clustersCount=" + properties.getClustersCount();
     }
 
-    public GraphBundle(String name, List<Graph> graphs, GeneratorPropertiesDTO properties) {
+    public GraphBundle(String name, List<Graph> graphs, GeneratorPropertiesPOJO properties) {
         this.name = name;
         this.graphs = graphs;
         this.properties = properties;
@@ -31,7 +29,7 @@ public class GraphBundle implements Cloneable<GraphBundle> {
         return name;
     }
 
-    public GeneratorPropertiesDTO getProperties() {
+    public GeneratorPropertiesPOJO getProperties() {
         return properties;
     }
 
@@ -46,8 +44,6 @@ public class GraphBundle implements Cloneable<GraphBundle> {
     public void setGraphs(List<Graph> graphs) {
         this.graphs = graphs;
     }
-
-
 
     @Override
     public GraphBundle clone() {

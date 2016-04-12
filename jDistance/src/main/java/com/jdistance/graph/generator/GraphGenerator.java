@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GraphGenerator {
-    public GraphBundle generate(GeneratorPropertiesDTO properties) {
+    public GraphBundle generate(GeneratorPropertiesPOJO properties) {
         List<Graph> graphs = new ArrayList<>();
         for (int i = 0; i < properties.getGraphsCount(); i++) {
             Graph graph = generateGraph(properties);
@@ -17,5 +17,5 @@ public abstract class GraphGenerator {
         return new GraphBundle(graphs, properties);
     }
 
-    protected abstract Graph generateGraph(GeneratorPropertiesDTO properties);
+    protected abstract Graph generateGraph(GeneratorPropertiesPOJO properties);
 }

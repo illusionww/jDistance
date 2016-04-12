@@ -1,0 +1,208 @@
+13:51:39,830  INFO TaskPool:54 - START TASK POOL "test"
+13:51:39,837  INFO TaskPool:59 - Task START: For
+13:51:45,862  INFO TaskPool:63 - Task DONE: For. Time: 6025 
+13:51:45,863  INFO TaskPool:68 - TASK POOL DONE. Time: 6035
+13:51:45,863  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+13:51:45,867  INFO TaskPoolResult:43 - Write data...
+13:51:45,871  INFO TaskPoolResult:73 - Write statistics...
+13:53:15,243  INFO TaskPool:54 - START TASK POOL "test"
+13:53:15,247  INFO TaskPool:59 - Task START: For
+13:55:23,417  INFO TaskPool:54 - START TASK POOL "test"
+13:55:23,426  INFO TaskPool:59 - Task START: For
+13:55:41,647  INFO TaskPool:54 - START TASK POOL "test"
+13:55:41,653  INFO TaskPool:59 - Task START: For
+13:56:29,087  INFO TaskPool:54 - START TASK POOL "test"
+13:56:29,093  INFO TaskPool:59 - Task START: For
+13:58:05,811  INFO TaskPool:54 - START TASK POOL "test"
+13:58:05,825  INFO TaskPool:59 - Task START: For
+13:58:34,260  INFO TaskPool:54 - START TASK POOL "test"
+13:58:34,280  INFO TaskPool:59 - Task START: For
+14:00:54,849  INFO TaskPool:54 - START TASK POOL "test"
+14:00:54,855  INFO TaskPool:59 - Task START: For
+14:04:22,851  INFO TaskPool:54 - START TASK POOL "test"
+14:04:22,860  INFO TaskPool:59 - Task START: For
+14:05:38,126  INFO TaskPool:54 - START TASK POOL "test"
+14:05:38,132  INFO TaskPool:59 - Task START: For
+14:05:52,293  INFO TaskPool:63 - Task DONE: For. Time: 14161 
+14:05:52,293  INFO TaskPool:68 - TASK POOL DONE. Time: 14171
+14:05:52,294  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:05:52,297  INFO TaskPoolResult:43 - Write data...
+14:05:52,304  INFO TaskPoolResult:73 - Write statistics...
+14:05:52,343  INFO TaskPoolResult:123 - Draw...
+14:05:53,336  INFO TaskPoolResult:123 - Draw...
+14:09:04,307  INFO TaskPool:54 - START TASK POOL "test"
+14:09:04,312  INFO TaskPool:59 - Task START: For
+14:10:28,939  INFO TaskPool:54 - START TASK POOL "test"
+14:10:28,944  INFO TaskPool:59 - Task START: For
+14:10:39,955  INFO TaskPool:63 - Task DONE: For. Time: 11011 
+14:10:39,955  INFO TaskPool:68 - TASK POOL DONE. Time: 11018
+14:10:39,955  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:10:39,960  INFO TaskPoolResult:43 - Write data...
+14:10:39,964  INFO TaskPoolResult:73 - Write statistics...
+14:10:39,999  INFO TaskPoolResult:123 - Draw...
+14:10:40,836  INFO TaskPoolResult:123 - Draw...
+14:11:08,501  INFO TaskPool:54 - START TASK POOL "test"
+14:11:08,505  INFO TaskPool:59 - Task START: For
+14:11:25,627  INFO TaskPool:54 - START TASK POOL "test"
+14:11:25,632  INFO TaskPool:59 - Task START: For
+14:15:17,080  INFO TaskPool:54 - START TASK POOL "test"
+14:15:17,087  INFO TaskPool:59 - Task START: For
+14:16:38,152  INFO TaskPool:54 - START TASK POOL "test"
+14:16:38,161  INFO TaskPool:59 - Task START: For
+14:18:33,929  INFO TaskPool:54 - START TASK POOL "test"
+14:18:33,936  INFO TaskPool:59 - Task START: For
+14:18:41,775  INFO TaskPool:63 - Task DONE: For. Time: 7839 
+14:18:41,778  INFO TaskPool:68 - TASK POOL DONE. Time: 7853
+14:18:41,778  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:18:41,782  INFO TaskPoolResult:43 - Write data...
+14:18:41,786  INFO TaskPoolResult:73 - Write statistics...
+14:19:51,259  INFO TaskPool:54 - START TASK POOL "test"
+14:19:51,265  INFO TaskPool:59 - Task START: For
+14:29:04,869  INFO TaskPool:54 - START TASK POOL "test"
+14:29:04,876  INFO TaskPool:59 - Task START: For
+14:29:04,943  INFO TaskPool:63 - Task DONE: For. Time: 67 
+14:29:04,943  INFO TaskPool:68 - TASK POOL DONE. Time: 77
+14:29:04,944  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:29:04,947  INFO TaskPoolResult:43 - Write data...
+14:29:04,951  INFO TaskPoolResult:73 - Write statistics...
+14:29:13,447  INFO TaskPool:54 - START TASK POOL "test"
+14:29:13,456  INFO TaskPool:59 - Task START: For
+14:29:13,525  INFO TaskPool:63 - Task DONE: For. Time: 69 
+14:29:13,525  INFO TaskPool:68 - TASK POOL DONE. Time: 82
+14:29:13,527  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:29:13,532  INFO TaskPoolResult:43 - Write data...
+14:29:13,535  INFO TaskPoolResult:73 - Write statistics...
+14:29:16,434  INFO TaskPool:54 - START TASK POOL "test"
+14:29:16,439  INFO TaskPool:59 - Task START: For
+14:29:16,491  INFO TaskPool:63 - Task DONE: For. Time: 52 
+14:29:16,491  INFO TaskPool:68 - TASK POOL DONE. Time: 61
+14:29:16,493  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:29:16,497  INFO TaskPoolResult:43 - Write data...
+14:29:16,503  INFO TaskPoolResult:73 - Write statistics...
+14:29:57,924  INFO TaskPool:54 - START TASK POOL "test"
+14:29:57,929  INFO TaskPool:59 - Task START: For
+14:30:01,380  INFO TaskPool:63 - Task DONE: For. Time: 3451 
+14:30:01,380  INFO TaskPool:68 - TASK POOL DONE. Time: 3460
+14:30:01,380  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:30:01,384  INFO TaskPoolResult:43 - Write data...
+14:30:01,387  INFO TaskPoolResult:73 - Write statistics...
+14:30:01,396  INFO TaskPoolResult:123 - Draw...
+14:30:02,372  INFO TaskPoolResult:123 - Draw...
+14:31:00,125  INFO TaskPool:54 - START TASK POOL "test"
+14:31:00,132  INFO TaskPool:59 - Task START: For
+14:31:10,355  INFO TaskPool:54 - START TASK POOL "test"
+14:31:10,360  INFO TaskPool:59 - Task START: For
+14:36:41,683  INFO TaskPool:54 - START TASK POOL "test"
+14:36:41,691  INFO TaskPool:59 - Task START: For
+14:36:49,369  INFO TaskPool:63 - Task DONE: For. Time: 7678 
+14:36:49,369  INFO TaskPool:68 - TASK POOL DONE. Time: 7689
+14:36:49,369  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:36:49,375  INFO TaskPoolResult:43 - Write data...
+14:36:49,381  INFO TaskPoolResult:73 - Write statistics...
+14:36:49,408  INFO TaskPoolResult:123 - Draw...
+14:36:50,221  INFO TaskPoolResult:123 - Draw...
+14:37:25,770  INFO TaskPool:54 - START TASK POOL "test"
+14:37:25,776  INFO TaskPool:59 - Task START: For
+14:37:32,823  INFO TaskPool:63 - Task DONE: For. Time: 7047 
+14:37:32,823  INFO TaskPool:68 - TASK POOL DONE. Time: 7057
+14:37:32,824  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:37:32,827  INFO TaskPoolResult:43 - Write data...
+14:37:32,831  INFO TaskPoolResult:73 - Write statistics...
+14:37:32,855  INFO TaskPoolResult:123 - Draw...
+14:37:33,715  INFO TaskPoolResult:123 - Draw...
+14:48:02,337  INFO TaskPool:54 - START TASK POOL "test"
+14:48:02,345  INFO TaskPool:59 - Task START: For
+14:48:09,467  INFO TaskPool:63 - Task DONE: For. Time: 7122 
+14:48:09,467  INFO TaskPool:68 - TASK POOL DONE. Time: 7133
+14:48:09,467  INFO TaskPool:69 - ----------------------------------------------------------------------------------------------------
+14:48:09,471  INFO TaskPoolResult:43 - Write data...
+14:48:09,476  INFO TaskPoolResult:73 - Write statistics...
+14:48:09,507  INFO TaskPoolResult:123 - Draw...
+14:48:10,535  INFO TaskPoolResult:123 - Draw...
+14:54:06,095  INFO TaskPool:72 - START TASK POOL "Ward: 100 nodes, 2 clusters, pIn=0.3, pOut=0.1, 1 graphs"
+14:54:06,102  INFO TaskPool:77 - Task START: pWalk
+14:54:14,534  INFO TaskPool:81 - Task DONE: pWalk. Time: 8432 
+14:54:14,534  INFO TaskPool:77 - Task START: Walk
+14:54:20,630  INFO TaskPool:81 - Task DONE: Walk. Time: 6096 
+14:54:20,630  INFO TaskPool:77 - Task START: For
+14:54:28,637  INFO TaskPool:81 - Task DONE: For. Time: 8007 
+14:54:28,638  INFO TaskPool:77 - Task START: logFor
+14:54:35,028  INFO TaskPool:81 - Task DONE: logFor. Time: 6390 
+14:54:35,029  INFO TaskPool:77 - Task START: Comm
+14:54:40,250  INFO TaskPool:81 - Task DONE: Comm. Time: 5221 
+14:54:40,251  INFO TaskPool:77 - Task START: logComm
+14:54:44,003  INFO TaskPool:81 - Task DONE: logComm. Time: 3752 
+14:54:44,003  INFO TaskPool:77 - Task START: Heat
+14:54:49,668  INFO TaskPool:81 - Task DONE: Heat. Time: 5665 
+14:54:49,668  INFO TaskPool:77 - Task START: logHeat
+14:54:54,341  INFO TaskPool:81 - Task DONE: logHeat. Time: 4673 
+14:54:54,341  INFO TaskPool:77 - Task START: RSP
+14:55:01,679  INFO TaskPool:81 - Task DONE: RSP. Time: 7338 
+14:55:01,679  INFO TaskPool:77 - Task START: FE
+14:55:08,108  INFO TaskPool:81 - Task DONE: FE. Time: 6429 
+14:55:08,108  INFO TaskPool:77 - Task START: SP-CT
+14:55:13,800  INFO TaskPool:81 - Task DONE: SP-CT. Time: 5692 
+14:55:13,801  INFO TaskPool:86 - TASK POOL DONE. Time: 67711
+14:55:13,801  INFO TaskPool:87 - ----------------------------------------------------------------------------------------------------
+14:55:13,804  INFO TaskPoolResult:43 - Write data...
+14:55:13,817  INFO TaskPoolResult:73 - Write statistics...
+14:55:13,873  INFO TaskPoolResult:123 - Draw...
+14:55:15,249  INFO TaskPoolResult:123 - Draw...
+15:00:16,104  INFO TaskPool:72 - START TASK POOL "Ward: 100 nodes, 2 clusters, pIn=0.3, pOut=0.1, 1 graphs"
+15:00:16,109  INFO TaskPool:77 - Task START: pWalk
+15:00:23,166  INFO TaskPool:81 - Task DONE: pWalk. Time: 7057 
+15:00:23,166  INFO TaskPool:77 - Task START: Walk
+15:00:28,667  INFO TaskPool:81 - Task DONE: Walk. Time: 5501 
+15:00:28,668  INFO TaskPool:77 - Task START: For
+15:00:34,168  INFO TaskPool:81 - Task DONE: For. Time: 5500 
+15:00:34,168  INFO TaskPool:77 - Task START: logFor
+15:00:39,488  INFO TaskPool:81 - Task DONE: logFor. Time: 5320 
+15:00:39,488  INFO TaskPool:77 - Task START: Comm
+15:00:45,075  INFO TaskPool:81 - Task DONE: Comm. Time: 5586 
+15:00:45,075  INFO TaskPool:77 - Task START: logComm
+15:00:49,018  INFO TaskPool:81 - Task DONE: logComm. Time: 3943 
+15:00:49,018  INFO TaskPool:77 - Task START: Heat
+15:00:53,316  INFO TaskPool:81 - Task DONE: Heat. Time: 4297 
+15:00:53,316  INFO TaskPool:77 - Task START: logHeat
+15:00:57,386  INFO TaskPool:81 - Task DONE: logHeat. Time: 4070 
+15:00:57,386  INFO TaskPool:77 - Task START: RSP
+15:01:04,006  INFO TaskPool:81 - Task DONE: RSP. Time: 6620 
+15:01:04,006  INFO TaskPool:77 - Task START: FE
+15:01:10,016  INFO TaskPool:81 - Task DONE: FE. Time: 6010 
+15:01:10,016  INFO TaskPool:77 - Task START: SP-CT
+15:01:16,603  INFO TaskPool:81 - Task DONE: SP-CT. Time: 6587 
+15:01:16,604  INFO TaskPool:86 - TASK POOL DONE. Time: 60503
+15:01:16,604  INFO TaskPool:87 - ----------------------------------------------------------------------------------------------------
+15:01:16,608  INFO TaskPoolResult:43 - Write data...
+15:01:16,622  INFO TaskPoolResult:73 - Write statistics...
+15:01:16,763  INFO TaskPoolResult:123 - Draw...
+15:01:18,215  INFO TaskPoolResult:123 - Draw...
+15:02:23,237  INFO TaskPool:72 - START TASK POOL "Ward - 100 nodes, 2 clusters, pIn=0.3, pOut=0.1, 1 graphs"
+15:02:23,242  INFO TaskPool:77 - Task START: pWalk
+15:02:33,387  INFO TaskPool:81 - Task DONE: pWalk. Time: 10145 
+15:02:33,387  INFO TaskPool:77 - Task START: Walk
+15:02:40,673  INFO TaskPool:81 - Task DONE: Walk. Time: 7286 
+15:02:40,674  INFO TaskPool:77 - Task START: For
+15:02:46,624  INFO TaskPool:81 - Task DONE: For. Time: 5950 
+15:02:46,625  INFO TaskPool:77 - Task START: logFor
+15:02:52,924  INFO TaskPool:81 - Task DONE: logFor. Time: 6299 
+15:02:52,924  INFO TaskPool:77 - Task START: Comm
+15:02:58,590  INFO TaskPool:81 - Task DONE: Comm. Time: 5666 
+15:02:58,591  INFO TaskPool:77 - Task START: logComm
+15:03:02,702  INFO TaskPool:81 - Task DONE: logComm. Time: 4111 
+15:03:02,702  INFO TaskPool:77 - Task START: Heat
+15:03:06,991  INFO TaskPool:81 - Task DONE: Heat. Time: 4289 
+15:03:06,991  INFO TaskPool:77 - Task START: logHeat
+15:03:11,592  INFO TaskPool:81 - Task DONE: logHeat. Time: 4601 
+15:03:11,594  INFO TaskPool:77 - Task START: RSP
+15:03:18,922  INFO TaskPool:81 - Task DONE: RSP. Time: 7328 
+15:03:18,922  INFO TaskPool:77 - Task START: FE
+15:03:25,437  INFO TaskPool:81 - Task DONE: FE. Time: 6515 
+15:03:25,438  INFO TaskPool:77 - Task START: SP-CT
+15:03:33,184  INFO TaskPool:81 - Task DONE: SP-CT. Time: 7746 
+15:03:33,185  INFO TaskPool:86 - TASK POOL DONE. Time: 69951
+15:03:33,185  INFO TaskPool:87 - ----------------------------------------------------------------------------------------------------
+15:03:33,190  INFO TaskPoolResult:43 - Write data...
+15:03:33,199  INFO TaskPoolResult:73 - Write statistics...
+15:03:33,273  INFO TaskPoolResult:123 - Draw...
+15:03:34,719  INFO TaskPoolResult:123 - Draw...

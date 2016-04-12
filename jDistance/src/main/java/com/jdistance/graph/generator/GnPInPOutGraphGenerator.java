@@ -8,23 +8,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GnPInPOutGraphGenerator extends GraphGenerator {
-    private static GnPInPOutGraphGenerator instance;
     private final Random random;
     private boolean biDirectional;
 
-    private GnPInPOutGraphGenerator() {
+    public GnPInPOutGraphGenerator() {
         random = new Random();
         biDirectional = true;
     }
 
-    public static GnPInPOutGraphGenerator getInstance() {
-        if (instance == null) {
-            instance = new GnPInPOutGraphGenerator();
-        }
-        return instance;
-    }
-
-    protected Graph generateGraph(GeneratorPropertiesDTO properties) {
+    protected Graph generateGraph(GeneratorPropertiesPOJO properties) {
         int[] sizeClusters = properties.getSizeOfClusters();
         double[][] probabilityMatrix = properties.getProbabilityMatrix();
         int numberOfVertices = 0;

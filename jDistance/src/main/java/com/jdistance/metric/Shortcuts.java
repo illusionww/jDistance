@@ -1,6 +1,5 @@
 package com.jdistance.metric;
 
-import com.jdistance.utils.MatrixUtils;
 import com.keithschwarz.johnsons.JohnsonsAlgorithm;
 import jeigen.DenseMatrix;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
@@ -134,13 +133,12 @@ public class Shortcuts {
     }
 
     private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
-        double[][] values = MatrixUtils.toArray2(A);
+        double[] values = A.getValues();
+        DenseMatrix newA = new DenseMatrix(A.rows, A.cols);
         for (int i = 0; i < values.length; i++) {
-            for (int j = 0; j < values[i].length; j++) {
-                values[i][j] = operator.apply(values[i][j]);
-            }
+            newA.set(i, operator.apply(values[i]));
         }
-        return new DenseMatrix(values);
+        return newA;
     }
 
     private static DenseMatrix diagToVector(DenseMatrix A) {

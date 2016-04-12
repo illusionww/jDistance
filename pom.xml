@@ -11,7 +11,8 @@
 
     <modules>
         <module>jDistance</module>
-        <module>jDistanceImpl</module>
+        <module>jDistanceLocal</module>
+        <module>jDistanceHadoop</module>
     </modules>
 
     <build>
@@ -23,6 +24,7 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
         </plugins>
