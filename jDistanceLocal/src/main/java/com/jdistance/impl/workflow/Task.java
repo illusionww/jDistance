@@ -12,6 +12,10 @@ public class Task {
     private GridSearch gridSearch;
     private GraphBundle graphs;
 
+    public Task(String name, Estimator estimator, Scorer scorer, AbstractDistanceWrapper metricWrapper, GraphBundle graphs, Integer pointsCount) {
+        this(name, new GridSearch(estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount, Context.getInstance().isParallelGrid(), Context.getInstance().getCalcMetricStatistics()), graphs);
+    }
+
     public Task(Estimator estimator, Scorer scorer, AbstractDistanceWrapper metricWrapper, GraphBundle graphs, Integer pointsCount) {
         this(metricWrapper.getName(), new GridSearch(estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount, Context.getInstance().isParallelGrid(), Context.getInstance().getCalcMetricStatistics()), graphs);
     }

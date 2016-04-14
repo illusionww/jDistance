@@ -70,32 +70,172 @@ public enum Kernel {
             return H0toH(H0);
         }
     },
-    RSP("RSP", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getH(DenseMatrix A, double t) {
-            DenseMatrix distance = Metric.RSP.getD(A, t);
-            return DtoH(distance);
-        }
-    },
-    FE("FE", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getH(DenseMatrix A, double t) {
-            DenseMatrix distance = Metric.FE.getD(A, t);
-            return DtoH(distance);
-        }
-    },
     SP_CT("SP-CT", Scale.LINEAR) {
         @Override
         public DenseMatrix getH(DenseMatrix A, double lambda) {
-            DenseMatrix D = Shortcuts.getD_ShortestPath(A);
-            DenseMatrix Hs = Shortcuts.DtoH(D);
-            Hs = Shortcuts.normalize(Hs);
+            DenseMatrix D = getD_ShortestPath(A);
+            DenseMatrix Hs = DtoK(D);
+            Hs = normalize(Hs);
 
-            DenseMatrix L = Shortcuts.getL(A);
-            DenseMatrix Hr = Shortcuts.getH_Resistance(L);
-            Hr = Shortcuts.normalize(Hr);
+            DenseMatrix L = getL(A);
+            DenseMatrix Hr = getH_Resistance(L);
+            Hr = normalize(Hr);
 
             return Hs.mul(1 - lambda).add(Hr.mul(lambda));
+        }
+    },
+    PLAIN_WALK_FROM_METRIC("pWalk", Scale.RHO) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = (I - tA)^{-1}
+            DenseMatrix D = Metric.PLAIN_WALK.getD(A, t);
+            return DtoK(D);
+        }
+    },
+    WALK_FROM_METRIC("Walk", Scale.RHO) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix D = Metric.WALK.getD(A, t);
+            return DtoK(D);
+        }
+    },
+    FOREST_FROM_METRIC("For", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = (I + tL)^{-1}
+            DenseMatrix D = Metric.FOREST.getD(A, t);
+            return DtoK(D);
+        }
+    },
+    LOG_FOREST_FROM_METRIC("logFor", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix D = Metric.LOG_FOREST.getD(A, t);
+            return DtoK(D);
+        }
+    },
+    COMM_FROM_METRIC("Comm", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = exp(tA)
+            DenseMatrix D = Metric.COMM.getD(A, t);
+            return DtoK(D);
+        }
+    },
+    LOG_COMM_FROM_METRIC("logComm", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix D = Metric.LOG_COMM.getD(A, t);
+            return DtoK(D);
+        }
+    },
+    HEAT_FROM_METRIC("Heat", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = exp(-tL)
+            DenseMatrix D = Metric.HEAT.getD(A, t);
+            return DtoK(D);
+        }
+    },
+    LOG_HEAT_FROM_METRIC("logHeat", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix D = Metric.LOG_HEAT.getD(A, t);
+            return DtoK(D);
+        }
+    },
+    RSP_FROM_METRIC("RSP", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix distance = Metric.RSP.getD(A, t);
+            return DtoK(distance);
+        }
+    },
+    FE_FROM_METRIC("FE", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix distance = Metric.FE.getD(A, t);
+            return DtoK(distance);
+        }
+    },
+    SP_CT_FROM_METRIC("SP-CT", Scale.LINEAR) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double lambda) {
+            DenseMatrix D = Metric.SP_CT.getD(A, lambda);
+            return DtoK(D);
+        }
+    },
+    PLAIN_WALK_FROM_METRIC_SQUARED("pWalk", Scale.RHO) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = (I - tA)^{-1}
+            DenseMatrix D = Metric.PLAIN_WALK.getD(A, t);
+            return DtoK_squared(D);
+        }
+    },
+    WALK_FROM_METRIC_SQUARED("Walk", Scale.RHO) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix D = Metric.WALK.getD(A, t);
+            return DtoK_squared(D);
+        }
+    },
+    FOREST_FROM_METRIC_SQUARED("For", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = (I + tL)^{-1}
+            DenseMatrix D = Metric.FOREST.getD(A, t);
+            return DtoK_squared(D);
+        }
+    },
+    LOG_FOREST_FROM_METRIC_SQUARED("logFor", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix D = Metric.LOG_FOREST.getD(A, t);
+            return DtoK_squared(D);
+        }
+    },
+    COMM_FROM_METRIC_SQUARED("Comm", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = exp(tA)
+            DenseMatrix D = Metric.COMM.getD(A, t);
+            return DtoK_squared(D);
+        }
+    },
+    LOG_COMM_FROM_METRIC_SQUARED("logComm", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix D = Metric.LOG_COMM.getD(A, t);
+            return DtoK_squared(D);
+        }
+    },
+    HEAT_FROM_METRIC_SQUARED("Heat", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) { // H0 = exp(-tL)
+            DenseMatrix D = Metric.HEAT.getD(A, t);
+            return DtoK_squared(D);
+        }
+    },
+    LOG_HEAT_FROM_METRIC_SQUARED("logHeat", Scale.FRACTION) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix D = Metric.LOG_HEAT.getD(A, t);
+            return DtoK_squared(D);
+        }
+    },
+    RSP_FROM_METRIC_SQUARED("RSP", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix distance = Metric.RSP.getD(A, t);
+            return DtoK_squared(distance);
+        }
+    },
+    FE_FROM_METRIC_SQUARED("FE", Scale.FRACTION_REVERSED) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double t) {
+            DenseMatrix distance = Metric.FE.getD(A, t);
+            return DtoK_squared(distance);
+        }
+    },
+    SP_CT_FROM_METRIC_SQUARED("SP-CT", Scale.LINEAR) {
+        @Override
+        public DenseMatrix getH(DenseMatrix A, double lambda) {
+            DenseMatrix D = Metric.SP_CT.getD(A, lambda);
+            return DtoK_squared(D);
         }
     };
 
@@ -113,7 +253,15 @@ public enum Kernel {
 
     public static List<KernelWrapper> getDefaultKernels() {
         return Arrays.asList(
-                PLAIN_WALK, WALK, FOREST, LOG_FOREST, COMM, LOG_COMM, HEAT, LOG_HEAT, RSP, FE, SP_CT
+                PLAIN_WALK_FROM_METRIC, WALK_FROM_METRIC, FOREST_FROM_METRIC, LOG_FOREST_FROM_METRIC, COMM_FROM_METRIC,
+                LOG_COMM_FROM_METRIC, HEAT_FROM_METRIC, LOG_HEAT_FROM_METRIC, RSP_FROM_METRIC, FE_FROM_METRIC, SP_CT_FROM_METRIC
+        ).stream().map(KernelWrapper::new).collect(Collectors.toList());
+    }
+
+    public static List<KernelWrapper> getDefaultSquaredKernels() {
+        return Arrays.asList(
+                PLAIN_WALK_FROM_METRIC_SQUARED, WALK_FROM_METRIC_SQUARED, FOREST_FROM_METRIC_SQUARED, LOG_FOREST_FROM_METRIC_SQUARED, COMM_FROM_METRIC_SQUARED,
+                LOG_COMM_FROM_METRIC_SQUARED, HEAT_FROM_METRIC_SQUARED, LOG_HEAT_FROM_METRIC_SQUARED, RSP_FROM_METRIC_SQUARED, FE_FROM_METRIC_SQUARED, SP_CT_FROM_METRIC_SQUARED
         ).stream().map(KernelWrapper::new).collect(Collectors.toList());
     }
 

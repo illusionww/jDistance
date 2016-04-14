@@ -45,7 +45,15 @@ public class Shortcuts {
         return h.mmul(i.t()).add(i.mmul(h.t())).sub(H).sub(H.t()).div(2);
     }
 
-    static DenseMatrix DtoH(DenseMatrix D) {
+    // K = -1/2 HΔH
+    static DenseMatrix DtoK(DenseMatrix D) {
+        int size = D.rows;
+        DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
+        return H.mmul(D).mmul(H).mul(-0.5);
+    }
+
+    // K = -1/2 HΔ_(2)H
+    static DenseMatrix DtoK_squared(DenseMatrix D) {
         int size = D.rows;
         DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
         return H.mmul(D.mul(D)).mmul(H).mul(-0.5);

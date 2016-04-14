@@ -1,8 +1,6 @@
 package com.jdistance.impl.adapter;
 
-import com.jdistance.impl.workflow.TaskPool;
 import com.jdistance.impl.workflow.Context;
-import com.jdistance.impl.workflow.TaskPoolResult;
 import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.dataset.Point;
 import com.panayotis.gnuplot.dataset.PointDataSet;
@@ -13,7 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.*;
 
 public class GNUPlotAdapter {
@@ -32,7 +32,20 @@ public class GNUPlotAdapter {
             NamedPlotColor.BROWN
     );
 
-    public static List<Point<Double>> mapToPoints(Map<Double, Double> results) {
+    public void draw(Map<String, Map<Double, Double>> data, String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
+        Iterator<PlotColor> color = colors.iterator();
+
+        List<PlotPOJO> plots = new ArrayList<>();
+        data.forEach((name, scores) -> {
+            List<Point<Double>> plotPoints = mapToPoints(scores);
+            PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
+            plots.add(new PlotPOJO(name, color.next(), plotPointsSet));
+        });
+
+        drawData(plots, Context.getInstance().buildImgFullName(smooth.toString(), imgTitle, "png"), xrange, xticks, yrange, yticks, smooth);
+    }
+
+    private List<Point<Double>> mapToPoints(Map<Double, Double> results) {
         List<Point<Double>> list = new ArrayList<>();
         SortedSet<Double> keys = new TreeSet<>(results.keySet());
         for (Double key : keys) {
@@ -40,19 +53,6 @@ public class GNUPlotAdapter {
             list.add(new Point<>(key, value));
         }
         return list;
-    }
-
-    public void draw(Map<String, Map<Double, Double>> data, String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
-        Iterator<PlotColor> color = colors.iterator();
-
-        List<PlotPOJO> plots = new ArrayList<>();
-        data.forEach((name, scores) -> {
-            List<Point<Double>> plotPoints = GNUPlotAdapter.mapToPoints(scores);
-            PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
-            plots.add(new PlotPOJO(name, color.next(), plotPointsSet));
-        });
-
-        drawData(plots, Context.getInstance().buildImgFullName(imgTitle, "png"), xrange, xticks, yrange, yticks, smooth);
     }
 
     private void drawData(List<PlotPOJO> data, String outputPath, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {

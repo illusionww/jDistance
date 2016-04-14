@@ -54,6 +54,16 @@ public class Context {
                 imgTitle.replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;
     }
 
+    public String buildImgFullName(String subfolder, String imgTitle, String extension) {
+        String subfolderPath = imgFolder + File.separator + subfolder.replaceAll("[:\\\\/*?|<>]", "_");
+        File outputDataFolderFile = new File(subfolderPath);
+        if (!outputDataFolderFile.exists() && !outputDataFolderFile.mkdirs()) {
+            throw new RuntimeException("Folder " + outputDataFolderFile.getAbsolutePath() + " is not exist");
+        }
+        return subfolderPath + File.separator +
+                imgTitle.replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;
+    }
+
     public String buildImgFullName(String imgTitle, String extension) {
         return imgFolder + File.separator +
                 imgTitle.replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;

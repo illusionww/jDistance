@@ -42,6 +42,11 @@ public class TaskPool {
         return name;
     }
 
+    public TaskPool addTask(Task task) {
+        this.tasks.add(task);
+        return this;
+    }
+
     public TaskPool addTasks(List<Task> tasks) {
         this.tasks.addAll(tasks);
         return this;
