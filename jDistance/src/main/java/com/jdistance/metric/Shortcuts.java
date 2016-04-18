@@ -46,7 +46,7 @@ public class Shortcuts {
     }
 
     // K = -1/2 HΔH
-    static DenseMatrix DtoK(DenseMatrix D) {
+    public static DenseMatrix DtoK(DenseMatrix D) {
         int size = D.rows;
         DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
         return H.mmul(D).mmul(H).mul(-0.5);
@@ -149,7 +149,7 @@ public class Shortcuts {
         return newA;
     }
 
-    private static DenseMatrix diagToVector(DenseMatrix A) {
+    public static DenseMatrix diagToVector(DenseMatrix A) {
         DenseMatrix diag = new DenseMatrix(A.rows, 1);
         double[] values = A.getValues();
         for (int i = 0; i < A.rows; i++) {

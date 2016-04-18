@@ -1,11 +1,16 @@
 package com.jdistance.impl;
 
+import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.graph.Node;
 import com.jdistance.impl.adapter.graph.CSVGraphBuilder;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Datasets {
     public static final DatasetPOJO football = new DatasetPOJO("football", "data/football_nodes.csv", "data/football_edges.csv");
@@ -36,6 +41,28 @@ public class Datasets {
                 .importNodesClassOnly(dataset.getPathToNodes())
                 .importAdjacencyMatrix(dataset.getPathToEdges())
                 .shuffleAndBuildBundle();
+    }
+
+    public static GraphBundle getTwoStars() {
+        List<Node> nodes = IntStream.range(0, 12).boxed()
+                .map(i -> new Node(i, "0"))
+                .collect(Collectors.toList());
+        double[][] twoStars = new double[][]{
+                {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+                {1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+                {0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0},
+        };
+        return new Graph(nodes, twoStars).shuffle(100).toBundle();
     }
 
     private static class DatasetPOJO {

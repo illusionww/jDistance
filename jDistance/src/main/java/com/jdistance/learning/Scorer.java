@@ -67,6 +67,21 @@ public enum Scorer {
             }
             return null;
         }
+    },
+    KERNEL_ERROR {
+        @Override
+        public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+            double errorsCount = 0;
+            for (int i = 0; i < D.rows; i++) {
+                for (int j = 0; j < D.cols; j++) {
+                    if (D.get(i,j) > D.get(i, i)) {
+                        errorsCount++;
+                    }
+                }
+            }
+            double total = D.rows * (D.rows - 1);
+            return errorsCount/total;
+        }
     };
 
     public abstract double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes);

@@ -67,7 +67,7 @@ public class MetricsBoundariesComparisonTests {
         Double parameter = 0.000001;
 
         double[][] SP = toArray2(Shortcuts.normalize(Metric.SP_CT.getD(graph, parameter)));
-        double[][] logFor = toArray2(Shortcuts.normalize(Metric.LOG_FOREST.getD(graph, parameter)));
+        double[][] logFor = toArray2(Shortcuts.normalize(Metric.LOG_FOR.getD(graph, parameter)));
         double[][] Walk = toArray2(Shortcuts.normalize(Metric.WALK.getD(graph, parameter)));
 
         for (int i = 0; i < chainGraph.cols; i++) {

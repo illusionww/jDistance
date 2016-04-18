@@ -22,6 +22,6 @@ public class MetricWrapper extends AbstractDistanceWrapper {
 
     @Override
     public DenseMatrix calc(DenseMatrix A, double param) {
-        return metric.getD(A, param);
+        return metric.getD(A, param).mul(-1);
     }
 }

@@ -25,7 +25,6 @@ public class Ward implements Estimator {
                 .collect(Collectors.toList()));
         Map<Pair<Cluster, Cluster>, Double> ΔJ = new HashMap<>();
 
-        preprocessing(K, clusters, ΔJ);
         for (int i = 0; i < K.cols - nClusters; i++) {
             iteration(K, clusters, ΔJ);
         }
@@ -37,16 +36,6 @@ public class Ward implements Estimator {
             }
         }
         return result;
-    }
-
-    private void preprocessing(DenseMatrix K, List<Cluster> clusters, Map<Pair<Cluster, Cluster>, Double> ΔJ) {
-        for (int k = 0; k < clusters.size(); k++) {
-            Cluster Ck = clusters.get(k);
-            for (int l = k + 1; l < clusters.size(); l++) {
-                Cluster Cl = clusters.get(l);
-                ΔJ.put(new ImmutablePair<>(Ck, Cl), K.get(k, l));
-            }
-        }
     }
 
     private void iteration(DenseMatrix K, List<Cluster> clusters, Map<Pair<Cluster, Cluster>, Double> ΔJ) {
@@ -83,7 +72,7 @@ public class Ward implements Estimator {
     private double calcΔJ(DenseMatrix K, Map<Pair<Cluster, Cluster>, Double> ΔJ, Cluster Ck, Cluster Cl) {
         double norm = Ck.n * Cl.n / (double) (Ck.n + Cl.n);
         DenseMatrix hkhl = (Ck.h).sub(Cl.h);
-        double currentΔJ = -hkhl.t().mmul(K).mmul(hkhl).mul(norm).s();
+        double currentΔJ = hkhl.t().mmul(K).mmul(hkhl).mul(norm).s();
         ΔJ.put(new ImmutablePair<>(Ck, Cl), currentΔJ);
         return currentΔJ;
     }

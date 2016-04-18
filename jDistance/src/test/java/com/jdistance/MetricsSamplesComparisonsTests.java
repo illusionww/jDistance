@@ -51,7 +51,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphLogarithmicForestDistance() {
-        Metric distance = Metric.LOG_FOREST;
+        Metric distance = Metric.LOG_FOR;
         DenseMatrix D = distance.getD(chainGraph, 2.0);
         double multiplier = 0.959 / D.get(0, 1);
         assertTrue("distances not equal: 0.959 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.959));
@@ -62,7 +62,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphPlainForestDistance() {
-        Metric distance = Metric.FOREST;
+        Metric distance = Metric.FOR;
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 1.026 / D.get(0, 1);
         assertTrue("distances not equal: 1.026 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.026));
@@ -73,7 +73,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphPlainWalkDistance() {
-        Metric distance = Metric.PLAIN_WALK;
+        Metric distance = Metric.P_WALK;
         Double parameter = Scale.alphaToT.calc(chainGraph, 4.5);
         DenseMatrix D = distance.getD(chainGraph, parameter);
         double multiplier = 1.025 / D.get(0, 1);
@@ -113,7 +113,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testTriangleGraphLogarithmicForestDistance() {
-        Metric distance = Metric.LOG_FOREST;
+        Metric distance = Metric.LOG_FOR;
         DenseMatrix D = distance.getD(triangleGraph, 0.01);
         assertTrue("Logarithmic Forest distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.0));
         D = distance.getD(triangleGraph, 500.0);
@@ -144,7 +144,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphForestDistance() {
-        DenseMatrix H0 = Kernel.FOREST.getH(chainGraph, 0);
+        DenseMatrix H0 = Kernel.FOR_H.getK(chainGraph, 0);
         double[][] forChain0 = toArray2(H0);
         double[][] forChain0etalon = {
                 {1, 0, 0, 0},
@@ -154,7 +154,7 @@ public class MetricsSamplesComparisonsTests {
         };
         assertTrue(Arrays.deepToString(forChain0), equalArraysStrict(forChain0, forChain0etalon));
 
-        DenseMatrix H05 = Kernel.FOREST.getH(chainGraph, 0.5);
+        DenseMatrix H05 = Kernel.FOR_H.getK(chainGraph, 0.5);
         double[][] forChain05 = toArray2(H05);
         double[][] forChain05etalon = {
                 {0.73214286, 0.19642857, 0.05357143, 0.01785714},
@@ -167,7 +167,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testTriangleGraphForestDistance() {
-        DenseMatrix H0 = Kernel.FOREST.getH(triangleGraph, 0.2);
+        DenseMatrix H0 = Kernel.FOR_H.getK(triangleGraph, 0.2);
         double[][] forChain02 = toArray2(H0);
         double[][] forChain0etalon = {{0.85185185, 0.11111111, 0.01851852, 0.01851852},
                 {0.11111111, 0.66666667, 0.11111111, 0.11111111},

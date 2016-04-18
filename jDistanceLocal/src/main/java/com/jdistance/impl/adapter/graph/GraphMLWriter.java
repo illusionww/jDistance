@@ -2,6 +2,7 @@ package com.jdistance.impl.adapter.graph;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.Node;
+import com.jdistance.impl.workflow.Context;
 import org.jgrapht.UndirectedGraph;
 import org.jgrapht.ext.GraphMLExporter;
 import org.jgrapht.ext.IntegerEdgeNameProvider;
@@ -27,6 +28,6 @@ public class GraphMLWriter {
         }
 
         GraphMLExporter<Node, DefaultEdge> exporter = new GraphMLExporter<>(node -> node.getId().toString(), Node::getLabel, new IntegerEdgeNameProvider<>(), null);
-        exporter.export(new FileWriter(fileName), destGraph);
+        exporter.export(new FileWriter(Context.getInstance().buildOutputDataFullName(fileName, "graphml")), destGraph);
     }
 }

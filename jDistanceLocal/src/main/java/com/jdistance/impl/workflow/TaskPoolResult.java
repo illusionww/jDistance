@@ -20,7 +20,7 @@ public class TaskPoolResult {
     private Map<String, Map<Double, Double>> data;
     private Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics;
 
-    public TaskPoolResult(String name, Map<String, Map<Double, Double>> data, Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics) {
+    TaskPoolResult(String name, Map<String, Map<Double, Double>> data, Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics) {
         this.name = name;
         this.data = data;
         this.metricStatistics = metricStatistics;

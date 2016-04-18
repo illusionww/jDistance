@@ -7,40 +7,40 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum Metric {
-    PLAIN_WALK("pWalk", Scale.RHO) {
+    P_WALK("pWalk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.PLAIN_WALK.getH(A, t);
+            DenseMatrix H = Kernel.P_WALK_H.getK(A, t);
             return Shortcuts.HtoD(H);
         }
     },
     WALK("Walk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.WALK.getH(A, t);
+            DenseMatrix H = Kernel.WALK_H.getK(A, t);
             return Shortcuts.HtoD(H);
         }
     },
-    FOREST("For", Scale.FRACTION) {
+    FOR("For", Scale.FRACTION) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.FOREST.getH(A, t);
+            DenseMatrix H = Kernel.FOR_H.getK(A, t);
             return Shortcuts.HtoD(H);
         }
     },
-    LOG_FOREST("logFor", Scale.FRACTION) {
+    LOG_FOR("logFor", Scale.FRACTION) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.LOG_FOREST.getH(A, t);
+            DenseMatrix H = Kernel.LOG_FOR_H.getK(A, t);
             return Shortcuts.HtoD(H);
         }
     },
     COMM("Comm", Scale.FRACTION) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.COMM.getH(A, t);
+            DenseMatrix H = Kernel.COMM_H.getK(A, t);
             DenseMatrix D = Shortcuts.HtoD(H);
             return D.sqrt();
         }
     },
     LOG_COMM("logComm", Scale.FRACTION) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.LOG_COMM.getH(A, t);
+            DenseMatrix H = Kernel.LOG_COMM_H.getK(A, t);
             DenseMatrix D = Shortcuts.HtoD(H);
             return D.sqrt();
         }
@@ -48,7 +48,7 @@ public enum Metric {
     HEAT("Heat", Scale.FRACTION) {
         @Override
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.HEAT.getH(A, t);
+            DenseMatrix H = Kernel.HEAT_H.getK(A, t);
             DenseMatrix D = Shortcuts.HtoD(H);
             return D.sqrt();
         }
@@ -56,7 +56,7 @@ public enum Metric {
     LOG_HEAT("logHeat", Scale.FRACTION) {
         @Override
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.LOG_HEAT.getH(A, t);
+            DenseMatrix H = Kernel.LOG_HEAT_H.getK(A, t);
             DenseMatrix D = Shortcuts.HtoD(H);
             return D.sqrt();
         }
@@ -118,7 +118,7 @@ public enum Metric {
 
     public static List<MetricWrapper> getDefaultDistances() {
         return Arrays.asList(
-                PLAIN_WALK, WALK, FOREST, LOG_FOREST, COMM, LOG_COMM, HEAT, LOG_HEAT, RSP, FE, SP_CT
+                P_WALK, WALK, FOR, LOG_FOR, COMM, LOG_COMM, HEAT, LOG_HEAT, RSP, FE, SP_CT
         ).stream().map(MetricWrapper::new).collect(Collectors.toList());
     }
 

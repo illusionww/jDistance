@@ -29,13 +29,14 @@ public class Graph {
         return nodes;
     }
 
-    public void shuffle(int swapCount) {
+    public Graph shuffle(int swapCount) {
         int size = nodes.size();
 
         Random random = new Random();
         for (int i = 0; i < swapCount; i++) {
             replaceTwoNodes(random.nextInt(size), random.nextInt(size));
         }
+        return this;
     }
 
     private void replaceTwoNodes(int i, int j) {
