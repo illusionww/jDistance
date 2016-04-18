@@ -17,11 +17,13 @@ public class TaskPoolResult {
     private static final Logger log = LoggerFactory.getLogger(TaskPoolResult.class);
 
     private String name;
+    private List<String> taskNames;
     private Map<String, Map<Double, Double>> data;
     private Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics;
 
-    TaskPoolResult(String name, Map<String, Map<Double, Double>> data, Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics) {
+    TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data, Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics) {
         this.name = name;
+        this.taskNames = taskNames;
         this.data = data;
         this.metricStatistics = metricStatistics;
     }
@@ -46,14 +48,14 @@ public class TaskPoolResult {
             data.values().forEach(scores -> points.addAll(scores.keySet()));
 
             outputWriter.write("\t");
-            for (String taskNames : data.keySet()) {
-                outputWriter.write(taskNames + "\t");
+            for (String taskName : taskNames) {
+                outputWriter.write(taskName + "\t");
             }
             outputWriter.newLine();
             for (Double key : points) {
                 outputWriter.write(key + "\t");
-                for (Map<Double, Double> scores : data.values()) {
-                    outputWriter.write(scores.get(key) + "\t");
+                for (String taskName : taskNames) {
+                    outputWriter.write(data.get(taskName).get(key) + "\t");
                 }
                 outputWriter.newLine();
             }
@@ -75,16 +77,16 @@ public class TaskPoolResult {
             for (Map.Entry<String, Map<Graph, Map<Double, MetricStatistics>>> entry : metricStatistics.entrySet()) {
                 outputWriter.write("Metric " + entry.getKey() + "\n");
                 for (Map<Double, MetricStatistics> statisticsForGraph : entry.getValue().values()) {
-                    List<Map.Entry<Double, MetricStatistics>> sortedList = new ArrayList<>(statisticsForGraph.entrySet());
-                    Collections.sort(sortedList, Comparator.comparingDouble(Map.Entry::getKey));
+                    List<Map.Entry<Double, MetricStatistics>> sortedStatisticsForGraph = new ArrayList<>(statisticsForGraph.entrySet());
+                    Collections.sort(sortedStatisticsForGraph, Comparator.comparingDouble(Map.Entry::getKey));
 
                     outputWriter.write("param\tmin\tmax\tavg\tscore\t");
-                    for (Pair<String, String> pair : sortedList.get(0).getValue().getIntraCluster().keySet()) {
+                    for (Pair<String, String> pair : sortedStatisticsForGraph.get(0).getValue().getIntraCluster().keySet()) {
                         String label = pair.getLeft() + "&" + pair.getRight();
                         outputWriter.write(label + "_min\t" + label + "_max\t" + label + "_avg\t");
                     }
                     outputWriter.newLine();
-                    for (Map.Entry<Double, MetricStatistics> metricStatistics : sortedList) {
+                    for (Map.Entry<Double, MetricStatistics> metricStatistics : sortedStatisticsForGraph) {
                         outputWriter.write(metricStatistics.getKey() + "\t" +
                                 metricStatistics.getValue().getMinValue() + "\t" +
                                 metricStatistics.getValue().getMaxValue() + "\t" +
@@ -119,11 +121,26 @@ public class TaskPoolResult {
         return this;
     }
 
+    public TaskPoolResult draw(String imgTitle, String yrange, String yticks, Smooth smooth) {
+        draw(imgTitle, "[0:1]", "0.2", yrange, yticks, smooth);
+        return this;
+    }
+
     public TaskPoolResult draw(String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
-        log.info("Draw...");
+        drawByName(taskNames, imgTitle, xrange, xticks, yrange, yticks, smooth);
+        return this;
+    }
+
+    public TaskPoolResult drawByName(List<String> taskNames, String imgTitle, String yrange, String yticks, Smooth smooth) {
+        drawByName(taskNames, imgTitle, "[0:1]", "0.2", yrange, yticks, smooth);
+        return this;
+    }
+
+    public TaskPoolResult drawByName(List<String> taskNames, String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
+        log.info("Draw " + imgTitle);
         try {
             GNUPlotAdapter ga = new GNUPlotAdapter();
-            ga.draw(data, imgTitle, xrange, xticks, yrange, yticks, smooth);
+            ga.draw(taskNames, data, imgTitle, xrange, xticks, yrange, yticks, smooth);
         } catch (RuntimeException e) {
             log.error("RuntimeException while write picture", e);
         }

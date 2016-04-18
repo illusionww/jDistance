@@ -91,10 +91,12 @@ public class TaskPool {
         log.info("TASK POOL DONE. Time: {}", diff);
         log.info("----------------------------------------------------------------------------------------------------", diff);
 
+        List<String> taskNames = tasks.stream().map(Task::getName)
+                .collect(Collectors.toList());
         Map<String, Map<Double, Double>> data = tasks.stream()
                 .collect(Collectors.toMap(Task::getName, task -> task.getGridSearch().getScores()));
         Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics = tasks.stream()
                 .collect(Collectors.toMap(Task::getName, task -> task.getGridSearch().getMetricStatistics()));
-        return new TaskPoolResult(name, data, metricStatistics);
+        return new TaskPoolResult(name, taskNames, data, metricStatistics);
     }
 }

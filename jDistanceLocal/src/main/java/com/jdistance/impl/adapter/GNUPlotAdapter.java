@@ -32,14 +32,14 @@ public class GNUPlotAdapter {
             NamedPlotColor.BROWN
     );
 
-    public void draw(Map<String, Map<Double, Double>> data, String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
+    public void draw(List<String> taskNames, Map<String, Map<Double, Double>> data, String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
         Iterator<PlotColor> color = colors.iterator();
 
         List<PlotPOJO> plots = new ArrayList<>();
-        data.forEach((name, scores) -> {
-            List<Point<Double>> plotPoints = mapToPoints(scores);
+        taskNames.forEach(taskName -> {
+            List<Point<Double>> plotPoints = mapToPoints(data.get(taskName));
             PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
-            plots.add(new PlotPOJO(name, color.next(), plotPointsSet));
+            plots.add(new PlotPOJO(taskName, color.next(), plotPointsSet));
         });
 
         drawData(plots, Context.getInstance().buildImgFullName(smooth.toString(), imgTitle, "png"), xrange, xticks, yrange, yticks, smooth);
@@ -47,10 +47,12 @@ public class GNUPlotAdapter {
 
     private List<Point<Double>> mapToPoints(Map<Double, Double> results) {
         List<Point<Double>> list = new ArrayList<>();
-        SortedSet<Double> keys = new TreeSet<>(results.keySet());
-        for (Double key : keys) {
-            Double value = results.get(key);
-            list.add(new Point<>(key, value));
+        if (results != null) {
+            SortedSet<Double> keys = new TreeSet<>(results.keySet());
+            for (Double key : keys) {
+                Double value = results.get(key);
+                list.add(new Point<>(key, value));
+            }
         }
         return list;
     }
