@@ -150,6 +150,14 @@ public class Shortcuts {
         return diag;
     }
 
+    public static double[][] toArray2(DenseMatrix dm) {
+        double[][] values = new double[dm.cols][dm.rows];
+        for (int i = 0; i < dm.cols; i++) {
+            System.arraycopy(dm.getValues(), i * dm.rows, values[i], 0, dm.rows);
+        }
+        return values;
+    }
+
     private static DenseMatrix NaNPolice(DenseMatrix D) {
         for (double item : D.getValues()) {
             if (Double.isNaN(item)) {

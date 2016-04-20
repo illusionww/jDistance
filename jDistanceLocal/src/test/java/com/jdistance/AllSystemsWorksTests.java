@@ -7,7 +7,7 @@ import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.Task;
 import com.jdistance.impl.workflow.TaskPool;
 import com.jdistance.learning.Scorer;
-import com.jdistance.learning.Ward;
+import com.jdistance.learning.clustering.Ward;
 import com.jdistance.distance.Distance;
 import com.jdistance.distance.DistanceWrapper;
 import org.junit.Before;

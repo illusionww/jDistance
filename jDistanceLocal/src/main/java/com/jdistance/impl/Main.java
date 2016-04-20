@@ -13,7 +13,7 @@ import com.jdistance.impl.workflow.TaskPool;
 import com.jdistance.impl.workflow.TaskPoolResult;
 import com.jdistance.learning.NullEstimator;
 import com.jdistance.learning.Scorer;
-import com.jdistance.learning.Ward;
+import com.jdistance.learning.clustering.Ward;
 import com.panayotis.gnuplot.style.Smooth;
 import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
@@ -270,33 +270,25 @@ public class Main {
     }
 
     private static void compareDiffs() {
-        int clustersCount = 2;
-        int pointsCount = 51;
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, clustersCount, 0.3, 0.1));
-//        for (DistanceWrapper distance : Distance.getDefaultDistances()) {
-//            TaskPool pool = new TaskPool(distance.getName() + " distance");
-//            pool.addTask(new Task(distance.getName() + " distance, Ward", new Ward(clustersCount), Scorer.RATE_INDEX, distance, graphs, pointsCount));
-//            pool.addTask(new Task(distance.getName() + ", Diff ordinal", new NullEstimator(), Scorer.DIFFUSION_ORDINAL, distance, graphs, pointsCount));
-//            pool.addTask(new Task(distance.getName() + ", Diff cardinal", new NullEstimator(), Scorer.DIFFUSION_CARDINAL, distance, graphs, pointsCount));
-//            pool.addTask(new Task(distance.getName() + ", Diff cardinal control", new NullEstimator(), Scorer.DIFFUSION_CARDINAL_CONTROL, distance, graphs, pointsCount));
-//            TaskPoolResult result = pool.execute();
-//            result.writeData();
-//            result.drawUnique("[0.2:1]", "0.2");
-//            result.addMeasuresStatisticsToData();
-//            result.writeData(distance.getName() + " distance advanced");
-//        }
-        for (KernelWrapper kernel : Collections.singletonList(new KernelWrapper(Kernel.HEAT_K))) {
-            TaskPool pool = new TaskPool(kernel.getName() + " kernel");
-            pool.addTask(new Task(kernel.getName() + " kernel, Ward", new Ward(clustersCount), Scorer.RATE_INDEX, kernel, graphs, pointsCount));
-            pool.addTask(new Task(kernel.getName() + ", Diff ordinal", new NullEstimator(), Scorer.DIFFUSION_ORDINAL, kernel, graphs, pointsCount));
-            pool.addTask(new Task(kernel.getName() + ", Diff cardinal", new NullEstimator(), Scorer.DIFFUSION_CARDINAL, kernel, graphs, pointsCount));
-//            pool.addTask(new Task(kernel.getName() + ", Diff cardinal control", new NullEstimator(), Scorer.DIFFUSION_CARDINAL_CONTROL, kernel, graphs, pointsCount));
-            pool.addTask(new Task(kernel.getName() + ", Diff cardinal no sqrt", new NullEstimator(), Scorer.DIFFUSION_CARDINAL_WITHOUT_SQRT, kernel, graphs, pointsCount));
-            TaskPoolResult result = pool.execute();
-            result.writeData();
-            result.drawUnique("[0.2:1]", "0.2");
-            result.addMeasuresStatisticsToData();
-            result.writeData(kernel.getName() + " kernel advanced");
+        int pointsCount = 65;
+
+        for (int nodesCount : new int[]{100, 150, 200}) {
+            for (int clustersCount : new int[]{2, 3, 5}) {
+                for (double pOut : new double[]{0.1, 0.05, 0.02}) {
+                    String name = "n=" + nodesCount + " c=" + clustersCount + " pOut=" + pOut;
+                    GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(25*200/nodesCount, nodesCount, clustersCount, 0.3, pOut));
+                    TaskPool pool = new TaskPool(name);
+                    for (KernelWrapper kernel : Kernel.getAllK()) {
+                        pool.addTask(new Task(kernel.getName() + " kernel, Ward", new Ward(clustersCount), Scorer.RATE_INDEX, kernel, graphs, pointsCount));
+                        pool.addTask(new Task(kernel.getName() + ", Diff ordinal", new NullEstimator(), Scorer.DIFFUSION_ORDINAL, kernel, graphs, pointsCount));
+                        pool.addTask(new Task(kernel.getName() + ", Diff cardinal", new NullEstimator(), Scorer.DIFFUSION_CARDINAL, kernel, graphs, pointsCount));
+                        TaskPoolResult result = pool.execute();
+                        result.writeData(name);
+                        result.addMeasuresStatisticsToData();
+                        result.writeData(name + " advanced");
+                    }
+                }
+            }
         }
     }
 }

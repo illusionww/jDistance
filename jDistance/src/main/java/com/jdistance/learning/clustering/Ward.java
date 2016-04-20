@@ -1,5 +1,6 @@
-package com.jdistance.learning;
+package com.jdistance.learning.clustering;
 
+import com.jdistance.learning.Estimator;
 import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -75,25 +76,5 @@ public class Ward implements Estimator {
         double currentΔJ = hkhl.t().mmul(K).mmul(hkhl).mul(norm).s();
         ΔJ.put(new ImmutablePair<>(Ck, Cl), currentΔJ);
         return currentΔJ;
-    }
-
-    private class Cluster {
-        List<Integer> nodes;
-        DenseMatrix h;
-        int n;
-
-        Cluster(List<Integer> nodes, int length) {
-            this.nodes = nodes;
-            n = nodes.size();
-            h = DenseMatrix.zeros(length, 1);
-            refreshH();
-        }
-
-        void refreshH() {
-            h = DenseMatrix.zeros(h.rows, 1);
-            for (Integer node : nodes) {
-                h.set(node, 0, 1 / (double) n);
-            }
-        }
     }
 }
