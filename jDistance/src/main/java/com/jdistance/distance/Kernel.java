@@ -1,4 +1,4 @@
-package com.jdistance.metric;
+package com.jdistance.distance;
 
 import jeigen.DenseMatrix;
 
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.jdistance.metric.Shortcuts.*;
+import static com.jdistance.distance.Shortcuts.*;
 import static jeigen.Shortcuts.eye;
 
 public enum Kernel {
@@ -87,77 +87,77 @@ public enum Kernel {
     P_WALK_K("pWalk K", Scale.RHO) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) { // H0 = (I - tA)^{-1}
-            DenseMatrix D = Metric.P_WALK.getD(A, t);
+            DenseMatrix D = Distance.P_WALK.getD(A, t);
             return DtoK(D);
         }
     },
     WALK_K("Walk K", Scale.RHO) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix D = Metric.WALK.getD(A, t);
+            DenseMatrix D = Distance.WALK.getD(A, t);
             return DtoK(D);
         }
     },
     FOR_K("For K", Scale.FRACTION) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) { // H0 = (I + tL)^{-1}
-            DenseMatrix D = Metric.FOR.getD(A, t);
+            DenseMatrix D = Distance.FOR.getD(A, t);
             return DtoK(D);
         }
     },
     LOG_FOR_K("logFor K", Scale.FRACTION) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix D = Metric.LOG_FOR.getD(A, t);
+            DenseMatrix D = Distance.LOG_FOR.getD(A, t);
             return DtoK(D);
         }
     },
     COMM_K("Comm K", Scale.FRACTION) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) { // H0 = exp(tA)
-            DenseMatrix D = Metric.COMM.getD(A, t);
+            DenseMatrix D = Distance.COMM.getD(A, t);
             return DtoK(D);
         }
     },
     LOG_COMM_K("logComm K", Scale.FRACTION) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix D = Metric.LOG_COMM.getD(A, t);
+            DenseMatrix D = Distance.LOG_COMM.getD(A, t);
             return DtoK(D);
         }
     },
     HEAT_K("Heat K", Scale.FRACTION) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) { // H0 = exp(-tL)
-            DenseMatrix D = Metric.HEAT.getD(A, t);
+            DenseMatrix D = Distance.HEAT.getD(A, t);
             return DtoK(D);
         }
     },
     LOG_HEAT_K("logHeat K", Scale.FRACTION) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix D = Metric.LOG_HEAT.getD(A, t);
+            DenseMatrix D = Distance.LOG_HEAT.getD(A, t);
             return DtoK(D);
         }
     },
     RSP_K("RSP K", Scale.FRACTION_REVERSED) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix distance = Metric.RSP.getD(A, t);
+            DenseMatrix distance = Distance.RSP.getD(A, t);
             return DtoK(distance);
         }
     },
     FE_K("FE K", Scale.FRACTION_REVERSED) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix distance = Metric.FE.getD(A, t);
+            DenseMatrix distance = Distance.FE.getD(A, t);
             return DtoK(distance);
         }
     },
     SP_CT_K("SP-CT K", Scale.LINEAR) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix D = Metric.SP_CT.getD(A, lambda);
+            DenseMatrix D = Distance.SP_CT.getD(A, lambda);
             return DtoK(D);
         }
     };

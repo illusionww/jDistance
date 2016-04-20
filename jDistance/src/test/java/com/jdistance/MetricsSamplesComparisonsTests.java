@@ -1,9 +1,9 @@
 package com.jdistance;
 
-import com.jdistance.metric.Kernel;
-import com.jdistance.metric.Metric;
-import com.jdistance.metric.Shortcuts;
-import com.jdistance.metric.Scale;
+import com.jdistance.distance.Kernel;
+import com.jdistance.distance.Distance;
+import com.jdistance.distance.Shortcuts;
+import com.jdistance.distance.Scale;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphWalkDistance() {
-        Metric distance = Metric.WALK;
+        Distance distance = Distance.WALK;
         Double parameter = Scale.alphaToT.calc(chainGraph, 1.0);
         DenseMatrix D = distance.getD(chainGraph, parameter);
         double multiplier = 1.025 / D.get(0, 1);
@@ -51,7 +51,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphLogarithmicForestDistance() {
-        Metric distance = Metric.LOG_FOR;
+        Distance distance = Distance.LOG_FOR;
         DenseMatrix D = distance.getD(chainGraph, 2.0);
         double multiplier = 0.959 / D.get(0, 1);
         assertTrue("distances not equal: 0.959 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.959));
@@ -62,7 +62,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphPlainForestDistance() {
-        Metric distance = Metric.FOR;
+        Distance distance = Distance.FOR;
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 1.026 / D.get(0, 1);
         assertTrue("distances not equal: 1.026 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.026));
@@ -73,7 +73,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphPlainWalkDistance() {
-        Metric distance = Metric.P_WALK;
+        Distance distance = Distance.P_WALK;
         Double parameter = Scale.alphaToT.calc(chainGraph, 4.5);
         DenseMatrix D = distance.getD(chainGraph, parameter);
         double multiplier = 1.025 / D.get(0, 1);
@@ -93,7 +93,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testChainGraphCommunicabilityDistance() {
-        Metric distance = Metric.COMM;
+        Distance distance = Distance.COMM;
         DenseMatrix D = distance.getD(chainGraph, 1.0);
         double multiplier = 0.964 / D.get(0, 1);
         assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 0.964));
@@ -104,7 +104,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testTriangleGraphSP_CTDistance() {
-        Metric distance = Metric.SP_CT;
+        Distance distance = Distance.SP_CT;
         DenseMatrix D = distance.getD(triangleGraph, 0);
         assertTrue("SP distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDouble(D.get(0, 1) / D.get(1, 2), 1.0));
         D = distance.getD(triangleGraph, 1);
@@ -113,7 +113,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testTriangleGraphLogarithmicForestDistance() {
-        Metric distance = Metric.LOG_FOR;
+        Distance distance = Distance.LOG_FOR;
         DenseMatrix D = distance.getD(triangleGraph, 0.01);
         assertTrue("Logarithmic Forest distance attitude not equal 1.0: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.0));
         D = distance.getD(triangleGraph, 500.0);
@@ -122,7 +122,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testTriangleGraphFEDistance() {
-        Metric distance = Metric.FE;
+        Distance distance = Distance.FE;
         DenseMatrix D = distance.getD(triangleGraph, 0.0001);
         assertTrue("Free Energy distance attitude not equal 1.5: " + D.get(0, 1) / D.get(1, 2), equalDoubleNonStrict(D.get(0, 1) / D.get(1, 2), 1.5));
         D = distance.getD(triangleGraph, 30.0);
@@ -131,7 +131,7 @@ public class MetricsSamplesComparisonsTests {
 
     @Test
     public void testTreeGraphSP_CTEquality() {
-        Metric distance = Metric.SP_CT;
+        Distance distance = Distance.SP_CT;
         double[][] SP = toArray2(distance.getD(treeMatrix, 0));
         double[][] CT = toArray2(distance.getD(treeMatrix, 1));
         for (int i = 0; i < 10; i++) {

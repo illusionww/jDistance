@@ -1,8 +1,8 @@
-package com.jdistance.metric;
+package com.jdistance.distance;
 
 import jeigen.DenseMatrix;
 
-public class KernelWrapper extends AbstractDistanceWrapper {
+public class KernelWrapper extends AbstractMeasureWrapper {
     private Kernel kernel;
 
     public KernelWrapper(Kernel kernel) {

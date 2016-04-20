@@ -1,11 +1,10 @@
 package com.jdistance.impl.workflow;
 
-import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.gridsearch.statistics.MetricStatistics;
+import com.jdistance.gridsearch.statistics.ClustersMeasureStatistics;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
-import com.jdistance.metric.AbstractDistanceWrapper;
+import com.jdistance.distance.AbstractMeasureWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,7 +51,7 @@ public class TaskPool {
         return this;
     }
 
-    public TaskPool buildSimilarTasks(Estimator estimator, Scorer scorer, List<? extends AbstractDistanceWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
+    public TaskPool buildSimilarTasks(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
         metricWrappers.forEach(metricWrapper -> {
             tasks.add(new Task(estimator, scorer, metricWrapper, graphs, pointsCount));
         });
@@ -95,7 +94,7 @@ public class TaskPool {
                 .collect(Collectors.toList());
         Map<String, Map<Double, Double>> data = tasks.stream()
                 .collect(Collectors.toMap(Task::getName, task -> task.getGridSearch().getScores()));
-        Map<String, Map<Double, MetricStatistics>> metricStatistics = tasks.stream()
+        Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics = tasks.stream()
                 .collect(Collectors.toMap(Task::getName, task -> task.getGridSearch().getMetricStatistics()));
         return new TaskPoolResult(name, taskNames, data, metricStatistics);
     }

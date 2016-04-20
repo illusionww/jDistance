@@ -1,4 +1,4 @@
-package com.jdistance.metric;
+package com.jdistance.distance;
 
 import jeigen.DenseMatrix;
 
@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public enum Metric {
+public enum Distance {
     P_WALK("pWalk", Scale.RHO) {
         public DenseMatrix getD(DenseMatrix A, double t) {
             DenseMatrix H = Kernel.P_WALK_H.getK(A, t);
@@ -107,19 +107,19 @@ public enum Metric {
     private String name;
     private Scale scale;
 
-    Metric(String name, Scale scale) {
+    Distance(String name, Scale scale) {
         this.name = name;
         this.scale = scale;
     }
 
-    public static List<MetricWrapper> getAll() {
-        return Arrays.asList(Metric.values()).stream().map(MetricWrapper::new).collect(Collectors.toList());
+    public static List<DistanceWrapper> getAll() {
+        return Arrays.asList(Distance.values()).stream().map(DistanceWrapper::new).collect(Collectors.toList());
     }
 
-    public static List<MetricWrapper> getDefaultDistances() {
+    public static List<DistanceWrapper> getDefaultDistances() {
         return Arrays.asList(
                 P_WALK, WALK, FOR, LOG_FOR, COMM, LOG_COMM, HEAT, LOG_HEAT, RSP, FE, SP_CT
-        ).stream().map(MetricWrapper::new).collect(Collectors.toList());
+        ).stream().map(DistanceWrapper::new).collect(Collectors.toList());
     }
 
     public String getName() {

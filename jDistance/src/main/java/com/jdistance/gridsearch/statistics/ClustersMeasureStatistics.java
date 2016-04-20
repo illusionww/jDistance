@@ -9,16 +9,16 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class MetricStatistics extends BasicMetricStatistics {
-    private List<Map<Pair<String, String>, BasicMetricStatistics>> clustersStatisticsByGraph;
+public class ClustersMeasureStatistics extends BasicMeasureStatistics {
+    private List<Map<Pair<String, String>, BasicMeasureStatistics>> clustersStatisticsByGraph;
 
-    public MetricStatistics(BasicMetricStatistics statistics, List<Map<Pair<String, String>, BasicMetricStatistics>> clustersStatisticsByGraph) {
+    public ClustersMeasureStatistics(BasicMeasureStatistics statistics, List<Map<Pair<String, String>, BasicMeasureStatistics>> clustersStatisticsByGraph) {
         super(statistics);
         this.clustersStatisticsByGraph = clustersStatisticsByGraph;
     }
 
-    public static Map<Pair<String, String>, BasicMetricStatistics> calcClusterStatisticsForGraph(DenseMatrix D, Graph graph) {
-        Map<Pair<String, String>, BasicMetricStatistics> clustersStatistics = new TreeMap<>();
+    public static Map<Pair<String, String>, BasicMeasureStatistics> calcClusterStatisticsForGraph(DenseMatrix D, Graph graph) {
+        Map<Pair<String, String>, BasicMeasureStatistics> clustersStatistics = new TreeMap<>();
 
         List<String> clusterLabels = graph.getNodes().stream()
                 .map(Node::getLabel)
@@ -49,7 +49,7 @@ public class MetricStatistics extends BasicMetricStatistics {
         return clustersStatistics;
     }
 
-    public List<Map<Pair<String, String>, BasicMetricStatistics>> getClustersStatisticsByGraph() {
+    public List<Map<Pair<String, String>, BasicMeasureStatistics>> getClustersStatisticsByGraph() {
         return clustersStatisticsByGraph;
     }
 

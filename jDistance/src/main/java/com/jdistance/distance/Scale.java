@@ -1,4 +1,4 @@
-package com.jdistance.metric;
+package com.jdistance.distance;
 
 import jeigen.DenseMatrixComplex;
 import jeigen.DenseMatrix;

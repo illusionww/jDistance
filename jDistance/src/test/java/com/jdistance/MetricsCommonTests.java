@@ -1,8 +1,8 @@
 package com.jdistance;
 
-import com.jdistance.metric.Metric;
-import com.jdistance.metric.MetricWrapper;
-import com.jdistance.metric.Scale;
+import com.jdistance.distance.Distance;
+import com.jdistance.distance.DistanceWrapper;
+import com.jdistance.distance.Scale;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 
@@ -22,8 +22,8 @@ public class MetricsCommonTests {
         double to = 0.95;
         int pointsCount = 30;
 
-        List<MetricWrapper> values = Metric.getAll();
-        values.stream().filter(value -> Metric.RSP.getName().equals(value.getName()) || Metric.FE.getName().equals(value.getName())).forEach(value -> value.setScale(Scale.FRACTION));
+        List<DistanceWrapper> values = Distance.getAll();
+        values.stream().filter(value -> Distance.RSP.getName().equals(value.getName()) || Distance.FE.getName().equals(value.getName())).forEach(value -> value.setScale(Scale.FRACTION));
 
         values.forEach(metric -> {
             double step = (to - from) / (pointsCount - 1);
@@ -44,7 +44,7 @@ public class MetricsCommonTests {
         double to = 0.5;
         int pointsCount = 30;
 
-        Metric values[] = Metric.values();
+        Distance values[] = Distance.values();
         Arrays.asList(values).forEach(metric -> {
             double step = (to - from) / (pointsCount - 1);
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
@@ -69,7 +69,7 @@ public class MetricsCommonTests {
         double to = 0.5;
         int pointsCount = 30;
 
-        Metric values[] = Metric.values();
+        Distance values[] = Distance.values();
         Arrays.asList(values).forEach(metric -> {
             double step = (to - from) / (pointsCount - 1);
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {

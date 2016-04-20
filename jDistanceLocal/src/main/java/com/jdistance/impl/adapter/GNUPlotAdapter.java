@@ -64,7 +64,7 @@ public class GNUPlotAdapter {
     private void drawData(List<PlotPOJO> data, String outputPath, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
         ImageTerminal png = new ImageTerminal();
         png.set("size", "3216,2461");
-        png.set("enhanced font", "'Verdana,60'");
+        png.set("enhanced font", "'Verdana,50'");
         File file = new File(outputPath);
         try {
             file.createNewFile();

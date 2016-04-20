@@ -1,4 +1,4 @@
-package com.jdistance.metric;
+package com.jdistance.distance;
 
 import com.keithschwarz.johnsons.JohnsonsAlgorithm;
 import jeigen.DenseMatrix;

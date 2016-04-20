@@ -1,6 +1,6 @@
 package com.jdistance.impl.workflow;
 
-import com.jdistance.gridsearch.statistics.MetricStatistics;
+import com.jdistance.gridsearch.statistics.ClustersMeasureStatistics;
 import com.jdistance.impl.adapter.GNUPlotAdapter;
 import com.panayotis.gnuplot.style.Smooth;
 import org.slf4j.Logger;
@@ -18,9 +18,9 @@ public class TaskPoolResult {
     private String name;
     private List<String> taskNames;
     private Map<String, Map<Double, Double>> data;
-    private Map<String, Map<Double, MetricStatistics>> metricStatistics;
+    private Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics;
 
-    TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data, Map<String, Map<Double, MetricStatistics>> metricStatistics) {
+    TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data, Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics) {
         this.name = name;
         this.taskNames = taskNames;
         this.data = data;
@@ -35,7 +35,7 @@ public class TaskPoolResult {
         return data;
     }
 
-    public TaskPoolResult addMetricsStatisticsToData() {
+    public TaskPoolResult addMeasuresStatisticsToData() {
         log.info("Add metrics statistics to data...");
         if (Context.getInstance().isCollectMetricStatistics()) {
             List<String> newTaskNames = new ArrayList<>();
@@ -86,6 +86,11 @@ public class TaskPoolResult {
             log.error("IOException while write results", e);
         }
 
+        return this;
+    }
+
+    public TaskPoolResult drawUnique(String yrange, String yticks) {
+        draw(name, "[0:1]", "0.2", yrange, yticks, Smooth.UNIQUE);
         return this;
     }
 

@@ -1,7 +1,7 @@
 package com.jdistance;
 
-import com.jdistance.metric.Metric;
-import com.jdistance.metric.Shortcuts;
+import com.jdistance.distance.Distance;
+import com.jdistance.distance.Shortcuts;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 
@@ -13,7 +13,7 @@ import static org.junit.Assert.assertTrue;
 public class MetricsBoundariesComparisonTests {
     @Test
     public void testChainGraphSP_CTEquality() {
-        Metric distance = Metric.SP_CT;
+        Distance distance = Distance.SP_CT;
         double[][] SP = toArray2(distance.getD(chainGraph, 0));
         double[][] CT = toArray2(distance.getD(chainGraph, 1));
         for (int i = 0; i < chainGraph.cols; i++) {
@@ -36,7 +36,7 @@ public class MetricsBoundariesComparisonTests {
             }
         }
         DenseMatrix chainGraph = new DenseMatrix(bigChain);
-        Metric distance = Metric.SP_CT;
+        Distance distance = Distance.SP_CT;
         double[][] SP = toArray2(distance.getD(chainGraph, 0));
         double[][] CT = toArray2(distance.getD(chainGraph, 1));
         for (int i = 0; i < chainGraph.cols; i++) {
@@ -49,7 +49,7 @@ public class MetricsBoundariesComparisonTests {
 
     @Test
     public void testFullGraphSP_CTEquality() {
-        Metric distance = Metric.SP_CT;
+        Distance distance = Distance.SP_CT;
         double[][] SP = toArray2(distance.getD(fullGraph, 0));
         double[][] CT = toArray2(distance.getD(fullGraph, 1));
 
@@ -66,9 +66,9 @@ public class MetricsBoundariesComparisonTests {
         DenseMatrix graph = fullGraph;
         Double parameter = 0.000001;
 
-        double[][] SP = toArray2(Shortcuts.normalize(Metric.SP_CT.getD(graph, parameter)));
-        double[][] logFor = toArray2(Shortcuts.normalize(Metric.LOG_FOR.getD(graph, parameter)));
-        double[][] Walk = toArray2(Shortcuts.normalize(Metric.WALK.getD(graph, parameter)));
+        double[][] SP = toArray2(Shortcuts.normalize(Distance.SP_CT.getD(graph, parameter)));
+        double[][] logFor = toArray2(Shortcuts.normalize(Distance.LOG_FOR.getD(graph, parameter)));
+        double[][] Walk = toArray2(Shortcuts.normalize(Distance.WALK.getD(graph, parameter)));
 
         for (int i = 0; i < chainGraph.cols; i++) {
             for (int j = 0; j < chainGraph.cols; j++) {

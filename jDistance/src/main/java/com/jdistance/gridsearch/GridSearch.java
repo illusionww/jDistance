@@ -2,11 +2,11 @@ package com.jdistance.gridsearch;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.gridsearch.statistics.BasicMetricStatistics;
-import com.jdistance.gridsearch.statistics.MetricStatistics;
+import com.jdistance.gridsearch.statistics.BasicMeasureStatistics;
+import com.jdistance.gridsearch.statistics.ClustersMeasureStatistics;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
-import com.jdistance.metric.AbstractDistanceWrapper;
+import com.jdistance.distance.AbstractMeasureWrapper;
 import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -19,16 +19,16 @@ import java.util.stream.Stream;
 public class GridSearch {
     private Estimator estimator;
     private List<Double> paramGrid;
-    private AbstractDistanceWrapper metricWrapper;
+    private AbstractMeasureWrapper metricWrapper;
     private GraphBundle graphs;
     private Scorer scorer;
     private boolean isParallel;
     private boolean calcMetricStatistics;
 
     private Map<Double, Double> scores = new ConcurrentHashMap<>();
-    private Map<Double, MetricStatistics> metricStatistics = new ConcurrentHashMap<>();
+    private Map<Double, ClustersMeasureStatistics> metricStatistics = new ConcurrentHashMap<>();
 
-    public GridSearch(Estimator estimator, AbstractDistanceWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel, boolean calcMetricStatistics) {
+    public GridSearch(Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel, boolean calcMetricStatistics) {
         this.estimator = estimator;
         double step = (to - from) / (pointsCount - 1);
         this.paramGrid = DoubleStream.iterate(from, i -> i + step).limit(pointsCount).boxed().collect(Collectors.toList());
@@ -63,14 +63,14 @@ public class GridSearch {
         return maxOptional.isPresent() ? maxOptional.get() : null;
     }
 
-    public Map<Double, MetricStatistics> getMetricStatistics() {
+    public Map<Double, ClustersMeasureStatistics> getMetricStatistics() {
         return metricStatistics;
     }
 
-    private Double validate(AbstractDistanceWrapper metricWrapper, Double idx) {
+    private Double validate(AbstractMeasureWrapper metricWrapper, Double idx) {
         List<Double> scoresByGraph = new ArrayList<>();
-        List<BasicMetricStatistics> metricStatisticsByGraph = new ArrayList<>();
-        List<Map<Pair<String, String>, BasicMetricStatistics>> clustersStatisticsByGraph = new ArrayList<>();
+        List<BasicMeasureStatistics> metricStatisticsByGraph = new ArrayList<>();
+        List<Map<Pair<String, String>, BasicMeasureStatistics>> clustersStatisticsByGraph = new ArrayList<>();
         try {
             for (Graph graph : graphs.getGraphs()) {
                 DenseMatrix A = graph.getA();
@@ -81,8 +81,8 @@ public class GridSearch {
                     double score = scorer.score(D, graph.getNodes(), prediction);
                     scoresByGraph.add(score);
                     if (calcMetricStatistics) {
-                        metricStatisticsByGraph.add(BasicMetricStatistics.calcMinMaxAvgOfMatrix(D));
-//                        clustersStatisticsByGraph.add(MetricStatistics.calcClusterStatisticsForGraph(D, graph));
+                        metricStatisticsByGraph.add(BasicMeasureStatistics.calcMinMaxAvgOfMatrix(D));
+//                        clustersStatisticsByGraph.add(ClustersMeasureStatistics.calcClusterStatisticsForGraph(D, graph));
                     }
                 }
             }
@@ -90,7 +90,7 @@ public class GridSearch {
             System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + idx);
         }
         if (calcMetricStatistics) {
-            metricStatistics.put(idx, new MetricStatistics(MetricStatistics.join(metricStatisticsByGraph), clustersStatisticsByGraph));
+            metricStatistics.put(idx, new ClustersMeasureStatistics(ClustersMeasureStatistics.join(metricStatisticsByGraph), clustersStatisticsByGraph));
         }
 
         double avg = avg(scoresByGraph);
