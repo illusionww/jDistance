@@ -13,15 +13,15 @@ public class Task {
     private GraphBundle graphs;
 
     public Task(String name, Estimator estimator, Scorer scorer, AbstractDistanceWrapper metricWrapper, GraphBundle graphs, Integer pointsCount) {
-        this(name, new GridSearch(estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount, Context.getInstance().isParallelGrid(), Context.getInstance().getCalcMetricStatistics()), graphs);
+        this(name, new GridSearch(estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount, Context.getInstance().isParallelGrid(), Context.getInstance().isCollectMetricStatistics()), graphs);
     }
 
     public Task(Estimator estimator, Scorer scorer, AbstractDistanceWrapper metricWrapper, GraphBundle graphs, Integer pointsCount) {
-        this(metricWrapper.getName(), new GridSearch(estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount, Context.getInstance().isParallelGrid(), Context.getInstance().getCalcMetricStatistics()), graphs);
+        this(metricWrapper.getName(), new GridSearch(estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount, Context.getInstance().isParallelGrid(), Context.getInstance().isCollectMetricStatistics()), graphs);
     }
 
     public Task(Estimator estimator, Scorer scorer, AbstractDistanceWrapper metricWrapper, GraphBundle graphs, Double from, Double to, Integer pointsCount) {
-        this(metricWrapper.getName(), new GridSearch(estimator, metricWrapper, scorer, from, to, pointsCount, Context.getInstance().isParallelGrid(), Context.getInstance().getCalcMetricStatistics()), graphs);
+        this(metricWrapper.getName(), new GridSearch(estimator, metricWrapper, scorer, from, to, pointsCount, Context.getInstance().isParallelGrid(), Context.getInstance().isCollectMetricStatistics()), graphs);
         metricWrapper.setScale(Scale.LINEAR);
     }
 

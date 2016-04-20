@@ -34,7 +34,8 @@ public class Shortcuts {
 
     // H = element-wise log(H0)
     static DenseMatrix H0toH(DenseMatrix H0) {
-        return log(H0);
+        DenseMatrix H = log(H0);
+        return NaNPolice(H);
     }
 
     // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
@@ -42,21 +43,16 @@ public class Shortcuts {
         int d = H.cols;
         DenseMatrix h = diagToVector(H);
         DenseMatrix i = DenseMatrix.ones(d, 1);
-        return h.mmul(i.t()).add(i.mmul(h.t())).sub(H).sub(H.t()).div(2);
+        DenseMatrix D = h.mmul(i.t()).add(i.mmul(h.t())).sub(H).sub(H.t()).div(2);
+        return NaNPolice(D);
     }
 
     // K = -1/2 HΔH
     public static DenseMatrix DtoK(DenseMatrix D) {
         int size = D.rows;
         DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
-        return H.mmul(D).mmul(H).mul(-0.5);
-    }
-
-    // K = -1/2 HΔ_(2)H
-    static DenseMatrix DtoK_squared(DenseMatrix D) {
-        int size = D.rows;
-        DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
-        return H.mmul(D.mul(D)).mmul(H).mul(-0.5);
+        DenseMatrix K = H.mmul(D).mmul(H).mul(-0.5);
+        return NaNPolice(K);
     }
 
     // Johnson's Algorithm
@@ -88,10 +84,6 @@ public class Shortcuts {
         // Z = (I - W)^{-1}
         DenseMatrix I = eye(d);
         DenseMatrix Z = pinv(I.sub(W));
-
-        // Z^h = Z * D_h^{-1}, D_h = Diag(Z)
-        DenseMatrix Dh = diag(diagToVector(Z));
-        DenseMatrix Zh = Z.mmul(pinv(Dh));
 
         // S = (Z(C ◦ W)Z)÷Z; ÷ is element-wise /
         DenseMatrix S = Z.mmul(C.mul(W)).mmul(Z).div(Z);
@@ -158,14 +150,12 @@ public class Shortcuts {
         return diag;
     }
 
-    private static DenseMatrix dummy_mexp(DenseMatrix A, int nSteps) {
-        DenseMatrix totalSum = eye(A.rows);
-        DenseMatrix currentElement = eye(A.rows);
-
-        for (int i = 1; i <= nSteps; i++) {
-            currentElement = currentElement.mmul(A.div(i));
-            totalSum = totalSum.add(currentElement);
+    private static DenseMatrix NaNPolice(DenseMatrix D) {
+        for (double item : D.getValues()) {
+            if (Double.isNaN(item)) {
+                return DenseMatrix.ones(D.cols, D.rows).mul(Double.NaN);
+            }
         }
-        return totalSum;
+        return D;
     }
 }

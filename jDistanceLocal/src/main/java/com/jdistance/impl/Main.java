@@ -5,7 +5,6 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
-import com.jdistance.impl.adapter.GNUPlotAdapter;
 import com.jdistance.impl.adapter.graph.GraphMLWriter;
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.Task;
@@ -32,33 +31,76 @@ import java.util.stream.Collectors;
 public class Main {
     public static void main(String[] args) throws SAXException, IOException, TransformerConfigurationException {
         Context.fill(false, true, true, "./results/data", "./results/img");
-        compareKernelsMertric();
+        test();
     }
 
     private static void test() {
-        int clustersCount = 2;
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(100, 100, clustersCount, 0.3, 0.1));
+        int clustersCount = 3;
+        int pointsCount = 65;
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(30, 200, clustersCount, 0.3, 0.1));
         TaskPool pool = new TaskPool("test");
         for (MetricWrapper metric : Metric.getDefaultDistances()) {
-            pool.addTask(new Task("Ward metric " + metric.getName(), new Ward(clustersCount), Scorer.RATE_INDEX, metric, graphs, 51));
-            pool.addTask(new Task("Diff metric " + metric.getName(), new NullEstimator(), Scorer.DIFFUSION, metric, graphs, 51));
+            pool.addTask(new Task(metric.getName() + " metric, Ward", new Ward(clustersCount), Scorer.RATE_INDEX, metric, graphs, pointsCount));
+            pool.addTask(new Task(metric.getName() + " metric, Diff", new NullEstimator(), Scorer.DIFFUSION, metric, graphs, pointsCount));
         }
-        for (KernelWrapper kernel : Kernel.getAllK()) {
-            pool.addTask(new Task("Ward kernel " + kernel.getName(), new Ward(clustersCount), Scorer.RATE_INDEX, kernel, graphs, 51));
-            pool.addTask(new Task("Diff kernel " + kernel.getName(), new NullEstimator(), Scorer.DIFFUSION, kernel, graphs, 51));
+        for (KernelWrapper kernel : Kernel.getAll()) {
+            pool.addTask(new Task(kernel.getName() + " kernel, Ward", new Ward(clustersCount), Scorer.RATE_INDEX, kernel, graphs, pointsCount));
+            pool.addTask(new Task(kernel.getName() + " kernel, Diff", new NullEstimator(), Scorer.DIFFUSION, kernel, graphs, pointsCount));
         }
         TaskPoolResult result = pool.execute();
+        result.addMetricsStatisticsToData();
         result.writeData();
 
-        GNUPlotAdapter gnuplot = new GNUPlotAdapter();
         for (MetricWrapper metric : Metric.getDefaultDistances()) {
-            Map<String, Map<Double, Double>> dataForPicture = new TreeMap<>();
-            dataForPicture.put(metric.getName() + " metric, Ward", result.getData().get("Ward metric " + metric.getName()));
-            dataForPicture.put(metric.getName() + " kernel, Ward", result.getData().get("Ward kernel " + metric.getName()));
-            dataForPicture.put(metric.getName() + " metric, Diff", result.getData().get("Diff metric " + metric.getName()));
-            dataForPicture.put(metric.getName() + " kernel, Diff", result.getData().get("Diff kernel " + metric.getName()));
-            gnuplot.draw(dataForPicture, "Ward and Diff metric and kernel " + metric.getName() + ", n=100, k=2, pIn=0.3, pOut=0.1 UNIQUE", "[0:1]", "0.2", "[0.3:1]", "0.2", Smooth.UNIQUE);
+            List<String> taskNames = new ArrayList<>();
+            taskNames.add(metric.getName() + " metric, Ward");
+            taskNames.add(metric.getName() + " metric, Diff");
+            taskNames.add(metric.getName() + " H kernel, Ward");
+            taskNames.add(metric.getName() + " H kernel, Diff");
+            taskNames.add(metric.getName() + " K kernel, Ward");
+            taskNames.add(metric.getName() + " K kernel, Diff");
+            result.drawByName(taskNames, metric.getName() + " all, n=200, k=2, pIn=0.3, pOut=0.1 UNIQUE", "[0.3:1]", "0.2", Smooth.UNIQUE);
         }
+
+        for (MetricWrapper metric : Metric.getDefaultDistances()) {
+            result.getData().put(metric.getName() + " metric\\_min", result.getData().get(metric.getName() + " metric, Ward_min"));
+            result.getData().put(metric.getName() + " metric\\_max", result.getData().get(metric.getName() + " metric, Ward_max"));
+            result.getData().put(metric.getName() + " metric\\_avg", result.getData().get(metric.getName() + " metric, Ward_avg"));
+            result.getData().put(metric.getName() + " metric\\_diagavg", result.getData().get(metric.getName() + " metric, Ward_diagavg"));
+
+            List<String> taskNames = new ArrayList<>();
+            taskNames.add(metric.getName() + " metric, Ward");
+            taskNames.add(metric.getName() + " metric, Diff");
+            result.drawByName(taskNames, metric.getName() + " metric statistics, n=200, k=2, pIn=0.3, pOut=0.1", null, null, Smooth.UNIQUE);
+
+            List<String> taskNames2 = new ArrayList<>();
+            taskNames2.add(metric.getName() + " metric\\_min");
+            taskNames2.add(metric.getName() + " metric\\_max");
+            taskNames2.add(metric.getName() + " metric\\_avg");
+            taskNames2.add(metric.getName() + " metric\\_diagavg");
+            result.drawByName(taskNames2, metric.getName() + " metric statistics, n=200, k=2, pIn=0.3, pOut=0.1", null, null, Smooth.UNIQUE);
+        }
+
+        for (KernelWrapper kernel : Kernel.getAll()) {
+            result.getData().put(kernel.getName() + " kernel\\_min", result.getData().get(kernel.getName() + " kernel, Ward_min"));
+            result.getData().put(kernel.getName() + " kernel\\_max", result.getData().get(kernel.getName() + " kernel, Ward_max"));
+            result.getData().put(kernel.getName() + " kernel\\_avg", result.getData().get(kernel.getName() + " kernel, Ward_avg"));
+            result.getData().put(kernel.getName() + " kernel\\_diagavg", result.getData().get(kernel.getName() + " kernel, Ward_diagavg"));
+
+            List<String> taskNames = new ArrayList<>();
+            taskNames.add(kernel.getName() + " kernel, Ward");
+            taskNames.add(kernel.getName() + " kernel, Diff");
+            result.drawByName(taskNames, kernel.getName() + " kernel Ward and Diff, n=200, k=2, pIn=0.3, pOut=0.1", null, null, Smooth.UNIQUE);
+
+            List<String> taskNames2 = new ArrayList<>();
+            taskNames2.add(kernel.getName() + " kernel\\_min");
+            taskNames2.add(kernel.getName() + " kernel\\_max");
+            taskNames2.add(kernel.getName() + " kernel\\_avg");
+            taskNames2.add(kernel.getName() + " kernel\\_diagavg");
+            result.drawByName(taskNames2, kernel.getName() + " kernel statistics, n=200, k=2, pIn=0.3, pOut=0.1", null, null, Smooth.UNIQUE);
+        }
+
+        result.writeData("advanced");
     }
 
     private static void tetetest() {
@@ -160,6 +202,18 @@ public class Main {
         }
     }
 
+    public static void dsdsd() {
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(3, 100, 2, 0.3, 0.1));
+        new TaskPool("Metrics")
+                .buildSimilarTasks(new Ward(2), Scorer.RATE_INDEX, Metric.getDefaultDistances(), graphs, 4)
+                .execute()
+                .drawUniqueAndBezier("[0.49:1]", "0.1");
+        new TaskPool("Kernels")
+                .buildSimilarTasks(new Ward(2), Scorer.RATE_INDEX, Kernel.getAllK(), graphs, 4)
+                .execute()
+                .drawUniqueAndBezier("[0.49:1]", "0.1");
+    }
+
     public static void compareKernelsHandK() throws SAXException, IOException, TransformerConfigurationException {
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(3, 100, 2, 0.3, 0.1));
         List<Pair<Kernel, Kernel>> kernelPairs = new ArrayList<>();
@@ -178,8 +232,7 @@ public class Main {
                     .addTask(new Task(new Ward(2), Scorer.RATE_INDEX, new KernelWrapper(pair.getLeft()), graphs, 41))
                     .addTask(new Task(new Ward(2), Scorer.RATE_INDEX, new KernelWrapper(pair.getRight()), graphs, 41))
                     .execute()
-                    .drawUniqueAndBezier("[0.49:1]", "0.1")
-                    .writeStatistics();
+                    .drawUniqueAndBezier("[0.49:1]", "0.1");
             DenseMatrix A = graphs.getGraphs().get(0).getA();
             DenseMatrix K1 = pair.getLeft().getK(A, pair.getLeft().getScale().calc(A, 0.1));
             DenseMatrix K2 = pair.getRight().getK(A, pair.getRight().getScale().calc(A, 0.1));
@@ -207,8 +260,7 @@ public class Main {
                     .addTask(new Task(new Ward(2), Scorer.RATE_INDEX, new MetricWrapper(pair.getLeft()), graphs, 41))
                     .addTask(new Task(new Ward(2), Scorer.RATE_INDEX, new KernelWrapper(pair.getRight()), graphs, 41))
                     .execute()
-                    .drawUniqueAndBezier("[0.49:1]", "0.1")
-                    .writeStatistics();
+                    .drawUniqueAndBezier("[0.49:1]", "0.1");
             DenseMatrix A = graphs.getGraphs().get(0).getA();
             DenseMatrix K1 = pair.getLeft().getD(A, pair.getLeft().getScale().calc(A, 0.1));
             DenseMatrix K2 = pair.getRight().getK(A, pair.getRight().getScale().calc(A, 0.1));

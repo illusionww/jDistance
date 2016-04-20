@@ -18,28 +18,32 @@ import java.util.*;
 
 public class GNUPlotAdapter {
     private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
-    private static final List<PlotColor> colors = Arrays.asList(
-            NamedPlotColor.RED,
-            NamedPlotColor.BLUE,
-            NamedPlotColor.GREEN,
-            NamedPlotColor.CYAN,
-            NamedPlotColor.DARK_VIOLET,
-            NamedPlotColor.ORANGE,
-            NamedPlotColor.YELLOW,
-            NamedPlotColor.LIGHT_GREEN,
-            NamedPlotColor.GREY50,
-            NamedPlotColor.MAGENTA,
-            NamedPlotColor.BROWN
+    private static final List<RGBAColor> colors = Arrays.asList(
+            new RGBAColor("#77FF0000"),
+            new RGBAColor("#7700FF00"),
+            new RGBAColor("#770000FF"),
+            new RGBAColor("#77FFFF00"),
+            new RGBAColor("#7700FFFF"),
+            new RGBAColor("#77FF00FF"),
+            new RGBAColor("#77800000"),
+            new RGBAColor("#77008000"),
+            new RGBAColor("#77000080"),
+            new RGBAColor("#77808000"),
+            new RGBAColor("#77008080"),
+            new RGBAColor("#77800080"),
+            new RGBAColor("#77808080")
     );
 
     public void draw(List<String> taskNames, Map<String, Map<Double, Double>> data, String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
-        Iterator<PlotColor> color = colors.iterator();
+        Iterator<RGBAColor> color = colors.iterator();
 
         List<PlotPOJO> plots = new ArrayList<>();
         taskNames.forEach(taskName -> {
             List<Point<Double>> plotPoints = mapToPoints(data.get(taskName));
-            PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
-            plots.add(new PlotPOJO(taskName, color.next(), plotPointsSet));
+            if (plotPoints.size() > 0) {
+                PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
+                plots.add(new PlotPOJO(taskName, color.next(), plotPointsSet));
+            }
         });
 
         drawData(plots, Context.getInstance().buildImgFullName(smooth.toString(), imgTitle, "png"), xrange, xticks, yrange, yticks, smooth);
@@ -73,13 +77,13 @@ public class GNUPlotAdapter {
         gnuplot.setTerminal(png);
         gnuplot.set("border", "31 lw 8.0");
         gnuplot.set("xtics", xticks);
-        gnuplot.set("ytics", yticks);
+        if (yticks != null) gnuplot.set("ytics", yticks);
         gnuplot.set("mxtics", "2");
         gnuplot.set("mytics", "2");
         gnuplot.set("grid mytics ytics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
         gnuplot.set("grid mxtics xtics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
         gnuplot.set("xrange", xrange);
-        gnuplot.set("yrange", yrange);
+        if (yrange != null) gnuplot.set("yrange", yrange);
 
         for (PlotPOJO plot : data) {
             PlotStyle plotStyle = new PlotStyle();
@@ -95,12 +99,25 @@ public class GNUPlotAdapter {
             gnuplot.addPlot(dataSetPlot);
         }
 
-        gnuplot.setKey(JavaPlot.Key.TOP_RIGHT);
+        gnuplot.setKey(JavaPlot.Key.BOTTOM_RIGHT);
         gnuplot.plot();
         try {
             ImageIO.write(png.getImage(), "png", file);
         } catch (IOException ex) {
             log.error("Error while writeData image", ex);
+        }
+    }
+
+    private static class RGBAColor implements PlotColor {
+        private String color;
+
+        RGBAColor(String color) {
+            this.color = color;
+        }
+
+        @Override
+        public String getColor() {
+            return "rgb \"" + color + "\"";
         }
     }
 

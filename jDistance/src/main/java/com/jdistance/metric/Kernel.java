@@ -174,6 +174,15 @@ public enum Kernel {
         return Arrays.asList(Kernel.values()).stream().map(KernelWrapper::new).collect(Collectors.toList());
     }
 
+    public static List<KernelWrapper> getDefaultKernels() {
+        return Arrays.asList(
+                P_WALK_H, WALK_H, FOR_H, LOG_FOR_H, COMM_H,
+                LOG_COMM_H, HEAT_H, LOG_HEAT_H, SP_CT_H,
+                P_WALK_K, WALK_K, FOR_K, LOG_FOR_K, COMM_K,
+                LOG_COMM_K, HEAT_K, LOG_HEAT_K, RSP_K, FE_K, SP_CT_K
+        ).stream().map(KernelWrapper::new).collect(Collectors.toList());
+    }
+
     public static List<KernelWrapper> getAllH() {
         return Arrays.asList(
                 P_WALK_H, WALK_H, FOR_H, LOG_FOR_H, COMM_H,

@@ -7,16 +7,16 @@ public class Context {
 
     private Boolean isParallelTasks;
     private Boolean isParallelGrid;
-    private Boolean calcMetricStatistics;
+    private Boolean isCollectMetricStatistics;
 
     private String outputDataFolder;
     private String imgFolder;
 
-    public static void fill(Boolean parallelTasks, Boolean parallelGrid, Boolean calcMetricStatistics, String outputDataFolder, String imgFolder) {
+    public static void fill(Boolean parallelTasks, Boolean parallelGrid, Boolean isCollectMetricStatistics, String outputDataFolder, String imgFolder) {
         instance = new Context();
         instance.isParallelTasks = parallelTasks;
         instance.isParallelGrid = parallelGrid;
-        instance.calcMetricStatistics = calcMetricStatistics;
+        instance.isCollectMetricStatistics = isCollectMetricStatistics;
         instance.outputDataFolder = outputDataFolder;
         instance.imgFolder = imgFolder;
 
@@ -45,8 +45,8 @@ public class Context {
         return isParallelGrid;
     }
 
-    public Boolean getCalcMetricStatistics() {
-        return calcMetricStatistics;
+    public Boolean isCollectMetricStatistics() {
+        return isCollectMetricStatistics;
     }
 
     public String buildOutputDataFullName(String imgTitle, String extension) {

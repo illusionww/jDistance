@@ -1,10 +1,8 @@
 package com.jdistance.impl.workflow;
 
-import com.jdistance.graph.Graph;
-import com.jdistance.gridsearch.MetricStatistics;
+import com.jdistance.gridsearch.statistics.MetricStatistics;
 import com.jdistance.impl.adapter.GNUPlotAdapter;
 import com.panayotis.gnuplot.style.Smooth;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,6 +10,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TaskPoolResult {
     private static final Logger log = LoggerFactory.getLogger(TaskPoolResult.class);
@@ -19,9 +18,9 @@ public class TaskPoolResult {
     private String name;
     private List<String> taskNames;
     private Map<String, Map<Double, Double>> data;
-    private Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics;
+    private Map<String, Map<Double, MetricStatistics>> metricStatistics;
 
-    TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data, Map<String, Map<Graph, Map<Double, MetricStatistics>>> metricStatistics) {
+    TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data, Map<String, Map<Double, MetricStatistics>> metricStatistics) {
         this.name = name;
         this.taskNames = taskNames;
         this.data = data;
@@ -36,13 +35,37 @@ public class TaskPoolResult {
         return data;
     }
 
+    public TaskPoolResult addMetricsStatisticsToData() {
+        log.info("Add metrics statistics to data...");
+        if (Context.getInstance().isCollectMetricStatistics()) {
+            List<String> newTaskNames = new ArrayList<>();
+            for (String taskName : taskNames) {
+                data.put(taskName + "_min", metricStatistics.get(taskName).entrySet().stream()
+                        .filter(e -> e.getValue().getMinValue() != null)
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getMinValue())));
+                data.put(taskName + "_max", metricStatistics.get(taskName).entrySet().stream()
+                        .filter(e -> e.getValue().getMaxValue() != null)
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getMaxValue())));
+                data.put(taskName + "_avg", metricStatistics.get(taskName).entrySet().stream()
+                        .filter(e -> e.getValue().getAvgValue() != null)
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getAvgValue())));
+                data.put(taskName + "_diagavg", metricStatistics.get(taskName).entrySet().stream()
+                        .filter(e -> e.getValue().getAvgDiagValue() != null)
+                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getAvgDiagValue())));
+                newTaskNames.addAll(Arrays.asList(taskName + "_min", taskName + "_max", taskName + "_avg", taskName + "_diagavg"));
+            }
+            taskNames.addAll(newTaskNames);
+        }
+        return this;
+    }
+
     public TaskPoolResult writeData() {
         writeData(name);
         return this;
     }
 
     public TaskPoolResult writeData(String filename) {
-        log.info("Write data...");
+        log.info("Write data as " + filename);
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(Context.getInstance().buildOutputDataFullName(filename, "csv")))) {
             Set<Double> points = new TreeSet<>();
             data.values().forEach(scores -> points.addAll(scores.keySet()));
@@ -61,49 +84,6 @@ public class TaskPoolResult {
             }
         } catch (IOException e) {
             log.error("IOException while write results", e);
-        }
-
-        return this;
-    }
-
-    public TaskPoolResult writeStatistics() {
-        writeStatistics(name);
-        return this;
-    }
-
-    public TaskPoolResult writeStatistics(String filename) {
-        log.info("Write statistics...");
-        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(Context.getInstance().buildOutputDataFullName(filename + "_metric-statistics", "csv")))) {
-            for (Map.Entry<String, Map<Graph, Map<Double, MetricStatistics>>> entry : metricStatistics.entrySet()) {
-                outputWriter.write("Metric " + entry.getKey() + "\n");
-                for (Map<Double, MetricStatistics> statisticsForGraph : entry.getValue().values()) {
-                    List<Map.Entry<Double, MetricStatistics>> sortedStatisticsForGraph = new ArrayList<>(statisticsForGraph.entrySet());
-                    Collections.sort(sortedStatisticsForGraph, Comparator.comparingDouble(Map.Entry::getKey));
-
-                    outputWriter.write("param\tmin\tmax\tavg\tscore\t");
-                    for (Pair<String, String> pair : sortedStatisticsForGraph.get(0).getValue().getIntraCluster().keySet()) {
-                        String label = pair.getLeft() + "&" + pair.getRight();
-                        outputWriter.write(label + "_min\t" + label + "_max\t" + label + "_avg\t");
-                    }
-                    outputWriter.newLine();
-                    for (Map.Entry<Double, MetricStatistics> metricStatistics : sortedStatisticsForGraph) {
-                        outputWriter.write(metricStatistics.getKey() + "\t" +
-                                metricStatistics.getValue().getMinValue() + "\t" +
-                                metricStatistics.getValue().getMaxValue() + "\t" +
-                                metricStatistics.getValue().getAvgValue() + "\t" +
-                                data.get(entry.getKey()).get(metricStatistics.getKey()) + "\t");
-                        for (Map.Entry<Pair<String, String>, MetricStatistics> intraCluster : metricStatistics.getValue().getIntraCluster().entrySet()) {
-                            outputWriter.write(intraCluster.getValue().getMinValue() + "\t" +
-                                    intraCluster.getValue().getMaxValue() + "\t" +
-                                    intraCluster.getValue().getAvgValue() + "\t");
-                        }
-                        outputWriter.newLine();
-                    }
-                }
-                outputWriter.newLine();
-            }
-        } catch (IOException e) {
-            log.error("IOException while write metric statistics", e);
         }
 
         return this;
@@ -145,5 +125,18 @@ public class TaskPoolResult {
             log.error("RuntimeException while write picture", e);
         }
         return this;
+    }
+
+    class DefaultHashMap<K, V> extends HashMap<K, V> {
+        private V defaultValue;
+
+        public DefaultHashMap(V defaultValue) {
+            this.defaultValue = defaultValue;
+        }
+
+        @Override
+        public V get(Object k) {
+            return containsKey(k) ? super.get(k) : defaultValue;
+        }
     }
 }

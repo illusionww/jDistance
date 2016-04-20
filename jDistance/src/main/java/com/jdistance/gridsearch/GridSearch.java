@@ -2,10 +2,13 @@ package com.jdistance.gridsearch;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.gridsearch.statistics.BasicMetricStatistics;
+import com.jdistance.gridsearch.statistics.MetricStatistics;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.metric.AbstractDistanceWrapper;
 import jeigen.DenseMatrix;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,13 +26,14 @@ public class GridSearch {
     private boolean calcMetricStatistics;
 
     private Map<Double, Double> scores = new ConcurrentHashMap<>();
-    private Map<Graph, Map<Double, MetricStatistics>> metricStatistics;
+    private Map<Double, MetricStatistics> metricStatistics = new ConcurrentHashMap<>();
 
     public GridSearch(Estimator estimator, AbstractDistanceWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel, boolean calcMetricStatistics) {
         this.estimator = estimator;
         double step = (to - from) / (pointsCount - 1);
         this.paramGrid = DoubleStream.iterate(from, i -> i + step).limit(pointsCount).boxed().collect(Collectors.toList());
         paramGrid.addAll(Arrays.asList(0.1 * step, 0.5 * step, 1.5 * step, to - 1.5 * step, to - 0.5 * step, to - 0.1 * step));
+        Collections.sort(paramGrid);
         this.metricWrapper = metricWrapper;
         this.scorer = scorer;
         this.isParallel = isParallel;
@@ -38,12 +42,11 @@ public class GridSearch {
 
     public Map<Double, Double> fit(GraphBundle graphs) {
         this.graphs = graphs;
-        this.metricStatistics = graphs.getGraphs().stream().collect(Collectors.toMap(g -> g, g -> new HashMap<>()));
 
         Stream<Double> paramStream = isParallel ? paramGrid.parallelStream() : paramGrid.stream();
         paramStream.forEach(idx -> {
             Double score = validate(metricWrapper, idx);
-//            System.out.println(metricWrapper.getName() + "\t" + String.format("%1.3f", idx) + "\t" + score);
+            System.out.println(metricWrapper.getName() + "\t" + String.format("%1.3f", idx) + "\t" + score);
             if (score != null) {
                 scores.put(idx, score);
             }
@@ -60,12 +63,14 @@ public class GridSearch {
         return maxOptional.isPresent() ? maxOptional.get() : null;
     }
 
-    public Map<Graph, Map<Double, MetricStatistics>> getMetricStatistics() {
+    public Map<Double, MetricStatistics> getMetricStatistics() {
         return metricStatistics;
     }
 
     private Double validate(AbstractDistanceWrapper metricWrapper, Double idx) {
-        List<Double> validationScoresByGraph = new ArrayList<>();
+        List<Double> scoresByGraph = new ArrayList<>();
+        List<BasicMetricStatistics> metricStatisticsByGraph = new ArrayList<>();
+        List<Map<Pair<String, String>, BasicMetricStatistics>> clustersStatisticsByGraph = new ArrayList<>();
         try {
             for (Graph graph : graphs.getGraphs()) {
                 DenseMatrix A = graph.getA();
@@ -74,20 +79,30 @@ public class GridSearch {
                 if (!hasNaN(D)) {
                     HashMap<Integer, Integer> prediction = estimator.predict(D);
                     double score = scorer.score(D, graph.getNodes(), prediction);
-                    validationScoresByGraph.add(score);
-                }
-                if (calcMetricStatistics) {
-                    metricStatistics.get(graph).put(idx, new MetricStatistics(D, graph));
+                    scoresByGraph.add(score);
+                    if (calcMetricStatistics) {
+                        metricStatisticsByGraph.add(BasicMetricStatistics.calcMinMaxAvgOfMatrix(D));
+//                        clustersStatisticsByGraph.add(MetricStatistics.calcClusterStatisticsForGraph(D, graph));
+                    }
                 }
             }
         } catch (RuntimeException e) {
             System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + idx);
         }
-        double avg = 0.0;
-        for (double validationScore : validationScoresByGraph) {
-            avg += validationScore;
+        if (calcMetricStatistics) {
+            metricStatistics.put(idx, new MetricStatistics(MetricStatistics.join(metricStatisticsByGraph), clustersStatisticsByGraph));
         }
-        return avg != 0.0 ? avg / validationScoresByGraph.size() : null;
+
+        double avg = avg(scoresByGraph);
+        return avg != 0.0 ? avg : null;
+    }
+
+    private double avg(List<Double> scoresByGraph) {
+        double sum = 0.0;
+        for (double score : scoresByGraph) {
+            sum += score;
+        }
+        return sum / scoresByGraph.size();
     }
 
     private boolean hasNaN(DenseMatrix D) {
