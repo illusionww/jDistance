@@ -58,11 +58,6 @@ public class GridSearch {
         return scores;
     }
 
-    public Map.Entry<Double, Double> getBestParam() {
-        Optional<Map.Entry<Double, Double>> maxOptional = scores.entrySet().stream().max(Map.Entry.comparingByValue(Double::compareTo));
-        return maxOptional.isPresent() ? maxOptional.get() : null;
-    }
-
     public Map<Double, ClustersMeasureStatistics> getMetricStatistics() {
         return metricStatistics;
     }
@@ -77,7 +72,7 @@ public class GridSearch {
                 Double parameter = metricWrapper.getScale().calc(A, idx);
                 DenseMatrix D = metricWrapper.calc(A, parameter);
                 if (!hasNaN(D)) {
-                    HashMap<Integer, Integer> prediction = estimator.predict(D);
+                    Map<Integer, Integer> prediction = estimator.predict(D);
                     double score = scorer.score(D, graph.getNodes(), prediction);
                     scoresByGraph.add(score);
                     if (calcMetricStatistics) {

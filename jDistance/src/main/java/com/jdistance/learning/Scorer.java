@@ -5,13 +5,13 @@ import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public enum Scorer {
     RATE_INDEX {
         @Override
-        public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             long countErrors = 0;
             for (int i = 0; i < predictedNodes.size(); ++i) {
                 for (int j = i + 1; j < predictedNodes.size(); ++j) {
@@ -41,14 +41,14 @@ public enum Scorer {
         };
 
         @Override
-        public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             return ab_score.score(D, nodes, predictedNodes);
         }
     },
     DIFFUSION_CARDINAL {
         private AB_score ab_score = new AB_score() {
             @Override
-            public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+            public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
                 Double score = super.score(D, nodes, predictedNodes);
                 return score != 0.0 ? score : 0.5;
             }
@@ -66,14 +66,14 @@ public enum Scorer {
         };
 
         @Override
-        public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             return ab_score.score(D, nodes, predictedNodes);
         }
     },
     DIFFUSION_CARDINAL_CONTROL {
         private AB_score ab_score = new AB_score() {
             @Override
-            public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+            public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
                 Double score = super.score(D, nodes, predictedNodes);
                 return score != 0.0 ? score : 0.5;
             }
@@ -91,14 +91,14 @@ public enum Scorer {
         };
 
         @Override
-        public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             return ab_score.score(D, nodes, predictedNodes);
         }
     },
     DIFFUSION_CARDINAL_WITHOUT_SQRT {
         private AB_score ab_score = new AB_score() {
             @Override
-            public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+            public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
                 Double score = super.score(D, nodes, predictedNodes);
                 return score != 0.0 ? score : 0.5;
             }
@@ -116,15 +116,15 @@ public enum Scorer {
         };
 
         @Override
-        public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             return ab_score.score(D, nodes, predictedNodes);
         }
     };
 
-    public abstract double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes);
+    public abstract double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes);
 
     abstract class AB_score {
-        public double score(DenseMatrix D, List<Node> nodes, HashMap<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             int n = D.rows;
             double countErrors = 0;
             double total = 0;

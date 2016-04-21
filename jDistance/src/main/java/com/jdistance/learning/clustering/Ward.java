@@ -20,7 +20,7 @@ public class Ward implements Estimator {
         return "Ward";
     }
 
-    public HashMap<Integer, Integer> predict(DenseMatrix K) {
+    public Map<Integer, Integer> predict(DenseMatrix K) {
         List<Cluster> clusters = new LinkedList<>(IntStream.range(0, K.cols)
                 .mapToObj(i -> new Cluster(Collections.singletonList(i), K.cols))
                 .collect(Collectors.toList()));

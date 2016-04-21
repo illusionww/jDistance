@@ -3,6 +3,7 @@ package com.jdistance.impl.workflow;
 import com.jdistance.gridsearch.statistics.ClustersMeasureStatistics;
 import com.jdistance.impl.adapter.GNUPlotAdapter;
 import com.panayotis.gnuplot.style.Smooth;
+import org.apache.commons.math.stat.descriptive.rank.Percentile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +32,26 @@ public class TaskPoolResult {
         return name;
     }
 
+    public List<String> getTaskNames() {
+        return taskNames;
+    }
+
     public Map<String, Map<Double, Double>> getData() {
         return data;
+    }
+
+    public Map.Entry<Double, Double> getBestParam(String taskName) {
+        Map<Double, Double> scores = data.get(taskName);
+        Optional<Map.Entry<Double, Double>> maxOptional = scores.entrySet().stream()
+                .filter(entry -> !entry.getValue().isNaN())
+                .max(Map.Entry.comparingByValue(Double::compareTo));
+        return maxOptional.isPresent() ? maxOptional.get() : null;
+    }
+
+    public Double getQuantile(String taskName, double quantile) {
+        return new Percentile().evaluate(data.get(taskName).values().stream()
+                .filter(i -> !i.isNaN())
+                .mapToDouble(i -> i).toArray(), quantile);
     }
 
     public TaskPoolResult addMeasuresStatisticsToData() {
@@ -130,18 +149,5 @@ public class TaskPoolResult {
             log.error("RuntimeException while write picture", e);
         }
         return this;
-    }
-
-    class DefaultHashMap<K, V> extends HashMap<K, V> {
-        private V defaultValue;
-
-        public DefaultHashMap(V defaultValue) {
-            this.defaultValue = defaultValue;
-        }
-
-        @Override
-        public V get(Object k) {
-            return containsKey(k) ? super.get(k) : defaultValue;
-        }
     }
 }

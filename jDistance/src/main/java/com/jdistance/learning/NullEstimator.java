@@ -3,6 +3,7 @@ package com.jdistance.learning;
 import jeigen.DenseMatrix;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class NullEstimator implements Estimator {
     @Override
@@ -11,7 +12,7 @@ public class NullEstimator implements Estimator {
     }
 
     @Override
-    public HashMap<Integer, Integer> predict(DenseMatrix D) {
+    public Map<Integer, Integer> predict(DenseMatrix D) {
         return null;
     }
 }

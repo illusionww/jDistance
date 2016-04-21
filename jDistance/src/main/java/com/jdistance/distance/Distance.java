@@ -7,71 +7,47 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum Distance {
-    P_WALK("pWalk", Scale.RHO) {
+    P_WALK("pWalk", Scale.RHO, Kernel.P_WALK_H),
+    WALK("Walk", Scale.RHO, Kernel.WALK_H),
+    FOR("For", Scale.FRACTION, Kernel.FOR_H),
+    LOG_FOR("logFor", Scale.FRACTION, Kernel.LOG_FOR_H),
+    COMM("Comm", Scale.FRACTION, Kernel.COMM_H) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.P_WALK_H.getK(A, t);
-            return Shortcuts.HtoD(H);
-        }
-    },
-    WALK("Walk", Scale.RHO) {
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.WALK_H.getK(A, t);
-            return Shortcuts.HtoD(H);
-        }
-    },
-    FOR("For", Scale.FRACTION) {
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.FOR_H.getK(A, t);
-            return Shortcuts.HtoD(H);
-        }
-    },
-    LOG_FOR("logFor", Scale.FRACTION) {
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.LOG_FOR_H.getK(A, t);
-            return Shortcuts.HtoD(H);
-        }
-    },
-    COMM("Comm", Scale.FRACTION) {
-        public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.COMM_H.getK(A, t);
-            DenseMatrix D = Shortcuts.HtoD(H);
+            DenseMatrix D = super.getD(A, t);
             return D.sqrt();
         }
     },
-    LOG_COMM("logComm", Scale.FRACTION) {
+    LOG_COMM("logComm", Scale.FRACTION, Kernel.LOG_COMM_H) {
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.LOG_COMM_H.getK(A, t);
-            DenseMatrix D = Shortcuts.HtoD(H);
+            DenseMatrix D = super.getD(A, t);
             return D.sqrt();
         }
     },
-    HEAT("Heat", Scale.FRACTION) {
+    HEAT("Heat", Scale.FRACTION, Kernel.HEAT_H) {
         @Override
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.HEAT_H.getK(A, t);
-            DenseMatrix D = Shortcuts.HtoD(H);
+            DenseMatrix D = super.getD(A, t);
             return D.sqrt();
         }
     },
-    LOG_HEAT("logHeat", Scale.FRACTION) {
+    LOG_HEAT("logHeat", Scale.FRACTION, Kernel.LOG_HEAT_H) {
         @Override
         public DenseMatrix getD(DenseMatrix A, double t) {
-            DenseMatrix H = Kernel.LOG_HEAT_H.getK(A, t);
-            DenseMatrix D = Shortcuts.HtoD(H);
+            DenseMatrix D = super.getD(A, t);
             return D.sqrt();
         }
     },
-    RSP("RSP", Scale.FRACTION_REVERSED) {
+    RSP("RSP", Scale.FRACTION_REVERSED, null) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return Shortcuts.getD_RSP(A, beta);
         }
     },
-    FE("FE", Scale.FRACTION_REVERSED) {
+    FE("FE", Scale.FRACTION_REVERSED, null) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return Shortcuts.getD_FE(A, beta);
         }
     },
-    SP_CT("SP-CT", Scale.LINEAR) {
+    SP_CT("SP-CT", Scale.LINEAR, null) {
         private DenseMatrix cachedA = null;
         private DenseMatrix cachedSP;
         private DenseMatrix cachedCT;
@@ -106,10 +82,12 @@ public enum Distance {
 
     private String name;
     private Scale scale;
+    private Kernel parentKernel;
 
-    Distance(String name, Scale scale) {
+    Distance(String name, Scale scale, Kernel parentKernel) {
         this.name = name;
         this.scale = scale;
+        this.parentKernel = parentKernel;
     }
 
     public static List<DistanceWrapper> getAll() {
@@ -130,5 +108,12 @@ public enum Distance {
         return scale;
     }
 
-    public abstract DenseMatrix getD(DenseMatrix A, double t);
+    public DenseMatrix getD(DenseMatrix A, double t) {
+        DenseMatrix H = parentKernel.getK(A, t);
+        return Shortcuts.HtoD(H);
+    }
+
+    public Kernel getParentKernel() {
+        return parentKernel;
+    }
 }

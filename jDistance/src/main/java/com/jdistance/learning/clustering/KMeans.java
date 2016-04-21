@@ -21,14 +21,19 @@ public class KMeans implements Estimator {
     }
 
     @Override
-    public HashMap<Integer, Integer> predict(DenseMatrix K) {
+    public Map<Integer, Integer> predict(DenseMatrix K) {
         KernelKMeans kernelKMeans = new KernelKMeans();
         kernelKMeans.cluster(new DenseDoubleMatrix2D(Shortcuts.toArray2(K)), nClusters);
         DoubleMatrix2D partition = kernelKMeans.getPartition();
 
         Map<Integer, Integer> result = new HashMap<>();
         for (int i = 0; i < K.rows; i++) {
-
+            for (int j = 0; j < nClusters; j++) {
+                if (partition.getQuick(i, j) == 1.0) {
+                    result.put(i, j);
+                }
+            }
         }
+        return result;
     }
 }

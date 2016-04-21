@@ -24,4 +24,8 @@ public class KernelWrapper extends AbstractMeasureWrapper {
     public DenseMatrix calc(DenseMatrix A, double param) {
         return kernel.getK(A, param);
     }
+
+    public Distance getParentDistance() {
+        return kernel.getParentDistance();
+    }
 }

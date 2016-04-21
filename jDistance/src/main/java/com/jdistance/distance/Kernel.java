@@ -10,7 +10,7 @@ import static com.jdistance.distance.Shortcuts.*;
 import static jeigen.Shortcuts.eye;
 
 public enum Kernel {
-    P_WALK_H("pWalk H", Scale.RHO) {
+    P_WALK_H("pWalk H", Scale.RHO, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) { // H0 = (I - tA)^{-1}
             int d = A.cols;
@@ -19,14 +19,14 @@ public enum Kernel {
             return pinv(ins);
         }
     },
-    WALK_H("Walk H", Scale.RHO) {
+    WALK_H("Walk H", Scale.RHO, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             DenseMatrix H0 = P_WALK_H.getK(A, t);
             return H0toH(H0);
         }
     },
-    FOR_H("For H", Scale.FRACTION) {
+    FOR_H("For H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) { // H0 = (I + tL)^{-1}
             int d = A.cols;
@@ -36,41 +36,41 @@ public enum Kernel {
             return pinv(ins);
         }
     },
-    LOG_FOR_H("logFor H", Scale.FRACTION) {
+    LOG_FOR_H("logFor H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             DenseMatrix H0 = FOR_H.getK(A, t);
             return H0toH(H0);
         }
     },
-    COMM_H("Comm H", Scale.FRACTION) {
+    COMM_H("Comm H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) { // H0 = exp(tA)
             return A.mul(t).mexp();
         }
     },
-    LOG_COMM_H("logComm H", Scale.FRACTION) {
+    LOG_COMM_H("logComm H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             DenseMatrix H0 = COMM_H.getK(A, t);
             return H0toH(H0);
         }
     },
-    HEAT_H("Heat H", Scale.FRACTION) {
+    HEAT_H("Heat H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) { // H0 = exp(-tL)
             DenseMatrix L = getL(A);
             return L.mul(-t).mexp();
         }
     },
-    LOG_HEAT_H("logHeat H", Scale.FRACTION) {
+    LOG_HEAT_H("logHeat H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             DenseMatrix H0 = HEAT_H.getK(A, t);
             return H0toH(H0);
         }
     },
-    SP_CT_H("SP-CT H", Scale.LINEAR) {
+    SP_CT_H("SP-CT H", Scale.LINEAR, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double lambda) {
             DenseMatrix D = getD_ShortestPath(A);
@@ -84,90 +84,26 @@ public enum Kernel {
             return Hs.mul(1 - lambda).add(Hr.mul(lambda));
         }
     },
-    P_WALK_K("pWalk K", Scale.RHO) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) { // H0 = (I - tA)^{-1}
-            DenseMatrix D = Distance.P_WALK.getD(A, t);
-            return DtoK(D);
-        }
-    },
-    WALK_K("Walk K", Scale.RHO) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix D = Distance.WALK.getD(A, t);
-            return DtoK(D);
-        }
-    },
-    FOR_K("For K", Scale.FRACTION) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) { // H0 = (I + tL)^{-1}
-            DenseMatrix D = Distance.FOR.getD(A, t);
-            return DtoK(D);
-        }
-    },
-    LOG_FOR_K("logFor K", Scale.FRACTION) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix D = Distance.LOG_FOR.getD(A, t);
-            return DtoK(D);
-        }
-    },
-    COMM_K("Comm K", Scale.FRACTION) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) { // H0 = exp(tA)
-            DenseMatrix D = Distance.COMM.getD(A, t);
-            return DtoK(D);
-        }
-    },
-    LOG_COMM_K("logComm K", Scale.FRACTION) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix D = Distance.LOG_COMM.getD(A, t);
-            return DtoK(D);
-        }
-    },
-    HEAT_K("Heat K", Scale.FRACTION) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) { // H0 = exp(-tL)
-            DenseMatrix D = Distance.HEAT.getD(A, t);
-            return DtoK(D);
-        }
-    },
-    LOG_HEAT_K("logHeat K", Scale.FRACTION) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix D = Distance.LOG_HEAT.getD(A, t);
-            return DtoK(D);
-        }
-    },
-    RSP_K("RSP K", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix distance = Distance.RSP.getD(A, t);
-            return DtoK(distance);
-        }
-    },
-    FE_K("FE K", Scale.FRACTION_REVERSED) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix distance = Distance.FE.getD(A, t);
-            return DtoK(distance);
-        }
-    },
-    SP_CT_K("SP-CT K", Scale.LINEAR) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix D = Distance.SP_CT.getD(A, lambda);
-            return DtoK(D);
-        }
-    };
+    P_WALK_K("pWalk K", Scale.RHO, Distance.P_WALK),
+    WALK_K("Walk K", Scale.RHO, Distance.WALK),
+    FOR_K("For K", Scale.FRACTION, Distance.FOR),
+    LOG_FOR_K("logFor K", Scale.FRACTION, Distance.LOG_FOR),
+    COMM_K("Comm K", Scale.FRACTION, Distance.COMM),
+    LOG_COMM_K("logComm K", Scale.FRACTION, Distance.LOG_COMM),
+    HEAT_K("Heat K", Scale.FRACTION, Distance.HEAT),
+    LOG_HEAT_K("logHeat K", Scale.FRACTION, Distance.LOG_HEAT),
+    RSP_K("RSP K", Scale.FRACTION_REVERSED, Distance.RSP),
+    FE_K("FE K", Scale.FRACTION_REVERSED, Distance.FE),
+    SP_CT_K("SP-CT K", Scale.LINEAR, Distance.SP_CT);
 
     private String name;
     private Scale scale;
+    private Distance parentDistance;
 
-    Kernel(String name, Scale scale) {
+    Kernel(String name, Scale scale, Distance parentDistance) {
         this.name = name;
         this.scale = scale;
+        this.parentDistance = parentDistance;
     }
 
     public static List<KernelWrapper> getAll() {
@@ -177,9 +113,7 @@ public enum Kernel {
     public static List<KernelWrapper> getDefaultKernels() {
         return Arrays.asList(
                 P_WALK_H, WALK_H, FOR_H, LOG_FOR_H, COMM_H,
-                LOG_COMM_H, HEAT_H, LOG_HEAT_H, SP_CT_H,
-                P_WALK_K, WALK_K, FOR_K, LOG_FOR_K, COMM_K,
-                LOG_COMM_K, HEAT_K, LOG_HEAT_K, RSP_K, FE_K, SP_CT_K
+                LOG_COMM_H, HEAT_H, LOG_HEAT_H, RSP_K, FE_K, SP_CT_H
         ).stream().map(KernelWrapper::new).collect(Collectors.toList());
     }
 
@@ -212,5 +146,12 @@ public enum Kernel {
         return scale;
     }
 
-    public abstract DenseMatrix getK(DenseMatrix A, double t);
+    public DenseMatrix getK(DenseMatrix A, double t) {
+        DenseMatrix distance = parentDistance.getD(A, t);
+        return DtoK(distance);
+    }
+
+    public Distance getParentDistance() {
+        return parentDistance;
+    }
 }
