@@ -3,8 +3,6 @@ package com.jdistance.impl.competitions;
 import com.jdistance.distance.AbstractMeasureWrapper;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
-import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.impl.Main;
 import com.jdistance.impl.workflow.Context;
 import com.jdistance.impl.workflow.DefaultHashMap;
@@ -20,29 +18,27 @@ import java.util.*;
 
 public abstract class CopelandsMethod {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
-
-    private List<GeneratorPropertiesPOJO> graphParameters;
     protected List<? extends AbstractMeasureWrapper> measures;
     protected int pointsCount;
+    private List<GraphBundle> graphsList;
     private double percentile;
 
     private Map<String, Map<String, Double>> bestResults = new TreeMap<>();
     private Map<String, Map<String, Double>> percentileResults = new TreeMap<>();
 
-    protected CopelandsMethod(List<GeneratorPropertiesPOJO> graphParameters, List<? extends AbstractMeasureWrapper> measures, int pointsCount, double percentile) {
-        this.graphParameters = graphParameters;
+    protected CopelandsMethod(List<GraphBundle> graphsList, List<? extends AbstractMeasureWrapper> measures, int pointsCount, double percentile) {
+        this.graphsList = graphsList;
         this.measures = measures;
         this.pointsCount = pointsCount;
         this.percentile = percentile;
     }
 
     public void execute() {
-        for (GeneratorPropertiesPOJO properties : graphParameters) {
-            String currentName = "n=" + properties.getNodesCount() + " k=" + properties.getClustersCount() + " pOut=" + properties.getP_out();
+        for (GraphBundle graphs : graphsList) {
+            String currentName = "n=" + graphs.getProperties().getNodesCount() + " k=" + graphs.getProperties().getClustersCount() + " pOut=" + graphs.getProperties().getP_out();
 
             Map<String, Double> currentCompetitionBestResults = new DefaultHashMap<>(0.0);
             Map<String, Double> currentCompetitionPercentileResults = new DefaultHashMap<>(0.0);
-            GraphBundle graphs = new GnPInPOutGraphGenerator().generate(properties);
             for (Graph graph : graphs.getGraphs()) {
                 TaskPool pool = generateTaskPool(new GraphBundle(Collections.singletonList(graph), graphs.getProperties()));
                 TaskPoolResult result = pool.execute();

@@ -27,7 +27,7 @@ public class Datasets {
             new DatasetPOJO("news_5cl_3", "data/newsgroup/news_5cl_3_classeo.csv", "data/newsgroup/news_5cl_3_Docr.csv")
     );
 
-    private static GraphBundle getPolbooksOrFootball(DatasetPOJO dataset) throws IOException {
+    public static GraphBundle getPolbooksOrFootball(DatasetPOJO dataset) throws IOException {
         return new CSVGraphBuilder()
                 .setName(dataset.getName())
                 .importNodesIdNameClass(dataset.getPathToNodes())
@@ -35,7 +35,7 @@ public class Datasets {
                 .shuffleAndBuildBundle();
     }
 
-    private static GraphBundle getNewsgroupGraph(DatasetPOJO dataset) throws IOException {
+    public static GraphBundle getNewsgroupGraph(DatasetPOJO dataset) throws IOException {
         return new CSVGraphBuilder()
                 .setName(dataset.getName())
                 .importNodesClassOnly(dataset.getPathToNodes())
@@ -65,7 +65,7 @@ public class Datasets {
         return new Graph(nodes, twoStars).shuffle(100).toBundle();
     }
 
-    private static class DatasetPOJO {
+    public static class DatasetPOJO {
         private String name;
         private String pathToNodes;
         private String pathToEdges;

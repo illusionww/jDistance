@@ -21,7 +21,7 @@ public class TaskPoolResult {
     private Map<String, Map<Double, Double>> data;
     private Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics;
 
-    TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data, Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics) {
+    public TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data, Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics) {
         this.name = name;
         this.taskNames = taskNames;
         this.data = data;

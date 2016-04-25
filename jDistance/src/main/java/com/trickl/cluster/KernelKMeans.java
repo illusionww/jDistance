@@ -36,7 +36,7 @@ public class KernelKMeans implements ClusterAlgorithm {
 
    private DoubleMatrix2D prototypeVectors;
    private DoubleMatrix2D partition;
-   private int maxIterations = 1000;
+   private int maxIterations = 100000;
    private RandomEngine randomEngine = new MersenneTwister();
    private PartitionGenerator partitionGenerator = new HardRandomPartitionGenerator();
 

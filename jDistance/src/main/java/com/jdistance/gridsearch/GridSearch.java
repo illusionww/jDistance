@@ -17,6 +17,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 public class GridSearch {
+    private String name;
     private Estimator estimator;
     private List<Double> paramGrid;
     private AbstractMeasureWrapper metricWrapper;
@@ -28,11 +29,12 @@ public class GridSearch {
     private Map<Double, Double> scores = new ConcurrentHashMap<>();
     private Map<Double, ClustersMeasureStatistics> metricStatistics = new ConcurrentHashMap<>();
 
-    public GridSearch(Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel, boolean calcMetricStatistics) {
+    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel, boolean calcMetricStatistics) {
+        this.name = name;
         this.estimator = estimator;
         double step = (to - from) / (pointsCount - 1);
         this.paramGrid = DoubleStream.iterate(from, i -> i + step).limit(pointsCount).boxed().collect(Collectors.toList());
-        paramGrid.addAll(Arrays.asList(0.1 * step, 0.5 * step, 1.5 * step, to - 1.5 * step, to - 0.5 * step, to - 0.1 * step));
+        paramGrid.addAll(Arrays.asList(0.1 * step, 0.5 * step, to - 0.5 * step, to - 0.1 * step));
         Collections.sort(paramGrid);
         this.metricWrapper = metricWrapper;
         this.scorer = scorer;
@@ -46,7 +48,7 @@ public class GridSearch {
         Stream<Double> paramStream = isParallel ? paramGrid.parallelStream() : paramGrid.stream();
         paramStream.forEach(idx -> {
             Double score = validate(metricWrapper, idx);
-            System.out.println(metricWrapper.getName() + "\t" + String.format("%1.3f", idx) + "\t" + score);
+            System.out.println(name + "\t" + String.format("%1.3f", idx) + "\t" + score);
             if (score != null) {
                 scores.put(idx, score);
             }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public enum Scorer {
-    RATE_INDEX {
+    RATE_INDEX("RI") {
         @Override
         public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             long countErrors = 0;
@@ -24,7 +24,7 @@ public enum Scorer {
             return 1.0 - countErrors / total;
         }
     },
-    DIFFUSION_ORDINAL {
+    DIFFUSION_ORDINAL("Diff ordinal") {
         private AB_score ab_score = new AB_score() {
             @Override
             protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
@@ -45,7 +45,7 @@ public enum Scorer {
             return ab_score.score(D, nodes, predictedNodes);
         }
     },
-    DIFFUSION_CARDINAL {
+    DIFFUSION_CARDINAL("Diff cardinal") {
         private AB_score ab_score = new AB_score() {
             @Override
             public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
@@ -70,7 +70,7 @@ public enum Scorer {
             return ab_score.score(D, nodes, predictedNodes);
         }
     },
-    DIFFUSION_CARDINAL_CONTROL {
+    DIFFUSION_CARDINAL_CONTROL("Diff cardinal control") {
         private AB_score ab_score = new AB_score() {
             @Override
             public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
@@ -95,7 +95,7 @@ public enum Scorer {
             return ab_score.score(D, nodes, predictedNodes);
         }
     },
-    DIFFUSION_CARDINAL_WITHOUT_SQRT {
+    DIFFUSION_CARDINAL_WITHOUT_SQRT("Diff cardinal no sqrt") {
         private AB_score ab_score = new AB_score() {
             @Override
             public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
@@ -120,6 +120,16 @@ public enum Scorer {
             return ab_score.score(D, nodes, predictedNodes);
         }
     };
+
+    private String name;
+
+    Scorer(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     public abstract double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes);
 
