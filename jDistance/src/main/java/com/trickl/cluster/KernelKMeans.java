@@ -36,7 +36,8 @@ public class KernelKMeans implements ClusterAlgorithm {
 
    private DoubleMatrix2D prototypeVectors;
    private DoubleMatrix2D partition;
-   private int maxIterations = 100000;
+   private int minIterations = 1000;
+   private int maxIterations = 10000;
    private RandomEngine randomEngine = new MersenneTwister();
    private PartitionGenerator partitionGenerator = new HardRandomPartitionGenerator();
 
@@ -62,7 +63,7 @@ public class KernelKMeans implements ClusterAlgorithm {
       final DoubleMatrix1D clusterMembershipSums = new DenseDoubleMatrix1D(clusters);
 
       // Begin the main loop of alternating optimization
-      for (int itr = 0; itr < maxIterations && changedPartition; ++itr) {
+      for (int itr = 0; itr < maxIterations && (changedPartition || itr < minIterations); ++itr) {
          // Get new prototypes (v) for each cluster using weighted median
          clusterMembershipSums.assign(0);
 

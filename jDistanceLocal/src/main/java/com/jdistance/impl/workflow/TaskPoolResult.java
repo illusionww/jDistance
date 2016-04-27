@@ -89,7 +89,7 @@ public class TaskPoolResult {
             Set<Double> points = new TreeSet<>();
             data.values().forEach(scores -> points.addAll(scores.keySet()));
 
-            outputWriter.write("\t");
+            outputWriter.write("param\t");
             for (String taskName : taskNames) {
                 outputWriter.write(taskName + "\t");
             }
@@ -105,6 +105,11 @@ public class TaskPoolResult {
             log.error("IOException while write results", e);
         }
 
+        return this;
+    }
+
+    public TaskPoolResult drawUnique(String xrange, String xticks, String yrange, String yticks) {
+        draw(name, xrange, xticks, yrange, yticks, Smooth.UNIQUE);
         return this;
     }
 

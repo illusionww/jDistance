@@ -76,13 +76,13 @@ public class GNUPlotAdapter {
         JavaPlot gnuplot = new JavaPlot();
         gnuplot.setTerminal(png);
         gnuplot.set("border", "31 lw 8.0");
-        gnuplot.set("xtics", xticks);
+        if (xticks != null) gnuplot.set("xtics", xticks);
         if (yticks != null) gnuplot.set("ytics", yticks);
         gnuplot.set("mxtics", "2");
         gnuplot.set("mytics", "2");
         gnuplot.set("grid mytics ytics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
         gnuplot.set("grid mxtics xtics", "lt 1 lc rgb \"#777777\" lw 3, lt 0 lc rgb \"grey\" lw 2");
-        gnuplot.set("xrange", xrange);
+        if (xrange != null) gnuplot.set("xrange", xrange);
         if (yrange != null) gnuplot.set("yrange", yrange);
 
         for (PlotPOJO plot : data) {

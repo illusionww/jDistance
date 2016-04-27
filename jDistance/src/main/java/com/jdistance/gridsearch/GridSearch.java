@@ -48,7 +48,7 @@ public class GridSearch {
         Stream<Double> paramStream = isParallel ? paramGrid.parallelStream() : paramGrid.stream();
         paramStream.forEach(idx -> {
             Double score = validate(metricWrapper, idx);
-            System.out.println(name + "\t" + String.format("%1.3f", idx) + "\t" + score);
+            System.out.println(name + "\t" + String.format("%1.5f", idx) + "\t" + score);
             if (score != null) {
                 scores.put(idx, score);
             }
