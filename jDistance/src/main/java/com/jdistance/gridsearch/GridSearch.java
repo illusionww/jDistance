@@ -90,6 +90,9 @@ public class GridSearch {
             metricStatistics.put(idx, new ClustersMeasureStatistics(ClustersMeasureStatistics.join(metricStatisticsByGraph), clustersStatisticsByGraph));
         }
 
+        if (scoresByGraph.size() < 0.9*graphs.getGraphs().size()) {
+            return null;
+        }
         double avg = avg(scoresByGraph);
         return avg != 0.0 ? avg : null;
     }

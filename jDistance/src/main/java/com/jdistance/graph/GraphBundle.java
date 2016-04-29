@@ -16,7 +16,9 @@ public class GraphBundle implements Cloneable {
         this.name = "Graphs: " +
             "graphsCount=" + properties.getGraphsCount() + ", " +
             "nodesCount=" + properties.getNodesCount() + ", " +
-            "clustersCount=" + properties.getClustersCount();
+            "clustersCount=" + properties.getClustersCount() + ", " +
+            "p_in=" + properties.getP_in() + ", " +
+            "p_out=" + properties.getP_out();
     }
 
     public GraphBundle(String name, List<Graph> graphs, GeneratorPropertiesPOJO properties) {
