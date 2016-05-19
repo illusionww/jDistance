@@ -3,12 +3,13 @@ package com.jdistance.graph;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import jeigen.DenseMatrix;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class Graph {
+public class Graph implements Serializable {
     private DenseMatrix A;
     private List<Node> nodes;
 

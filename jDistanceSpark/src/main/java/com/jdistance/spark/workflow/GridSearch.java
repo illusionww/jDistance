@@ -6,27 +6,26 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
 import jeigen.DenseMatrix;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
+import scala.Tuple2;
 
+import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 
-public class GridSearch {
+public class GridSearch implements Serializable {
     private String name;
     private Estimator estimator;
     private List<Double> paramGrid;
     private AbstractMeasureWrapper metricWrapper;
     private GraphBundle graphs;
     private Scorer scorer;
-    private boolean isParallel;
-    private boolean calcMetricStatistics;
 
-    private Map<Double, Double> scores = new ConcurrentHashMap<>();
-
-    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel, boolean calcMetricStatistics) {
+    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount) {
         this.name = name;
         this.estimator = estimator;
         double step = (to - from) / (pointsCount - 1);
@@ -35,28 +34,17 @@ public class GridSearch {
         Collections.sort(paramGrid);
         this.metricWrapper = metricWrapper;
         this.scorer = scorer;
-        this.isParallel = isParallel;
-        this.calcMetricStatistics = calcMetricStatistics;
     }
 
-    public Map<Double, Double> fit(GraphBundle graphs) {
+    public void fit(GraphBundle graphs, String outputPath) {
         this.graphs = graphs;
 
-        Stream<Double> paramStream = isParallel ? paramGrid.parallelStream() : paramGrid.stream();
-        paramStream.forEach(idx -> {
-            Double score = validate(metricWrapper, idx);
-            System.out.println(name + "\t" + String.format("%1.5f", idx) + "\t" + score);
-            if (score != null) {
-                scores.put(idx, score);
-            }
-        });
-        return scores;
+        SparkConf conf = new SparkConf().setAppName("GridSearch");
+        JavaSparkContext sc = new JavaSparkContext(conf);
+        JavaRDD<Double> params = sc.parallelize(paramGrid);
+        JavaPairRDD<Double, Double> results = params.mapToPair(idx -> new Tuple2<>(idx, validate(metricWrapper, idx)));
+        results.saveAsTextFile(outputPath);
     }
-
-    public Map<Double, Double> getScores() {
-        return scores;
-    }
-
 
     private Double validate(AbstractMeasureWrapper metricWrapper, Double idx) {
         List<Double> scoresByGraph = new ArrayList<>();
@@ -75,7 +63,7 @@ public class GridSearch {
             System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + idx);
         }
 
-        if (scoresByGraph.size() < 0.9*graphs.getGraphs().size()) {
+        if (scoresByGraph.size() < 0.9 * graphs.getGraphs().size()) {
             return null;
         }
         double avg = avg(scoresByGraph);

@@ -2,7 +2,9 @@ package com.jdistance.distance;
 
 import jeigen.DenseMatrix;
 
-public abstract class AbstractMeasureWrapper {
+import java.io.Serializable;
+
+public abstract class AbstractMeasureWrapper implements Serializable {
     private String name;
     private Scale scale;
     private boolean isKernel;

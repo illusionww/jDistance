@@ -1,8 +1,9 @@
 package com.jdistance.graph.generator;
 
+import java.io.Serializable;
 import java.util.stream.IntStream;
 
-public class GeneratorPropertiesPOJO {
+public class GeneratorPropertiesPOJO implements Serializable {
     private int graphsCount;
     private int nodesCount;
     private int clustersCount;

@@ -1,25 +1,18 @@
 package com.jdistance.spark;
 
-import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaPairRDD;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
-import scala.Tuple2;
-
-import java.util.Arrays;
+import com.jdistance.distance.Kernel;
+import com.jdistance.distance.KernelWrapper;
+import com.jdistance.graph.GraphBundle;
+import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
+import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
+import com.jdistance.learning.Scorer;
+import com.jdistance.learning.clustering.Ward;
+import com.jdistance.spark.workflow.Task;
 
 public class Main {
     public static void main(String[] args) {
-        SparkConf conf = new SparkConf().setAppName("Simple Application");
-        JavaSparkContext sc = new JavaSparkContext(conf);
-
-        JavaRDD<String> textFile = sc.parallelize(Arrays.asList(
-                "asdas sadasdc svcsdsdc",
-                "ascasc ascas ascas asca dvdvdvdvdv dvascc ascas ascas"
-        ));
-        JavaRDD<String> words = textFile.flatMap(s -> Arrays.asList(s.split(" ")));
-        JavaPairRDD<String, Integer> pairs = words.mapToPair(s -> new Tuple2<>(s, 1));
-        JavaPairRDD<String, Integer> counts = pairs.reduceByKey((a, b) -> a + b);
-        counts.saveAsTextFile("/user/pdc/ivashkin/spark-java/articles-part");
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.2));
+        Task task = new Task(new Ward(2), Scorer.RATE_INDEX, new KernelWrapper(Kernel.LOG_COMM_K), graphs, 36);
+        task.execute(args[0]);
     }
 }

@@ -2,10 +2,11 @@ package com.jdistance.graph;
 
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GraphBundle implements Cloneable {
+public class GraphBundle implements Cloneable, Serializable {
     private String name;
     private List<Graph> graphs;
     private GeneratorPropertiesPOJO properties;

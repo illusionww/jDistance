@@ -1,8 +1,9 @@
 package com.jdistance.graph;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Node implements Comparable<Node> {
+public class Node implements Comparable<Node>, Serializable {
     private Integer id;
     private String label;
 

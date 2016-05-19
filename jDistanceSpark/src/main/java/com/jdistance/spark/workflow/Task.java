@@ -12,24 +12,21 @@ public class Task {
     private GraphBundle graphs;
 
     public Task(String name, Estimator estimator, Scorer scorer, AbstractMeasureWrapper metricWrapper, GraphBundle graphs, Integer pointsCount) {
-        this(name, new GridSearch(name, estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount,
-                        Context.getInstance().isParallelGrid(), Context.getInstance().isCollectMetricStatistics()),
+        this(name, new GridSearch(name, estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount),
                 graphs);
     }
 
     public Task(Estimator estimator, Scorer scorer, AbstractMeasureWrapper metricWrapper, GraphBundle graphs, Integer pointsCount) {
         this(estimator.getName() + " " + scorer.getName() + " " + metricWrapper.getName(),
                 new GridSearch(estimator.getName() + " " + scorer.getName() + " " + metricWrapper.getName(),
-                        estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount, Context.getInstance().isParallelGrid(),
-                        Context.getInstance().isCollectMetricStatistics()),
+                        estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount),
                 graphs);
     }
 
     public Task(Estimator estimator, Scorer scorer, AbstractMeasureWrapper metricWrapper, GraphBundle graphs, Double from, Double to, Integer pointsCount) {
         this(estimator.getName() + " " + scorer.getName() + " " + metricWrapper.getName(),
                 new GridSearch(estimator.getName() + " " + scorer.getName() + " " + metricWrapper.getName(),
-                        estimator, metricWrapper, scorer, from, to, pointsCount, Context.getInstance().isParallelGrid(),
-                        Context.getInstance().isCollectMetricStatistics()),
+                        estimator, metricWrapper, scorer, from, to, pointsCount),
                 graphs);
         metricWrapper.setScale(Scale.LINEAR);
     }
@@ -44,8 +41,8 @@ public class Task {
         return name;
     }
 
-    public Task execute() {
-        gridSearch.fit(graphs);
+    public Task execute(String outputPath) {
+        gridSearch.fit(graphs, outputPath);
         return this;
     }
 
