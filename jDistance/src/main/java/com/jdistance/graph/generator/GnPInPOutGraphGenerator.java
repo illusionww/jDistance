@@ -51,7 +51,7 @@ public class GnPInPOutGraphGenerator extends GraphGenerator {
             if (borderClusters.get(i) < from) {
                 fromCluster = i + 1;
             }
-            if (borderClusters.get(i) < to) {
+            if (borderClusters.get(i) <= to) {
                 toCluster = i + 1;
             }
             if (borderClusters.get(i) > from && borderClusters.get(i) > to) {
