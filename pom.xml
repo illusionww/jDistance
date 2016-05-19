@@ -12,7 +12,7 @@
     <modules>
         <module>jDistance</module>
         <module>jDistanceLocal</module>
-        <module>jDistanceHadoop</module>
+        <module>jDistanceSpark</module>
     </modules>
 
     <build>
