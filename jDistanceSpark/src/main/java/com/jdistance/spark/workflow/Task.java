@@ -41,8 +41,8 @@ public class Task {
         return name;
     }
 
-    public Task execute(String outputPath) {
-        gridSearch.fit(graphs, outputPath);
+    public Task execute() {
+        gridSearch.fit(graphs);
         return this;
     }
 

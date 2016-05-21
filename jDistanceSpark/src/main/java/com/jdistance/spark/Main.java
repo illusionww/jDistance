@@ -11,8 +11,8 @@ import com.jdistance.spark.workflow.Task;
 
 public class Main {
     public static void main(String[] args) {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.2));
-        Task task = new Task(new Ward(2), Scorer.RATE_INDEX, new KernelWrapper(Kernel.LOG_COMM_K), graphs, 36);
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(100, 200, 2, 0.3, 0.2));
+        Task task = new Task(new Ward(2), Scorer.RATE_INDEX, new KernelWrapper(Kernel.LOG_COMM_K), graphs, 40);
         task.execute(args[0]);
     }
 }

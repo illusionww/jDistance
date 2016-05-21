@@ -25,6 +25,8 @@ public class GridSearch implements Serializable {
     private GraphBundle graphs;
     private Scorer scorer;
 
+    private JavaPairRDD<Double, Double> scores;
+
     public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount) {
         this.name = name;
         this.estimator = estimator;
@@ -36,14 +38,19 @@ public class GridSearch implements Serializable {
         this.scorer = scorer;
     }
 
-    public void fit(GraphBundle graphs, String outputPath) {
+    public void fit(GraphBundle graphs) {
         this.graphs = graphs;
 
         SparkConf conf = new SparkConf().setAppName("GridSearch");
         JavaSparkContext sc = new JavaSparkContext(conf);
         JavaRDD<Double> params = sc.parallelize(paramGrid);
-        JavaPairRDD<Double, Double> results = params.mapToPair(idx -> new Tuple2<>(idx, validate(metricWrapper, idx)));
-        results.saveAsTextFile(outputPath);
+        scores = params
+                .mapToPair(idx -> new Tuple2<>(idx, validate(metricWrapper, idx)))
+                .cache();
+    }
+
+    public JavaPairRDD<Double, Double> getScores() {
+        return scores;
     }
 
     private Double validate(AbstractMeasureWrapper metricWrapper, Double idx) {
