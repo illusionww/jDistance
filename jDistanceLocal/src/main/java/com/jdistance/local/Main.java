@@ -6,12 +6,13 @@ import com.jdistance.distance.Kernel;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
+import com.jdistance.learning.Scorer;
+import com.jdistance.learning.clustering.Ward;
 import com.jdistance.local.competitions.RejectCurve;
 import com.jdistance.local.workflow.Context;
 import com.jdistance.local.workflow.TaskPool;
 import com.jdistance.local.workflow.TaskPoolResult;
-import com.jdistance.learning.Scorer;
-import com.jdistance.learning.clustering.Ward;
+import jeigen.DenseMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +20,10 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -40,6 +44,19 @@ public class Main {
         log.info("Run method \"" + methodName + "\"");
         method.invoke(new Main());
         log.info("Done method \"" + methodName + "\"");
+    }
+
+    public void calcDatasets() throws IOException {
+        GraphBundle graphs = Datasets.getPolbooksOrFootball(Datasets.polbooks);
+        new TaskPool()
+                .buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.RATE_INDEX, Kernel.getDefaultKernels(), graphs, 50)
+                .execute()
+                .writeData("polbooks");
+        graphs = Datasets.getPolbooksOrFootball(Datasets.football);
+        new TaskPool()
+                .buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.RATE_INDEX, Kernel.getDefaultKernels(), graphs, 50)
+                .execute()
+                .writeData("football");
     }
 
     public void rejectCurvesFair() {
@@ -66,7 +83,6 @@ public class Main {
         }
     }
 
-
     public void rejectCurves() {
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(100, 100, 2, 0.3, 0.1));
 
@@ -88,6 +104,49 @@ public class Main {
         Map<String, Map<Double, Double>> result = rq.calcCurve(new DistanceWrapper(distance), param, graphs, 100);
         new TaskPoolResult("rq " + distance.getName(), new ArrayList<>(result.keySet()), result, null).writeData();
 
+    }
+
+    public void cutpointDegree() {
+        DenseMatrix A = new DenseMatrix(new double[][]{
+                {0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                {1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+                {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0},
+        });
+
+        for (Distance distance : Distance.values()) {
+            List<Double> deltas = new ArrayList<>();
+            List<Double> Dmax = new ArrayList<>();
+            List<Double> Dmin = new ArrayList<>();
+            List<Double> Davg = new ArrayList<>();
+            for (double t = 0.0; t <= 1.0; t += 0.01) {
+                DenseMatrix D = distance.getD(A, t);
+                if (!Double.isNaN(D.get(1, 6)) && !Double.isNaN(D.get(6, 12)) && !Double.isNaN(D.get(1, 12)) &&
+                        !Double.isInfinite(D.get(1, 6)) && !Double.isInfinite(D.get(6, 12)) && !Double.isInfinite(D.get(1, 12))) {
+                    double delta = D.get(1, 6) + D.get(6, 12) - D.get(1, 12);
+                    deltas.add(delta);
+                    Dmin.add(Arrays.stream(D.getValues()).min().getAsDouble());
+                    Davg.add(Arrays.stream(D.getValues()).average().getAsDouble());
+                    Dmax.add(Arrays.stream(D.getValues()).max().getAsDouble());
+                }
+            }
+            System.out.println(distance.getName() + "\t" +
+                    deltas.stream().mapToDouble(i -> i).min().getAsDouble() + "\t" +
+                    deltas.stream().mapToDouble(i -> i).average().getAsDouble() + "\t" +
+                    deltas.stream().mapToDouble(i -> i).max().getAsDouble() + "\t" +
+                    Dmin.stream().mapToDouble(i -> i).min().getAsDouble() + "\t" +
+                    Davg.stream().mapToDouble(i -> i).average().getAsDouble() + "\t" +
+                    Dmax.stream().mapToDouble(i -> i).max().getAsDouble() + "\t");
+        }
     }
 }
 
