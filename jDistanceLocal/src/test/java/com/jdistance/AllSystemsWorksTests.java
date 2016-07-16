@@ -23,7 +23,7 @@ public class AllSystemsWorksTests {
     public void calcTest() {
         int clustersCount = 4;
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(1, 100, clustersCount, 0.3, 0.1));
-        Task task = new Task(new Ward(clustersCount), Scorer.RATE_INDEX, new DistanceWrapper(Distance.FOR), graphs, 51);
+        Task task = new Task(new Ward(clustersCount), Scorer.RI, new DistanceWrapper(Distance.FOR), graphs, 51);
         new TaskPool("test", task).execute().writeData().drawUniqueAndBezier("[0:1]", "0.2");
     }
 }

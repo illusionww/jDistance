@@ -7,81 +7,71 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.jdistance.distance.Shortcuts.*;
-import static jeigen.Shortcuts.eye;
+import static jeigen.Shortcuts.*;
 
 public enum Kernel {
-    P_WALK_H("pWalk H", Scale.RHO, null) {
+    P_WALK_H("pWalk H", Scale.RHO, null) { // H0 = (I - tA)^{-1}
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) { // H0 = (I - tA)^{-1}
-            int d = A.cols;
-            DenseMatrix I = eye(d);
-            DenseMatrix ins = I.sub(A.mul(t));
-            return pinv(ins);
+        public DenseMatrix getK(DenseMatrix A, double t) {
+            return pinv(eye(A.cols).sub(A.mul(t)));
         }
     },
     WALK_H("Walk H", Scale.RHO, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix H0 = P_WALK_H.getK(A, t);
-            return H0toH(H0);
+            return H0toH(P_WALK_H.getK(A, t));
         }
     },
-    FOR_H("For H", Scale.FRACTION, null) {
+    FOR_H("For H", Scale.FRACTION, null) { // H0 = (I + tL)^{-1}
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) { // H0 = (I + tL)^{-1}
-            int d = A.cols;
-            DenseMatrix I = eye(d);
-            DenseMatrix L = getL(A);
-            DenseMatrix ins = I.add(L.mul(t));
-            return pinv(ins);
+        public DenseMatrix getK(DenseMatrix A, double t) {
+            return pinv(eye(A.cols).add(getL(A).mul(t)));
         }
     },
     LOG_FOR_H("logFor H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix H0 = FOR_H.getK(A, t);
-            return H0toH(H0);
+            return H0toH(FOR_H.getK(A, t));
         }
     },
-    COMM_H("Comm H", Scale.FRACTION, null) {
+    COMM_H("Comm H", Scale.FRACTION, null) { // H0 = exp(tA)
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) { // H0 = exp(tA)
+        public DenseMatrix getK(DenseMatrix A, double t) {
             return A.mul(t).mexp();
         }
     },
     LOG_COMM_H("logComm H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix H0 = COMM_H.getK(A, t);
-            return H0toH(H0);
+            return H0toH(COMM_H.getK(A, t));
         }
     },
-    HEAT_H("Heat H", Scale.FRACTION, null) {
+    HEAT_H("Heat H", Scale.FRACTION, null) { // H0 = exp(-tL)
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) { // H0 = exp(-tL)
-            DenseMatrix L = getL(A);
-            return L.mul(-t).mexp();
+        public DenseMatrix getK(DenseMatrix A, double t) {
+            return getL(A).mul(-t).mexp();
         }
     },
     LOG_HEAT_H("logHeat H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            DenseMatrix H0 = HEAT_H.getK(A, t);
-            return H0toH(H0);
+            return H0toH(HEAT_H.getK(A, t));
         }
     },
     SP_CT_H("SP-CT H", Scale.LINEAR, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix D = getD_ShortestPath(A);
-            DenseMatrix Hs = DtoK(D);
-            Hs = normalize(Hs);
-
-            DenseMatrix L = getL(A);
-            DenseMatrix Hr = getH_Resistance(L);
-            Hr = normalize(Hr);
-
-            return Hs.mul(1 - lambda).add(Hr.mul(lambda));
+            DenseMatrix Hs = normalize(DtoK(getD_ShortestPath(A)));
+            DenseMatrix Hc = normalize(getH_Resistance(getL(A)));
+            return Hs.mul(1 - lambda).add(Hc.mul(lambda));
+        }
+    },
+    SP_CT_NEW_H("SP-CT NEW H", Scale.LINEAR, null) {
+        @Override
+        public DenseMatrix getK(DenseMatrix A, double lambda) {
+            DenseMatrix Hs = normalize(DtoK(getD_ShortestPath(A)));
+            DenseMatrix Hc = normalize(pinv(getL(A)));
+            return Hs.mul(1 - lambda).add(Hc.mul(lambda));
         }
     },
     P_WALK_K("pWalk K", Scale.RHO, Distance.P_WALK),

@@ -9,19 +9,43 @@ import java.util.List;
 import java.util.Map;
 
 public enum Scorer {
-    RATE_INDEX("RI") {
+    RI("RI") {
         @Override
         public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
-            long countErrors = 0;
+            long TPTN = 0;
             for (int i = 0; i < predictedNodes.size(); ++i) {
                 for (int j = i + 1; j < predictedNodes.size(); ++j) {
-                    if (predictedNodes.get(i).equals(predictedNodes.get(j)) != nodes.get(i).getLabel().equals(nodes.get(j).getLabel())) {
-                        countErrors += 1;
+                    if (predictedNodes.get(i).equals(predictedNodes.get(j)) == nodes.get(i).getLabel().equals(nodes.get(j).getLabel())) {
+                        TPTN += 1;
                     }
                 }
             }
-            double total = (predictedNodes.size() * (predictedNodes.size() - 1)) / 2.0;
-            return 1.0 - countErrors / total;
+            return 2.0 * TPTN / (nodes.size() * (nodes.size() - 1));
+        }
+    },
+    ARI("ARI") {
+        @Override
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
+            double index = RI.score(D, nodes, predictedNodes);
+            double expected = calcExpected(nodes);
+            return (index - expected) / (1 - expected);
+        }
+
+        private double calcExpected(List<Node> nodes) {
+            DefaultHashMap<String, Long> countByCluster = new DefaultHashMap<>(0L);
+            for (Node node : nodes) {
+                countByCluster.put(node.getLabel(), countByCluster.get(node.getLabel()) + 1);
+            }
+            double clustersCount = countByCluster.size();
+            double TP = countByCluster.values().stream().mapToDouble(i -> i * (i - 1)).sum() / (2.0 * clustersCount);
+            double sumAmongClusters = countByCluster.values().stream().mapToDouble(i -> i).sum();
+            double TN = 0;
+            for (Long count : countByCluster.values()) {
+                sumAmongClusters -= count;
+                TN += count * sumAmongClusters;
+            }
+            TN /= clustersCount * clustersCount;
+            return 2.0 * (TP + TN) / (nodes.size() * (nodes.size() - 1));
         }
     },
     DIFFUSION_ORDINAL("Diff ordinal") {

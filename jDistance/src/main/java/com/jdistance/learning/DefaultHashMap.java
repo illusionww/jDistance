@@ -1,4 +1,4 @@
-package com.jdistance.local.workflow;
+package com.jdistance.learning;
 
 import java.util.HashMap;
 

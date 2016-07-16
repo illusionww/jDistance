@@ -22,13 +22,11 @@ public class Shortcuts {
         if (A.cols != A.rows) {
             throw new RuntimeException("pinv matrix size error: must be square matrix");
         }
-
         for (double item : A.getValues()) {
             if (Double.isNaN(item)) {
                 return DenseMatrix.ones(A.cols, A.rows).mul(Double.NaN);
             }
         }
-
         return A.fullPivHouseholderQRSolve(diag(ones(A.cols, 1)));
     }
 

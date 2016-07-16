@@ -5,7 +5,7 @@ import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.local.Main;
 import com.jdistance.local.workflow.Context;
-import com.jdistance.local.workflow.DefaultHashMap;
+import com.jdistance.learning.DefaultHashMap;
 import com.jdistance.local.workflow.TaskPool;
 import com.jdistance.local.workflow.TaskPoolResult;
 import org.slf4j.Logger;
