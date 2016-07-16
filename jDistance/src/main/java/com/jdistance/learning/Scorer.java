@@ -11,11 +11,11 @@ import java.util.Map;
 public enum Scorer {
     RI("RI") {
         @Override
-        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedClusterByNode) {
             long TPTN = 0;
-            for (int i = 0; i < predictedNodes.size(); ++i) {
-                for (int j = i + 1; j < predictedNodes.size(); ++j) {
-                    if (predictedNodes.get(i).equals(predictedNodes.get(j)) == nodes.get(i).getLabel().equals(nodes.get(j).getLabel())) {
+            for (int i = 0; i < predictedClusterByNode.size(); ++i) {
+                for (int j = i + 1; j < predictedClusterByNode.size(); ++j) {
+                    if (predictedClusterByNode.get(i).equals(predictedClusterByNode.get(j)) == (nodes.get(i).getLabel() == nodes.get(j).getLabel())) {
                         TPTN += 1;
                     }
                 }
@@ -32,7 +32,7 @@ public enum Scorer {
         }
 
         private double calcExpected(List<Node> nodes) {
-            DefaultHashMap<String, Long> countByCluster = new DefaultHashMap<>(0L);
+            DefaultHashMap<Integer, Long> countByCluster = new DefaultHashMap<>(0L);
             for (Node node : nodes) {
                 countByCluster.put(node.getLabel(), countByCluster.get(node.getLabel()) + 1);
             }
@@ -53,10 +53,10 @@ public enum Scorer {
             @Override
             protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
                 Double A = 0.0, B = 0.0;
-                if (nodeA1.getLabel().equals(nodeA2.getLabel()) && !nodeB1.getLabel().equals(nodeB2.getLabel())) {
+                if (nodeA1.getLabel() == nodeA2.getLabel() && nodeB1.getLabel() != nodeB2.getLabel()) {
                     A = D.get(b1, b2) > D.get(a1, a2) ? 1.0 : D.get(b1, b2) == D.get(a1, a2) ? 0.5 : 0.0;
                     B = 1.0;
-                } else if (!nodeA1.getLabel().equals(nodeA2.getLabel()) && nodeB1.getLabel().equals(nodeB2.getLabel())) {
+                } else if (nodeA1.getLabel() != nodeA2.getLabel() && nodeB1.getLabel() == nodeB2.getLabel()) {
                     A = D.get(a1, a2) > D.get(b1, b2) ? 1.0 : D.get(a1, a2) == D.get(b1, b2) ? 0.5 : 0.0;
                     B = 1.0;
                 }
@@ -80,9 +80,9 @@ public enum Scorer {
             @Override
             protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
                 Double h = 0.0;
-                if (nodeA1.getLabel().equals(nodeA2.getLabel()) && !nodeB1.getLabel().equals(nodeB2.getLabel())) {
+                if (nodeA1.getLabel() == nodeA2.getLabel() && nodeB1.getLabel() != nodeB2.getLabel()) {
                     h = D.get(b1, b2) - D.get(a1, a2);
-                } else if (!nodeA1.getLabel().equals(nodeA2.getLabel()) && nodeB1.getLabel().equals(nodeB2.getLabel())) {
+                } else if (nodeA1.getLabel() != nodeA2.getLabel() && nodeB1.getLabel() == nodeB2.getLabel()) {
                     h = D.get(a1, a2) - D.get(b1, b2);
                 }
                 return new ImmutablePair<>((Math.signum(h) + 1.0) * Math.sqrt(Math.abs(h)), 2.0 * Math.sqrt(Math.abs(h)));
@@ -105,9 +105,9 @@ public enum Scorer {
             @Override
             protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
                 Double h = 0.0;
-                if (nodeA1.getLabel().equals(nodeA2.getLabel()) && !nodeB1.getLabel().equals(nodeB2.getLabel())) {
+                if (nodeA1.getLabel() == nodeA2.getLabel() && nodeB1.getLabel() != nodeB2.getLabel()) {
                     h = D.get(b1, b2) - D.get(a1, a2);
-                } else if (!nodeA1.getLabel().equals(nodeA2.getLabel()) && nodeB1.getLabel().equals(nodeB2.getLabel())) {
+                } else if (nodeA1.getLabel() != nodeA2.getLabel() && nodeB1.getLabel() == nodeB2.getLabel()) {
                     h = D.get(a1, a2) - D.get(b1, b2);
                 }
                 return new ImmutablePair<>(Math.signum(h) + 1.0, 2.0);
@@ -130,9 +130,9 @@ public enum Scorer {
             @Override
             protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
                 Double h = 0.0;
-                if (nodeA1.getLabel().equals(nodeA2.getLabel()) && !nodeB1.getLabel().equals(nodeB2.getLabel())) {
+                if (nodeA1.getLabel() == nodeA2.getLabel() && nodeB1.getLabel() != nodeB2.getLabel()) {
                     h = D.get(b1, b2) - D.get(a1, a2);
-                } else if (!nodeA1.getLabel().equals(nodeA2.getLabel()) && nodeB1.getLabel().equals(nodeB2.getLabel())) {
+                } else if (nodeA1.getLabel() != nodeA2.getLabel() && nodeB1.getLabel() == nodeB2.getLabel()) {
                     h = D.get(a1, a2) - D.get(b1, b2);
                 }
                 return new ImmutablePair<>((Math.signum(h) + 1.0) * Math.abs(h), 2.0 * Math.abs(h));

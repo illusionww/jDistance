@@ -1,14 +1,19 @@
 package com.jdistance.local.workflow;
 
+import com.jdistance.distance.AbstractMeasureWrapper;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.local.workflow.gridsearch.statistics.ClustersMeasureStatistics;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
-import com.jdistance.distance.AbstractMeasureWrapper;
+import com.jdistance.local.workflow.gridsearch.statistics.ClustersMeasureStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -72,23 +77,21 @@ public class TaskPool {
     }
 
     public TaskPoolResult execute() {
-        Date start = new Date();
+        Instant startPoolTime = Instant.now();
         log.info("START TASK POOL \"{}\"", name);
 
         Stream<Task> stream = Context.getInstance().isParallelTasks() ? tasks.parallelStream() : tasks.stream();
         stream.forEach(task -> {
-            Date startTask = new Date();
+            Instant startTaskTime = Instant.now();
             log.info("Task START: {}", task.getName());
             task.execute();
-            Date finishTask = new Date();
-            long diffTask = finishTask.getTime() - startTask.getTime();
-            log.info("Task DONE: {}. Time: {} ", task.getName(), diffTask);
+            Instant endTaskTime = Instant.now();
+            log.info("Task DONE: {}. Time: {} ", task.getName(), Duration.between(startTaskTime, endTaskTime));
         });
 
-        Date finish = new Date();
-        long diff = finish.getTime() - start.getTime();
-        log.info("TASK POOL DONE. Time: {}", diff);
-        log.info("----------------------------------------------------------------------------------------------------", diff);
+        Instant finishPoolTime = Instant.now();
+        log.info("TASK POOL DONE. Time: {}", Duration.between(startPoolTime, finishPoolTime));
+        log.info("----------------------------------------------------------------------------------------------------");
 
         List<String> taskNames = tasks.stream().map(Task::getName)
                 .collect(Collectors.toList());

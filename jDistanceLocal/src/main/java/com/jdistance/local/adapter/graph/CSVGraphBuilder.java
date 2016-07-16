@@ -26,10 +26,16 @@ public class CSVGraphBuilder {
 
     public CSVGraphBuilder importNodesIdNameClass(String nodesFile) throws IOException {
         nodes = new ArrayList<>();
+        List<String> classNames = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(nodesFile))) {
             stream.forEach(line -> {
                 String[] rawNode = line.split("[\t;]");
-                nodes.add(new Node(Integer.valueOf(rawNode[0]), rawNode[2]));
+                int indexOf = classNames.indexOf(rawNode[2]);
+                if (indexOf == -1) {
+                    classNames.add(rawNode[2]);
+                    indexOf = classNames.size() - 1;
+                }
+                nodes.add(new Node(Integer.valueOf(rawNode[0]), indexOf));
             });
         }
         return this;
@@ -37,13 +43,43 @@ public class CSVGraphBuilder {
 
     public CSVGraphBuilder importNodesClassOnly(String nodesFile) throws IOException {
         nodes = new ArrayList<>();
+        List<String> classNames = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(nodesFile))) {
             List<String> lines = stream.collect(Collectors.toList());
             for (int i = 0; i < lines.size(); i++) {
-                String clazz = lines.get(i);
-                nodes.add(new Node(i, clazz));
+                String className = lines.get(i);
+                int indexOf = classNames.indexOf(className);
+                if (indexOf == -1) {
+                    classNames.add(className);
+                    indexOf = classNames.size() - 1;
+                }
+                nodes.add(new Node(i, indexOf));
             }
-            ;
+        }
+        return this;
+    }
+
+    public CSVGraphBuilder importNodesAndEdges(String graphFile) throws IOException {
+        nodes = new ArrayList<>();
+        List<String> classNames = new ArrayList<>();
+        try (Stream<String> stream = Files.lines(Paths.get(graphFile))) {
+            List<String> lines = stream.collect(Collectors.toList());
+            Integer count = Integer.valueOf(lines.get(0).split(" ")[1]);
+            for (int i = 1; i <= count; i++) {
+                String[] rawNode = lines.get(i).split(" ");
+                int indexOf = classNames.indexOf(rawNode[1]);
+                if (indexOf == -1) {
+                    classNames.add(rawNode[1]);
+                    indexOf = classNames.size() - 1;
+                }
+                nodes.add(new Node(Integer.valueOf(rawNode[0]), indexOf));
+            }
+            A = DenseMatrix.zeros(count, count);
+            for (int i = count + 2; i < lines.size() - 1; i++) {
+                String[] rawEdge = lines.get(i).split(" ");
+                A.set(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
+                A.set(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
+            }
         }
         return this;
     }
@@ -89,7 +125,7 @@ public class CSVGraphBuilder {
 
     public GraphBundle shuffleAndBuildBundle() {
         Graph graph = new Graph(nodes, A);
-        graph.shuffle(10*nodes.size());
+        graph.shuffle(10 * nodes.size());
         return graph.toBundle();
     }
 }

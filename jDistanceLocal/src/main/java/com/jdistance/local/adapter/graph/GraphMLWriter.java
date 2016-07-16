@@ -27,7 +27,7 @@ public class GraphMLWriter {
             }
         }
 
-        GraphMLExporter<Node, DefaultEdge> exporter = new GraphMLExporter<>(node -> node.getId().toString(), Node::getLabel, new IntegerEdgeNameProvider<>(), null);
+        GraphMLExporter<Node, DefaultEdge> exporter = new GraphMLExporter<>(node -> Integer.toString(node.getId()), node -> Integer.toString(node.getLabel()), new IntegerEdgeNameProvider<>(), null);
         exporter.export(new FileWriter(Context.getInstance().buildOutputDataFullName(fileName, "graphml")), destGraph);
     }
 }

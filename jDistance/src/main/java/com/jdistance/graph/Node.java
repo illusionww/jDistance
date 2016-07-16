@@ -1,41 +1,31 @@
 package com.jdistance.graph;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 public class Node implements Comparable<Node>, Serializable {
-    private Integer id;
-    private String label;
+    private int id;
+    private int label;
 
-    public Node(Integer id, String label) {
+    public Node(int id, int label) {
         this.id = id;
         this.label = label;
     }
 
-    public String getLabel() {
+    public int getLabel() {
         return label;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
     @Override
     public int compareTo(Node o) {
-        if (this.getLabel() != null) {
-            return this.getLabel().compareTo(o.getLabel());
-        } else return 0;
+        return Integer.compare(id, o.id);
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof Node)) {
-            return false;
-        }
-        Node that = (Node) o;
-        return Objects.equals(id, that.id);
+        return id == ((Node) o).id;
     }
 }

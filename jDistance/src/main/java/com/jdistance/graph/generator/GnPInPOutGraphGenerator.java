@@ -66,7 +66,7 @@ public class GnPInPOutGraphGenerator extends GraphGenerator {
         Integer id = 0;
         for (Integer i = 0; i < sizeClusters.length; ++i) {
             for (int j = 0; j < sizeClusters[i]; ++j) {
-                nodes.add(new Node(id, i.toString()));
+                nodes.add(new Node(id, i));
                 id++;
             }
         }

@@ -1,12 +1,12 @@
 package com.jdistance.local.workflow.gridsearch;
 
+import com.jdistance.distance.AbstractMeasureWrapper;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.local.workflow.gridsearch.statistics.BasicMeasureStatistics;
-import com.jdistance.local.workflow.gridsearch.statistics.ClustersMeasureStatistics;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
-import com.jdistance.distance.AbstractMeasureWrapper;
+import com.jdistance.local.workflow.gridsearch.statistics.BasicMeasureStatistics;
+import com.jdistance.local.workflow.gridsearch.statistics.ClustersMeasureStatistics;
 import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -90,7 +90,7 @@ public class GridSearch {
             metricStatistics.put(idx, new ClustersMeasureStatistics(ClustersMeasureStatistics.join(metricStatisticsByGraph), clustersStatisticsByGraph));
         }
 
-        if (scoresByGraph.size() < 0.9*graphs.getGraphs().size()) {
+        if (scoresByGraph.size() < 0.9 * graphs.getGraphs().size()) {
             return null;
         }
         double avg = avg(scoresByGraph);

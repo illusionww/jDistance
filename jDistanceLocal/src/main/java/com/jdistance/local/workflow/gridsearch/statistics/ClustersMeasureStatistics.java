@@ -6,7 +6,10 @@ import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class ClustersMeasureStatistics extends BasicMeasureStatistics {
@@ -17,23 +20,23 @@ public class ClustersMeasureStatistics extends BasicMeasureStatistics {
         this.clustersStatisticsByGraph = clustersStatisticsByGraph;
     }
 
-    public static Map<Pair<String, String>, BasicMeasureStatistics> calcClusterStatisticsForGraph(DenseMatrix D, Graph graph) {
-        Map<Pair<String, String>, BasicMeasureStatistics> clustersStatistics = new TreeMap<>();
+    public static Map<Pair<Integer, Integer>, BasicMeasureStatistics> calcClusterStatisticsForGraph(DenseMatrix D, Graph graph) {
+        Map<Pair<Integer, Integer>, BasicMeasureStatistics> clustersStatistics = new TreeMap<>();
 
-        List<String> clusterLabels = graph.getNodes().stream()
+        List<Integer> clusterLabels = graph.getNodes().stream()
                 .map(Node::getLabel)
                 .distinct()
                 .collect(Collectors.toList());
 
         for (int i = 0; i < clusterLabels.size(); i++) {
-            String firstLabel = clusterLabels.get(i);
+            int firstLabel = clusterLabels.get(i);
             List<Node> firstClusterNodes = graph.getNodes().stream()
-                    .filter(node -> firstLabel.equals(node.getLabel()))
+                    .filter(node -> firstLabel == node.getLabel())
                     .collect(Collectors.toList());
             for (int j = i + 1; j < clusterLabels.size(); j++) {
-                String secondLabel = clusterLabels.get(j);
+                int secondLabel = clusterLabels.get(j);
                 List<Node> secondClusterNodes = graph.getNodes().stream()
-                        .filter(node -> secondLabel.equals(node.getLabel()))
+                        .filter(node -> secondLabel == node.getLabel())
                         .collect(Collectors.toList());
 
                 List<Double> twoClustersRelatingData = new ArrayList<>();
@@ -52,7 +55,6 @@ public class ClustersMeasureStatistics extends BasicMeasureStatistics {
     public List<Map<Pair<String, String>, BasicMeasureStatistics>> getClustersStatisticsByGraph() {
         return clustersStatisticsByGraph;
     }
-
 
 
 }

@@ -35,7 +35,7 @@ public class RejectCurve {
             for (int j = i + 1; j < graph.getNodes().size(); j++) {
                 Node node1 = graph.getNodes().get(i);
                 Node node2 = graph.getNodes().get(j);
-                if (node1.getLabel().equals(node2.getLabel())) {
+                if (node1.getLabel() == node2.getLabel()) {
                     sameClusterPairs.add(new ImmutablePair<>(i, j));
                 } else {
                     diffClusterPairs.add(new ImmutablePair<>(i, j));
@@ -88,7 +88,7 @@ public class RejectCurve {
             for (int j = i + 1; j < graph.getNodes().size(); j++) {
                 Node node1 = graph.getNodes().get(i);
                 Node node2 = graph.getNodes().get(j);
-                if (node1.getLabel().equals(node2.getLabel())) {
+                if (node1.getLabel() == node2.getLabel()) {
                     sameClusterPairs.add(new ImmutablePair<>(i, j));
                 } else {
                     diffClusterPairs.add(new ImmutablePair<>(i, j));
@@ -140,7 +140,7 @@ public class RejectCurve {
                 if (graph.getA().get(i, j) > 0) {
                     Node node1 = graph.getNodes().get(i);
                     Node node2 = graph.getNodes().get(j);
-                    if (node1.getLabel().equals(node2.getLabel())) {
+                    if (node1.getLabel() == node2.getLabel()) {
                         sameClusterPairs.add(new ImmutablePair<>(i, j));
                     } else {
                         diffClusterPairs.add(new ImmutablePair<>(i, j));
@@ -195,7 +195,7 @@ public class RejectCurve {
                 if (A.get(i, j) > 0) {
                     Node node1 = nodes.get(i);
                     Node node2 = nodes.get(j);
-                    if (node1.getLabel().equals(node2.getLabel())) {
+                    if (node1.getLabel() == node2.getLabel()) {
                         sameClusterPairs.add(new ImmutablePair<>(i, j));
                     } else {
                         diffClusterPairs.add(new ImmutablePair<>(i, j));
