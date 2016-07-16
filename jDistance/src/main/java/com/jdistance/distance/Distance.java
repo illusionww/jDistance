@@ -5,6 +5,7 @@ import jeigen.DenseMatrix;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.jdistance.distance.Shortcuts.normalize;
 
@@ -17,6 +18,8 @@ public enum Distance {
     LOG_COMM("logComm", Scale.FRACTION, Kernel.LOG_COMM_H, true),
     HEAT("Heat", Scale.FRACTION, Kernel.HEAT_H, true),
     LOG_HEAT("logHeat", Scale.FRACTION, Kernel.LOG_HEAT_H, true),
+    SCT("SCT", Scale.FRACTION, Kernel.SCT_H, false),
+    SCCT("SCCT", Scale.FRACTION, Kernel.SCCT_H, false),
     RSP("RSP", Scale.FRACTION_REVERSED, null, false) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return Shortcuts.getD_RSP(A, beta);
@@ -54,13 +57,13 @@ public enum Distance {
     }
 
     public static List<DistanceWrapper> getAll() {
-        return Arrays.asList(Distance.values()).stream().map(DistanceWrapper::new).collect(Collectors.toList());
+        return Arrays.stream(Distance.values()).map(DistanceWrapper::new).collect(Collectors.toList());
     }
 
     public static List<DistanceWrapper> getDefaultDistances() {
-        return Arrays.asList(
+        return Stream.of(
                 P_WALK, WALK, FOR, LOG_FOR, COMM, LOG_COMM, HEAT, LOG_HEAT, RSP, FE, SP_CT
-        ).stream().map(DistanceWrapper::new).collect(Collectors.toList());
+        ).map(DistanceWrapper::new).collect(Collectors.toList());
     }
 
     public String getName() {

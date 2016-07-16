@@ -5,10 +5,7 @@ import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
-import com.jdistance.local.workflow.gridsearch.statistics.BasicMeasureStatistics;
-import com.jdistance.local.workflow.gridsearch.statistics.ClustersMeasureStatistics;
 import jeigen.DenseMatrix;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -24,12 +21,10 @@ public class GridSearch {
     private GraphBundle graphs;
     private Scorer scorer;
     private boolean isParallel;
-    private boolean calcMetricStatistics;
 
     private Map<Double, Double> scores = new ConcurrentHashMap<>();
-    private Map<Double, ClustersMeasureStatistics> metricStatistics = new ConcurrentHashMap<>();
 
-    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel, boolean calcMetricStatistics) {
+    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel) {
         this.name = name;
         this.estimator = estimator;
         double step = (to - from) / (pointsCount - 1);
@@ -39,7 +34,6 @@ public class GridSearch {
         this.metricWrapper = metricWrapper;
         this.scorer = scorer;
         this.isParallel = isParallel;
-        this.calcMetricStatistics = calcMetricStatistics;
     }
 
     public Map<Double, Double> fit(GraphBundle graphs) {
@@ -60,14 +54,8 @@ public class GridSearch {
         return scores;
     }
 
-    public Map<Double, ClustersMeasureStatistics> getMetricStatistics() {
-        return metricStatistics;
-    }
-
     private Double validate(AbstractMeasureWrapper metricWrapper, Double idx) {
         List<Double> scoresByGraph = new ArrayList<>();
-        List<BasicMeasureStatistics> metricStatisticsByGraph = new ArrayList<>();
-        List<Map<Pair<String, String>, BasicMeasureStatistics>> clustersStatisticsByGraph = new ArrayList<>();
         try {
             for (Graph graph : graphs.getGraphs()) {
                 DenseMatrix A = graph.getA();
@@ -77,17 +65,10 @@ public class GridSearch {
                     Map<Integer, Integer> prediction = estimator.predict(D);
                     double score = scorer.score(D, graph.getNodes(), prediction);
                     scoresByGraph.add(score);
-                    if (calcMetricStatistics) {
-                        metricStatisticsByGraph.add(BasicMeasureStatistics.calcMinMaxAvgOfMatrix(D));
-//                        clustersStatisticsByGraph.add(ClustersMeasureStatistics.calcClusterStatisticsForGraph(D, graph));
-                    }
                 }
             }
         } catch (RuntimeException e) {
             System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + idx);
-        }
-        if (calcMetricStatistics) {
-            metricStatistics.put(idx, new ClustersMeasureStatistics(ClustersMeasureStatistics.join(metricStatisticsByGraph), clustersStatisticsByGraph));
         }
 
         if (scoresByGraph.size() < 0.9 * graphs.getGraphs().size()) {

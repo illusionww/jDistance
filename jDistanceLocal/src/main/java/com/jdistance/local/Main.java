@@ -38,8 +38,7 @@ public class Main {
         new TaskPool()
                 .buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
                         new KernelWrapper(Kernel.SP_CT_H),
-                        new KernelWrapper(Kernel.SP_CT_K),
-                        new KernelWrapper(Kernel.SP_CT_NEW_H)
+                        new KernelWrapper(Kernel.SP_CT_K)
                 ), graphs, 50)
                 .execute()
                 .drawUnique("[0:1]", "0.2");
