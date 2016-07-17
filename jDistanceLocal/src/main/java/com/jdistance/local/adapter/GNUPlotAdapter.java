@@ -46,7 +46,7 @@ public class GNUPlotAdapter {
             }
         });
 
-        drawData(plots, Context.getInstance().buildImgFullName(smooth.toString(), imgTitle, "png"), xrange, xticks, yrange, yticks, smooth);
+        drawData(plots, Context.getInstance().buildImgFullName(smooth.toString().trim(), imgTitle, "png"), xrange, xticks, yrange, yticks, smooth);
     }
 
     private List<Point<Double>> mapToPoints(Map<Double, Double> results) {

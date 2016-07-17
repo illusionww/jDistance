@@ -1,7 +1,7 @@
 package com.jdistance.local.workflow;
 
 import java.io.File;
-import java.time.Instant;
+import java.time.LocalDateTime;
 
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
@@ -57,8 +57,9 @@ public class Context {
         if (!outputDataFolderFile.exists() && !outputDataFolderFile.mkdirs()) {
             throw new RuntimeException("Folder " + outputDataFolderFile.getAbsolutePath() + " is not exist");
         }
-        return subfolderPath + File.separator + ISO_LOCAL_DATE_TIME.format(Instant.now()) + " " +
-                imgTitle.replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;
+        return subfolderPath + File.separator +
+                (ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + " " + imgTitle).replaceAll("[:\\\\/*?|<>]", "_") +
+                "." + extension;
     }
 
     public String buildImgFullName(String imgTitle, String extension) {

@@ -1,60 +1,49 @@
-package com.jdistance.local.workflow.gridsearch;
+package com.jdistance.learning.gridsearch;
 
-import com.jdistance.measure.AbstractMeasureWrapper;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
+import com.jdistance.measure.AbstractMeasureWrapper;
 import jeigen.DenseMatrix;
 
+import java.io.Serializable;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
-import java.util.stream.Stream;
 
-public class GridSearch {
-    private String name;
-    private Estimator estimator;
-    private List<Double> paramGrid;
-    private AbstractMeasureWrapper metricWrapper;
-    private GraphBundle graphs;
-    private Scorer scorer;
-    private boolean isParallel;
+public abstract class GridSearch implements Serializable {
+    protected String name;
+    protected Estimator estimator;
+    protected AbstractMeasureWrapper metricWrapper;
+    protected Scorer scorer;
 
-    private Map<Double, Double> scores = new ConcurrentHashMap<>();
+    protected List<Double> paramGrid;
+    protected GraphBundle graphs;
 
-    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount, boolean isParallel) {
+    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount) {
+        this(name, estimator, metricWrapper, scorer, linspace(from, to, pointsCount));
+    }
+
+    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, List<Double> paramGrid) {
         this.name = name;
         this.estimator = estimator;
-        double step = (to - from) / (pointsCount - 1);
-        this.paramGrid = DoubleStream.iterate(from, i -> i + step).limit(pointsCount).boxed().collect(Collectors.toList());
-        paramGrid.addAll(Arrays.asList(0.1 * step, 0.5 * step, to - 0.5 * step, to - 0.1 * step));
-        Collections.sort(paramGrid);
         this.metricWrapper = metricWrapper;
         this.scorer = scorer;
-        this.isParallel = isParallel;
+        this.paramGrid = paramGrid;
     }
 
-    public Map<Double, Double> fit(GraphBundle graphs) {
-        this.graphs = graphs;
-
-        Stream<Double> paramStream = isParallel ? paramGrid.parallelStream() : paramGrid.stream();
-        paramStream.forEach(idx -> {
-            Double score = validate(metricWrapper, idx);
-            System.out.println(name + "\t" + String.format("%1.5f", idx) + "\t" + score);
-            if (score != null) {
-                scores.put(idx, score);
-            }
-        });
-        return scores;
+    private static List<Double> linspace(double from, double to, int pointsCount) {
+        double step = (to - from) / (pointsCount - 1);
+        List<Double> paramGrid = DoubleStream.iterate(from, i -> i + step).limit(pointsCount).boxed().collect(Collectors.toList());
+        paramGrid.addAll(Arrays.asList(0.1 * step, 0.5 * step, to - 0.5 * step, to - 0.1 * step));
+        Collections.sort(paramGrid);
+        return paramGrid;
     }
 
-    public Map<Double, Double> getScores() {
-        return scores;
-    }
+    public abstract void fit(GraphBundle graphs);
 
-    private Double validate(AbstractMeasureWrapper metricWrapper, Double idx) {
+    protected Double validate(Double idx, AbstractMeasureWrapper metricWrapper) {
         List<Double> scoresByGraph = new ArrayList<>();
         try {
             for (Graph graph : graphs.getGraphs()) {

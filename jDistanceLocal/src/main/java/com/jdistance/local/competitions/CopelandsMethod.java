@@ -1,13 +1,13 @@
 package com.jdistance.local.competitions;
 
+import com.jdistance.local.workflow.LocalTaskPoolResult;
 import com.jdistance.measure.AbstractMeasureWrapper;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.local.Main;
 import com.jdistance.local.workflow.Context;
 import com.jdistance.learning.DefaultHashMap;
-import com.jdistance.local.workflow.TaskPool;
-import com.jdistance.local.workflow.TaskPoolResult;
+import com.jdistance.local.workflow.LocalTaskPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,8 +40,8 @@ public abstract class CopelandsMethod {
             Map<String, Double> currentCompetitionBestResults = new DefaultHashMap<>(0.0);
             Map<String, Double> currentCompetitionPercentileResults = new DefaultHashMap<>(0.0);
             for (Graph graph : graphs.getGraphs()) {
-                TaskPool pool = generateTaskPool(new GraphBundle(Collections.singletonList(graph), graphs.getProperties()));
-                TaskPoolResult result = pool.execute();
+                LocalTaskPool pool = generateTaskPool(new GraphBundle(Collections.singletonList(graph), graphs.getProperties()));
+                LocalTaskPoolResult result = pool.execute();
                 updateBestResults(result, currentCompetitionBestResults);
                 updatePercentileResults(result, currentCompetitionPercentileResults);
             }
@@ -50,7 +50,7 @@ public abstract class CopelandsMethod {
         }
     }
 
-    private void updateBestResults(TaskPoolResult result, Map<String, Double> competitionResults) {
+    private void updateBestResults(LocalTaskPoolResult result, Map<String, Double> competitionResults) {
         for (String task1 : result.getTaskNames()) {
             for (String task2 : result.getTaskNames()) {
                 Double bestValue1 = result.getBestParam(task1).getValue();
@@ -62,7 +62,7 @@ public abstract class CopelandsMethod {
         }
     }
 
-    private void updatePercentileResults(TaskPoolResult result, Map<String, Double> competitionResults) {
+    private void updatePercentileResults(LocalTaskPoolResult result, Map<String, Double> competitionResults) {
         for (String task1 : result.getTaskNames()) {
             for (String task2 : result.getTaskNames()) {
                 Double bestValue1 = result.getQuantile(task1, percentile);
@@ -74,7 +74,7 @@ public abstract class CopelandsMethod {
         }
     }
 
-    protected abstract TaskPool generateTaskPool(GraphBundle graphs);
+    protected abstract LocalTaskPool generateTaskPool(GraphBundle graphs);
 
     public void write(String name) {
         write(name + "_best", bestResults);
