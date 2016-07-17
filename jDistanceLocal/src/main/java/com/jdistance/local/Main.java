@@ -19,7 +19,7 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-        Context.fill(false, true, true, "./results/data", "./results/img");
+        Context.fill(false, true, "./results/data", "./results/img");
         if (args.length == 1) {
             String methodName = args[0];
             Class<?> clazz = Class.<Main>forName("com.jdistance.local.Main");
@@ -34,20 +34,23 @@ public class Main {
     }
 
     public void saa() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.1));
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(1, new int[]{
+                100, 75, 75, 50, 25, 10, 5 // sum = 340
+        }, new double[][] {
+                {0.3, 0.2, 0.1, 0.13, 0.02, 0.2, 0.1},
+                {0.0, 0.2, 0.1, 0.13, 0.02, 0.2, 0.1},
+                {0.0, 0.0, 0.1, 0.13, 0.02, 0.2, 0.1},
+                {0.0, 0.0, 0.0, 0.13, 0.02, 0.2, 0.1},
+                {0.0, 0.0, 0.0, 0.00, 0.10, 0.2, 0.1},
+                {0.0, 0.0, 0.0, 0.00, 0.00, 0.12, 0.1},
+                {0.0, 0.0, 0.0, 0.00, 0.00, 0.0, 0.14}
+        }));
         new TaskPool()
                 .buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
-                        new KernelWrapper(Kernel.SCT_H),
-                        new KernelWrapper(Kernel.SCCT_H),
-                        new KernelWrapper(Kernel.SCCT2_H),
-                        new KernelWrapper(Kernel.LOG_COMM_H),
-                        new KernelWrapper(Kernel.SP_CT_H),
-                        new KernelWrapper(Kernel.SP_CCT_H),
-                        new KernelWrapper(Kernel.SP_CCT2_H)
-                ), graphs, 50)
+                        new KernelWrapper(Kernel.LOG_COMM_H)
+                ), graphs, 35)
                 .execute()
                 .drawUnique("[0:1]", "0.2");
-
     }
 }
 

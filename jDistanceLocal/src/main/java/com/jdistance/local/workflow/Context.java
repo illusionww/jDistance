@@ -1,22 +1,23 @@
 package com.jdistance.local.workflow;
 
 import java.io.File;
+import java.time.Instant;
+
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 public class Context {
     private static Context instance;
 
     private Boolean isParallelTasks;
     private Boolean isParallelGrid;
-    private Boolean isCollectMetricStatistics;
 
     private String outputDataFolder;
     private String imgFolder;
 
-    public static void fill(Boolean parallelTasks, Boolean parallelGrid, Boolean isCollectMetricStatistics, String outputDataFolder, String imgFolder) {
+    public static void fill(Boolean parallelTasks, Boolean parallelGrid, String outputDataFolder, String imgFolder) {
         instance = new Context();
         instance.isParallelTasks = parallelTasks;
         instance.isParallelGrid = parallelGrid;
-        instance.isCollectMetricStatistics = isCollectMetricStatistics;
         instance.outputDataFolder = outputDataFolder;
         instance.imgFolder = imgFolder;
 
@@ -45,10 +46,6 @@ public class Context {
         return isParallelGrid;
     }
 
-    public Boolean isCollectMetricStatistics() {
-        return isCollectMetricStatistics;
-    }
-
     public String buildOutputDataFullName(String imgTitle, String extension) {
         return outputDataFolder + File.separator +
                 imgTitle.replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;
@@ -60,7 +57,7 @@ public class Context {
         if (!outputDataFolderFile.exists() && !outputDataFolderFile.mkdirs()) {
             throw new RuntimeException("Folder " + outputDataFolderFile.getAbsolutePath() + " is not exist");
         }
-        return subfolderPath + File.separator +
+        return subfolderPath + File.separator + ISO_LOCAL_DATE_TIME.format(Instant.now()) + " " +
                 imgTitle.replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;
     }
 
