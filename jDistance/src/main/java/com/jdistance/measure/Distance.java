@@ -1,4 +1,4 @@
-package com.jdistance.distance;
+package com.jdistance.measure;
 
 import jeigen.DenseMatrix;
 
@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.jdistance.distance.Shortcuts.normalize;
+import static com.jdistance.measure.Shortcuts.*;
+import static com.jdistance.measure.Shortcuts.normalize;
 
 public enum Distance {
     P_WALK("pWalk", Scale.RHO, Kernel.P_WALK_H , false),
@@ -22,24 +23,18 @@ public enum Distance {
     SCCT("SCCT", Scale.FRACTION, Kernel.SCCT_H, false),
     RSP("RSP", Scale.FRACTION_REVERSED, null, false) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
-            return Shortcuts.getD_RSP(A, beta);
+            return getD_RSP(A, beta);
         }
     },
     FE("FE", Scale.FRACTION_REVERSED, null, false) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
-            return Shortcuts.getD_FE(A, beta);
+            return getD_FE(A, beta);
         }
     },
     SP_CT("SP-CT", Scale.LINEAR, null, false) {
         public DenseMatrix getD(DenseMatrix A, double lambda) {
-            DenseMatrix Ds = Shortcuts.getD_ShortestPath(A);
-            Ds = normalize(Ds);
-
-            DenseMatrix L = Shortcuts.getL(A);
-            DenseMatrix H = Shortcuts.getH_Resistance(L);
-            DenseMatrix Dr = Shortcuts.HtoD(H);
-            Dr = normalize(Dr);
-
+            DenseMatrix Ds = normalize(getD_SP(A));
+            DenseMatrix Dr = normalize(HtoD(getH_R(A)));
             return Ds.mul(1 - lambda).add(Dr.mul(lambda));
         }
     };
@@ -76,7 +71,7 @@ public enum Distance {
 
     public DenseMatrix getD(DenseMatrix A, double t) {
         DenseMatrix H = parentKernel.getK(A, t);
-        DenseMatrix D = Shortcuts.HtoD(H);
+        DenseMatrix D = HtoD(H);
         return takeSqrt ? D.sqrt() : D;
     }
 

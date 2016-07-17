@@ -1,7 +1,7 @@
 package com.jdistance.local;
 
-import com.jdistance.distance.Kernel;
-import com.jdistance.distance.KernelWrapper;
+import com.jdistance.measure.Kernel;
+import com.jdistance.measure.KernelWrapper;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
@@ -34,11 +34,16 @@ public class Main {
     }
 
     public void saa() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(3, 100, 2, 0.3, 0.1));
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.1));
         new TaskPool()
                 .buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
+                        new KernelWrapper(Kernel.SCT_H),
+                        new KernelWrapper(Kernel.SCCT_H),
+                        new KernelWrapper(Kernel.SCCT2_H),
+                        new KernelWrapper(Kernel.LOG_COMM_H),
                         new KernelWrapper(Kernel.SP_CT_H),
-                        new KernelWrapper(Kernel.SP_CT_K)
+                        new KernelWrapper(Kernel.SP_CCT_H),
+                        new KernelWrapper(Kernel.SP_CCT2_H)
                 ), graphs, 50)
                 .execute()
                 .drawUnique("[0:1]", "0.2");

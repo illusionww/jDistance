@@ -1,6 +1,6 @@
 package com.jdistance.local.workflow.gridsearch;
 
-import com.jdistance.distance.AbstractMeasureWrapper;
+import com.jdistance.measure.AbstractMeasureWrapper;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;

@@ -1,9 +1,9 @@
 package com.jdistance;
 
-import com.jdistance.distance.Kernel;
-import com.jdistance.distance.Distance;
-import com.jdistance.distance.Shortcuts;
-import com.jdistance.distance.Scale;
+import com.jdistance.measure.Kernel;
+import com.jdistance.measure.Distance;
+import com.jdistance.measure.Shortcuts;
+import com.jdistance.measure.Scale;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 public class MetricsSamplesComparisonsTests {
     @Test
     public void testChainGraphShortestPathDistance() {
-        DenseMatrix D = Shortcuts.getD_ShortestPath(chainGraph);
+        DenseMatrix D = Shortcuts.getD_SP(chainGraph);
         double multiplier = 1.0 / D.get(0, 1);
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.000));
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(1, 2), equalDouble(multiplier * D.get(1, 2), 1.000));
@@ -28,7 +28,7 @@ public class MetricsSamplesComparisonsTests {
     @Test
     public void testChainGraphResistanceDistance() {
         DenseMatrix L = Shortcuts.getL(chainGraph);
-        DenseMatrix H = Shortcuts.getH_Resistance(L);
+        DenseMatrix H = Shortcuts.getH_R(chainGraph);
         DenseMatrix D = Shortcuts.HtoD(H);
         double multiplier = 1.0 / D.get(0, 1);
         assertTrue("distances not equal: 1.000 != " + multiplier * D.get(0, 1), equalDouble(multiplier * D.get(0, 1), 1.000));

@@ -1,8 +1,8 @@
 package com.jdistance;
 
-import com.jdistance.distance.Distance;
-import com.jdistance.distance.DistanceWrapper;
-import com.jdistance.distance.Scale;
+import com.jdistance.measure.Distance;
+import com.jdistance.measure.DistanceWrapper;
+import com.jdistance.measure.Scale;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 

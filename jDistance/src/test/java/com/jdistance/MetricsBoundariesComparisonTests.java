@@ -1,7 +1,7 @@
 package com.jdistance;
 
-import com.jdistance.distance.Distance;
-import com.jdistance.distance.Shortcuts;
+import com.jdistance.measure.Distance;
+import com.jdistance.measure.Shortcuts;
 import jeigen.DenseMatrix;
 import org.junit.Test;
 

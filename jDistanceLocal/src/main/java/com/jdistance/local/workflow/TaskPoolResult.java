@@ -1,6 +1,5 @@
 package com.jdistance.local.workflow;
 
-import com.jdistance.local.workflow.gridsearch.statistics.ClustersMeasureStatistics;
 import com.jdistance.local.adapter.GNUPlotAdapter;
 import com.panayotis.gnuplot.style.Smooth;
 import org.apache.commons.math.stat.descriptive.rank.Percentile;
@@ -11,7 +10,6 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class TaskPoolResult {
     private static final Logger log = LoggerFactory.getLogger(TaskPoolResult.class);
@@ -19,13 +17,11 @@ public class TaskPoolResult {
     private String name;
     private List<String> taskNames;
     private Map<String, Map<Double, Double>> data;
-    private Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics;
 
-    public TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data, Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics) {
+    public TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data) {
         this.name = name;
         this.taskNames = taskNames;
         this.data = data;
-        this.metricStatistics = metricStatistics;
     }
 
     public String getName() {
@@ -52,30 +48,6 @@ public class TaskPoolResult {
         return new Percentile().evaluate(data.get(taskName).values().stream()
                 .filter(i -> !i.isNaN())
                 .mapToDouble(i -> i).toArray(), quantile);
-    }
-
-    public TaskPoolResult addMeasuresStatisticsToData() {
-        log.info("Add metrics statistics to data...");
-        if (Context.getInstance().isCollectMetricStatistics()) {
-            List<String> newTaskNames = new ArrayList<>();
-            for (String taskName : taskNames) {
-                data.put(taskName + "_min", metricStatistics.get(taskName).entrySet().stream()
-                        .filter(e -> e.getValue().getMinValue() != null)
-                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getMinValue())));
-                data.put(taskName + "_max", metricStatistics.get(taskName).entrySet().stream()
-                        .filter(e -> e.getValue().getMaxValue() != null)
-                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getMaxValue())));
-                data.put(taskName + "_avg", metricStatistics.get(taskName).entrySet().stream()
-                        .filter(e -> e.getValue().getAvgValue() != null)
-                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getAvgValue())));
-                data.put(taskName + "_diagavg", metricStatistics.get(taskName).entrySet().stream()
-                        .filter(e -> e.getValue().getAvgDiagValue() != null)
-                        .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().getAvgDiagValue())));
-                newTaskNames.addAll(Arrays.asList(taskName + "_min", taskName + "_max", taskName + "_avg", taskName + "_diagavg"));
-            }
-            taskNames.addAll(newTaskNames);
-        }
-        return this;
     }
 
     public TaskPoolResult writeData() {

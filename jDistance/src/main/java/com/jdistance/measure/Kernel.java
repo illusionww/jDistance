@@ -1,4 +1,4 @@
-package com.jdistance.distance;
+package com.jdistance.measure;
 
 import jeigen.DenseMatrix;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.jdistance.distance.Shortcuts.*;
+import static com.jdistance.measure.Shortcuts.*;
 import static jeigen.Shortcuts.*;
 
 public enum Kernel {
@@ -71,10 +71,15 @@ public enum Kernel {
     SCCT_H("SCCT H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double alpha) {
-            DenseMatrix K_CT = pinv(getL(A));
-            DenseMatrix pinvD = pinv(diag(A.sumOverRows().t()));
-            DenseMatrix H = eye(A.cols).sub(ones(A.rows, A.cols).div(A.cols));
-            DenseMatrix K_CCT = K_CT.add(H.mmul(pinvD).mmul(A).mmul(pinvD).mmul(H));
+            DenseMatrix K_CCT = getH_CCT(A);
+            double sigma = new StandardDeviation().evaluate(K_CCT.getValues());
+            return K_CCT.mul(alpha/sigma).mexp().add(1.0).mul(0.1);
+        }
+    },
+    SCCT2_H("SCCT2 H", Scale.FRACTION, null) {
+        @Override
+        public DenseMatrix getK(DenseMatrix A, double alpha) {
+            DenseMatrix K_CCT = getH_CCT2(A);
             double sigma = new StandardDeviation().evaluate(K_CCT.getValues());
             return K_CCT.mul(alpha/sigma).mexp().add(1.0).mul(0.1);
         }
@@ -82,8 +87,24 @@ public enum Kernel {
     SP_CT_H("SP-CT H", Scale.LINEAR, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix Hs = normalize(DtoK(getD_ShortestPath(A)));
-            DenseMatrix Hc = normalize(getH_Resistance(getL(A)));
+            DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
+            DenseMatrix Hc = normalize(getH_R(A));
+            return Hs.mul(1 - lambda).add(Hc.mul(lambda));
+        }
+    },
+    SP_CCT_H("SP-CCT H", Scale.LINEAR, null) {
+        @Override
+        public DenseMatrix getK(DenseMatrix A, double lambda) {
+            DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
+            DenseMatrix Hc = normalize(getH_CCT(A));
+            return Hs.mul(1 - lambda).add(Hc.mul(lambda));
+        }
+    },
+    SP_CCT2_H("SP-CCT2 H", Scale.LINEAR, null) {
+        @Override
+        public DenseMatrix getK(DenseMatrix A, double lambda) {
+            DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
+            DenseMatrix Hc = normalize(getH_CCT2(A));
             return Hs.mul(1 - lambda).add(Hc.mul(lambda));
         }
     },
@@ -117,25 +138,25 @@ public enum Kernel {
 
     public static List<KernelWrapper> getDefaultKernels() {
         return Stream.of(
-                P_WALK_H, WALK_H, FOR_H, LOG_FOR_H, COMM_H, LOG_COMM_H, HEAT_H, LOG_HEAT_H, RSP_K, FE_K, SP_CT_H
+                P_WALK_H, WALK_H, FOR_H, LOG_FOR_H, COMM_H, LOG_COMM_H, HEAT_H, LOG_HEAT_H, SCT_H, SCCT_H, RSP_K, FE_K, SP_CT_H
         ).map(KernelWrapper::new).collect(Collectors.toList());
     }
 
     public static List<KernelWrapper> getAllH() {
         return Stream.of(
-                P_WALK_H, WALK_H, FOR_H, LOG_FOR_H, COMM_H, LOG_COMM_H, HEAT_H, LOG_HEAT_H, SP_CT_H
+                P_WALK_H, WALK_H, FOR_H, LOG_FOR_H, COMM_H, LOG_COMM_H, HEAT_H, LOG_HEAT_H, SCT_H, SCCT_H, SP_CT_H
         ).map(KernelWrapper::new).collect(Collectors.toList());
     }
 
     public static List<KernelWrapper> getAllK_exceptRSP_FE() {
         return Stream.of(
-                P_WALK_K, WALK_K, FOR_K, LOG_FOR_K, COMM_K, LOG_COMM_K, HEAT_K, LOG_HEAT_K, SP_CT_K
+                P_WALK_K, WALK_K, FOR_K, LOG_FOR_K, COMM_K, LOG_COMM_K, HEAT_K, LOG_HEAT_K, SCT_K, SCCT_K, SP_CT_K
         ).map(KernelWrapper::new).collect(Collectors.toList());
     }
 
     public static List<KernelWrapper> getAllK() {
         return Stream.of(
-                P_WALK_K, WALK_K, FOR_K, LOG_FOR_K, COMM_K, LOG_COMM_K, HEAT_K, LOG_HEAT_K, RSP_K, FE_K, SP_CT_K
+                P_WALK_K, WALK_K, FOR_K, LOG_FOR_K, COMM_K, LOG_COMM_K, HEAT_K, LOG_HEAT_K, SCT_K, SCCT_K, RSP_K, FE_K, SP_CT_K
         ).map(KernelWrapper::new).collect(Collectors.toList());
     }
 

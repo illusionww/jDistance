@@ -1,4 +1,4 @@
-package com.jdistance.distance;
+package com.jdistance.measure;
 
 import com.keithschwarz.johnsons.JohnsonsAlgorithm;
 import jeigen.DenseMatrix;
@@ -54,17 +54,35 @@ public class Shortcuts {
     }
 
     // Johnson's Algorithm
-    public static DenseMatrix getD_ShortestPath(DenseMatrix A) {
+    public static DenseMatrix getD_SP(DenseMatrix A) {
         return JohnsonsAlgorithm.getAllShortestPaths(A);
     }
 
     // H = (L + J)^{-1}
-    public static DenseMatrix getH_Resistance(DenseMatrix L) {
+    public static DenseMatrix getH_R(DenseMatrix A) {
+        DenseMatrix L = getL(A);
         int d = L.cols;
         double j = 1.0 / d;
         DenseMatrix J = ones(d, d).mul(j);
         DenseMatrix ins = L.add(J);
         return pinv(ins);
+    }
+
+    public static DenseMatrix getH_CCT(DenseMatrix A) {
+        DenseMatrix H_CT = pinv(getL(A));
+        DenseMatrix pinvD = pinv(diag(A.sumOverRows().t()));
+        DenseMatrix H = eye(A.cols).sub(ones(A.rows, A.cols).div(A.cols));
+        return H_CT.add(H.mmul(pinvD).mmul(A).mmul(pinvD).mmul(H));
+    }
+
+    public static DenseMatrix getH_CCT2(DenseMatrix A) {
+        DenseMatrix I = eye(A.cols);
+        DenseMatrix d = A.sumOverRows().t();
+        DenseMatrix D05 = diag(pow(d, -0.5));
+        DenseMatrix H = eye(A.cols).sub(ones(A.rows, A.cols).div(A.cols));
+        double volG = A.sumOverCols().sumOverRows().s();
+        DenseMatrix M = D05.mmul(A.sub(d.mmul(d.t()).div(volG))).mmul(D05);
+        return H.mmul(D05).mmul(M).mmul(pinv(I.sub(M))).mmul(M).mmul(D05).mmul(H);
     }
 
     static DenseMatrix getD_RSP(DenseMatrix A, double beta) {
@@ -130,6 +148,10 @@ public class Shortcuts {
         return elementWise(A, Math::exp);
     }
 
+    public static DenseMatrix pow(DenseMatrix A, double degree) {
+        return elementWise(A, item -> Math.pow(item, degree));
+    }
+
     private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
         double[] values = A.getValues();
         DenseMatrix newA = new DenseMatrix(A.rows, A.cols);
@@ -146,14 +168,6 @@ public class Shortcuts {
             diag.set(i, values[i * (A.cols + 1)]);
         }
         return diag;
-    }
-
-    public static double[][] toArray2(DenseMatrix dm) {
-        double[][] values = new double[dm.cols][dm.rows];
-        for (int i = 0; i < dm.cols; i++) {
-            System.arraycopy(dm.getValues(), i * dm.rows, values[i], 0, dm.rows);
-        }
-        return values;
     }
 
     private static DenseMatrix NaNPolice(DenseMatrix D) {

@@ -1,7 +1,7 @@
 package com.jdistance.local.competitions;
 
-import com.jdistance.distance.AbstractMeasureWrapper;
-import com.jdistance.distance.Distance;
+import com.jdistance.measure.AbstractMeasureWrapper;
+import com.jdistance.measure.Distance;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;

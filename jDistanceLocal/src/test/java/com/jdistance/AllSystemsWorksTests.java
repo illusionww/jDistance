@@ -8,8 +8,8 @@ import com.jdistance.local.workflow.Task;
 import com.jdistance.local.workflow.TaskPool;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.clustering.Ward;
-import com.jdistance.distance.Distance;
-import com.jdistance.distance.DistanceWrapper;
+import com.jdistance.measure.Distance;
+import com.jdistance.measure.DistanceWrapper;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -93,56 +93,6 @@ public enum Scorer {
         public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             return ab_score.score(D, nodes, predictedNodes);
         }
-    },
-    DIFFUSION_CARDINAL_CONTROL("Diff cardinal control") {
-        private AB_score ab_score = new AB_score() {
-            @Override
-            public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
-                Double score = super.score(D, nodes, predictedNodes);
-                return score != 0.0 ? score : 0.5;
-            }
-
-            @Override
-            protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
-                Double h = 0.0;
-                if (nodeA1.getLabel() == nodeA2.getLabel() && nodeB1.getLabel() != nodeB2.getLabel()) {
-                    h = D.get(b1, b2) - D.get(a1, a2);
-                } else if (nodeA1.getLabel() != nodeA2.getLabel() && nodeB1.getLabel() == nodeB2.getLabel()) {
-                    h = D.get(a1, a2) - D.get(b1, b2);
-                }
-                return new ImmutablePair<>(Math.signum(h) + 1.0, 2.0);
-            }
-        };
-
-        @Override
-        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
-            return ab_score.score(D, nodes, predictedNodes);
-        }
-    },
-    DIFFUSION_CARDINAL_WITHOUT_SQRT("Diff cardinal no sqrt") {
-        private AB_score ab_score = new AB_score() {
-            @Override
-            public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
-                Double score = super.score(D, nodes, predictedNodes);
-                return score != 0.0 ? score : 0.5;
-            }
-
-            @Override
-            protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
-                Double h = 0.0;
-                if (nodeA1.getLabel() == nodeA2.getLabel() && nodeB1.getLabel() != nodeB2.getLabel()) {
-                    h = D.get(b1, b2) - D.get(a1, a2);
-                } else if (nodeA1.getLabel() != nodeA2.getLabel() && nodeB1.getLabel() == nodeB2.getLabel()) {
-                    h = D.get(a1, a2) - D.get(b1, b2);
-                }
-                return new ImmutablePair<>((Math.signum(h) + 1.0) * Math.abs(h), 2.0 * Math.abs(h));
-            }
-        };
-
-        @Override
-        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
-            return ab_score.score(D, nodes, predictedNodes);
-        }
     };
 
     private String name;

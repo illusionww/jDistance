@@ -1,10 +1,9 @@
 package com.jdistance.local.workflow;
 
-import com.jdistance.distance.AbstractMeasureWrapper;
+import com.jdistance.measure.AbstractMeasureWrapper;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
-import com.jdistance.local.workflow.gridsearch.statistics.ClustersMeasureStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -97,8 +96,6 @@ public class TaskPool {
                 .collect(Collectors.toList());
         Map<String, Map<Double, Double>> data = tasks.stream()
                 .collect(Collectors.toMap(Task::getName, task -> task.getGridSearch().getScores()));
-        Map<String, Map<Double, ClustersMeasureStatistics>> metricStatistics = tasks.stream()
-                .collect(Collectors.toMap(Task::getName, task -> task.getGridSearch().getMetricStatistics()));
-        return new TaskPoolResult(name, taskNames, data, metricStatistics);
+        return new TaskPoolResult(name, taskNames, data);
     }
 }
