@@ -1,25 +1,25 @@
 package com.jdistance;
 
-import jeigen.DenseMatrix;
+import org.jblas.DoubleMatrix;
 
 import java.util.function.BiFunction;
 
 public class TestHelperLib {
-    public final static DenseMatrix chainGraph = new DenseMatrix(new double[][]{
+    public final static DoubleMatrix chainGraph = new DoubleMatrix(new double[][]{
             {0, 1, 0, 0},
             {1, 0, 1, 0},
             {0, 1, 0, 1},
             {0, 0, 1, 0}
     });
 
-    public final static DenseMatrix triangleGraph = new DenseMatrix(new double[][]{
+    public final static DoubleMatrix triangleGraph = new DoubleMatrix(new double[][]{
             {0, 1, 0, 0},
             {1, 0, 1, 1},
             {0, 1, 0, 1},
             {0, 1, 1, 0}
     });
 
-    public final static DenseMatrix fullGraph = new DenseMatrix(new double[][]{
+    public final static DoubleMatrix fullGraph = new DoubleMatrix(new double[][]{
             {0, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 1, 0, 1, 1, 1, 1, 1, 1, 1},
@@ -32,7 +32,7 @@ public class TestHelperLib {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 0}
     });
 
-    public final static DenseMatrix treeMatrix = new DenseMatrix(new double[][]{
+    public final static DoubleMatrix treeMatrix = new DoubleMatrix(new double[][]{
             {0, 1, 1, 0, 0, 0, 0, 0, 0, 0},
             {1, 0, 0, 1, 0, 0, 0, 0, 0, 0},
             {1, 0, 0, 0, 1, 1, 0, 0, 0, 0},
@@ -45,7 +45,7 @@ public class TestHelperLib {
             {0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
     });
 
-    public final static DenseMatrix diplomaMatrix = new DenseMatrix(new double[][]{
+    public final static DoubleMatrix diplomaMatrix = new DoubleMatrix(new double[][]{
             {0, 1, 1, 0, 0, 0},
             {1, 0, 1, 0, 0, 0},
             {1, 1, 0, 1, 1, 0},
@@ -87,10 +87,10 @@ public class TestHelperLib {
         return true;
     }
 
-    public static double[][] toArray2(DenseMatrix dm) {
-        double[] values = dm.getValues();
-        double[][] newValues = new double[dm.cols][dm.rows];
-        for (int i = 0; i < dm.cols; i++) {
+    public static double[][] toArray2(DoubleMatrix dm) {
+        double[] values = dm.toArray();
+        double[][] newValues = new double[dm.columns][dm.rows];
+        for (int i = 0; i < dm.columns; i++) {
             System.arraycopy(values, i * dm.rows, newValues[i], 0, dm.rows);
         }
         return newValues;

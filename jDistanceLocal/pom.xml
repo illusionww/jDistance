@@ -34,16 +34,14 @@
             <version>1.7.12</version>
         </dependency>
         <dependency>
-            <groupId>net.java.dev.jna</groupId>
-            <artifactId>jna</artifactId>
-            <version>4.2.0</version>
+            <groupId>org.jblas</groupId>
+            <artifactId>jblas</artifactId>
+            <version>1.2.4</version>
         </dependency>
         <dependency>
-            <groupId>Jeigen-onefat</groupId>
-            <artifactId>Jeigen-onefat</artifactId>
-            <version>1.2</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/../lib/Jeigen-onefat.jar</systemPath>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-math</artifactId>
+            <version>2.2</version>
         </dependency>
         <dependency>
             <groupId>JavaPlot</groupId>
@@ -68,11 +66,6 @@
             <artifactId>junit</artifactId>
             <version>4.12</version>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-math</artifactId>
-            <version>2.2</version>
         </dependency>
     </dependencies>
 </project>

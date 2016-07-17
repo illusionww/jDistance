@@ -2,7 +2,7 @@ package com.jdistance;
 
 import com.jdistance.measure.Distance;
 import com.jdistance.measure.Shortcuts;
-import jeigen.DenseMatrix;
+import org.jblas.DoubleMatrix;
 import org.junit.Test;
 
 import static com.jdistance.TestHelperLib.*;
@@ -16,8 +16,8 @@ public class MetricsBoundariesComparisonTests {
         Distance distance = Distance.SP_CT;
         double[][] SP = toArray2(distance.getD(chainGraph, 0));
         double[][] CT = toArray2(distance.getD(chainGraph, 1));
-        for (int i = 0; i < chainGraph.cols; i++) {
-            for (int j = 0; j < chainGraph.cols; j++) {
+        for (int i = 0; i < chainGraph.columns; i++) {
+            for (int j = 0; j < chainGraph.columns; j++) {
                 assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
                         equalDoubleStrict(SP[i][j], CT[i][j]));
             }
@@ -35,12 +35,12 @@ public class MetricsBoundariesComparisonTests {
                 bigChain[i][i - 1] = 1.0;
             }
         }
-        DenseMatrix chainGraph = new DenseMatrix(bigChain);
+        DoubleMatrix chainGraph = new DoubleMatrix(bigChain);
         Distance distance = Distance.SP_CT;
         double[][] SP = toArray2(distance.getD(chainGraph, 0));
         double[][] CT = toArray2(distance.getD(chainGraph, 1));
-        for (int i = 0; i < chainGraph.cols; i++) {
-            for (int j = 0; j < chainGraph.cols; j++) {
+        for (int i = 0; i < chainGraph.columns; i++) {
+            for (int j = 0; j < chainGraph.columns; j++) {
                 assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
                         equalDoubleStrict(SP[i][j], CT[i][j]));
             }
@@ -53,8 +53,8 @@ public class MetricsBoundariesComparisonTests {
         double[][] SP = toArray2(distance.getD(fullGraph, 0));
         double[][] CT = toArray2(distance.getD(fullGraph, 1));
 
-        for (int i = 0; i < fullGraph.cols; i++) {
-            for (int j = 0; j < fullGraph.cols; j++) {
+        for (int i = 0; i < fullGraph.columns; i++) {
+            for (int j = 0; j < fullGraph.columns; j++) {
                 assertTrue("SP and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", CT=" + CT[i][j],
                         equalDoubleStrict(SP[i][j], CT[i][j]));
             }
@@ -63,15 +63,15 @@ public class MetricsBoundariesComparisonTests {
 
     @Test
     public void testFullGraphSPLogForWalkEquality() {
-        DenseMatrix graph = fullGraph;
+        DoubleMatrix graph = fullGraph;
         Double parameter = 0.000001;
 
         double[][] SP = toArray2(Shortcuts.normalize(Distance.SP_CT.getD(graph, parameter)));
         double[][] logFor = toArray2(Shortcuts.normalize(Distance.LOG_FOR.getD(graph, parameter)));
         double[][] Walk = toArray2(Shortcuts.normalize(Distance.WALK.getD(graph, parameter)));
 
-        for (int i = 0; i < chainGraph.cols; i++) {
-            for (int j = 0; j < chainGraph.cols; j++) {
+        for (int i = 0; i < chainGraph.columns; i++) {
+            for (int j = 0; j < chainGraph.columns; j++) {
                 assertTrue("SP, logFor and CT distance not equal: (" + i + ", " + j + ") SP=" + SP[i][j] + ", logFor=" + logFor[i][j] + ", Walk=" + Walk[i][j],
                         equalDoubleStrict(SP[i][j], logFor[i][j]) && equalDoubleStrict(SP[i][j], Walk[i][j]));
             }

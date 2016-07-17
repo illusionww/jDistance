@@ -3,7 +3,7 @@ package com.jdistance;
 import com.jdistance.measure.Distance;
 import com.jdistance.measure.DistanceWrapper;
 import com.jdistance.measure.Scale;
-import jeigen.DenseMatrix;
+import org.jblas.DoubleMatrix;
 import org.junit.Test;
 
 import java.util.Arrays;
@@ -30,8 +30,8 @@ public class MetricsCommonTests {
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
                 Double base = from + idx * step;
                 Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.calc(chainGraph, i);
-                for (double item : result.getValues()) {
+                DoubleMatrix result = metric.calc(chainGraph, i);
+                for (double item : result.toArray()) {
                     assertTrue(metric.getName() + ", parameter = " + i + ":  matrix element less than zero or NaN:\n" + result, item >= 0);
                 }
             });
@@ -50,7 +50,7 @@ public class MetricsCommonTests {
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
                 Double base = from + idx * step;
                 Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.getD(chainGraph, i);
+                DoubleMatrix result = metric.getD(chainGraph, i);
                 double resultArray[][] = toArray2(result);
                 int d = resultArray.length;
                 for (int j = 1; j < d - 1; j++) {
@@ -75,7 +75,7 @@ public class MetricsCommonTests {
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
                 Double base = from + idx * step;
                 Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.getD(chainGraph, i);
+                DoubleMatrix result = metric.getD(chainGraph, i);
                 double resultArray[][] = toArray2(result);
                 for (int j = 0; j < resultArray.length; j++) {
                     assertTrue(metric.getName() + ", parameter = " + i + " diagonal not zero:\n" + result, resultArray[j][j] == 0);

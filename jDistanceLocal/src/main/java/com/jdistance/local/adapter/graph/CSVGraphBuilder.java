@@ -3,7 +3,7 @@ package com.jdistance.local.adapter.graph;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
-import jeigen.DenseMatrix;
+import org.jblas.DoubleMatrix;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class CSVGraphBuilder {
     private String name;
     private List<Node> nodes;
-    private DenseMatrix A;
+    private DoubleMatrix A;
 
     public CSVGraphBuilder setName(String name) {
         this.name = name;
@@ -74,11 +74,11 @@ public class CSVGraphBuilder {
                 }
                 nodes.add(new Node(Integer.valueOf(rawNode[0]), indexOf));
             }
-            A = DenseMatrix.zeros(count, count);
+            A = DoubleMatrix.zeros(count, count);
             for (int i = count + 2; i < lines.size() - 1; i++) {
                 String[] rawEdge = lines.get(i).split(" ");
-                A.set(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
-                A.set(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
+                A.put(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
+                A.put(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
             }
         }
         return this;
@@ -86,12 +86,12 @@ public class CSVGraphBuilder {
 
     public CSVGraphBuilder importEdgesList(String edgesFile) throws IOException {
         int count = nodes.size();
-        A = DenseMatrix.zeros(count, count);
+        A = DoubleMatrix.zeros(count, count);
         try (Stream<String> stream = Files.lines(Paths.get(edgesFile))) {
             stream.forEach(line -> {
                 String[] rawEdge = line.split("[\t;]");
-                A.set(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
-                A.set(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
+                A.put(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
+                A.put(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
             });
         }
         return this;
@@ -99,7 +99,7 @@ public class CSVGraphBuilder {
 
     public CSVGraphBuilder importAdjacencyMatrix(String edgesFile) throws IOException {
         int count = nodes.size();
-        A = DenseMatrix.zeros(count, count);
+        A = DoubleMatrix.zeros(count, count);
         List<Double> rawSparseMatrix = new ArrayList<>();
         try (Stream<String> stream = Files.lines(Paths.get(edgesFile))) {
             stream.forEach(line -> {
@@ -110,7 +110,7 @@ public class CSVGraphBuilder {
             });
         }
         for (int i = 0; i < rawSparseMatrix.size(); i++) {
-            A.set(i, rawSparseMatrix.get(i));
+            A.put(i, rawSparseMatrix.get(i));
         }
         return this;
     }

@@ -1,13 +1,12 @@
 package com.jdistance.learning;
 
-import jeigen.DenseMatrix;
+import org.jblas.DoubleMatrix;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 public interface Estimator extends Serializable {
     String getName();
 
-    Map<Integer, Integer> predict(DenseMatrix D);
+    Map<Integer, Integer> predict(DoubleMatrix D);
 }

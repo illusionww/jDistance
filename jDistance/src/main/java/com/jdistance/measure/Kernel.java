@@ -1,7 +1,7 @@
 package com.jdistance.measure;
 
-import jeigen.DenseMatrix;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
+import org.jblas.DoubleMatrix;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,102 +9,105 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static com.jdistance.measure.Shortcuts.*;
-import static jeigen.Shortcuts.*;
+import static org.jblas.DoubleMatrix.eye;
+import static org.jblas.MatrixFunctions.expm;
+import static org.jblas.Solve.pinv;
 
 public enum Kernel {
     P_WALK_H("pWalk H", Scale.RHO, null) { // H0 = (I - tA)^{-1}
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            return pinv(eye(A.cols).sub(A.mul(t)));
+        public DoubleMatrix getK(DoubleMatrix A, double t) {
+            return pinv(eye(A.columns).sub(A.mul(t)));
         }
     },
     WALK_H("Walk H", Scale.RHO, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
+        public DoubleMatrix getK(DoubleMatrix A, double t) {
             return H0toH(P_WALK_H.getK(A, t));
         }
     },
     FOR_H("For H", Scale.FRACTION, null) { // H0 = (I + tL)^{-1}
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            return pinv(eye(A.cols).add(getL(A).mul(t)));
+        public DoubleMatrix getK(DoubleMatrix A, double t) {
+            return pinv(eye(A.columns).add(getL(A).mul(t)));
         }
     },
     LOG_FOR_H("logFor H", Scale.FRACTION, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
+        public DoubleMatrix getK(DoubleMatrix A, double t) {
             return H0toH(FOR_H.getK(A, t));
         }
     },
     COMM_H("Comm H", Scale.FRACTION, null) { // H0 = exp(tA)
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            return A.mul(t).mexp();
+        public DoubleMatrix getK(DoubleMatrix A, double t) {
+            return expm(A.mul(t));
         }
     },
     LOG_COMM_H("logComm H", Scale.FRACTION, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
+        public DoubleMatrix getK(DoubleMatrix A, double t) {
             return H0toH(COMM_H.getK(A, t));
         }
     },
     HEAT_H("Heat H", Scale.FRACTION, null) { // H0 = exp(-tL)
+
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            return getL(A).mul(-t).mexp();
+        public DoubleMatrix getK(DoubleMatrix A, double t) {
+            return expm(getL(A).mul(-t));
         }
     },
     LOG_HEAT_H("logHeat H", Scale.FRACTION, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
+        public DoubleMatrix getK(DoubleMatrix A, double t) {
             return H0toH(HEAT_H.getK(A, t));
         }
     },
     SCT_H("SCT H", Scale.FRACTION, null) { // H = 1/(1 + exp(-αL+/σ))
         @Override
-        public DenseMatrix getK(DenseMatrix A, double alpha) {
-            DenseMatrix K_CT = pinv(getL(A));
-            double sigma = new StandardDeviation().evaluate(K_CT.getValues());
-            return K_CT.mul(alpha/sigma).mexp().add(1.0).mul(0.1);
+        public DoubleMatrix getK(DoubleMatrix A, double alpha) {
+            DoubleMatrix K_CT = pinv(getL(A));
+            double sigma = new StandardDeviation().evaluate(K_CT.toArray());
+            return expm(K_CT.mul(alpha / sigma)).add(1.0).mul(0.1);
         }
     },
     SCCT_H("SCCT H", Scale.FRACTION, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double alpha) {
-            DenseMatrix K_CCT = getH_CCT(A);
-            double sigma = new StandardDeviation().evaluate(K_CCT.getValues());
-            return K_CCT.mul(alpha/sigma).mexp().add(1.0).mul(0.1);
+        public DoubleMatrix getK(DoubleMatrix A, double alpha) {
+            DoubleMatrix K_CCT = getH_CCT(A);
+            double sigma = new StandardDeviation().evaluate(K_CCT.toArray());
+            return expm(K_CCT.mul(alpha / sigma)).add(1.0).mul(0.1);
         }
     },
     SCCT2_H("SCCT2 H", Scale.FRACTION, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double alpha) {
-            DenseMatrix K_CCT = getH_CCT2(A);
-            double sigma = new StandardDeviation().evaluate(K_CCT.getValues());
-            return K_CCT.mul(alpha/sigma).mexp().add(1.0).mul(0.1);
+        public DoubleMatrix getK(DoubleMatrix A, double alpha) {
+            DoubleMatrix K_CCT = getH_CCT2(A);
+            double sigma = new StandardDeviation().evaluate(K_CCT.toArray());
+            return expm(K_CCT.mul(alpha / sigma)).add(1.0).mul(0.1);
         }
     },
     SP_CT_H("SP-CT H", Scale.LINEAR, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
-            DenseMatrix Hc = normalize(getH_R(A));
+        public DoubleMatrix getK(DoubleMatrix A, double lambda) {
+            DoubleMatrix Hs = normalize(DtoK(getD_SP(A)));
+            DoubleMatrix Hc = normalize(getH_R(A));
             return Hs.mul(1 - lambda).add(Hc.mul(lambda));
         }
     },
     SP_CCT_H("SP-CCT H", Scale.LINEAR, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
-            DenseMatrix Hc = normalize(getH_CCT(A));
+        public DoubleMatrix getK(DoubleMatrix A, double lambda) {
+            DoubleMatrix Hs = normalize(DtoK(getD_SP(A)));
+            DoubleMatrix Hc = normalize(getH_CCT(A));
             return Hs.mul(1 - lambda).add(Hc.mul(lambda));
         }
     },
     SP_CCT2_H("SP-CCT2 H", Scale.LINEAR, null) {
         @Override
-        public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
-            DenseMatrix Hc = normalize(getH_CCT2(A));
+        public DoubleMatrix getK(DoubleMatrix A, double lambda) {
+            DoubleMatrix Hs = normalize(DtoK(getD_SP(A)));
+            DoubleMatrix Hc = normalize(getH_CCT2(A));
             return Hs.mul(1 - lambda).add(Hc.mul(lambda));
         }
     },
@@ -168,8 +171,8 @@ public enum Kernel {
         return scale;
     }
 
-    public DenseMatrix getK(DenseMatrix A, double t) {
-        DenseMatrix distance = parentDistance.getD(A, t);
+    public DoubleMatrix getK(DoubleMatrix A, double t) {
+        DoubleMatrix distance = parentDistance.getD(A, t);
         return DtoK(distance);
     }
 

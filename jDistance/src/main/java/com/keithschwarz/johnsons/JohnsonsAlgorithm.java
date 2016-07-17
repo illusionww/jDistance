@@ -1,10 +1,10 @@
 package com.keithschwarz.johnsons;
 
-import jeigen.DenseMatrix;
+import org.jblas.DoubleMatrix;
 
 public class JohnsonsAlgorithm {
-    public static DenseMatrix getAllShortestPaths(DenseMatrix A) {
-        int d = A.cols;
+    public static DoubleMatrix getAllShortestPaths(DoubleMatrix A) {
+        int d = A.columns;
         DirectedGraph<Integer> graph = new DirectedGraph<>();
         for (int i = 0; i < d; i++) {
             graph.addNode(i);
@@ -19,10 +19,10 @@ public class JohnsonsAlgorithm {
 
         DirectedGraph<Integer> out = Johnson.shortestPaths(graph);
 
-        DenseMatrix D = new DenseMatrix(d, d);
+        DoubleMatrix D = new DoubleMatrix(d, d);
         for (int i = 0; i < d; i++) {
             int from = i;
-            out.edgesFrom(from).forEach((to, cost) -> D.set(from, to, cost.floatValue()));
+            out.edgesFrom(from).forEach((to, cost) -> D.put(from, to, cost.floatValue()));
         }
 
         return D;
