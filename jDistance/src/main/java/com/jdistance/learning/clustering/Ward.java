@@ -1,7 +1,7 @@
 package com.jdistance.learning.clustering;
 
 import com.jdistance.learning.Estimator;
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -20,13 +20,13 @@ public class Ward implements Estimator {
         return "Ward";
     }
 
-    public Map<Integer, Integer> predict(DoubleMatrix K) {
-        List<Cluster> clusters = new LinkedList<>(IntStream.range(0, K.columns)
-                .mapToObj(i -> new Cluster(Collections.singletonList(i), K.columns))
+    public Map<Integer, Integer> predict(DenseMatrix K) {
+        List<Cluster> clusters = new LinkedList<>(IntStream.range(0, K.cols)
+                .mapToObj(i -> new Cluster(Collections.singletonList(i), K.cols))
                 .collect(Collectors.toList()));
         Map<Pair<Cluster, Cluster>, Double> ΔJ = new HashMap<>();
 
-        for (int i = 0; i < K.columns - nClusters; i++) {
+        for (int i = 0; i < K.cols - nClusters; i++) {
             iteration(K, clusters, ΔJ);
         }
 
@@ -39,7 +39,7 @@ public class Ward implements Estimator {
         return result;
     }
 
-    private void iteration(DoubleMatrix K, List<Cluster> clusters, Map<Pair<Cluster, Cluster>, Double> ΔJ) {
+    private void iteration(DenseMatrix K, List<Cluster> clusters, Map<Pair<Cluster, Cluster>, Double> ΔJ) {
         Cluster minCk = null;
         Cluster minCl = null;
         double minΔJ = Double.MAX_VALUE;
@@ -61,7 +61,7 @@ public class Ward implements Estimator {
         merge(K, clusters, minCk, minCl);
     }
 
-    private void merge(DoubleMatrix K, List<Cluster> clusters, Cluster Ck, Cluster Cl) {
+    private void merge(DenseMatrix K, List<Cluster> clusters, Cluster Ck, Cluster Cl) {
         List<Integer> union = new ArrayList<>(Ck.nodes);
         union.addAll(Cl.nodes);
         clusters.remove(Cl);
@@ -70,10 +70,10 @@ public class Ward implements Estimator {
     }
 
     // ΔJ = (n_k * n_l)/(n_k + n_l) * (h_k - h_l)^T * K * (h_k - h_l)
-    private double calcΔJ(DoubleMatrix K, Map<Pair<Cluster, Cluster>, Double> ΔJ, Cluster Ck, Cluster Cl) {
+    private double calcΔJ(DenseMatrix K, Map<Pair<Cluster, Cluster>, Double> ΔJ, Cluster Ck, Cluster Cl) {
         double norm = Ck.n * Cl.n / (double) (Ck.n + Cl.n);
-        DoubleMatrix hkhl = (Ck.h).sub(Cl.h);
-        double currentΔJ = hkhl.transpose().mmul(K).mmul(hkhl).mul(norm).scalar();
+        DenseMatrix hkhl = (Ck.h).sub(Cl.h);
+        double currentΔJ = hkhl.t().mmul(K).mmul(hkhl).mul(norm).s();
         ΔJ.put(new ImmutablePair<>(Ck, Cl), currentΔJ);
         return currentΔJ;
     }

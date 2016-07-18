@@ -1,14 +1,14 @@
 package com.jdistance.local.competitions;
 
+import com.jdistance.measure.AbstractMeasureWrapper;
+import com.jdistance.measure.Distance;
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Node;
 import com.jdistance.local.workflow.Context;
-import com.jdistance.measure.AbstractMeasureWrapper;
-import com.jdistance.measure.Distance;
+import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import org.jblas.DoubleMatrix;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -26,7 +26,7 @@ public class RejectCurve {
     }
 
     public Map<Double, Double> calcCurve(AbstractMeasureWrapper wrapper, Double param, Graph graph, Integer pointsCount) {
-        DoubleMatrix D = wrapper.calc(graph.getA(), wrapper.getScale().calc(graph.getA(), param));
+        DenseMatrix D = wrapper.calc(graph.getA(), wrapper.getScale().calc(graph.getA(), param));
         D = D.mul(-1);
 
         List<Pair<Integer, Integer>> sameClusterPairs = new ArrayList<>();
@@ -45,8 +45,8 @@ public class RejectCurve {
         int sameClusterPairsSize = sameClusterPairs.size();
         int diffClusterPairsSize = diffClusterPairs.size();
 
-        double min = Arrays.stream(D.toArray()).filter(i -> i != 0).min().orElse(0);
-        double max = Arrays.stream(D.toArray()).filter(i -> !new Double(i).isInfinite()).max().getAsDouble();
+        double min = Arrays.stream(D.getValues()).filter(i -> i != 0).min().orElse(0);
+        double max = Arrays.stream(D.getValues()).filter(i -> !new Double(i).isInfinite()).max().getAsDouble();
         double step = (max - min) / (pointsCount - 1);
 
         Map<Double, Double> curve = new HashMap<>();
@@ -71,10 +71,10 @@ public class RejectCurve {
     }
 
     public void writeDistributionBySP(Graph graph) {
-        DoubleMatrix D = Distance.SP_CT.getD(graph.getA(), 0);
+        DenseMatrix D = Distance.SP_CT.getD(graph.getA(), 0);
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(Context.getInstance().buildOutputDataFullName("distances", "csv")))) {
             outputWriter.write("distance\n");
-            for (int i = 0; i < D.columns; i++) {
+            for (int i = 0; i < D.cols; i++) {
                 for (int j = i + 1; j < D.rows; j++) {
                     outputWriter.write(Double.toString(D.get(i, j)) + "\n");
                 }
@@ -115,7 +115,7 @@ public class RejectCurve {
 
     public void writeVerticesDegrees(Graph graph) {
         Map<Integer, Double> degrees = new TreeMap<>();
-        for (int i = 0; i < graph.getA().columns; i++) {
+        for (int i = 0; i < graph.getA().cols; i++) {
             Double degree = 0.0;
             for (int j = 0; j < graph.getA().rows; j++) {
                 if (i != j && graph.getA().get(i, j) > 0) {
@@ -168,9 +168,9 @@ public class RejectCurve {
         }
     }
 
-    public void writeVerticesDegreesWithoutRepeat(DoubleMatrix A, List<Node> nodes) {
+    public void writeVerticesDegreesWithoutRepeat(DenseMatrix A, List<Node> nodes) {
         Map<Integer, Double> degrees = new TreeMap<>();
-        for (int i = 0; i < A.columns; i++) {
+        for (int i = 0; i < A.cols; i++) {
             Double degree = 0.0;
             for (int j = 0; j < A.rows; j++) {
                 if (i != j && A.get(i, j) > 0) {
@@ -190,8 +190,8 @@ public class RejectCurve {
 
         List<Pair<Integer, Integer>> sameClusterPairs = new ArrayList<>();
         List<Pair<Integer, Integer>> diffClusterPairs = new ArrayList<>();
-        for (int i = 0; i < A.columns; i++) {
-            for (int j = i + 1; j < A.columns; j++) {
+        for (int i = 0; i < A.cols; i++) {
+            for (int j = i + 1; j < A.cols; j++) {
                 if (A.get(i, j) > 0) {
                     Node node1 = nodes.get(i);
                     Node node2 = nodes.get(j);

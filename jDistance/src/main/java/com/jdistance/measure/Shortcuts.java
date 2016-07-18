@@ -1,183 +1,181 @@
 package com.jdistance.measure;
 
 import com.keithschwarz.johnsons.JohnsonsAlgorithm;
-import org.jblas.ComplexDoubleMatrix;
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 
-import static org.jblas.DoubleMatrix.*;
-import static org.jblas.MatrixFunctions.exp;
-import static org.jblas.MatrixFunctions.log;
-import static org.jblas.MatrixFunctions.pow;
-import static org.jblas.Solve.pinv;
+import java.util.function.UnaryOperator;
+
+import static jeigen.Shortcuts.*;
 
 public class Shortcuts {
-    public static DoubleMatrix getL(DoubleMatrix A) {
-        return diag(sumOverRows(A).transpose()).sub(A);
+    public static DenseMatrix getL(DenseMatrix A) {
+        return diag(A.sumOverRows().t()).sub(A);
     }
 
-    public static DoubleMatrix normalize(DoubleMatrix dm) {
-        double deviation = new StandardDeviation().evaluate(dm.toArray());
+    public static DenseMatrix normalize(DenseMatrix dm) {
+        double deviation = new StandardDeviation().evaluate(dm.getValues());
         return dm.div(deviation);
     }
 
+    static DenseMatrix pinv(DenseMatrix A) {
+        if (A.cols != A.rows) {
+            throw new RuntimeException("pinv matrix size error: must be square matrix");
+        }
+        for (double item : A.getValues()) {
+            if (Double.isNaN(item)) {
+                return DenseMatrix.ones(A.cols, A.rows).mul(Double.NaN);
+            }
+        }
+        return A.fullPivHouseholderQRSolve(diag(ones(A.cols, 1)));
+    }
+
     // H = element-wise log(H0)
-    static DoubleMatrix H0toH(DoubleMatrix H0) {
-        DoubleMatrix H = log(H0);
+    static DenseMatrix H0toH(DenseMatrix H0) {
+        DenseMatrix H = log(H0);
         return NaNPolice(H);
     }
 
     // D = (h*1^{T} + 1*h^{T} - H - H^T)/2
-    public static DoubleMatrix HtoD(DoubleMatrix H) {
-        int d = H.columns;
-        DoubleMatrix h = diagToVector(H);
-        DoubleMatrix i = ones(d, 1);
-        DoubleMatrix D = h.mmul(i.transpose()).add(i.mmul(h.transpose())).sub(H).sub(H.transpose()).div(2);
+    public static DenseMatrix HtoD(DenseMatrix H) {
+        int d = H.cols;
+        DenseMatrix h = diagToVector(H);
+        DenseMatrix i = DenseMatrix.ones(d, 1);
+        DenseMatrix D = h.mmul(i.t()).add(i.mmul(h.t())).sub(H).sub(H.t()).div(2);
         return NaNPolice(D);
     }
 
     // K = -1/2 HΔH
-    public static DoubleMatrix DtoK(DoubleMatrix D) {
+    public static DenseMatrix DtoK(DenseMatrix D) {
         int size = D.rows;
-        DoubleMatrix H = DoubleMatrix.eye(size).sub(ones(size, size).div(size));
-        DoubleMatrix K = H.mmul(D).mmul(H).mul(-0.5);
+        DenseMatrix H = DenseMatrix.eye(size).sub(DenseMatrix.ones(size, size).div(size));
+        DenseMatrix K = H.mmul(D).mmul(H).mul(-0.5);
         return NaNPolice(K);
     }
 
     // Johnson's Algorithm
-    public static DoubleMatrix getD_SP(DoubleMatrix A) {
+    public static DenseMatrix getD_SP(DenseMatrix A) {
         return JohnsonsAlgorithm.getAllShortestPaths(A);
     }
 
     // H = (L + J)^{-1}
-    public static DoubleMatrix getH_R(DoubleMatrix A) {
-        DoubleMatrix L = getL(A);
-        int d = L.columns;
+    public static DenseMatrix getH_R(DenseMatrix A) {
+        DenseMatrix L = getL(A);
+        int d = L.cols;
         double j = 1.0 / d;
-        DoubleMatrix J = ones(d, d).mul(j);
-        DoubleMatrix ins = L.add(J);
+        DenseMatrix J = ones(d, d).mul(j);
+        DenseMatrix ins = L.add(J);
         return pinv(ins);
     }
 
-    public static DoubleMatrix getH_CCT(DoubleMatrix A) {
-        DoubleMatrix H_CT = pinv(getL(A));
-        DoubleMatrix pinvD = pinv(diag(sumOverRows(A).transpose()));
-        DoubleMatrix H = eye(A.columns).sub(ones(A.rows, A.columns).div(A.columns));
+    public static DenseMatrix getH_CCT(DenseMatrix A) {
+        DenseMatrix H_CT = pinv(getL(A));
+        DenseMatrix pinvD = pinv(diag(A.sumOverRows().t()));
+        DenseMatrix H = eye(A.cols).sub(ones(A.rows, A.cols).div(A.cols));
         return H_CT.add(H.mmul(pinvD).mmul(A).mmul(pinvD).mmul(H));
     }
 
-    public static DoubleMatrix getH_CCT2(DoubleMatrix A) {
-        DoubleMatrix I = eye(A.columns);
-        DoubleMatrix d = sumOverRows(A).transpose();
-        DoubleMatrix D05 = diag(pow(d, -0.5));
-        DoubleMatrix H = eye(A.columns).sub(ones(A.rows, A.columns).div(A.columns));
-        double volG = A.sum();
-        DoubleMatrix M = D05.mmul(A.sub(d.mmul(d.transpose()).div(volG))).mmul(D05);
+    public static DenseMatrix getH_CCT2(DenseMatrix A) {
+        DenseMatrix I = eye(A.cols);
+        DenseMatrix d = A.sumOverRows().t();
+        DenseMatrix D05 = diag(pow(d, -0.5));
+        DenseMatrix H = eye(A.cols).sub(ones(A.rows, A.cols).div(A.cols));
+        double volG = A.sumOverCols().sumOverRows().s();
+        DenseMatrix M = D05.mmul(A.sub(d.mmul(d.t()).div(volG))).mmul(D05);
         return H.mmul(D05).mmul(M).mmul(pinv(I.sub(M))).mmul(M).mmul(D05).mmul(H);
     }
 
-    static DoubleMatrix getD_RSP(DoubleMatrix A, double beta) {
-        int d = A.columns;
+    static DenseMatrix getD_RSP(DenseMatrix A, double beta) {
+        int d = A.cols;
 
         // P^{ref} = D^{-1}*A, D = Diag(A*e)
-        DoubleMatrix e = ones(d, 1);
-        DoubleMatrix D = diag(A.mmul(e));
-        DoubleMatrix Pref = pinv(D).mmul(A);
+        DenseMatrix e = ones(d, 1);
+        DenseMatrix D = diag(A.mmul(e));
+        DenseMatrix Pref = pinv(D).mmul(A);
 
         // W = P^{ref} ◦ exp(-βC); ◦ is element-wise *
-        DoubleMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
-        DoubleMatrix W = Pref.mul(exp(C.mul(-beta)));
+        DenseMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
+        DenseMatrix W = Pref.mul(exp(C.mul(-beta)));
 
         // Z = (I - W)^{-1}
-        DoubleMatrix I = eye(d);
-        DoubleMatrix Z = pinv(I.sub(W));
+        DenseMatrix I = eye(d);
+        DenseMatrix Z = pinv(I.sub(W));
 
         // S = (Z(C ◦ W)Z)÷Z; ÷ is element-wise /
-        DoubleMatrix S = Z.mmul(C.mul(W)).mmul(Z).div(Z);
+        DenseMatrix S = Z.mmul(C.mul(W)).mmul(Z).div(Z);
         // C_ = S - e(d_S)^T; d_S = diag(S)
-        DoubleMatrix C_ = S.sub(e.mmul(diagToVector(S).transpose()));
+        DenseMatrix C_ = S.sub(e.mmul(diagToVector(S).t()));
         // Δ_RSP = (C_ + C_^T)/2
-        DoubleMatrix Δ_RSP = C_.add(C_.transpose()).div(2);
+        DenseMatrix Δ_RSP = C_.add(C_.t()).div(2);
 
         return Δ_RSP.sub(diag(diagToVector(Δ_RSP)));
     }
 
-    static DoubleMatrix getD_FE(DoubleMatrix A, double beta) {
-        int d = A.columns;
+    static DenseMatrix getD_FE(DenseMatrix A, double beta) {
+        int d = A.cols;
 
         // P^{ref} = D^{-1}*A, D = Diag(A*e)
-        DoubleMatrix e = ones(d, 1);
-        DoubleMatrix D = diag(A.mmul(e));
-        DoubleMatrix Pref = pinv(D).mmul(A);
+        DenseMatrix e = ones(d, 1);
+        DenseMatrix D = diag(A.mmul(e));
+        DenseMatrix Pref = pinv(D).mmul(A);
 
         // W = P^{ref} (element-wise)* exp(-βC)
-        DoubleMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
-        DoubleMatrix W = Pref.mul(exp(C.mul(-beta)));
+        DenseMatrix C = JohnsonsAlgorithm.getAllShortestPaths(A);
+        DenseMatrix W = Pref.mul(exp(C.mul(-beta)));
 
         // Z = (I - W)^{-1}
-        DoubleMatrix I = eye(d);
-        DoubleMatrix Z = pinv(I.sub(W));
+        DenseMatrix I = eye(d);
+        DenseMatrix Z = pinv(I.sub(W));
 
         // Z^h = Z * D_h^{-1}, D_h = Diag(Z)
-        DoubleMatrix Dh = diag(diagToVector(Z));
-        DoubleMatrix Zh = Z.mmul(pinv(Dh));
+        DenseMatrix Dh = diag(diagToVector(Z));
+        DenseMatrix Zh = Z.mmul(pinv(Dh));
 
         // Φ = -1/β * log(Z^h)
-        DoubleMatrix Φ = log(Zh).div(-beta);
+        DenseMatrix Φ = log(Zh).div(-beta);
 
         // Δ_FE = (Φ + Φ^T)/2
-        DoubleMatrix Δ_FE = Φ.add(Φ.transpose()).div(2);
+        DenseMatrix Δ_FE = Φ.add(Φ.t()).div(2);
 
         return Δ_FE.sub(diag(diagToVector(Δ_FE)));
     }
 
-    public static DoubleMatrix diagToVector(DoubleMatrix A) {
-        DoubleMatrix diag = new DoubleMatrix(A.rows, 1);
-        double[] values = A.toArray();
+    private static DenseMatrix log(DenseMatrix A) {
+        return elementWise(A, Math::log);
+    }
+
+    private static DenseMatrix exp(DenseMatrix A) {
+        return elementWise(A, Math::exp);
+    }
+
+    public static DenseMatrix pow(DenseMatrix A, double degree) {
+        return elementWise(A, item -> Math.pow(item, degree));
+    }
+
+    private static DenseMatrix elementWise(DenseMatrix A, UnaryOperator<Double> operator) {
+        double[] values = A.getValues();
+        DenseMatrix newA = new DenseMatrix(A.rows, A.cols);
+        for (int i = 0; i < values.length; i++) {
+            newA.set(i, operator.apply(values[i]));
+        }
+        return newA;
+    }
+
+    public static DenseMatrix diagToVector(DenseMatrix A) {
+        DenseMatrix diag = new DenseMatrix(A.rows, 1);
+        double[] values = A.getValues();
         for (int i = 0; i < A.rows; i++) {
-            diag.put(i, values[i * (A.columns + 1)]);
+            diag.set(i, values[i * (A.cols + 1)]);
         }
         return diag;
     }
 
-    private static DoubleMatrix NaNPolice(DoubleMatrix D) {
-        for (double item : D.toArray()) {
+    private static DenseMatrix NaNPolice(DenseMatrix D) {
+        for (double item : D.getValues()) {
             if (Double.isNaN(item)) {
-                return ones(D.columns, D.rows).mul(Double.NaN);
+                return DenseMatrix.ones(D.cols, D.rows).mul(Double.NaN);
             }
         }
         return D;
-    }
-
-    public static DoubleMatrix abs(ComplexDoubleMatrix x) {
-        DoubleMatrix result = new DoubleMatrix(x.rows, x.columns);
-        for(int i = 0; i < x.length; ++i) {
-            result.put(i, x.get(i).abs());
-        }
-        return result;
-    }
-
-    public static DoubleMatrix sumOverRows(DoubleMatrix x) {
-        DoubleMatrix result = new DoubleMatrix(1, x.columns);
-        for (int c = 0; c < x.columns; ++c) {
-            double sum = 0.0D;
-            for (int r = 0; r < x.rows; ++r) {
-                sum += x.get(r, c);
-            }
-            result.put(0, c, sum);
-        }
-        return result;
-    }
-
-    public static DoubleMatrix sumOverCols(DoubleMatrix x) {
-        DoubleMatrix result = new DoubleMatrix(x.rows, 1);
-        for (int r = 0; r < x.rows; ++r) {
-            double sum = 0.0D;
-            for (int c = 0; c < x.columns; ++c) {
-                sum += x.get(r, c);
-            }
-            result.put(r, 0, sum);
-        }
-        return result;
     }
 }

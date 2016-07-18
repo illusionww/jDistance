@@ -1,6 +1,6 @@
 package com.jdistance.measure;
 
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 
 public class DistanceWrapper extends AbstractMeasureWrapper {
     private Distance distance;
@@ -21,7 +21,7 @@ public class DistanceWrapper extends AbstractMeasureWrapper {
     }
 
     @Override
-    public DoubleMatrix calc(DoubleMatrix A, double param) {
+    public DenseMatrix calc(DenseMatrix A, double param) {
         return distance.getD(A, param).mul(-1);
     }
 

@@ -1,7 +1,7 @@
 package com.jdistance.learning;
 
 import com.jdistance.graph.Node;
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 public enum Scorer {
     RI("RI") {
         @Override
-        public double score(DoubleMatrix D, List<Node> nodes, Map<Integer, Integer> predictedClusterByNode) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedClusterByNode) {
             long TPTN = 0;
             for (int i = 0; i < predictedClusterByNode.size(); ++i) {
                 for (int j = i + 1; j < predictedClusterByNode.size(); ++j) {
@@ -25,7 +25,7 @@ public enum Scorer {
     },
     ARI("ARI") {
         @Override
-        public double score(DoubleMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             double index = RI.score(D, nodes, predictedNodes);
             double expected = calcExpected(nodes);
             return (index - expected) / (1 - expected);
@@ -51,7 +51,7 @@ public enum Scorer {
     DIFFUSION_ORDINAL("Diff ordinal") {
         private AB_score ab_score = new AB_score() {
             @Override
-            protected Pair<Double, Double> AB_addition(DoubleMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
+            protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
                 Double A = 0.0, B = 0.0;
                 if (nodeA1.getLabel() == nodeA2.getLabel() && nodeB1.getLabel() != nodeB2.getLabel()) {
                     A = D.get(b1, b2) > D.get(a1, a2) ? 1.0 : D.get(b1, b2) == D.get(a1, a2) ? 0.5 : 0.0;
@@ -65,20 +65,20 @@ public enum Scorer {
         };
 
         @Override
-        public double score(DoubleMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             return ab_score.score(D, nodes, predictedNodes);
         }
     },
     DIFFUSION_CARDINAL("Diff cardinal") {
         private AB_score ab_score = new AB_score() {
             @Override
-            public double score(DoubleMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
+            public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
                 Double score = super.score(D, nodes, predictedNodes);
                 return score != 0.0 ? score : 0.5;
             }
 
             @Override
-            protected Pair<Double, Double> AB_addition(DoubleMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
+            protected Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2) {
                 Double h = 0.0;
                 if (nodeA1.getLabel() == nodeA2.getLabel() && nodeB1.getLabel() != nodeB2.getLabel()) {
                     h = D.get(b1, b2) - D.get(a1, a2);
@@ -90,7 +90,7 @@ public enum Scorer {
         };
 
         @Override
-        public double score(DoubleMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             return ab_score.score(D, nodes, predictedNodes);
         }
     };
@@ -105,10 +105,10 @@ public enum Scorer {
         return name;
     }
 
-    public abstract double score(DoubleMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes);
+    public abstract double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes);
 
     abstract class AB_score {
-        public double score(DoubleMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
+        public double score(DenseMatrix D, List<Node> nodes, Map<Integer, Integer> predictedNodes) {
             int n = D.rows;
             double countErrors = 0;
             double total = 0;
@@ -137,6 +137,6 @@ public enum Scorer {
             return 1.0 - countErrors / total;
         }
 
-        protected abstract Pair<Double, Double> AB_addition(DoubleMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2);
+        protected abstract Pair<Double, Double> AB_addition(DenseMatrix D, int a1, int a2, int b1, int b2, Node nodeA1, Node nodeA2, Node nodeB1, Node nodeB2);
     }
 }

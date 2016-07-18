@@ -1,7 +1,7 @@
 package com.jdistance.graph;
 
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -10,19 +10,19 @@ import java.util.Random;
 import java.util.stream.Collectors;
 
 public class Graph implements Serializable {
-    private DoubleMatrix A;
+    private DenseMatrix A;
     private List<Node> nodes;
 
     public Graph(List<Node> nodes, double[][] A) {
-        this(nodes, new DoubleMatrix(A));
+        this(nodes, new DenseMatrix(A));
     }
 
-    public Graph(List<Node> nodes, DoubleMatrix A) {
+    public Graph(List<Node> nodes, DenseMatrix A) {
         this.nodes = nodes;
         this.A = A;
     }
 
-    public DoubleMatrix getA() {
+    public DenseMatrix getA() {
         return A;
     }
 
@@ -44,13 +44,13 @@ public class Graph implements Serializable {
         Collections.swap(nodes, i, j);
         for (int k = 0; k < A.rows; k++) {
             double temp = A.get(i, k);
-            A.put(i, k, A.get(j, k));
-            A.put(j, k, temp);
+            A.set(i, k, A.get(j, k));
+            A.set(j, k, temp);
         }
         for (int k = 0; k < A.rows; k++) {
             double temp = A.get(k, i);
-            A.put(k, i, A.get(k, j));
-            A.put(k, j, temp);
+            A.set(k, i, A.get(k, j));
+            A.set(k, j, temp);
         }
     }
 

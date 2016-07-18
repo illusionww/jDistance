@@ -1,6 +1,6 @@
 package com.jdistance.measure;
 
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 
 import java.io.Serializable;
 
@@ -31,5 +31,5 @@ public abstract class AbstractMeasureWrapper implements Serializable {
         return isKernel;
     }
 
-    public abstract DoubleMatrix calc(DoubleMatrix A, double param);
+    public abstract DenseMatrix calc(DenseMatrix A, double param);
 }

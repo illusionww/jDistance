@@ -1,6 +1,6 @@
 package com.jdistance.measure;
 
-import org.jblas.DoubleMatrix;
+import jeigen.DenseMatrix;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 import static com.jdistance.measure.Shortcuts.*;
 import static com.jdistance.measure.Shortcuts.normalize;
-import static org.jblas.MatrixFunctions.sqrt;
 
 public enum Distance {
     P_WALK("pWalk", Scale.RHO, Kernel.P_WALK_H , false),
@@ -23,19 +22,19 @@ public enum Distance {
     SCT("SCT", Scale.FRACTION, Kernel.SCT_H, false),
     SCCT("SCCT", Scale.FRACTION, Kernel.SCCT_H, false),
     RSP("RSP", Scale.FRACTION_REVERSED, null, false) {
-        public DoubleMatrix getD(DoubleMatrix A, double beta) {
+        public DenseMatrix getD(DenseMatrix A, double beta) {
             return getD_RSP(A, beta);
         }
     },
     FE("FE", Scale.FRACTION_REVERSED, null, false) {
-        public DoubleMatrix getD(DoubleMatrix A, double beta) {
+        public DenseMatrix getD(DenseMatrix A, double beta) {
             return getD_FE(A, beta);
         }
     },
     SP_CT("SP-CT", Scale.LINEAR, null, false) {
-        public DoubleMatrix getD(DoubleMatrix A, double lambda) {
-            DoubleMatrix Ds = normalize(getD_SP(A));
-            DoubleMatrix Dr = normalize(HtoD(getH_R(A)));
+        public DenseMatrix getD(DenseMatrix A, double lambda) {
+            DenseMatrix Ds = normalize(getD_SP(A));
+            DenseMatrix Dr = normalize(HtoD(getH_R(A)));
             return Ds.mul(1 - lambda).add(Dr.mul(lambda));
         }
     };
@@ -70,10 +69,10 @@ public enum Distance {
         return scale;
     }
 
-    public DoubleMatrix getD(DoubleMatrix A, double t) {
-        DoubleMatrix H = parentKernel.getK(A, t);
-        DoubleMatrix D = HtoD(H);
-        return takeSqrt ? sqrt(D) : D;
+    public DenseMatrix getD(DenseMatrix A, double t) {
+        DenseMatrix H = parentKernel.getK(A, t);
+        DenseMatrix D = HtoD(H);
+        return takeSqrt ? D.sqrt() : D;
     }
 
     public Kernel getParentKernel() {
