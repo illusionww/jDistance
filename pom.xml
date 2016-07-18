@@ -10,9 +10,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>jDistance</module>
-        <module>jDistanceLocal</module>
-        <module>jDistanceSpark</module>
+        <module>jDistance-jeigen</module>
+        <module>jDistance-local</module>
+        <module>jDistance-spark</module>
     </modules>
 
     <build>
