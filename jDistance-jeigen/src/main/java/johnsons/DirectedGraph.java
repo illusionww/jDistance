@@ -1,4 +1,4 @@
-package com.jdistance.johnsons;
+package johnsons;
 
 /*****************************************************************************
  * File: DirectedGraph.java

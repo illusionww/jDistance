@@ -1,17 +1,16 @@
 package com.jdistance.spark.workflow;
 
 import com.jdistance.workflow.AbstractTaskPoolResult;
-import org.apache.spark.api.java.JavaRDD;
-import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.io.Writer;
-import java.util.*;
+import java.util.Collections;
+import java.util.Map;
 
 public class TaskPoolResult extends AbstractTaskPoolResult {
-    public TaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data) {
-        super(name, taskNames, data);
+    public TaskPoolResult(String name, Map<String, Map<Double, Pair<Double, Double>>> data) {
+        super(name, data);
     }
 
     public TaskPoolResult writeData(String filePath) {

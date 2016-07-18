@@ -1,14 +1,16 @@
 package com.jdistance.workflow;
 
+import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.measure.AbstractMeasureWrapper;
-import com.jdistance.graph.GraphBundle;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.DoubleStream;
 
 public abstract class AbstractTaskPool implements Serializable {
     protected String name;
@@ -23,33 +25,20 @@ public abstract class AbstractTaskPool implements Serializable {
         this.tasks = new ArrayList<>();
     }
 
-    public AbstractTaskPool(String name, List<Task> tasks) {
-        this.name = name;
-        this.tasks = tasks;
-    }
-
-    public AbstractTaskPool(String name, Task... tasks) {
-        this.name = name;
-        this.tasks = Arrays.asList(tasks);
-    }
-
     public String getName() {
         return name;
     }
 
-    protected AbstractTaskPool addTask(Task task) {
-        tasks.add(task);
+    public AbstractTaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, double from, double to, int pointsCount) {
+        List<Task> lineTasks = linspace(from, to, pointsCount).stream()
+                .map(param -> new Task(lineName, param, estimator, metricWrapper, scorer, graphs))
+                .collect(Collectors.toList());
+        tasks.addAll(lineTasks);
         return this;
     }
 
-    protected abstract AbstractTaskPool addTask(Estimator estimator, Scorer scorer, AbstractMeasureWrapper metricWrapper, GraphBundle graphs, Integer pointsCount);
-
-
-    protected AbstractTaskPool buildSimilarTasks(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
-        metricWrappers.forEach(metricWrapper -> {
-            addTask(estimator, scorer, metricWrapper, graphs, pointsCount);
-        });
-
+    public AbstractTaskPool addLinesForDifferentMeasures(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
+        metricWrappers.forEach(metricWrapper -> addLine(metricWrapper.getName(), estimator, metricWrapper, scorer, graphs, 0.0, 1.0, pointsCount));
         if (name == null) {
             name = estimator.getName() + " - " +
                     graphs.getProperties().getNodesCount() + " nodes, " +
@@ -62,4 +51,19 @@ public abstract class AbstractTaskPool implements Serializable {
     }
 
     protected abstract AbstractTaskPoolResult execute();
+
+    private List<Double> linspace(double from, double to, int pointsCount) {
+        if (pointsCount < 7) {
+            throw new RuntimeException("Should be at least 7 points");
+        }
+        pointsCount -= 4;
+        double step = (to - from) / (pointsCount - 1);
+        List<Double> paramGrid = DoubleStream.iterate(from, i -> i + step)
+                .limit(pointsCount)
+                .boxed()
+                .collect(Collectors.toList());
+        paramGrid.addAll(Arrays.asList(0.1 * step, 0.5 * step, to - 0.5 * step, to - 0.1 * step));
+        Collections.sort(paramGrid);
+        return paramGrid;
+    }
 }

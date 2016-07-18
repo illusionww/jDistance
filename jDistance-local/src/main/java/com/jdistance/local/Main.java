@@ -19,7 +19,7 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-        Context.fill(false, true, "./results/data", "./results/img");
+        Context.fill(true, "./results/data", "./results/img");
         if (args.length == 1) {
             String methodName = args[0];
             Class<?> clazz = Class.<Main>forName("com.jdistance.local.Main");
@@ -34,12 +34,12 @@ public class Main {
     }
 
     public void saa() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.2));
-        new TaskPool().buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(2, 100, 2, 0.3, 0.2));
+        new TaskPool().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
                 new KernelWrapper(Kernel.LOG_COMM_H)
         ), graphs, 100)
                 .execute()
-                .drawUnique("[0:1]", "0.2");
+                .draw();
     }
 }
 

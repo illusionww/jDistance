@@ -1,19 +1,20 @@
 package com.jdistance.workflow;
 
-import java.io.*;
-import java.util.List;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.io.Writer;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
 public abstract class AbstractTaskPoolResult implements Serializable {
     protected String name;
-    protected List<String> taskNames;
-    protected Map<String, Map<Double, Double>> data;
+    protected Map<String, Map<Double, Pair<Double, Double>>> data;
 
-    public AbstractTaskPoolResult(String name, List<String> taskNames, Map<String, Map<Double, Double>> data) {
+    public AbstractTaskPoolResult(String name, Map<String, Map<Double, Pair<Double, Double>>> data) {
         this.name = name;
-        this.taskNames = taskNames;
         this.data = data;
     }
 
@@ -21,26 +22,27 @@ public abstract class AbstractTaskPoolResult implements Serializable {
         return name;
     }
 
-    public List<String> getTaskNames() {
-        return taskNames;
-    }
-
     protected AbstractTaskPoolResult writeData(Writer outputWriter) throws IOException {
+        Set<String> lineNames = data.keySet();
         Set<Double> points = new TreeSet<>();
         data.values().forEach(scores -> points.addAll(scores.keySet()));
 
         outputWriter.write("param\t");
-        for (String taskName : taskNames) {
-            outputWriter.write(taskName + "\t");
+        for (String taskName : lineNames) {
+            outputWriter.write(taskName + "_mean" + "\t" + taskName + "_sigma" + "\t");
         }
         outputWriter.write("\n");
+
         for (Double key : points) {
             outputWriter.write(key + "\t");
-            for (String taskName : taskNames) {
-                outputWriter.write(data.get(taskName).get(key) + "\t");
+            for (String taskName : lineNames) {
+                Pair<Double, Double> point = data.get(taskName).get(key);
+                outputWriter.write(point.getLeft() + "\t" + point.getRight() + "\t");
             }
             outputWriter.write("\n");
         }
+        outputWriter.write("\n");
+
         return this;
     }
 }

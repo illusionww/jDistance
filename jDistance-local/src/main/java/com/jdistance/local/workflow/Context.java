@@ -9,25 +9,22 @@ public class Context {
     private static Context instance;
 
     private Boolean isParallelTasks;
-    private Boolean isParallelGrid;
-
     private String outputDataFolder;
-    private String imgFolder;
+    private String outputImgFolder;
 
-    public static void fill(Boolean parallelTasks, Boolean parallelGrid, String outputDataFolder, String imgFolder) {
+    public static void fill(Boolean parallelTasks, String outputDataFolder, String outputImgFolder) {
         instance = new Context();
         instance.isParallelTasks = parallelTasks;
-        instance.isParallelGrid = parallelGrid;
+        instance.outputImgFolder = outputImgFolder;
         instance.outputDataFolder = outputDataFolder;
-        instance.imgFolder = imgFolder;
 
         File outputDataFolderFile = new File(outputDataFolder);
         if (!outputDataFolderFile.exists() && !outputDataFolderFile.mkdirs()) {
-            throw new RuntimeException("Folder " + outputDataFolderFile.getAbsolutePath() + " is not exist");
+            throw new RuntimeException("Folder " + outputDataFolderFile.getAbsolutePath() + " can't be created");
         }
-        File imgFolderFile = new File(imgFolder);
+        File imgFolderFile = new File(outputImgFolder);
         if (!imgFolderFile.exists() && !imgFolderFile.mkdirs()) {
-            throw new RuntimeException("Folder " + imgFolderFile.getAbsolutePath() + " is not exist");
+            throw new RuntimeException("Folder " + imgFolderFile.getAbsolutePath() + " can't be created");
         }
     }
 
@@ -42,28 +39,12 @@ public class Context {
         return isParallelTasks;
     }
 
-    public Boolean isParallelGrid() {
-        return isParallelGrid;
-    }
-
     public String buildOutputDataFullName(String imgTitle, String extension) {
-        return outputDataFolder + File.separator +
-                imgTitle.replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;
-    }
-
-    public String buildImgFullName(String subfolder, String imgTitle, String extension) {
-        String subfolderPath = imgFolder + File.separator + subfolder.replaceAll("[:\\\\/*?|<>]", "_");
-        File outputDataFolderFile = new File(subfolderPath);
-        if (!outputDataFolderFile.exists() && !outputDataFolderFile.mkdirs()) {
-            throw new RuntimeException("Folder " + outputDataFolderFile.getAbsolutePath() + " is not exist");
-        }
-        return subfolderPath + File.separator +
-                (ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + " " + imgTitle).replaceAll("[:\\\\/*?|<>]", "_") +
-                "." + extension;
+        return outputDataFolder + File.separator + (ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + " " + imgTitle).replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;
     }
 
     public String buildImgFullName(String imgTitle, String extension) {
-        return imgFolder + File.separator +
-                imgTitle.replaceAll("[:\\\\/*?|<>]", "_") + "." + extension;
+        return outputImgFolder + File.separator + (ISO_LOCAL_DATE_TIME.format(LocalDateTime.now()) + " " + imgTitle).replaceAll("[:\\\\/*?|<>]", "_") +
+                "." + extension;
     }
 }

@@ -1,7 +1,7 @@
 package com.jdistance.learning.measure.helpers;
 
-import com.jdistance.johnsons.DirectedGraph;
-import com.jdistance.johnsons.Johnson;
+import johnsons.DirectedGraph;
+import johnsons.Johnson;
 import jeigen.DenseMatrix;
 
 public class JohnsonsAlgorithm {

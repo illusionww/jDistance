@@ -34,7 +34,7 @@ public class Main {
                 {0.00, 0.00, 0.00, 0.00, 0.00, 0.30, 0.10},
                 {0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.14}
         }));
-        new TaskPool().buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllK(), graphs, 71)
+        new TaskPool().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllK(), graphs, 71)
                 .execute()
                 .writeData("task");
     }

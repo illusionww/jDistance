@@ -35,5 +35,5 @@ public abstract class AbstractMeasureWrapper implements Serializable {
         return isKernel;
     }
 
-    public abstract DenseMatrix calc(DenseMatrix A, double param);
+    public abstract DenseMatrix calc(DenseMatrix A, Double param);
 }

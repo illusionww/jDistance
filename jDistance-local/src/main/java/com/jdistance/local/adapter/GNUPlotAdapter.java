@@ -1,12 +1,15 @@
 package com.jdistance.local.adapter;
 
-import com.jdistance.local.workflow.Context;
 import com.panayotis.gnuplot.JavaPlot;
 import com.panayotis.gnuplot.dataset.Point;
 import com.panayotis.gnuplot.dataset.PointDataSet;
 import com.panayotis.gnuplot.plot.DataSetPlot;
-import com.panayotis.gnuplot.style.*;
+import com.panayotis.gnuplot.style.PlotColor;
+import com.panayotis.gnuplot.style.PlotStyle;
+import com.panayotis.gnuplot.style.Smooth;
+import com.panayotis.gnuplot.style.Style;
 import com.panayotis.gnuplot.terminal.ImageTerminal;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +17,11 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class GNUPlotAdapter {
     private static final Logger log = LoggerFactory.getLogger(GNUPlotAdapter.class);
@@ -34,34 +41,17 @@ public class GNUPlotAdapter {
             new RGBAColor("#77808080")
     );
 
-    public void draw(List<String> taskNames, Map<String, Map<Double, Double>> data, String imgTitle, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
+    public void draw(String filePath, Map<String, Map<Double, Pair<Double, Double>>> data) {
         Iterator<RGBAColor> color = colors.iterator();
-
-        List<PlotPOJO> plots = new ArrayList<>();
-        taskNames.forEach(taskName -> {
-            List<Point<Double>> plotPoints = mapToPoints(data.get(taskName));
-            if (plotPoints.size() > 0) {
-                PointDataSet<Double> plotPointsSet = new PointDataSet<>(plotPoints);
-                plots.add(new PlotPOJO(taskName, color.next(), plotPointsSet));
-            }
-        });
-
-        drawData(plots, Context.getInstance().buildImgFullName(smooth.toString().trim(), imgTitle, "png"), xrange, xticks, yrange, yticks, smooth);
+        List<PlotDTO> plots = data.entrySet().stream()
+                .map(lineEntry -> new PlotDTO(lineEntry.getKey(), color.next(), new PointDataSet<Double>(lineEntry.getValue().entrySet().stream()
+                        .map(pointEntry -> new Point<>(pointEntry.getKey(), pointEntry.getValue().getLeft()))
+                        .collect(Collectors.toList()))))
+                .collect(Collectors.toList());
+        drawData(plots, filePath, "[0:1]", "0.2", "[0:1]", "0.2", Smooth.UNIQUE);
     }
 
-    private List<Point<Double>> mapToPoints(Map<Double, Double> results) {
-        List<Point<Double>> list = new ArrayList<>();
-        if (results != null) {
-            SortedSet<Double> keys = new TreeSet<>(results.keySet());
-            for (Double key : keys) {
-                Double value = results.get(key);
-                list.add(new Point<>(key, value));
-            }
-        }
-        return list;
-    }
-
-    private void drawData(List<PlotPOJO> data, String outputPath, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
+    private void drawData(List<PlotDTO> data, String outputPath, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
         ImageTerminal png = new ImageTerminal();
         png.set("size", "3216,2461");
         png.set("enhanced font", "'Verdana,50'");
@@ -85,7 +75,7 @@ public class GNUPlotAdapter {
         if (xrange != null) gnuplot.set("xrange", xrange);
         if (yrange != null) gnuplot.set("yrange", yrange);
 
-        for (PlotPOJO plot : data) {
+        for (PlotDTO plot : data) {
             PlotStyle plotStyle = new PlotStyle();
             plotStyle.setStyle(Style.LINES);
             plotStyle.setLineType(plot.getColor());
@@ -121,12 +111,12 @@ public class GNUPlotAdapter {
         }
     }
 
-    private class PlotPOJO {
+    private class PlotDTO {
         private String name;
         private PlotColor color;
         private PointDataSet data;
 
-        PlotPOJO(String name, PlotColor color, PointDataSet data) {
+        PlotDTO(String name, PlotColor color, PointDataSet data) {
             this.name = name;
             this.color = color;
             this.data = data;
