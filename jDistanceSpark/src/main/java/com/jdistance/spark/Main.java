@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.2));
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(1, 200, 2, 0.3, 0.2));
         new SparkTaskPool().buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
                 new KernelWrapper(Kernel.LOG_COMM_H)
         ), graphs, 35)

@@ -40,14 +40,13 @@ public class Ward implements Estimator {
     }
 
     private void iteration(DenseMatrix K, List<Cluster> clusters, Map<Pair<Cluster, Cluster>, Double> ΔJ) {
-        Cluster minCk = null;
-        Cluster minCl = null;
-        double minΔJ = Double.MAX_VALUE;
+        Cluster Ck, Cl, minCk = null, minCl = null;
+        Double currentΔJ, minΔJ = Double.MAX_VALUE;
         for (int k = 0; k < clusters.size(); k++) {
-            Cluster Ck = clusters.get(k);
+            Ck = clusters.get(k);
             for (int l = k + 1; l < clusters.size(); l++) {
-                Cluster Cl = clusters.get(l);
-                Double currentΔJ = ΔJ.get(new ImmutablePair<>(Ck, Cl));
+                Cl = clusters.get(l);
+                currentΔJ = ΔJ.get(new ImmutablePair<>(Ck, Cl));
                 if (currentΔJ == null) {
                     currentΔJ = calcΔJ(K, ΔJ, Ck, Cl);
                 }
@@ -73,7 +72,7 @@ public class Ward implements Estimator {
     private double calcΔJ(DenseMatrix K, Map<Pair<Cluster, Cluster>, Double> ΔJ, Cluster Ck, Cluster Cl) {
         double norm = Ck.n * Cl.n / (double) (Ck.n + Cl.n);
         DenseMatrix hkhl = (Ck.h).sub(Cl.h);
-        double currentΔJ = hkhl.t().mmul(K).mmul(hkhl).mul(norm).s();
+        double currentΔJ = norm * hkhl.t().mmul(K).mmul(hkhl).s();
         ΔJ.put(new ImmutablePair<>(Ck, Cl), currentΔJ);
         return currentΔJ;
     }
