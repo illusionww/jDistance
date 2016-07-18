@@ -4,11 +4,12 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.measure.AbstractMeasureWrapper;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
@@ -29,8 +30,8 @@ public abstract class AbstractTaskPool implements Serializable {
         return name;
     }
 
-    public AbstractTaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, double from, double to, int pointsCount) {
-        List<Task> lineTasks = linspace(from, to, pointsCount).stream()
+    public AbstractTaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
+        List<Task> lineTasks = linspace(0.0, 1.0, pointsCount).stream()
                 .map(param -> new Task(lineName, param, estimator, metricWrapper, scorer, graphs))
                 .collect(Collectors.toList());
         tasks.addAll(lineTasks);
@@ -38,7 +39,7 @@ public abstract class AbstractTaskPool implements Serializable {
     }
 
     public AbstractTaskPool addLinesForDifferentMeasures(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
-        metricWrappers.forEach(metricWrapper -> addLine(metricWrapper.getName(), estimator, metricWrapper, scorer, graphs, 0.0, 1.0, pointsCount));
+        metricWrappers.forEach(metricWrapper -> addLine(metricWrapper.getName(), estimator, metricWrapper, scorer, graphs, pointsCount));
         if (name == null) {
             name = estimator.getName() + " - " +
                     graphs.getProperties().getNodesCount() + " nodes, " +

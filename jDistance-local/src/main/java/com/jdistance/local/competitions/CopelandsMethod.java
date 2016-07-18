@@ -33,46 +33,46 @@ public abstract class CopelandsMethod {
         this.percentile = percentile;
     }
 
-    public void execute() {
-        for (GraphBundle graphs : graphsList) {
-            String currentName = "n=" + graphs.getProperties().getNodesCount() + " k=" + graphs.getProperties().getClustersCount() + " pOut=" + graphs.getProperties().getP_out();
+//    public void execute() {
+//        for (GraphBundle graphs : graphsList) {
+//            String currentName = "n=" + graphs.getProperties().getNodesCount() + " k=" + graphs.getProperties().getClustersCount() + " pOut=" + graphs.getProperties().getP_out();
+//
+//            Map<String, Double> currentCompetitionBestResults = new DefaultHashMap<>(0.0);
+//            Map<String, Double> currentCompetitionPercentileResults = new DefaultHashMap<>(0.0);
+//            for (Graph graph : graphs.getGraphs()) {
+//                TaskPool pool = generateTaskPool(new GraphBundle(Collections.singletonList(graph), graphs.getProperties()));
+//                TaskPoolResult result = pool.execute();
+//                updateBestResults(result, currentCompetitionBestResults);
+//                updatePercentileResults(result, currentCompetitionPercentileResults);
+//            }
+//            bestResults.put(currentName, currentCompetitionBestResults);
+//            percentileResults.put(currentName, currentCompetitionPercentileResults);
+//        }
+//    }
 
-            Map<String, Double> currentCompetitionBestResults = new DefaultHashMap<>(0.0);
-            Map<String, Double> currentCompetitionPercentileResults = new DefaultHashMap<>(0.0);
-            for (Graph graph : graphs.getGraphs()) {
-                TaskPool pool = generateTaskPool(new GraphBundle(Collections.singletonList(graph), graphs.getProperties()));
-                TaskPoolResult result = pool.execute();
-                updateBestResults(result, currentCompetitionBestResults);
-                updatePercentileResults(result, currentCompetitionPercentileResults);
-            }
-            bestResults.put(currentName, currentCompetitionBestResults);
-            percentileResults.put(currentName, currentCompetitionPercentileResults);
-        }
-    }
-
-    private void updateBestResults(TaskPoolResult result, Map<String, Double> competitionResults) {
-        for (String task1 : result.getTaskNames()) {
-            for (String task2 : result.getTaskNames()) {
-                Double bestValue1 = result.getBestParam(task1).getValue();
-                Double bestValue2 = result.getBestParam(task2).getValue();
-                int verdict = (bestValue1 > bestValue2) ? 1 : (bestValue1 < bestValue2) ? -1 : 0;
-                competitionResults.put(task1, competitionResults.get(task1) + 0.5 * verdict);
-                competitionResults.put(task2, competitionResults.get(task2) - 0.5 * verdict);
-            }
-        }
-    }
-
-    private void updatePercentileResults(TaskPoolResult result, Map<String, Double> competitionResults) {
-        for (String task1 : result.getTaskNames()) {
-            for (String task2 : result.getTaskNames()) {
-                Double bestValue1 = result.getQuantile(task1, percentile);
-                Double bestValue2 = result.getQuantile(task2, percentile);
-                int verdict = (bestValue1 > bestValue2) ? 1 : (bestValue1 < bestValue2) ? -1 : 0;
-                competitionResults.put(task1, competitionResults.get(task1) + 0.5 * verdict);
-                competitionResults.put(task2, competitionResults.get(task2) - 0.5 * verdict);
-            }
-        }
-    }
+//    private void updateBestResults(TaskPoolResult result, Map<String, Double> competitionResults) {
+//        for (String task1 : result.getTaskNames()) {
+//            for (String task2 : result.getTaskNames()) {
+//                Double bestValue1 = result.getBestParam(task1).getValue();
+//                Double bestValue2 = result.getBestParam(task2).getValue();
+//                int verdict = (bestValue1 > bestValue2) ? 1 : (bestValue1 < bestValue2) ? -1 : 0;
+//                competitionResults.put(task1, competitionResults.get(task1) + 0.5 * verdict);
+//                competitionResults.put(task2, competitionResults.get(task2) - 0.5 * verdict);
+//            }
+//        }
+//    }
+//
+//    private void updatePercentileResults(TaskPoolResult result, Map<String, Double> competitionResults) {
+//        for (String task1 : result.getTaskNames()) {
+//            for (String task2 : result.getTaskNames()) {
+//                Double bestValue1 = result.getQuantile(task1, percentile);
+//                Double bestValue2 = result.getQuantile(task2, percentile);
+//                int verdict = (bestValue1 > bestValue2) ? 1 : (bestValue1 < bestValue2) ? -1 : 0;
+//                competitionResults.put(task1, competitionResults.get(task1) + 0.5 * verdict);
+//                competitionResults.put(task2, competitionResults.get(task2) - 0.5 * verdict);
+//            }
+//        }
+//    }
 
     protected abstract TaskPool generateTaskPool(GraphBundle graphs);
 

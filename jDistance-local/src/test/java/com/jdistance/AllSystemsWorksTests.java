@@ -15,17 +15,17 @@ import org.junit.Test;
 public class AllSystemsWorksTests {
     @Before
     public void init() {
-        Context.fill(false, false, "./test", "./test");
+        Context.fill(false, "./test", "./test");
     }
 
     @Test
     public void calcTest() {
         int clustersCount = 4;
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(1, 100, clustersCount, 0.3, 0.1));
-        new TaskPool("test")
-                .addTask(new Ward(clustersCount), Scorer.RI, new DistanceWrapper(Distance.FOR), graphs, 51)
+        new TaskPool()
+                .addLine(Distance.FOR.getName(), new Ward(clustersCount), new DistanceWrapper(Distance.FOR), Scorer.RI, graphs, 51)
                 .execute()
                 .writeData()
-                .drawUniqueAndBezier("[0:1]", "0.2");
+                .draw();
     }
 }

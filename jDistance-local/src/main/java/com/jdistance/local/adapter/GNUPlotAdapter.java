@@ -45,6 +45,8 @@ public class GNUPlotAdapter {
         Iterator<RGBAColor> color = colors.iterator();
         List<PlotDTO> plots = data.entrySet().stream()
                 .map(lineEntry -> new PlotDTO(lineEntry.getKey(), color.next(), new PointDataSet<Double>(lineEntry.getValue().entrySet().stream()
+                        .filter(pointEntry -> pointEntry.getValue().getLeft() != null)
+                        .sorted((one, two) -> one.getKey().compareTo(two.getKey()))
                         .map(pointEntry -> new Point<>(pointEntry.getKey(), pointEntry.getValue().getLeft()))
                         .collect(Collectors.toList()))))
                 .collect(Collectors.toList());

@@ -23,8 +23,8 @@ public class TaskPool extends AbstractTaskPool {
     private static final Logger log = LoggerFactory.getLogger(TaskPool.class);
 
     @Override
-    public TaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, double from, double to, int pointsCount) {
-        super.addLine(lineName, estimator, metricWrapper, scorer, graphs, from, to, pointsCount);
+    public TaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
+        super.addLine(lineName, estimator, metricWrapper, scorer, graphs, pointsCount);
         return this;
     }
 
@@ -47,11 +47,11 @@ public class TaskPool extends AbstractTaskPool {
             Instant startTaskTime = Instant.now();
             task.execute();
             Instant endTaskTime = Instant.now();
-            log.info("{}\t{}\t{}, time={}", counter.incrementAndGet(), task.getLineName(), task.getParam(), Duration.between(startTaskTime, endTaskTime));
+            log.info("{}\t{}\t{}\ttime={}", counter.incrementAndGet(), task.getLineName(), String.format("%.4f", task.getParam()), Duration.between(startTaskTime, endTaskTime).toString().substring(2));
         });
 
         Instant finishPoolTime = Instant.now();
-        log.info("TASK POOL DONE. Total time: {}", Duration.between(startPoolTime, finishPoolTime));
+        log.info("TASK POOL DONE. Total time: {}", Duration.between(startPoolTime, finishPoolTime).toString().substring(2));
         log.info("----------------------------------------------------------------------------------------------------");
 
         return new TaskPoolResult(name, prepareResults());

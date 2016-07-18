@@ -19,7 +19,7 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-        Context.fill(true, "./results/data", "./results/img");
+        Context.fill(true, ".\\results\\data", ".\\results\\img");
         if (args.length == 1) {
             String methodName = args[0];
             Class<?> clazz = Class.<Main>forName("com.jdistance.local.Main");
@@ -39,6 +39,7 @@ public class Main {
                 new KernelWrapper(Kernel.LOG_COMM_H)
         ), graphs, 100)
                 .execute()
+                .writeData()
                 .draw();
     }
 }

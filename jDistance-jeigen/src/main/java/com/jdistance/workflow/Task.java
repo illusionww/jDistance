@@ -8,6 +8,7 @@ import com.jdistance.learning.measure.AbstractMeasureWrapper;
 import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -85,7 +86,7 @@ public class Task implements Serializable {
             OptionalDouble optionalAvg = scoresByGraph.stream().mapToDouble(d -> d).average();
             if (optionalAvg.isPresent() && optionalAvg.getAsDouble() != 0) {
                 mean = optionalAvg.getAsDouble();
-                sigma = Math.sqrt(scoresByGraph.stream().mapToDouble(d -> (d - mean) * (d - mean)).sum());
+                sigma = new StandardDeviation().evaluate(scoresByGraph.stream().mapToDouble(d -> d).toArray());
                 return new ImmutablePair<>(mean, sigma);
             }
         }
