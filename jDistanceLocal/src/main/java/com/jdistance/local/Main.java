@@ -1,8 +1,5 @@
 package com.jdistance.local;
 
-import com.jdistance.local.workflow.LocalTaskPoolResult;
-import com.jdistance.measure.Kernel;
-import com.jdistance.measure.KernelWrapper;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
@@ -10,6 +7,8 @@ import com.jdistance.learning.Scorer;
 import com.jdistance.learning.clustering.Ward;
 import com.jdistance.local.workflow.Context;
 import com.jdistance.local.workflow.LocalTaskPool;
+import com.jdistance.measure.Kernel;
+import com.jdistance.measure.KernelWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +45,7 @@ public class Main {
     public void saa2() {
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(1, new int[]{
                 100, 75, 75, 50, 25, 10, 5 // sum = 340
-        }, new double[][] {
+        }, new double[][]{
                 {0.3, 0.2, 0.1, 0.13, 0.02, 0.2, 0.1},
                 {0.0, 0.2, 0.1, 0.13, 0.02, 0.2, 0.1},
                 {0.0, 0.0, 0.1, 0.13, 0.02, 0.2, 0.1},
@@ -56,8 +55,8 @@ public class Main {
                 {0.0, 0.0, 0.0, 0.00, 0.00, 0.0, 0.14}
         }));
         new LocalTaskPool().buildSimilarTasks(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
-                        new KernelWrapper(Kernel.LOG_COMM_H)
-                ), graphs, 35)
+                new KernelWrapper(Kernel.LOG_COMM_H)
+        ), graphs, 35)
                 .execute()
                 .drawUnique("[0:1]", "0.2");
     }

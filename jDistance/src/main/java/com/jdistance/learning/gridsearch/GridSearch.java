@@ -58,6 +58,7 @@ public abstract class GridSearch implements Serializable {
             }
         } catch (RuntimeException e) {
             System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + idx);
+//            throw new RuntimeException(e);
         }
 
         if (scoresByGraph.size() < 0.9 * graphs.getGraphs().size()) {
