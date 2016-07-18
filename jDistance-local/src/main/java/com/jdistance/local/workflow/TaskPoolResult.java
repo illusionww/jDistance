@@ -7,6 +7,9 @@ import org.apache.commons.math.stat.descriptive.rank.Percentile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,7 +36,12 @@ public class TaskPoolResult extends AbstractTaskPoolResult {
     }
 
     public TaskPoolResult writeData() {
-        writeData(Context.getInstance().buildOutputDataFullName(name, "csv"));
+        String filePath = Context.getInstance().buildOutputDataFullName(name, "csv");
+        try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filePath))) {
+            writeData(outputWriter);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return this;
     }
 

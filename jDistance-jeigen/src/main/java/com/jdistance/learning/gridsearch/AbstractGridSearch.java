@@ -7,11 +7,12 @@ import com.jdistance.learning.Scorer;
 import com.jdistance.learning.measure.AbstractMeasureWrapper;
 import jeigen.DenseMatrix;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.DoubleStream;
 
-public abstract class AbstractGridSearch {
+public abstract class AbstractGridSearch implements Serializable {
     protected String name;
     protected Estimator estimator;
     protected AbstractMeasureWrapper metricWrapper;
@@ -33,8 +34,15 @@ public abstract class AbstractGridSearch {
     }
 
     private static List<Double> linspace(double from, double to, int pointsCount) {
+        if (pointsCount < 7) {
+            throw new RuntimeException("Should be at least 7 points");
+        }
+        pointsCount -= 4;
         double step = (to - from) / (pointsCount - 1);
-        List<Double> paramGrid = DoubleStream.iterate(from, i -> i + step).limit(pointsCount).boxed().collect(Collectors.toList());
+        List<Double> paramGrid = DoubleStream.iterate(from, i -> i + step)
+                .limit(pointsCount)
+                .boxed()
+                .collect(Collectors.toList());
         paramGrid.addAll(Arrays.asList(0.1 * step, 0.5 * step, to - 0.5 * step, to - 0.1 * step));
         Collections.sort(paramGrid);
         return paramGrid;
@@ -61,7 +69,6 @@ public abstract class AbstractGridSearch {
             }
         } catch (RuntimeException e) {
             System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + idx);
-            throw new RuntimeException(e);
         }
 
         if (scoresByGraph.size() < 0.9 * graphs.getGraphs().size()) {

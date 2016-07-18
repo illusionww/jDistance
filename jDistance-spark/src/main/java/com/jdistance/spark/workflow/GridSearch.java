@@ -11,10 +11,10 @@ import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import scala.Tuple2;
 
-public class SparkGridSearch extends AbstractGridSearch {
+public class GridSearch extends AbstractGridSearch {
     private JavaPairRDD<Double, Double> scores;
 
-    public SparkGridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount) {
+    public GridSearch(String name, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, double from, double to, int pointsCount) {
         super(name, estimator, metricWrapper, scorer, from, to, pointsCount);
     }
 
@@ -22,9 +22,7 @@ public class SparkGridSearch extends AbstractGridSearch {
     public void predict(GraphBundle graphs) {
         this.graphs = graphs;
 
-        SparkConf conf = new SparkConf().setAppName("SparkGridSearch");
-        JavaSparkContext sc = new JavaSparkContext(conf);
-        JavaRDD<Double> params = sc.parallelize(paramGrid);
+        JavaRDD<Double> params = Context.getInstance().getSparkContext().parallelize(paramGrid);
         scores = params
                 .mapToPair(idx -> new Tuple2<>(idx, score(idx, metricWrapper)))
                 .cache();

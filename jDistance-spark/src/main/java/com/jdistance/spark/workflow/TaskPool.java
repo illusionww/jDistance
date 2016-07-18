@@ -11,45 +11,45 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class SparkTaskPool extends AbstractTaskPool {
-    public SparkTaskPool() {
+public class TaskPool extends AbstractTaskPool {
+    public TaskPool() {
         super();
     }
 
-    public SparkTaskPool(String name) {
+    public TaskPool(String name) {
         super(name);
     }
 
-    public SparkTaskPool(String name, List<Task> tasks) {
+    public TaskPool(String name, List<Task> tasks) {
         super(name, tasks);
     }
 
-    public SparkTaskPool(String name, Task... tasks) {
+    public TaskPool(String name, Task... tasks) {
         super(name, tasks);
     }
 
-    public SparkTaskPool addTask(Estimator estimator, Scorer scorer, AbstractMeasureWrapper metricWrapper, GraphBundle graphs, Integer pointsCount) {
+    public TaskPool addTask(Estimator estimator, Scorer scorer, AbstractMeasureWrapper metricWrapper, GraphBundle graphs, Integer pointsCount) {
         String taskName = estimator.getName() + " " + scorer.getName() + " " + metricWrapper.getName();
         Task task = new Task(taskName,
-                new SparkGridSearch(taskName, estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount),
+                new GridSearch(taskName, estimator, metricWrapper, scorer, 0.0, 1.0, pointsCount),
                 graphs);
         tasks.add(task);
         return this;
     }
 
     @Override
-    public SparkTaskPool buildSimilarTasks(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
+    public TaskPool buildSimilarTasks(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
         super.buildSimilarTasks(estimator, scorer, metricWrappers, graphs, pointsCount);
         return this;
     }
 
-    public SparkTaskPoolResult execute() {
+    public TaskPoolResult execute() {
         tasks.forEach(Task::execute);
         List<String> taskNames = tasks.stream()
                 .map(Task::getName)
                 .collect(Collectors.toList());
         Map<String, Map<Double, Double>> data = tasks.stream()
-                .collect(Collectors.toMap(Task::getName, task -> ((SparkGridSearch) task.getGridSearch()).getScores().collectAsMap()));
-        return new SparkTaskPoolResult(name, taskNames, data);
+                .collect(Collectors.toMap(Task::getName, task -> ((GridSearch) task.getGridSearch()).getScores().collectAsMap()));
+        return new TaskPoolResult(name, taskNames, data);
     }
 }
