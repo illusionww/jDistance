@@ -1,13 +1,10 @@
 package com.jdistance.local.competitions;
 
-import com.jdistance.local.workflow.TaskPoolResult;
-import com.jdistance.learning.measure.AbstractMeasureWrapper;
-import com.jdistance.graph.Graph;
-import com.jdistance.graph.GraphBundle;
 import com.jdistance.local.Main;
 import com.jdistance.local.workflow.Context;
-import com.jdistance.core.structures.DefaultHashMap;
 import com.jdistance.local.workflow.TaskPool;
+import com.jdistance.learning.measure.AbstractMeasureWrapper;
+import com.jdistance.graph.GraphBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

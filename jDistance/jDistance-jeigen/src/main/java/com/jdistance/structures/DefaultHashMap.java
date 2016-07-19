@@ -1,4 +1,4 @@
-package com.jdistance.core.structures;
+package com.jdistance.structures;
 
 import java.util.HashMap;
 

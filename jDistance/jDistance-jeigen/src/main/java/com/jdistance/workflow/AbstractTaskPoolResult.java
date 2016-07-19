@@ -22,6 +22,10 @@ public abstract class AbstractTaskPoolResult implements Serializable {
         return name;
     }
 
+    public Map<String, Map<Double, Pair<Double, Double>>> getData() {
+        return data;
+    }
+
     protected AbstractTaskPoolResult writeData(Writer outputWriter) throws IOException {
         Set<String> lineNames = data.keySet();
         Set<Double> points = new TreeSet<>();

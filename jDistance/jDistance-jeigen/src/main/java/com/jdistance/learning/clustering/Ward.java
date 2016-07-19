@@ -1,7 +1,7 @@
 package com.jdistance.learning.clustering;
 
-import com.jdistance.core.structures.LinkedList;
-import com.jdistance.core.structures.LinkedList.Node;
+import com.jdistance.structures.LinkedList;
+import com.jdistance.structures.LinkedList.Node;
 import com.jdistance.learning.Estimator;
 import jeigen.DenseMatrix;
 

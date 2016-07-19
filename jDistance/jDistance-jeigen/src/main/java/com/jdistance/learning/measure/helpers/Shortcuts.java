@@ -2,7 +2,6 @@ package com.jdistance.learning.measure.helpers;
 
 import jeigen.DenseMatrix;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
-import org.apache.commons.math.util.DoubleArray;
 
 import java.util.Arrays;
 import java.util.function.UnaryOperator;

@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import static com.jdistance.TestHelperLib.*;
 import static org.junit.Assert.assertTrue;
 
 public class MetricsCommonTests {
@@ -29,8 +28,8 @@ public class MetricsCommonTests {
             double step = (to - from) / (pointsCount - 1);
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
                 Double base = from + idx * step;
-                Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.calc(chainGraph, i);
+                Double i = metric.getScale().calc(TestHelperLib.chainGraph, base);
+                DenseMatrix result = metric.calc(TestHelperLib.chainGraph, i);
                 for (double item : result.getValues()) {
                     assertTrue(metric.getName() + ", parameter = " + i + ":  matrix element less than zero or NaN:\n" + result, item >= 0);
                 }
@@ -49,14 +48,14 @@ public class MetricsCommonTests {
             double step = (to - from) / (pointsCount - 1);
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
                 Double base = from + idx * step;
-                Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.getD(chainGraph, i);
-                double resultArray[][] = toArray2(result);
+                Double i = metric.getScale().calc(TestHelperLib.chainGraph, base);
+                DenseMatrix result = metric.getD(TestHelperLib.chainGraph, i);
+                double resultArray[][] = TestHelperLib.toArray2(result);
                 int d = resultArray.length;
                 for (int j = 1; j < d - 1; j++) {
                     for (int k = j + 1; k < d; k++) {
                         assertTrue(metric.getName() + ", parameter = " + i + " (" + base + "):  matrix isn't symmetry:\n" + Arrays.deepToString(resultArray),
-                                equalDoubleStrict(resultArray[j][k], resultArray[k][j]));
+                                TestHelperLib.equalDoubleStrict(resultArray[j][k], resultArray[k][j]));
                     }
                 }
             });
@@ -74,9 +73,9 @@ public class MetricsCommonTests {
             double step = (to - from) / (pointsCount - 1);
             IntStream.range(0, pointsCount).boxed().collect(Collectors.toList()).forEach(idx -> {
                 Double base = from + idx * step;
-                Double i = metric.getScale().calc(chainGraph, base);
-                DenseMatrix result = metric.getD(chainGraph, i);
-                double resultArray[][] = toArray2(result);
+                Double i = metric.getScale().calc(TestHelperLib.chainGraph, base);
+                DenseMatrix result = metric.getD(TestHelperLib.chainGraph, i);
+                double resultArray[][] = TestHelperLib.toArray2(result);
                 for (int j = 0; j < resultArray.length; j++) {
                     assertTrue(metric.getName() + ", parameter = " + i + " diagonal not zero:\n" + result, resultArray[j][j] == 0);
                 }

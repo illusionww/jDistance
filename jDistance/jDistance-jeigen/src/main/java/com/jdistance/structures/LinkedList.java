@@ -1,11 +1,7 @@
-package com.jdistance.core.structures;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+package com.jdistance.structures;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class LinkedList<E> implements Serializable {
     public Node<E> first = null;

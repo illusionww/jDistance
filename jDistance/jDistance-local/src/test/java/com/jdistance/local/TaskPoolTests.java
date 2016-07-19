@@ -1,18 +1,18 @@
-package com.jdistance;
+package com.jdistance.local;
 
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.clustering.Ward;
-import com.jdistance.local.workflow.Context;
-import com.jdistance.local.workflow.TaskPool;
 import com.jdistance.learning.measure.Distance;
 import com.jdistance.learning.measure.DistanceWrapper;
+import com.jdistance.local.workflow.Context;
+import com.jdistance.local.workflow.TaskPool;
 import org.junit.Before;
 import org.junit.Test;
 
-public class AllSystemsWorksTests {
+public class TaskPoolTests {
     @Before
     public void init() {
         Context.fill(false, "./test", "./test");

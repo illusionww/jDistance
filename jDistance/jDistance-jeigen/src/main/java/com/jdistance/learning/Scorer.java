@@ -1,6 +1,6 @@
 package com.jdistance.learning;
 
-import com.jdistance.core.structures.DefaultHashMap;
+import com.jdistance.structures.DefaultHashMap;
 import com.jdistance.graph.Vertex;
 import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;

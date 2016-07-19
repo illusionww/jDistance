@@ -2,7 +2,6 @@ package com.jdistance.learning;
 
 import jeigen.DenseMatrix;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class NullEstimator implements Estimator {
