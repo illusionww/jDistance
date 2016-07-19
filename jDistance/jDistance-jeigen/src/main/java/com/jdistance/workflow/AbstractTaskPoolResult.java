@@ -39,9 +39,12 @@ public abstract class AbstractTaskPoolResult implements Serializable {
 
         for (Double key : points) {
             outputWriter.write(key + "\t");
-            for (String taskName : lineNames) {
-                Pair<Double, Double> point = data.get(taskName).get(key);
-                outputWriter.write(point.getLeft() + "\t" + point.getRight() + "\t");
+            for (String lineName : lineNames) {
+                Pair<Double, Double> point = data.get(lineName).get(key);
+                outputWriter.write(point != null
+                        ? point.getLeft() + "\t" + point.getRight() + "\t"
+                        : "\t\t"
+                );
             }
             outputWriter.write("\n");
         }
