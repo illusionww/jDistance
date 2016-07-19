@@ -1,7 +1,7 @@
 package com.jdistance.local.workflow;
 
 import com.jdistance.local.adapter.GNUPlotAdapter;
-import com.jdistance.workflow.AbstractTaskPoolResult;
+import com.jdistance.workflow.AbstractGridSearchResult;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +11,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
-public class TaskPoolResult extends AbstractTaskPoolResult {
-    private static final Logger log = LoggerFactory.getLogger(TaskPoolResult.class);
+public class GridSearchResult extends AbstractGridSearchResult {
+    private static final Logger log = LoggerFactory.getLogger(GridSearchResult.class);
 
-    public TaskPoolResult(String name, Map<String, Map<Double, Pair<Double, Double>>> data) {
+    public GridSearchResult(String name, Map<String, Map<Double, Pair<Double, Double>>> data) {
         super(name, data);
     }
 
-    public TaskPoolResult writeData() {
+    public GridSearchResult writeData() {
         String filePath = Context.getInstance().buildOutputDataFullName(name, "csv");
         log.info("Write data to: {}", filePath);
         try (BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filePath))) {
@@ -29,7 +29,7 @@ public class TaskPoolResult extends AbstractTaskPoolResult {
         return this;
     }
 
-    public TaskPoolResult draw() {
+    public GridSearchResult draw() {
         String filePath = Context.getInstance().buildImgFullName(name, "png");
         log.info("Draw line graph to: {}", filePath);
         try {

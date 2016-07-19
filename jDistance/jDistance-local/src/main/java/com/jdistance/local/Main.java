@@ -7,7 +7,7 @@ import com.jdistance.learning.Scorer;
 import com.jdistance.learning.clustering.Ward;
 import com.jdistance.learning.measure.Kernel;
 import com.jdistance.local.workflow.Context;
-import com.jdistance.local.workflow.TaskPool;
+import com.jdistance.local.workflow.GridSearch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class Main {
 
     public void saa() {
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.1));
-        new TaskPool().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllH_plusRSP_FE(), graphs, 51)
+        new GridSearch().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllH_plusRSP_FE(), graphs, 51)
                 .execute()
                 .writeData()
                 .draw();

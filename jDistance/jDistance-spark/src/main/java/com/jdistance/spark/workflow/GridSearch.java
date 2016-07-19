@@ -4,7 +4,7 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.measure.AbstractMeasureWrapper;
-import com.jdistance.workflow.AbstractTaskPool;
+import com.jdistance.workflow.AbstractGridSearch;
 import com.jdistance.workflow.Task;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -15,15 +15,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TaskPool extends AbstractTaskPool {
+public class GridSearch extends AbstractGridSearch {
     @Override
-    public TaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
+    public GridSearch addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
         super.addLine(lineName, estimator, metricWrapper, scorer, graphs, pointsCount);
         return this;
     }
 
     @Override
-    public TaskPool addLinesForDifferentMeasures(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
+    public GridSearch addLinesForDifferentMeasures(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
         super.addLinesForDifferentMeasures(estimator, scorer, metricWrappers, graphs, pointsCount);
         return this;
     }

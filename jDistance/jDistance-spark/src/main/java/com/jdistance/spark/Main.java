@@ -7,7 +7,7 @@ import com.jdistance.learning.Scorer;
 import com.jdistance.learning.clustering.Ward;
 import com.jdistance.learning.measure.Kernel;
 import com.jdistance.spark.workflow.Context;
-import com.jdistance.spark.workflow.TaskPool;
+import com.jdistance.spark.workflow.GridSearch;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 
@@ -23,19 +23,19 @@ public class Main {
     }
 
     public static void task() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(5, new int[]{
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, new int[]{
                 65, 35, 25, 13, 8, 4 // sum = 150
         }, new double[][]{
-                {0.30, 0.20, 0.10, 0.13, 0.02, 0.20, 0.10},
-                {0.00, 0.30, 0.10, 0.13, 0.02, 0.20, 0.10},
-                {0.00, 0.00, 0.16, 0.13, 0.02, 0.20, 0.10},
-                {0.00, 0.00, 0.00, 0.25, 0.02, 0.20, 0.10},
-                {0.00, 0.00, 0.00, 0.00, 0.10, 0.20, 0.10},
-                {0.00, 0.00, 0.00, 0.00, 0.00, 0.30, 0.10},
+                {0.30, 0.20, 0.10, 0.15, 0.07, 0.25, 0.14},
+                {0.00, 0.24, 0.08, 0.13, 0.05, 0.17, 0.19},
+                {0.00, 0.00, 0.16, 0.09, 0.04, 0.12, 0.10},
+                {0.00, 0.00, 0.00, 0.20, 0.02, 0.14, 0.15},
+                {0.00, 0.00, 0.00, 0.00, 0.12, 0.04, 0.08},
+                {0.00, 0.00, 0.00, 0.00, 0.00, 0.40, 0.14},
                 {0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.25}
         }));
 
-        new TaskPool().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllK(), graphs, 55)
+        new GridSearch().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllK(), graphs, 55)
                 .execute()
                 .writeData("7 clusters");
     }

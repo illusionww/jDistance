@@ -4,7 +4,7 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.measure.AbstractMeasureWrapper;
-import com.jdistance.workflow.AbstractTaskPool;
+import com.jdistance.workflow.AbstractGridSearch;
 import com.jdistance.workflow.Task;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -19,23 +19,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class TaskPool extends AbstractTaskPool {
-    private static final Logger log = LoggerFactory.getLogger(TaskPool.class);
+public class GridSearch extends AbstractGridSearch {
+    private static final Logger log = LoggerFactory.getLogger(GridSearch.class);
 
     @Override
-    public TaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
+    public GridSearch addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
         super.addLine(lineName, estimator, metricWrapper, scorer, graphs, pointsCount);
         return this;
     }
 
     @Override
-    public TaskPool addLinesForDifferentMeasures(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
+    public GridSearch addLinesForDifferentMeasures(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
         super.addLinesForDifferentMeasures(estimator, scorer, metricWrappers, graphs, pointsCount);
         return this;
     }
 
     @Override
-    public TaskPoolResult execute() {
+    public GridSearchResult execute() {
         Instant startPoolTime = Instant.now();
         log.info("START TASK POOL \"{}\"", name);
         log.info("Total count: {}", tasks.size());
@@ -54,7 +54,7 @@ public class TaskPool extends AbstractTaskPool {
         log.info("TASK POOL DONE. Total time: {}", Duration.between(startPoolTime, finishPoolTime).toString().substring(2));
         log.info("----------------------------------------------------------------------------------------------------");
 
-        return new TaskPoolResult(name, prepareResults());
+        return new GridSearchResult(name, prepareResults());
     }
 
     private Map<String, Map<Double, Pair<Double, Double>>> prepareResults() {

@@ -8,7 +8,7 @@ import com.jdistance.learning.clustering.Ward;
 import com.jdistance.learning.measure.Distance;
 import com.jdistance.learning.measure.DistanceWrapper;
 import com.jdistance.local.workflow.Context;
-import com.jdistance.local.workflow.TaskPool;
+import com.jdistance.local.workflow.GridSearch;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ public class TaskPoolTests {
     public void calcTest() {
         int clustersCount = 4;
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(1, 100, clustersCount, 0.3, 0.1));
-        new TaskPool()
+        new GridSearch()
                 .addLine(Distance.FOR.getName(), new Ward(clustersCount), new DistanceWrapper(Distance.FOR), Scorer.RI, graphs, 51)
                 .execute()
                 .writeData()

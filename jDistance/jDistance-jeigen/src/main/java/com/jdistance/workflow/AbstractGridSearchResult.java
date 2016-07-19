@@ -9,11 +9,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class AbstractTaskPoolResult implements Serializable {
+public abstract class AbstractGridSearchResult implements Serializable {
     protected String name;
     protected Map<String, Map<Double, Pair<Double, Double>>> data;
 
-    public AbstractTaskPoolResult(String name, Map<String, Map<Double, Pair<Double, Double>>> data) {
+    public AbstractGridSearchResult(String name, Map<String, Map<Double, Pair<Double, Double>>> data) {
         this.name = name;
         this.data = data;
     }
@@ -26,7 +26,7 @@ public abstract class AbstractTaskPoolResult implements Serializable {
         return data;
     }
 
-    protected AbstractTaskPoolResult writeData(Writer outputWriter) throws IOException {
+    protected AbstractGridSearchResult writeData(Writer outputWriter) throws IOException {
         Set<String> lineNames = data.keySet();
         Set<Double> points = new TreeSet<>();
         data.values().forEach(scores -> points.addAll(scores.keySet()));
