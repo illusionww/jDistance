@@ -42,6 +42,7 @@ public class TaskPool extends AbstractTaskPool {
                 .collect(Collectors.groupingBy(entry -> entry.getKey().getLeft()))
                 .entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
+                        .filter(entry2 -> entry2.getValue() != null)
                         .collect(Collectors.toMap(entry2 -> entry2.getKey().getRight(), Map.Entry::getValue))));
     }
 }
