@@ -23,7 +23,7 @@ public class Main {
     }
 
     public static void task() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(5, new int[]{
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, new int[]{
                 100, 75, 75, 50, 25, 10, 5 // sum = 340
         }, new double[][]{
                 {0.30, 0.15, 0.10, 0.13, 0.02, 0.20, 0.10},
@@ -34,8 +34,8 @@ public class Main {
                 {0.00, 0.00, 0.00, 0.00, 0.00, 0.30, 0.10},
                 {0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.14}
         }));
-        new TaskPool().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllK(), graphs, 71)
+        new TaskPool().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllK(), graphs, 55)
                 .execute()
-                .writeData("task");
+                .writeData("7 clusters");
     }
 }

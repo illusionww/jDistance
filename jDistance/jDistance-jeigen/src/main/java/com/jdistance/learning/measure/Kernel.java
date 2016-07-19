@@ -101,14 +101,6 @@ public enum Kernel {
         @Override
         public DenseMatrix getK(DenseMatrix A, double lambda) {
             DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
-            DenseMatrix Hc = normalize(getH_CCT(A));
-            return Hs.mul(1 - lambda).add(Hc.mul(lambda));
-        }
-    },
-    SP_CCT2_H("SP-CCT2 H", Scale.LINEAR, null) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
             DenseMatrix Hc = normalize(getH_CCT2(A));
             return Hs.mul(1 - lambda).add(Hc.mul(lambda));
         }

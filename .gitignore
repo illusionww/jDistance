@@ -10,8 +10,11 @@ target/
 *.ipr
 *.iws
 
+# Jupyter notebook
+.ipynb_checkpoints/
+
 # Output files
-/out/
-/results/
+out/
+results/
 *.png
 *.log
