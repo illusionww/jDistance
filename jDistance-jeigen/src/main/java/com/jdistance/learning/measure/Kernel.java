@@ -141,7 +141,7 @@ public enum Kernel {
         return Arrays.stream(Kernel.values()).map(KernelWrapper::new).collect(Collectors.toList());
     }
 
-    public static List<KernelWrapper> getAllHPlusRSP_FE() {
+    public static List<KernelWrapper> getAllH_plusRSP_FE() {
         return Stream.of(
                 P_WALK_H, WALK_H, FOR_H, LOG_FOR_H, COMM_H, LOG_COMM_H, HEAT_H, LOG_HEAT_H, SCT_H, SCCT_H, RSP_K, FE_K, SP_CT_H
         ).map(KernelWrapper::new).collect(Collectors.toList());

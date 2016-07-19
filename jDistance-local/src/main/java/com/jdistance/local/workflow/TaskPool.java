@@ -47,7 +47,7 @@ public class TaskPool extends AbstractTaskPool {
             Instant startTaskTime = Instant.now();
             task.execute();
             Instant endTaskTime = Instant.now();
-            log.info("{}\t{}\t{}\ttime={}", counter.incrementAndGet(), task.getLineName(), String.format("%.4f", task.getParam()), Duration.between(startTaskTime, endTaskTime).toString().substring(2));
+            log.debug("{}\t{}\t{}\ttime={}", counter.incrementAndGet(), task.getLineName(), String.format("%.4f", task.getParam()), Duration.between(startTaskTime, endTaskTime).toString().substring(2));
         });
 
         Instant finishPoolTime = Instant.now();

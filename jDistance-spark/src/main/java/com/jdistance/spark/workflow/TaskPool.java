@@ -17,8 +17,8 @@ import java.util.stream.Collectors;
 
 public class TaskPool extends AbstractTaskPool {
     @Override
-    public TaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, double from, double to, int pointsCount) {
-        super.addLine(lineName, estimator, metricWrapper, scorer, graphs, from, to, pointsCount);
+    public TaskPool addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
+        super.addLine(lineName, estimator, metricWrapper, scorer, graphs, pointsCount);
         return this;
     }
 

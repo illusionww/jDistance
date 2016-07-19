@@ -6,14 +6,12 @@ import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.clustering.Ward;
 import com.jdistance.learning.measure.Kernel;
-import com.jdistance.learning.measure.KernelWrapper;
 import com.jdistance.local.workflow.Context;
 import com.jdistance.local.workflow.TaskPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
 
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -34,10 +32,8 @@ public class Main {
     }
 
     public void saa() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(2, 100, 2, 0.3, 0.2));
-        new TaskPool().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
-                new KernelWrapper(Kernel.LOG_COMM_H)
-        ), graphs, 100)
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.1));
+        new TaskPool().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllH_plusRSP_FE(), graphs, 51)
                 .execute()
                 .writeData()
                 .draw();

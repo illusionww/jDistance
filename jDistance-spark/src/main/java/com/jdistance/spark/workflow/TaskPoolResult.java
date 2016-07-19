@@ -23,7 +23,7 @@ public class TaskPoolResult extends AbstractTaskPoolResult {
         String data = stringWriter.toString();
         Context.getInstance().getSparkContext()
                 .parallelize(Collections.singletonList(data))
-                .saveAsTextFile(filePath);
+                .saveAsTextFile(Context.getInstance().buildDataFullName("7 clusters"));
         return this;
     }
 }
