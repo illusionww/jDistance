@@ -2,7 +2,6 @@ package com.jdistance.local.competitions;
 
 import com.jdistance.local.Main;
 import com.jdistance.local.workflow.Context;
-import com.jdistance.local.workflow.TaskPool;
 import com.jdistance.learning.measure.AbstractMeasureWrapper;
 import com.jdistance.graph.GraphBundle;
 import org.slf4j.Logger;
@@ -70,8 +69,6 @@ public abstract class CopelandsMethod {
 //            }
 //        }
 //    }
-
-    protected abstract TaskPool generateTaskPool(GraphBundle graphs);
 
     public void write(String name) {
         write(name + "_best", bestResults);

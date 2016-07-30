@@ -1,8 +1,11 @@
 package com.jdistance.learning.measure.helpers;
 
+import jeigen.BigDecimalMatrix;
 import jeigen.DenseMatrix;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 
+import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Arrays;
 import java.util.function.UnaryOperator;
 
@@ -126,6 +129,21 @@ public class Shortcuts {
         DenseMatrix Δ_FE = Φ.add(Φ.t()).div(2);
 
         return Δ_FE.sub(diag(diagToVector(Δ_FE)));
+    }
+
+    public static DenseMatrix dummy_mexp(DenseMatrix dA, int inSteps) {
+        BigDecimalMatrix A = new BigDecimalMatrix(dA);
+        BigDecimal nSteps = BigDecimal.valueOf(inSteps);
+        BigDecimalMatrix runtot = BigDecimalMatrix.eye(A.rows);
+        BigDecimalMatrix sum = BigDecimalMatrix.eye(A.rows);
+
+        BigDecimal factorial = BigDecimal.ONE;
+        for (BigDecimal i = BigDecimal.ONE; i.compareTo(nSteps) < 0; i = i.add(BigDecimal.ONE)) {
+            factorial = factorial.divide(i, MathContext.DECIMAL128);
+            sum = sum.mmul(A);
+            runtot = runtot.add(sum.mul(factorial));
+        }
+        return runtot.toDenseMatrix();
     }
 
     public static DenseMatrix pinv(DenseMatrix A) {

@@ -55,7 +55,7 @@ public class Task implements Serializable {
 
     public Pair<Double, Double> execute() {
         List<Double> scoresByGraph = new ArrayList<>();
-        try {
+//        try {
             for (Graph graph : graphs.getGraphs()) {
                 DenseMatrix A = graph.getA();
                 Double trueParam = metricWrapper.getScale().calc(A, param);
@@ -66,9 +66,9 @@ public class Task implements Serializable {
                     scoresByGraph.add(score);
                 }
             }
-        } catch (RuntimeException e) {
-            System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + param);
-        }
+//        } catch (RuntimeException e) {
+//            System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + param);
+//        }
         return formResult(scoresByGraph);
     }
 
