@@ -22,7 +22,7 @@ public class DistanceWrapper extends AbstractMeasureWrapper {
 
     @Override
     public DenseMatrix calc(DenseMatrix A, double param) {
-        return distance.getD(A, param).mul(-1);
+        return distance.getD(A, param);
     }
 
     public Kernel getParentKernel() {
