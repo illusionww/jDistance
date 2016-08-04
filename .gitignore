@@ -14,7 +14,7 @@ target/
 .ipynb_checkpoints/
 
 # Output files
+/JDistance-local/test/
 out/
-results/
 *.png
 *.log
