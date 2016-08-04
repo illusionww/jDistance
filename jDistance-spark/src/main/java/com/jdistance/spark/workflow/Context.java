@@ -13,7 +13,6 @@ public class Context {
     private JavaSparkContext sparkContext;
     private String outputDataFolder;
 
-
     public static void fill(JavaSparkContext sparkContext, String outputDataFolder) {
         instance = new Context();
         instance.sparkContext = sparkContext;

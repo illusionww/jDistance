@@ -5,7 +5,10 @@ import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.Vertex;
 import jeigen.DenseMatrix;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,11 +18,14 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CSVGraphBuilder {
-    private static final boolean IS_WINDOWS = System.getProperty( "os.name" ).contains( "indow" );
-
     private String name;
     private List<Vertex> vertices;
     private DenseMatrix A;
+    private ClassLoader classLoader;
+
+    public CSVGraphBuilder() {
+        this.classLoader = Thread.currentThread().getContextClassLoader();
+    }
 
     public CSVGraphBuilder setName(String name) {
         this.name = name;
@@ -27,13 +33,11 @@ public class CSVGraphBuilder {
     }
 
     public CSVGraphBuilder importNodesIdNameClass(String nodesFile) throws IOException {
-        String filePath = getClass().getClassLoader().getResource(nodesFile).getFile();
-        filePath = IS_WINDOWS ? filePath.substring(1) : filePath;
-
         vertices = new ArrayList<>();
         List<String> classNames = new ArrayList<>();
-        try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
-            stream.forEach(line -> {
+        InputStream fileStream = classLoader.getResourceAsStream(nodesFile);
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(fileStream))) {
+            buffer.lines().forEach(line -> {
                 String[] rawNode = line.split("[\t;]");
                 int indexOf = classNames.indexOf(rawNode[2]);
                 if (indexOf == -1) {
@@ -47,13 +51,11 @@ public class CSVGraphBuilder {
     }
 
     public CSVGraphBuilder importNodesClassOnly(String nodesFile) throws IOException {
-        String filePath = getClass().getClassLoader().getResource(nodesFile).getFile();
-        filePath = IS_WINDOWS ? filePath.substring(1) : filePath;
-
         vertices = new ArrayList<>();
         List<String> classNames = new ArrayList<>();
-        try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
-            List<String> lines = stream.collect(Collectors.toList());
+        InputStream fileStream = classLoader.getResourceAsStream(nodesFile);
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(fileStream))) {
+            List<String> lines = buffer.lines().collect(Collectors.toList());
             for (int i = 0; i < lines.size(); i++) {
                 String className = lines.get(i);
                 int indexOf = classNames.indexOf(className);
@@ -68,13 +70,11 @@ public class CSVGraphBuilder {
     }
 
     public CSVGraphBuilder importNodesAndEdges(String graphFile) throws IOException {
-        String filePath = getClass().getClassLoader().getResource(graphFile).getFile();
-        filePath = IS_WINDOWS ? filePath.substring(1) : filePath;
-
         vertices = new ArrayList<>();
         List<String> classNames = new ArrayList<>();
-        try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
-            List<String> lines = stream.collect(Collectors.toList());
+        InputStream fileStream = classLoader.getResourceAsStream(graphFile);
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(fileStream))) {
+            List<String> lines = buffer.lines().collect(Collectors.toList());
             Integer count = Integer.valueOf(lines.get(0).split(" ")[1]);
             for (int i = 1; i <= count; i++) {
                 String[] rawNode = lines.get(i).split(" ");
@@ -96,13 +96,11 @@ public class CSVGraphBuilder {
     }
 
     public CSVGraphBuilder importEdgesList(String edgesFile) throws IOException {
-        String filePath = getClass().getClassLoader().getResource(edgesFile).getFile();
-        filePath = IS_WINDOWS ? filePath.substring(1) : filePath;
-
         int count = vertices.size();
         A = DenseMatrix.zeros(count, count);
-        try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
-            stream.forEach(line -> {
+        InputStream fileStream = classLoader.getResourceAsStream(edgesFile);
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(fileStream))) {
+            buffer.lines().forEach(line -> {
                 String[] rawEdge = line.split("[\t;]");
                 A.set(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
                 A.set(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
@@ -112,14 +110,12 @@ public class CSVGraphBuilder {
     }
 
     public CSVGraphBuilder importAdjacencyMatrix(String edgesFile) throws IOException {
-        String filePath = getClass().getClassLoader().getResource(edgesFile).getFile();
-        filePath = IS_WINDOWS ? filePath.substring(1) : filePath;
-
         int count = vertices.size();
         A = DenseMatrix.zeros(count, count);
         List<Double> rawSparseMatrix = new ArrayList<>();
-        try (Stream<String> stream = Files.lines(Paths.get(filePath))) {
-            stream.forEach(line -> {
+        InputStream fileStream = classLoader.getResourceAsStream(edgesFile);
+        try (BufferedReader buffer = new BufferedReader(new InputStreamReader(fileStream))) {
+            buffer.lines().forEach(line -> {
                 List<Double> rawLine = Arrays.stream(line.split("[,]"))
                         .map(Double::valueOf)
                         .collect(Collectors.toList());
