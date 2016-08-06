@@ -11,7 +11,6 @@ import com.jdistance.spark.workflow.GridSearch;
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaSparkContext;
 
-import javax.xml.crypto.Data;
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,21 +38,25 @@ public class Main {
                 Dataset.news_3cl_3,
                 Dataset.news_5cl_1,
                 Dataset.news_5cl_2,
-                Dataset.news_5cl_3,
-                Dataset.POLBLOGS
+                Dataset.news_5cl_3
         );
 
+        GridSearch gridSearch = new GridSearch("Datasets");
         for (Dataset dataset : datasets) {
             GraphBundle graphs = dataset.get();
-            new GridSearch()
-                    .addLinesForDifferentMeasures(
-                            new Ward(graphs.getProperties().getClustersCount()),
-                            Scorer.ARI,
-                            Kernel.getAllH_plusRSP_FE(),
-                            graphs,
-                            100)
-                    .execute()
-                    .writeData(dataset.name());
+            List<KernelWrapper> kernels = Kernel.getAllH_plusRSP_FE();
+            for (KernelWrapper kernelWrapper : kernels) {
+                kernelWrapper.setName(graphs.getName() + "__" + kernelWrapper.getName());
+            }
+            gridSearch.addLinesForDifferentMeasures(
+                    new Ward(graphs.getProperties().getClustersCount()),
+                    Scorer.ARI,
+                    kernels,
+                    graphs,
+                    100);
         }
+        gridSearch
+                .execute()
+                .writeData();
     }
 }

@@ -88,8 +88,8 @@ public class CSVGraphBuilder {
             A = DenseMatrix.zeros(count, count);
             for (int i = count + 2; i < lines.size() - 1; i++) {
                 String[] rawEdge = lines.get(i).split(" ");
-                A.set(Integer.decode(rawEdge[0]), Integer.decode(rawEdge[1]), 1);
-                A.set(Integer.decode(rawEdge[1]), Integer.decode(rawEdge[0]), 1);
+                A.set(Integer.decode(rawEdge[0]) - 1, Integer.decode(rawEdge[1]) - 1, 1);
+                A.set(Integer.decode(rawEdge[1]) - 1, Integer.decode(rawEdge[0]) - 1, 1);
             }
         }
         return this;
@@ -139,6 +139,6 @@ public class CSVGraphBuilder {
     public GraphBundle shuffleAndBuildBundle() {
         Graph graph = new Graph(vertices, A);
         graph.shuffle(10 * vertices.size());
-        return graph.toBundle();
+        return graph.toBundle(name);
     }
 }

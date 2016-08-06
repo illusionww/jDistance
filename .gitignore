@@ -7,8 +7,6 @@ target/
 # JetBrains
 .idea/
 *.iml
-*.ipr
-*.iws
 
 # Jupyter notebook
 .ipynb_checkpoints/

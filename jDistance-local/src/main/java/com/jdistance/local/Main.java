@@ -1,5 +1,6 @@
 package com.jdistance.local;
 
+import com.jdistance.Dataset;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -34,7 +36,7 @@ public class Main {
     }
 
     public void saa() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(1, 100, 2, 0.25, 0.1));
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(3, 100, 2, 0.25, 0.1));
         new GridSearch().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
                 new KernelWrapper(Kernel.LOG_COMM_H),
                 new KernelWrapper(Kernel.DUMMY_LOG_COMM_H)
@@ -42,6 +44,41 @@ public class Main {
                 .execute()
                 .writeData()
                 .draw();
+    }
+
+    public void datasets() {
+        List<Dataset> datasets = Arrays.asList(
+                Dataset.FOOTBALL,
+                Dataset.POLBOOKS,
+                Dataset.ZACHARY,
+                Dataset.news_2cl_1,
+                Dataset.news_2cl_2,
+                Dataset.news_2cl_3,
+                Dataset.news_3cl_1,
+                Dataset.news_3cl_2,
+                Dataset.news_3cl_3,
+                Dataset.news_5cl_1,
+                Dataset.news_5cl_2,
+                Dataset.news_5cl_3
+        );
+
+        GridSearch gridSearch = new GridSearch();
+        for (Dataset dataset : datasets) {
+            GraphBundle graphs = dataset.get();
+            List<KernelWrapper> kernels = Kernel.getAllH_plusRSP_FE();
+            for (KernelWrapper kernelWrapper : kernels) {
+                kernelWrapper.setName(graphs.getName() + "__" + kernelWrapper.getName());
+            }
+            gridSearch.addLinesForDifferentMeasures(
+                    new Ward(graphs.getProperties().getClustersCount()),
+                    Scorer.ARI,
+                    kernels,
+                    graphs,
+                    7);
+        }
+        gridSearch
+                .execute()
+                .writeData();
     }
 }
 

@@ -31,7 +31,7 @@ public class TaskPoolTests {
 
     @Test
     public void datasetTest() {
-        GraphBundle graphs = Dataset.FOOTBALL.get();
+        GraphBundle graphs = Dataset.ZACHARY.get();
         new GridSearch()
                 .addLine(Distance.FOR.getName(), new Ward(2), new DistanceWrapper(Distance.FOR), Scorer.RI, graphs, 51)
                 .execute()

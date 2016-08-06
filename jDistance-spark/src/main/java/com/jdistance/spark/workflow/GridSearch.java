@@ -17,6 +17,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class GridSearch extends AbstractGridSearch {
+    public GridSearch() {
+    }
+
+    public GridSearch(String name) {
+        super(name);
+    }
+
     @Override
     public GridSearch addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
         super.addLine(lineName, estimator, metricWrapper, scorer, graphs, pointsCount);

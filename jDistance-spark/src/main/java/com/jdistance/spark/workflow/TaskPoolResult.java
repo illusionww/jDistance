@@ -13,6 +13,10 @@ public class TaskPoolResult extends AbstractGridSearchResult {
         super(name, data);
     }
 
+    public TaskPoolResult writeData() {
+        return writeData(name);
+    }
+
     public TaskPoolResult writeData(String filePath) {
         StringWriter stringWriter = new StringWriter();
         try {
