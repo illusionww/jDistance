@@ -2,10 +2,11 @@ package com.jdistance.spark;
 
 import com.jdistance.Dataset;
 import com.jdistance.graph.GraphBundle;
+import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
+import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.clustering.Ward;
 import com.jdistance.learning.measure.Kernel;
-import com.jdistance.learning.measure.KernelWrapper;
 import com.jdistance.spark.workflow.Context;
 import com.jdistance.spark.workflow.GridSearch;
 import org.apache.spark.SparkConf;
@@ -20,7 +21,7 @@ public class Main {
         JavaSparkContext sparkContext = new JavaSparkContext(conf);
         Context.fill(sparkContext, "./ivashkin/jDistance");
 
-        task();
+        old_task();
 
         sparkContext.stop();
     }
@@ -41,22 +42,24 @@ public class Main {
                 Dataset.news_5cl_3
         );
 
-        GridSearch gridSearch = new GridSearch("Datasets");
         for (Dataset dataset : datasets) {
             GraphBundle graphs = dataset.get();
-            List<KernelWrapper> kernels = Kernel.getAllH_plusRSP_FE();
-            for (KernelWrapper kernelWrapper : kernels) {
-                kernelWrapper.setName(graphs.getName() + "__" + kernelWrapper.getName());
-            }
-            gridSearch.addLinesForDifferentMeasures(
-                    new Ward(graphs.getProperties().getClustersCount()),
-                    Scorer.ARI,
-                    kernels,
-                    graphs,
-                    100);
+            new GridSearch(dataset.name())
+                    .addLinesForDifferentMeasures(
+                            new Ward(graphs.getProperties().getClustersCount()),
+                            Scorer.ARI,
+                            Kernel.getAllH_plusRSP_FE(),
+                            graphs,
+                            50)
+                    .execute()
+                    .writeData();
         }
-        gridSearch
+    }
+
+    public static void old_task() {
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(25, 150, 3, 0.3, 0.1));
+        new GridSearch().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Kernel.getAllK(), graphs, 55)
                 .execute()
-                .writeData();
+                .writeData("7 clusters");
     }
 }

@@ -25,8 +25,8 @@ public class Task implements Serializable {
     private Scorer scorer;
     private GraphBundle graphs;
 
-    private Double mean;
-    private Double sigma;
+    private Double mean = null;
+    private Double sigma = null;
 
     public Task(String lineName, Double param, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs) {
         this.lineName = lineName;
@@ -45,12 +45,12 @@ public class Task implements Serializable {
         return param;
     }
 
-    public Double getMean() {
-        return mean;
+    public Pair<String, Double> getKey() {
+        return new ImmutablePair<>(lineName, param);
     }
 
-    public Double getSigma() {
-        return sigma;
+    public Pair<Double, Double> getResult() {
+        return new ImmutablePair<>(mean, sigma);
     }
 
     public Pair<Double, Double> execute() {
@@ -66,10 +66,17 @@ public class Task implements Serializable {
                     scoresByGraph.add(score);
                 }
             }
+            if (scoresByGraph.size() > 0.9 * graphs.getGraphs().size()) {
+                OptionalDouble optionalAvg = scoresByGraph.stream().mapToDouble(d -> d).average();
+                if (optionalAvg.isPresent() && optionalAvg.getAsDouble() != 0) {
+                    mean = optionalAvg.getAsDouble();
+                    sigma = new StandardDeviation().evaluate(scoresByGraph.stream().mapToDouble(d -> d).toArray());
+                }
+            }
         } catch (RuntimeException e) {
             System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + param);
         }
-        return formResult(scoresByGraph);
+        return new ImmutablePair<>(mean, sigma);
     }
 
     private boolean hasNaN(DenseMatrix D) {
@@ -79,17 +86,5 @@ public class Task implements Serializable {
             }
         }
         return false;
-    }
-
-    private Pair<Double, Double> formResult(List<Double> scoresByGraph) {
-        if (scoresByGraph.size() > 0.9 * graphs.getGraphs().size()) {
-            OptionalDouble optionalAvg = scoresByGraph.stream().mapToDouble(d -> d).average();
-            if (optionalAvg.isPresent() && optionalAvg.getAsDouble() != 0) {
-                mean = optionalAvg.getAsDouble();
-                sigma = new StandardDeviation().evaluate(scoresByGraph.stream().mapToDouble(d -> d).toArray());
-                return new ImmutablePair<>(mean, sigma);
-            }
-        }
-        return null;
     }
 }

@@ -42,22 +42,10 @@ public enum Kernel {
             return A.mul(t).mexp();
         }
     },
-    DUMMY_COMM_H("dummy Comm H", Scale.FRACTION, null) { // H0 = exp(tA)
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            return dummy_mexp(A.mul(t), 1000);
-        }
-    },
     LOG_COMM_H("logComm H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return H0toH(COMM_H.getK(A, t));
-        }
-    },
-    DUMMY_LOG_COMM_H("dummy logComm H", Scale.FRACTION, null) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double t) {
-            return H0toH(DUMMY_COMM_H.getK(A, t));
         }
     },
     HEAT_H("Heat H", Scale.FRACTION, null) { // H0 = exp(-tL)

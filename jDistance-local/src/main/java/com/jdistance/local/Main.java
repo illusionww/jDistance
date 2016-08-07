@@ -38,8 +38,8 @@ public class Main {
     public void saa() {
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(3, 100, 2, 0.25, 0.1));
         new GridSearch().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
-                new KernelWrapper(Kernel.LOG_COMM_H),
-                new KernelWrapper(Kernel.DUMMY_LOG_COMM_H)
+                new KernelWrapper(Kernel.COMM_H),
+                new KernelWrapper(Kernel.LOG_COMM_H)
         ), graphs, 60)
                 .execute()
                 .writeData()
@@ -62,23 +62,18 @@ public class Main {
                 Dataset.news_5cl_3
         );
 
-        GridSearch gridSearch = new GridSearch();
         for (Dataset dataset : datasets) {
             GraphBundle graphs = dataset.get();
-            List<KernelWrapper> kernels = Kernel.getAllH_plusRSP_FE();
-            for (KernelWrapper kernelWrapper : kernels) {
-                kernelWrapper.setName(graphs.getName() + "__" + kernelWrapper.getName());
-            }
-            gridSearch.addLinesForDifferentMeasures(
-                    new Ward(graphs.getProperties().getClustersCount()),
-                    Scorer.ARI,
-                    kernels,
-                    graphs,
-                    7);
+            new GridSearch(dataset.name())
+                    .addLinesForDifferentMeasures(
+                            new Ward(graphs.getProperties().getClustersCount()),
+                            Scorer.ARI,
+                            Kernel.getAllH_plusRSP_FE(),
+                            graphs,
+                            7)
+                    .execute()
+                    .writeData();
         }
-        gridSearch
-                .execute()
-                .writeData();
     }
 }
 

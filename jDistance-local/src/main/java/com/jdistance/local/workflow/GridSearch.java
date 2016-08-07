@@ -6,7 +6,6 @@ import com.jdistance.learning.Scorer;
 import com.jdistance.learning.measure.AbstractMeasureWrapper;
 import com.jdistance.workflow.AbstractGridSearch;
 import com.jdistance.workflow.Task;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,8 +61,8 @@ public class GridSearch extends AbstractGridSearch {
                     counter.incrementAndGet(),
                     task.getLineName() + SPACE25.substring(task.getLineName().length()),
                     String.format("%.4f", task.getParam()),
-                    result != null ? String.format("%.4f", result.getLeft()) : "null  ",
-                    result != null ? String.format("%.4f", result.getRight()) : "null  ",
+                    result.getLeft() != null ? String.format("%.4f", result.getLeft()) : "null  ",
+                    result.getRight() != null ? String.format("%.4f", result.getRight()) : "null  ",
                     Duration.between(startTaskTime, endTaskTime).toString().substring(2));
         });
 
@@ -79,7 +78,7 @@ public class GridSearch extends AbstractGridSearch {
                 .collect(Collectors.groupingBy(Task::getLineName))
                 .entrySet().stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
-                        .collect(Collectors.toMap(Task::getParam, task -> new ImmutablePair<>(task.getMean(), task.getSigma())))));
+                        .collect(Collectors.toMap(Task::getParam, Task::getResult))));
     }
 
 }

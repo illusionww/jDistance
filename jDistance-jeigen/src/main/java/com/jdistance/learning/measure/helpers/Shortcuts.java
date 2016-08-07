@@ -1,12 +1,8 @@
 package com.jdistance.learning.measure.helpers;
 
-import jeigen.BigDecimalMatrix;
 import jeigen.DenseMatrix;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Arrays;
 
 import static jeigen.DenseMatrix.*;
@@ -131,40 +127,6 @@ public class Shortcuts {
         return Δ_FE.sub(diag(diagToVector(Δ_FE)));
     }
 
-    public static DenseMatrix dummy_mexp(DenseMatrix dA, int inSteps) {
-        BigDecimalMatrix A = new BigDecimalMatrix(dA);
-        BigDecimal nSteps = BigDecimal.valueOf(inSteps);
-
-        BigDecimalMatrix sum = BigDecimalMatrix.eye(A.rows);
-        BigDecimal sumSum = BigDecimal.valueOf(A.rows);
-        BigDecimalMatrix powA = BigDecimalMatrix.eye(A.rows);
-
-        BigDecimal factorial = BigDecimal.ONE;
-        for (BigDecimal i = BigDecimal.ONE; i.compareTo(nSteps) < 0; i = i.add(BigDecimal.ONE)) {
-            factorial = factorial.divide(i, new MathContext(150, RoundingMode.HALF_UP));
-            powA = powA.mmul(A);
-
-            BigDecimalMatrix term = powA.mul(factorial);
-            BigDecimal termSum = sum(term);
-
-            if (termSum.multiply(BigDecimal.valueOf(10)).compareTo(sumSum) < 0) {
-                System.out.println("Early stopping at: " + i);
-                break;
-            }
-
-            sum = sum.add(term);
-            sumSum = sumSum.add(termSum);
-        }
-        BigDecimal maxElement = sum.getValues()[0];
-        for (BigDecimal item : sum.getValues()) {
-            if (item.compareTo(maxElement) > 0) {
-                maxElement = item;
-            }
-        }
-        sum = sum.div(maxElement, 150);
-        return sum.toDenseMatrix();
-    }
-
     public static DenseMatrix pinv(DenseMatrix A) {
         for (double item : A.getValues()) {
             if (Double.isNaN(item)) {
@@ -194,9 +156,5 @@ public class Shortcuts {
 
     private static double sum(DenseMatrix x) {
         return Arrays.stream(x.getValues()).sum();
-    }
-
-    private static BigDecimal sum(BigDecimalMatrix x) {
-        return Arrays.stream(x.getValues()).reduce(BigDecimal::add).get();
     }
 }
