@@ -54,8 +54,8 @@ public class Task implements Serializable {
     }
 
     public Pair<Double, Double> execute() {
-        List<Double> scoresByGraph = new ArrayList<>();
         try {
+            List<Double> scoresByGraph = new ArrayList<>();
             for (Graph graph : graphs.getGraphs()) {
                 DenseMatrix A = graph.getA();
                 Double trueParam = metricWrapper.getScale().calc(A, param);

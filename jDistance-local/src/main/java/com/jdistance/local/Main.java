@@ -48,11 +48,6 @@ public class Main {
 
     public void datasets() {
         List<Dataset> datasets = Arrays.asList(
-                Dataset.FOOTBALL,
-                Dataset.POLBOOKS,
-                Dataset.ZACHARY,
-                Dataset.news_2cl_1,
-                Dataset.news_2cl_2,
                 Dataset.news_2cl_3,
                 Dataset.news_3cl_1,
                 Dataset.news_3cl_2,

@@ -1,8 +1,7 @@
 # Java
 *.class
-
-# Maven
 target/
+out/
 
 # JetBrains
 .idea/
@@ -12,7 +11,8 @@ target/
 .ipynb_checkpoints/
 
 # Output files
-/JDistance-local/test/
-out/
+/jDistance-local/test/
+/results-local/
+/results-spark/
 *.png
 *.log

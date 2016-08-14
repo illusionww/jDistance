@@ -1,7 +1,6 @@
 package com.jdistance.graph.generator;
 
 import com.jdistance.graph.Graph;
-import com.jdistance.graph.Vertex;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -61,13 +60,11 @@ public class GnPInPOutGraphGenerator extends GraphGenerator {
         return probabilityMatrix[fromCluster][toCluster];
     }
 
-    private ArrayList<Vertex> generateNodes(int[] sizeClusters) {
-        ArrayList<Vertex> vertices = new ArrayList<>();
-        Integer id = 0;
+    private List<Integer> generateNodes(int[] sizeClusters) {
+        List<Integer> vertices = new ArrayList<>();
         for (Integer i = 0; i < sizeClusters.length; ++i) {
             for (int j = 0; j < sizeClusters[i]; ++j) {
-                vertices.add(new Vertex(id, i));
-                id++;
+                vertices.add(i);
             }
         }
         return vertices;

@@ -11,14 +11,14 @@ import java.util.stream.Collectors;
 
 public class Graph implements Serializable {
     private DenseMatrix A;
-    private List<Vertex> vertices;
+    private List<Integer> vertices;
 
-    public Graph(List<Vertex> vertices, double[][] A) {
+    public Graph(List<Integer> vertices, double[][] A) {
         this.vertices = vertices;
         this.A = new DenseMatrix(A);
     }
 
-    public Graph(List<Vertex> vertices, DenseMatrix A) {
+    public Graph(List<Integer> vertices, DenseMatrix A) {
         this.vertices = vertices;
         this.A = A;
     }
@@ -27,7 +27,7 @@ public class Graph implements Serializable {
         return A;
     }
 
-    public List<Vertex> getVertices() {
+    public List<Integer> getVertices() {
         return vertices;
     }
 
@@ -58,14 +58,14 @@ public class Graph implements Serializable {
 
     public GraphBundle toBundle() {
         int nodesCount = vertices.size();
-        int classesCount = vertices.stream().map(Vertex::getLabel).collect(Collectors.toSet()).size();
+        int classesCount = vertices.stream().collect(Collectors.toSet()).size();
         GeneratorPropertiesPOJO properties = new GeneratorPropertiesPOJO(1, nodesCount, classesCount, 0, 0);
         return new GraphBundle(Collections.singletonList(this), properties);
     }
 
     public GraphBundle toBundle(String name) {
         int nodesCount = vertices.size();
-        int classesCount = vertices.stream().map(Vertex::getLabel).collect(Collectors.toSet()).size();
+        int classesCount = vertices.stream().collect(Collectors.toSet()).size();
         GeneratorPropertiesPOJO properties = new GeneratorPropertiesPOJO(1, nodesCount, classesCount, 0, 0);
         return new GraphBundle(name, Collections.singletonList(this), properties);
     }

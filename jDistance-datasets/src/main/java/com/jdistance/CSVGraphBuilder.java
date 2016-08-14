@@ -2,24 +2,20 @@ package com.jdistance;
 
 import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
-import com.jdistance.graph.Vertex;
 import jeigen.DenseMatrix;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CSVGraphBuilder {
     private String name;
-    private List<Vertex> vertices;
+    private List<Integer> vertices;
     private DenseMatrix A;
     private ClassLoader classLoader;
 
@@ -44,7 +40,7 @@ public class CSVGraphBuilder {
                     classNames.add(rawNode[2]);
                     indexOf = classNames.size() - 1;
                 }
-                vertices.add(new Vertex(Integer.valueOf(rawNode[0]), indexOf));
+                vertices.add(indexOf);
             });
         }
         return this;
@@ -63,7 +59,7 @@ public class CSVGraphBuilder {
                     classNames.add(className);
                     indexOf = classNames.size() - 1;
                 }
-                vertices.add(new Vertex(i, indexOf));
+                vertices.add(indexOf);
             }
         }
         return this;
@@ -83,7 +79,7 @@ public class CSVGraphBuilder {
                     classNames.add(rawNode[1]);
                     indexOf = classNames.size() - 1;
                 }
-                vertices.add(new Vertex(Integer.valueOf(rawNode[0]), indexOf));
+                vertices.add(indexOf);
             }
             A = DenseMatrix.zeros(count, count);
             for (int i = count + 2; i < lines.size() - 1; i++) {
