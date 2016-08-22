@@ -5,9 +5,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public abstract class AbstractGridSearchResult implements Serializable {
     protected String name;
@@ -31,25 +29,41 @@ public abstract class AbstractGridSearchResult implements Serializable {
         Set<Double> points = new TreeSet<>();
         data.values().forEach(scores -> points.addAll(scores.keySet()));
 
-        outputWriter.write("param\t");
-        for (String taskName : lineNames) {
-            outputWriter.write(taskName + "_mean" + "\t" + taskName + "_sigma" + "\t");
+        List<String> headers = new ArrayList<>();
+        headers.add("param");
+        for (String taskName : data.keySet()) {
+            headers.add(taskName + "_mean");
+            headers.add(taskName + "_sigma");
         }
-        outputWriter.write("\n");
 
+        Map<Double, List<Double>> outputData = new TreeMap<>();
         for (Double key : points) {
-            outputWriter.write(key + "\t");
+            List<Double> row = new ArrayList<>();
             for (String lineName : lineNames) {
                 Pair<Double, Double> point = data.get(lineName).get(key);
-                outputWriter.write(point != null
-                        ? point.getLeft() + "\t" + point.getRight() + "\t"
-                        : "\t\t"
-                );
+                row.add(point != null ? point.getLeft() : null);
+                row.add(point != null ? point.getRight() : null);
+            }
+            outputData.put(key, row);
+        }
+
+        write(headers, outputData, outputWriter);
+        return this;
+    }
+
+    private AbstractGridSearchResult write(List<String> headers, Map<?, List<Double>> outputData, Writer outputWriter) throws IOException {
+        for (String header : headers) {
+            outputWriter.write(header + "\t");
+        }
+        outputWriter.write("\n");
+        for (Map.Entry<?, List<Double>> row : outputData.entrySet()) {
+            outputWriter.write(row.getKey().toString() + "\t");
+            for (Double cell : row.getValue()) {
+                outputWriter.write((cell != null ? cell.toString() : "") + "\t");
             }
             outputWriter.write("\n");
         }
         outputWriter.write("\n");
-
         return this;
     }
 }

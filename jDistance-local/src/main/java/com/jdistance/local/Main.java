@@ -10,12 +10,14 @@ import com.jdistance.learning.measure.Kernel;
 import com.jdistance.learning.measure.KernelWrapper;
 import com.jdistance.local.workflow.Context;
 import com.jdistance.local.workflow.GridSearch;
+import com.jdistance.local.workflow.GridSearchResult;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -35,7 +37,7 @@ public class Main {
         }
     }
 
-    public void saa() {
+    public void trivial() {
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(3, 100, 2, 0.25, 0.1));
         new GridSearch().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
                 new KernelWrapper(Kernel.COMM_H),
@@ -48,10 +50,6 @@ public class Main {
 
     public void datasets() {
         List<Dataset> datasets = Arrays.asList(
-                Dataset.news_2cl_3,
-                Dataset.news_3cl_1,
-                Dataset.news_3cl_2,
-                Dataset.news_3cl_3,
                 Dataset.news_5cl_1,
                 Dataset.news_5cl_2,
                 Dataset.news_5cl_3
@@ -69,6 +67,37 @@ public class Main {
                     .execute()
                     .writeData();
         }
+    }
+
+    public void size() {
+        Map<String, Map<Double, Pair<Double, Double>>> result = new HashMap<>();
+        for (int i = 1; i < 11; i++) {
+            Integer graphSize = 10 * i;
+            GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(40, graphSize, 2, 0.3, 0.1));
+            new GridSearch()
+                    .addLinesForDifferentMeasures(
+                            new Ward(graphs.getProperties().getClustersCount()),
+                            Scorer.ARI,
+                            Kernel.getAllH_plusRSP_FE(),
+                            graphs,
+                            30)
+                    .execute()
+                    .getData()
+                    .forEach((measure, rawMeasureResults) -> {
+                        Map<Double, Pair<Double, Double>> measureResults = result.getOrDefault(measure, new HashMap<>());
+                        result.put(measure, measureResults);
+                        OptionalDouble optionalDouble = rawMeasureResults.entrySet().stream()
+                                .filter(measureResult -> measureResult.getValue() != null && measureResult.getValue().getLeft() != null)
+                                .mapToDouble(measureResult -> measureResult.getValue().getLeft())
+                                .max();
+                        if (optionalDouble.isPresent()) {
+                            measureResults.put((double) graphSize, new ImmutablePair<>(optionalDouble.getAsDouble(), 0.0));
+                        }
+                    });
+        }
+        new GridSearchResult("size", result)
+                .writeData()
+                .draw();
     }
 }
 

@@ -12,14 +12,13 @@ public class GraphBundle implements Cloneable, Serializable {
     private GeneratorPropertiesPOJO properties;
 
     public GraphBundle(List<Graph> graphs, GeneratorPropertiesPOJO properties) {
+        this.name = "graphsCount=" + properties.getGraphsCount() + ", " +
+                "nodesCount=" + properties.getNodesCount() + ", " +
+                "clustersCount=" + properties.getClustersCount() + ", " +
+                "p_in=" + properties.getP_in() + ", " +
+                "p_out=" + properties.getP_out();
         this.graphs = graphs;
         this.properties = properties;
-        this.name = "Graphs: " +
-            "graphsCount=" + properties.getGraphsCount() + ", " +
-            "nodesCount=" + properties.getNodesCount() + ", " +
-            "clustersCount=" + properties.getClustersCount() + ", " +
-            "p_in=" + properties.getP_in() + ", " +
-            "p_out=" + properties.getP_out();
     }
 
     public GraphBundle(String name, List<Graph> graphs, GeneratorPropertiesPOJO properties) {
@@ -30,6 +29,10 @@ public class GraphBundle implements Cloneable, Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public GeneratorPropertiesPOJO getProperties() {

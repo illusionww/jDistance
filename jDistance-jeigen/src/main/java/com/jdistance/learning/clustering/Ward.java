@@ -1,7 +1,6 @@
 package com.jdistance.learning.clustering;
 
-import com.jdistance.structures.LinkedList;
-import com.jdistance.structures.LinkedList.Node;
+import com.jdistance.learning.clustering.helper.LinkedList.Node;
 import com.jdistance.learning.Estimator;
 import jeigen.DenseMatrix;
 
@@ -21,7 +20,7 @@ public class Ward implements Estimator {
     }
 
     public Map<Integer, Integer> predict(DenseMatrix K) {
-        LinkedList<Cluster> clusters = new LinkedList<>(IntStream.range(0, K.cols)
+        com.jdistance.learning.clustering.helper.LinkedList<Cluster> clusters = new com.jdistance.learning.clustering.helper.LinkedList<>(IntStream.range(0, K.cols)
                 .mapToObj(i -> new Cluster(Collections.singletonList(i), K.cols))
                 .collect(Collectors.toList()));
         for (int i = 0; i < K.cols - nClusters; i++) {
@@ -39,7 +38,7 @@ public class Ward implements Estimator {
         return result;
     }
 
-    private void iteration(DenseMatrix K, LinkedList<Cluster> clusters) {
+    private void iteration(DenseMatrix K, com.jdistance.learning.clustering.helper.LinkedList<Cluster> clusters) {
         Node<Cluster> Ck = clusters.first, Cl = clusters.first, minCk = null, minCl = null;
         double currentΔJ, minΔJ = Double.MAX_VALUE;
         for (int i = 0; i < clusters.size(); i++) {
@@ -58,7 +57,7 @@ public class Ward implements Estimator {
         merge(K, clusters, minCk, minCl);
     }
 
-    private void merge(DenseMatrix K, LinkedList<Cluster> clusters, Node<Cluster> Ck, Node<Cluster> Cl) {
+    private void merge(DenseMatrix K, com.jdistance.learning.clustering.helper.LinkedList<Cluster> clusters, Node<Cluster> Ck, Node<Cluster> Cl) {
         List<Integer> union = new ArrayList<>(Ck.item.nodes);
         union.addAll(Cl.item.nodes);
         clusters.unlink(Cl);

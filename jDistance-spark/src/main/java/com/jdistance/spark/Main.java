@@ -26,10 +26,6 @@ public class Main {
 
     public static void task() {
         List<Dataset> datasets = Arrays.asList(
-                Dataset.news_2cl_3,
-                Dataset.news_3cl_1,
-                Dataset.news_3cl_2,
-                Dataset.news_3cl_3,
                 Dataset.news_5cl_1,
                 Dataset.news_5cl_2,
                 Dataset.news_5cl_3

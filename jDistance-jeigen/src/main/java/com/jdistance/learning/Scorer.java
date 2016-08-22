@@ -1,8 +1,8 @@
 package com.jdistance.learning;
 
-import com.jdistance.structures.DefaultHashMap;
 import jeigen.DenseMatrix;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -31,9 +31,9 @@ public enum Scorer {
         }
 
         private double calcExpected(List<Integer> vertices) {
-            DefaultHashMap<Integer, Long> countByCluster = new DefaultHashMap<>(0L);
+            HashMap<Integer, Long> countByCluster = new HashMap<>();
             for (Integer vertex : vertices) {
-                countByCluster.put(vertex, countByCluster.get(vertex) + 1);
+                countByCluster.put(vertex, countByCluster.getOrDefault(vertex, 0L) + 1);
             }
             double clustersCount = countByCluster.size();
             double TP = countByCluster.values().stream().mapToDouble(i -> i * (i - 1)).sum() / (2.0 * clustersCount);

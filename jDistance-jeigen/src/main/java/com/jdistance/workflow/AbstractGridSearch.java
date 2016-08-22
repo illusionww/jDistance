@@ -41,12 +41,7 @@ public abstract class AbstractGridSearch implements Serializable {
     public AbstractGridSearch addLinesForDifferentMeasures(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
         metricWrappers.forEach(metricWrapper -> addLine(metricWrapper.getName(), estimator, metricWrapper, scorer, graphs, pointsCount));
         if (name == null) {
-            name = estimator.getName() + " - " +
-                    graphs.getProperties().getNodesCount() + " nodes, " +
-                    graphs.getProperties().getClustersCount() + " clusters, " +
-                    "pIn=" + graphs.getProperties().getP_in() + ", " +
-                    "pOut=" + graphs.getProperties().getP_out() + ", " +
-                    graphs.getProperties().getGraphsCount() + " graphs";
+            name = estimator.getName() + " - " + graphs.getName();
         }
         return this;
     }

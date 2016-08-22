@@ -17,10 +17,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GNUPlotAdapter {
@@ -50,7 +47,16 @@ public class GNUPlotAdapter {
                         .map(pointEntry -> new Point<>(pointEntry.getKey(), pointEntry.getValue().getLeft()))
                         .collect(Collectors.toList()))))
                 .collect(Collectors.toList());
-        drawData(plots, filePath, "[0:1]", "0.2", "[0:1]", "0.2", Smooth.UNIQUE);
+        OptionalDouble optionalDouble = data.entrySet().stream()
+                .filter(measure -> measure.getValue() != null)
+                .flatMapToDouble(measure -> measure.getValue().entrySet().stream()
+                        .mapToDouble(Map.Entry::getKey))
+                .max();
+        if (optionalDouble.isPresent() && optionalDouble.getAsDouble() > 1) {
+            drawData(plots, filePath, null, null, null, null, Smooth.UNIQUE);
+        } else {
+            drawData(plots, filePath, "[0:1]", "0.2", "[0:1]", "0.2", Smooth.UNIQUE);
+        }
     }
 
     private void drawData(List<PlotDTO> data, String outputPath, String xrange, String xticks, String yrange, String yticks, Smooth smooth) {
