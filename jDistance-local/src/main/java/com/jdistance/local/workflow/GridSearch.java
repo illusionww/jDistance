@@ -1,9 +1,5 @@
 package com.jdistance.local.workflow;
 
-import com.jdistance.graph.GraphBundle;
-import com.jdistance.learning.Estimator;
-import com.jdistance.learning.Scorer;
-import com.jdistance.learning.measure.AbstractMeasureWrapper;
 import com.jdistance.workflow.AbstractGridSearch;
 import com.jdistance.workflow.Task;
 import org.apache.commons.lang3.tuple.Pair;
@@ -23,23 +19,12 @@ public class GridSearch extends AbstractGridSearch {
     private static final Logger log = LoggerFactory.getLogger(GridSearch.class);
     private static final String SPACE25 = "                         ";
 
-    public GridSearch() {
+    public GridSearch(List<Task> tasks) {
+        super(tasks);
     }
 
-    public GridSearch(String name) {
-        super(name);
-    }
-
-    @Override
-    public GridSearch addLine(String lineName, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs, int pointsCount) {
-        super.addLine(lineName, estimator, metricWrapper, scorer, graphs, pointsCount);
-        return this;
-    }
-
-    @Override
-    public GridSearch addLinesForDifferentMeasures(Estimator estimator, Scorer scorer, List<? extends AbstractMeasureWrapper> metricWrappers, GraphBundle graphs, Integer pointsCount) {
-        super.addLinesForDifferentMeasures(estimator, scorer, metricWrappers, graphs, pointsCount);
-        return this;
+    public GridSearch(String name, List<Task> tasks) {
+        super(name, tasks);
     }
 
     @Override
@@ -59,8 +44,8 @@ public class GridSearch extends AbstractGridSearch {
             Instant endTaskTime = Instant.now();
             log.debug("{}\t{}  param={}  mean={}  sigma={}  time={}",
                     counter.incrementAndGet(),
-                    task.getLineName() + SPACE25.substring(task.getLineName().length()),
-                    String.format("%.4f", task.getParam()),
+                    task.getMeasure().getName() + SPACE25.substring(task.getMeasure().getName().length()),
+                    String.format("%.4f", task.getMeasureParam()),
                     result.getLeft() != null ? String.format("%.4f", result.getLeft()) : "null  ",
                     result.getRight() != null ? String.format("%.4f", result.getRight()) : "null  ",
                     Duration.between(startTaskTime, endTaskTime).toString().substring(2));
@@ -70,15 +55,8 @@ public class GridSearch extends AbstractGridSearch {
         log.info("GRID SEARCH DONE. Total time: {}", Duration.between(startGridSearch, finishGridSearch).toString().substring(2));
         log.info("----------------------------------------------------------------------------------------------------");
 
-        return new GridSearchResult(name, prepareResults());
-    }
-
-    private Map<String, Map<Double, Pair<Double, Double>>> prepareResults() {
-        return tasks.stream()
-                .collect(Collectors.groupingBy(Task::getLineName))
-                .entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream()
-                        .collect(Collectors.toMap(Task::getParam, Task::getResult))));
+        Map<Task, Pair<Double, Double>> rawResult = tasks.stream().collect(Collectors.toMap(task -> task, Task::getResult));
+        return new GridSearchResult(name, rawResult);
     }
 
 }

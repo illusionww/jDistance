@@ -4,20 +4,23 @@ import com.jdistance.Dataset;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
+import com.jdistance.learning.Axis;
+import com.jdistance.learning.Collapse;
+import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
-import com.jdistance.learning.clustering.Ward;
 import com.jdistance.learning.measure.Kernel;
 import com.jdistance.learning.measure.KernelWrapper;
 import com.jdistance.local.workflow.Context;
 import com.jdistance.local.workflow.GridSearch;
-import com.jdistance.local.workflow.GridSearchResult;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.lang3.tuple.Pair;
+import com.jdistance.workflow.CartesianTaskListBuilder;
+import com.jdistance.workflow.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -39,65 +42,66 @@ public class Main {
 
     public void trivial() {
         GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(3, 100, 2, 0.25, 0.1));
-        new GridSearch().addLinesForDifferentMeasures(new Ward(graphs.getProperties().getClustersCount()), Scorer.ARI, Arrays.asList(
-                new KernelWrapper(Kernel.COMM_H),
-                new KernelWrapper(Kernel.LOG_COMM_H)
-        ), graphs, 60)
+        List<Task> tasks = new CartesianTaskListBuilder()
+                .setEstimators(Estimator.WARD)
+                .setScorers(Scorer.ARI)
+                .setGraphBundles(graphs)
+                .setMeasures(
+                        new KernelWrapper(Kernel.COMM_H),
+                        new KernelWrapper(Kernel.LOG_COMM_H)
+                )
+                .linspaceMeasureParams(60)
+                .build();
+        new GridSearch(tasks)
                 .execute()
-                .writeData()
-                .draw();
+                .writeData(Axis.MEASURE_PARAM, Axis.MEASURE, Collapse.CHECK_ONLY_ONE)
+                .draw(Axis.MEASURE_PARAM, Axis.MEASURE, Collapse.CHECK_ONLY_ONE);
     }
 
     public void datasets() {
-        List<Dataset> datasets = Arrays.asList(
-                Dataset.news_5cl_1,
-                Dataset.news_5cl_2,
-                Dataset.news_5cl_3
+        List<GraphBundle> datasets = Arrays.asList(
+                Dataset.FOOTBALL.get(),
+                Dataset.POLBOOKS.get(),
+                Dataset.ZACHARY.get()
         );
-
-        for (Dataset dataset : datasets) {
-            GraphBundle graphs = dataset.get();
-            new GridSearch(dataset.name())
-                    .addLinesForDifferentMeasures(
-                            new Ward(graphs.getProperties().getClustersCount()),
-                            Scorer.ARI,
-                            Kernel.getAllH_plusRSP_FE(),
-                            graphs,
-                            7)
-                    .execute()
-                    .writeData();
-        }
+        List<Task> tasks = new CartesianTaskListBuilder()
+                .setEstimators(Estimator.WARD)
+                .setScorers(Scorer.ARI)
+                .setGraphBundles(datasets)
+                .setMeasures(
+                        new KernelWrapper(Kernel.COMM_H),
+                        new KernelWrapper(Kernel.LOG_COMM_H)
+                )
+                .linspaceMeasureParams(60)
+                .build();
+        new GridSearch(tasks)
+                .execute()
+                .writeData(Axis.MEASURE_PARAM, Axis.GRAPHSnMEASURE, Collapse.CHECK_ONLY_ONE);
     }
 
     public void size() {
-        Map<String, Map<Double, Pair<Double, Double>>> result = new HashMap<>();
-        for (int i = 1; i < 11; i++) {
-            Integer graphSize = 10 * i;
-            GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(40, graphSize, 2, 0.3, 0.1));
-            new GridSearch()
-                    .addLinesForDifferentMeasures(
-                            new Ward(graphs.getProperties().getClustersCount()),
-                            Scorer.ARI,
-                            Kernel.getAllH_plusRSP_FE(),
-                            graphs,
-                            30)
-                    .execute()
-                    .getData()
-                    .forEach((measure, rawMeasureResults) -> {
-                        Map<Double, Pair<Double, Double>> measureResults = result.getOrDefault(measure, new HashMap<>());
-                        result.put(measure, measureResults);
-                        OptionalDouble optionalDouble = rawMeasureResults.entrySet().stream()
-                                .filter(measureResult -> measureResult.getValue() != null && measureResult.getValue().getLeft() != null)
-                                .mapToDouble(measureResult -> measureResult.getValue().getLeft())
-                                .max();
-                        if (optionalDouble.isPresent()) {
-                            measureResults.put((double) graphSize, new ImmutablePair<>(optionalDouble.getAsDouble(), 0.0));
-                        }
-                    });
+        List<GraphBundle> graphBundles = new ArrayList<>();
+        int sum = 100;
+        int step = 5;
+        for (int first = step; first <= sum/2; first += step) {
+            int second = sum - first;
+            graphBundles.add(new GnPInPOutGraphGenerator().generate(Double.toString(first), new GeneratorPropertiesPOJO(sum, new int[]{
+                    first, second
+            }, new double[][]{
+                    {0.3, 0.1},
+                    {0.1, 0.3}
+            })));
         }
-        new GridSearchResult("size", result)
-                .writeData()
-                .draw();
+        List<Task> tasks = new CartesianTaskListBuilder()
+                .setEstimators(Estimator.WARD)
+                .setScorers(Scorer.ARI)
+                .setGraphBundles(graphBundles)
+                .setMeasures(Kernel.getAllH_plusRSP_FE())
+                .linspaceMeasureParams(55)
+                .build();
+        new GridSearch(tasks)
+                .execute()
+                .writeData(Axis.GRAPHS, Axis.MEASURE, Collapse.MAX);
     }
 }
 

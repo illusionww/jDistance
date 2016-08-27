@@ -17,5 +17,15 @@ public abstract class GraphGenerator {
         return new GraphBundle(graphs, properties);
     }
 
+    public GraphBundle generate(String name, GeneratorPropertiesPOJO properties) {
+        List<Graph> graphs = new ArrayList<>();
+        for (int i = 0; i < properties.getGraphsCount(); i++) {
+            Graph graph = generateGraph(properties);
+            graph.shuffle(10 * properties.getNodesCount());
+            graphs.add(graph);
+        }
+        return new GraphBundle(name, graphs, properties);
+    }
+
     protected abstract Graph generateGraph(GeneratorPropertiesPOJO properties);
 }

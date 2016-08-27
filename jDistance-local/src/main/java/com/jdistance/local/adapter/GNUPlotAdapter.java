@@ -9,7 +9,6 @@ import com.panayotis.gnuplot.style.PlotStyle;
 import com.panayotis.gnuplot.style.Smooth;
 import com.panayotis.gnuplot.style.Style;
 import com.panayotis.gnuplot.terminal.ImageTerminal;
-import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,19 +37,20 @@ public class GNUPlotAdapter {
             new RGBAColor("#77808080")
     );
 
-    public void draw(String filePath, Map<String, Map<Double, Pair<Double, Double>>> data) {
+    public void draw(String filePath, Map<String, Map<String, Double>> data) {
         Iterator<RGBAColor> color = colors.iterator();
         List<PlotDTO> plots = data.entrySet().stream()
                 .map(lineEntry -> new PlotDTO(lineEntry.getKey(), color.next(), new PointDataSet<Double>(lineEntry.getValue().entrySet().stream()
-                        .filter(pointEntry -> pointEntry.getValue().getLeft() != null)
+                        .filter(pointEntry -> pointEntry.getValue() != null)
                         .sorted((one, two) -> one.getKey().compareTo(two.getKey()))
-                        .map(pointEntry -> new Point<>(pointEntry.getKey(), pointEntry.getValue().getLeft()))
+                        .map(pointEntry -> new Point<>(Double.valueOf(pointEntry.getKey()), pointEntry.getValue()))
                         .collect(Collectors.toList()))))
                 .collect(Collectors.toList());
+
         OptionalDouble optionalDouble = data.entrySet().stream()
                 .filter(measure -> measure.getValue() != null)
                 .flatMapToDouble(measure -> measure.getValue().entrySet().stream()
-                        .mapToDouble(Map.Entry::getKey))
+                        .mapToDouble(stringDoubleEntry -> Double.valueOf(stringDoubleEntry.getKey())))
                 .max();
         if (optionalDouble.isPresent() && optionalDouble.getAsDouble() > 1) {
             drawData(plots, filePath, null, null, null, null, Smooth.UNIQUE);

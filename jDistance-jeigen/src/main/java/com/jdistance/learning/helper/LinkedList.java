@@ -1,4 +1,4 @@
-package com.jdistance.learning.clustering.helper;
+package com.jdistance.learning.helper;
 
 import java.io.Serializable;
 import java.util.List;

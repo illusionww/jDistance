@@ -1,4 +1,4 @@
-param	dummy logComm H_mean	dummy logComm H_sigma	logComm H_mean	logComm H_sigma	
+measureParam	dummy logComm H_mean	dummy logComm H_sigma	logComm H_mean	logComm H_sigma
 0.0013333333333333335			0.691638963360143	0.06412359318769133	
 0.006666666666666667			0.7187488829311885	0.06062007832650874	
 0.013333333333333334			0.7131438784629134	0.0825316807793177	

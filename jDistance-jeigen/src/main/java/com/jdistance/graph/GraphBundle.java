@@ -39,10 +39,6 @@ public class GraphBundle implements Cloneable, Serializable {
         return properties;
     }
 
-    public Integer getCount() {
-        return this.graphs.size();
-    }
-
     public List<Graph> getGraphs() {
         return graphs;
     }

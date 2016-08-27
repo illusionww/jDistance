@@ -3,6 +3,7 @@ package com.jdistance.spark;
 import com.jdistance.spark.workflow.Context;
 import com.jdistance.spark.workflow.GridSearch;
 import com.jdistance.spark.workflow.GridSearchResult;
+import com.jdistance.workflow.Task;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.spark.api.java.JavaPairRDD;
@@ -11,6 +12,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.PairFunction;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,7 +41,7 @@ public class TaskPoolTests {
 
         Context.fill(sparkContext, "./ivashkin/jDistance");
 
-        GridSearchResult result = new GridSearch().execute();
+        GridSearchResult result = new GridSearch(new ArrayList<>()).execute();
         System.out.println(result.getData());
     }
 }

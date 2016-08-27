@@ -17,36 +17,41 @@ import java.util.Map;
 import java.util.OptionalDouble;
 
 public class Task implements Serializable {
-    private String lineName;
-    private Double param;
-
     private Estimator estimator;
-    private AbstractMeasureWrapper metricWrapper;
     private Scorer scorer;
     private GraphBundle graphs;
+    private AbstractMeasureWrapper measure;
+    private Double measureParam;
 
     private Double mean = null;
     private Double sigma = null;
 
-    public Task(String lineName, Double param, Estimator estimator, AbstractMeasureWrapper metricWrapper, Scorer scorer, GraphBundle graphs) {
-        this.lineName = lineName;
-        this.param = param;
+    public Task(Estimator estimator, Scorer scorer, GraphBundle graphs, AbstractMeasureWrapper measure, Double measureParam) {
         this.estimator = estimator;
-        this.metricWrapper = metricWrapper;
+        this.measure = measure;
+        this.measureParam = measureParam;
         this.scorer = scorer;
         this.graphs = graphs;
     }
 
-    public String getLineName() {
-        return lineName;
+    public Estimator getEstimator() {
+        return estimator;
     }
 
-    public Double getParam() {
-        return param;
+    public Scorer getScorer() {
+        return scorer;
     }
 
-    public Pair<String, Double> getKey() {
-        return new ImmutablePair<>(lineName, param);
+    public GraphBundle getGraphs() {
+        return graphs;
+    }
+
+    public AbstractMeasureWrapper getMeasure() {
+        return measure;
+    }
+
+    public Double getMeasureParam() {
+        return measureParam;
     }
 
     public Pair<Double, Double> getResult() {
@@ -58,10 +63,10 @@ public class Task implements Serializable {
             List<Double> scoresByGraph = new ArrayList<>();
             for (Graph graph : graphs.getGraphs()) {
                 DenseMatrix A = graph.getA();
-                Double trueParam = metricWrapper.getScale().calc(A, param);
-                DenseMatrix D = metricWrapper.calc(A, trueParam);
+                Double trueParam = measure.getScale().calc(A, measureParam);
+                DenseMatrix D = measure.calc(A, trueParam);
                 if (!hasNaN(D)) {
-                    Map<Integer, Integer> prediction = estimator.predict(D);
+                    Map<Integer, Integer> prediction = estimator.predict(D, graphs.getProperties().getClustersCount());
                     double score = scorer.score(D, graph.getVertices(), prediction);
                     scoresByGraph.add(score);
                 }
@@ -73,8 +78,8 @@ public class Task implements Serializable {
                     sigma = new StandardDeviation().evaluate(scoresByGraph.stream().mapToDouble(d -> d).toArray());
                 }
             }
-        } catch (RuntimeException e) {
-            System.err.println("Calculation error: distance " + metricWrapper.getName() + ", gridParam " + param);
+        } catch (Throwable e) {
+            System.err.println("Calculation error: distance " + measure.getName() + ", gridParam " + measureParam);
         }
         return new ImmutablePair<>(mean, sigma);
     }
