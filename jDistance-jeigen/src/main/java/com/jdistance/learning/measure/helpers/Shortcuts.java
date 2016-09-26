@@ -56,13 +56,6 @@ public class Shortcuts {
     }
 
     public static DenseMatrix getH_CCT(DenseMatrix A) {
-        DenseMatrix H_CT = pinv(getL(A));
-        DenseMatrix pinvD = pinv(diag(A.sumOverRows().t()));
-        DenseMatrix H = eye(A.cols).sub(ones(A.rows, A.cols).div(A.cols));
-        return H_CT.add(H.mmul(pinvD).mmul(A).mmul(pinvD).mmul(H));
-    }
-
-    public static DenseMatrix getH_CCT2(DenseMatrix A) {
         DenseMatrix I = eye(A.cols);
         DenseMatrix d = A.sumOverRows().t();
         DenseMatrix D05 = diag(d.pow(-0.5));

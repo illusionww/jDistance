@@ -76,27 +76,11 @@ public enum Kernel {
             return K_CCT.mul(alpha / sigma).mexp().add(1.0).mul(0.1);
         }
     },
-    SCCT2_H("SCCT2 H", Scale.FRACTION, null) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double alpha) {
-            DenseMatrix K_CCT = getH_CCT2(A);
-            double sigma = new StandardDeviation().evaluate(K_CCT.getValues());
-            return K_CCT.mul(alpha / sigma).mexp().add(1.0).mul(0.1);
-        }
-    },
     SP_CT_H("SP-CT H", Scale.LINEAR, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double lambda) {
             DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
             DenseMatrix Hc = normalize(getH_R(A));
-            return Hs.mul(1 - lambda).add(Hc.mul(lambda));
-        }
-    },
-    SP_CCT_H("SP-CCT H", Scale.LINEAR, null) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double lambda) {
-            DenseMatrix Hs = normalize(DtoK(getD_SP(A)));
-            DenseMatrix Hc = normalize(getH_CCT2(A));
             return Hs.mul(1 - lambda).add(Hc.mul(lambda));
         }
     },

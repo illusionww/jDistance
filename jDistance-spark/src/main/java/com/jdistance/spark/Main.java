@@ -37,7 +37,7 @@ public class Main {
         List<Integer> firstList = Arrays.asList(1, 2, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50);
         for (int first : firstList) {
             int second = 100 - first;
-            GraphBundle oldGraphBundle = new GnPInPOutGraphGenerator().generate(Double.toString(first), new GeneratorPropertiesPOJO(250, new int[]{
+            GraphBundle oldGraphBundle = new GnPInPOutGraphGenerator().generate(Double.toString(first), new GeneratorPropertiesPOJO(350, new int[]{
                     first, second
             }, new double[][]{
                     {0.3, 0.1},
