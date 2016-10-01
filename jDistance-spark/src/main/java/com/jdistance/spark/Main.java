@@ -23,6 +23,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
         SparkConf conf = new SparkConf()
+                .set("spark.shuffle.blockTransferService", "nio")
                 .setAppName("jDistance");
         JavaSparkContext sparkContext = new JavaSparkContext(conf);
         Context.fill(sparkContext, "./ivashkin/jDistance");
@@ -32,12 +33,12 @@ public class Main {
         sparkContext.stop();
     }
 
-    public static void task() {
+    private static void task() {
         List<GraphBundle> graphBundles = new ArrayList<>();
-        List<Integer> firstList = Arrays.asList(1, 2, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50);
+        List<Integer> firstList = Arrays.asList(1, 2, 5, 7, 9, 12, 15, 20, 25, 30, 35, 40, 45, 50);
         for (int first : firstList) {
             int second = 100 - first;
-            GraphBundle oldGraphBundle = new GnPInPOutGraphGenerator().generate(Double.toString(first), new GeneratorPropertiesPOJO(350, new int[]{
+            GraphBundle oldGraphBundle = new GnPInPOutGraphGenerator().generate(Double.toString(first), new GeneratorPropertiesPOJO(300, new int[]{
                     first, second
             }, new double[][]{
                     {0.3, 0.1},

@@ -3,8 +3,6 @@ package com.jdistance.spark.workflow;
 import com.jdistance.workflow.AbstractGridSearch;
 import com.jdistance.workflow.Task;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.spark.AccumulatorParam;
-import org.apache.spark.api.java.JavaRDD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.Tuple2;
@@ -14,7 +12,6 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.LongAccumulator;
 
 public class GridSearch extends AbstractGridSearch {
     private static final Logger log = LoggerFactory.getLogger(GridSearch.class);
@@ -31,8 +28,8 @@ public class GridSearch extends AbstractGridSearch {
         log.info("START GRID SEARCH \"{}\"", name);
         log.info("Total {} tasks", tasks.size());
 
-        JavaRDD<Task> parallelizeTasks = Context.getInstance().getSparkContext().parallelize(tasks);
-        Map<Task, Pair<Double, Double>> rawData = parallelizeTasks
+        Map<Task, Pair<Double, Double>> rawData = Context.getInstance().getSparkContext()
+                .parallelize(tasks)
                 .mapToPair(task -> new Tuple2<>(task, task.execute()))
                 .collectAsMap();
 

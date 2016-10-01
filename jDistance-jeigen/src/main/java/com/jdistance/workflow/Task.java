@@ -9,7 +9,10 @@ import jeigen.DenseMatrix;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math.stat.descriptive.moment.StandardDeviation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +20,8 @@ import java.util.Map;
 import java.util.OptionalDouble;
 
 public class Task implements Serializable {
+    private static final Logger log = LoggerFactory.getLogger(Task.class);
+
     private Estimator estimator;
     private Scorer scorer;
     private GraphBundle graphs;
@@ -59,6 +64,7 @@ public class Task implements Serializable {
     }
 
     public Pair<Double, Double> execute() {
+        log.info("System.getProperty(\"user.home\") \"{}\", canWrite={}", System.getProperty("user.home"), new File(System.getProperty("user.home")).canWrite());
         try {
             List<Double> scoresByGraph = new ArrayList<>();
             for (Graph graph : graphs.getGraphs()) {
@@ -79,7 +85,7 @@ public class Task implements Serializable {
                 }
             }
         } catch (Throwable e) {
-            System.err.println("Calculation error: distance " + measure.getName() + ", gridParam " + measureParam);
+            log.error("Calculation error: distance {}, gridParam {}", measure.getName(), measureParam);
         }
         return new ImmutablePair<>(mean, sigma);
     }
