@@ -11,16 +11,6 @@ public class GraphBundle implements Cloneable, Serializable {
     private List<Graph> graphs;
     private GeneratorPropertiesPOJO properties;
 
-    public GraphBundle(List<Graph> graphs, GeneratorPropertiesPOJO properties) {
-        this.name = "graphsCount=" + properties.getGraphsCount() + ", " +
-                "nodesCount=" + properties.getNodesCount() + ", " +
-                "clustersCount=" + properties.getClustersCount() + ", " +
-                "p_in=" + properties.getP_in() + ", " +
-                "p_out=" + properties.getP_out();
-        this.graphs = graphs;
-        this.properties = properties;
-    }
-
     public GraphBundle(String name, List<Graph> graphs, GeneratorPropertiesPOJO properties) {
         this.name = name;
         this.graphs = graphs;
@@ -50,6 +40,6 @@ public class GraphBundle implements Cloneable, Serializable {
     @Override
     public GraphBundle clone() {
         List<Graph> clone = new ArrayList<>(graphs);
-        return new GraphBundle(clone, properties);
+        return new GraphBundle(name, clone, properties);
     }
 }

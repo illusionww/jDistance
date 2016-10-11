@@ -60,7 +60,12 @@ public class Graph implements Serializable {
         int nodesCount = vertices.size();
         int classesCount = vertices.stream().collect(Collectors.toSet()).size();
         GeneratorPropertiesPOJO properties = new GeneratorPropertiesPOJO(1, nodesCount, classesCount, 0, 0);
-        return new GraphBundle(Collections.singletonList(this), properties);
+        String name = "graphsCount=" + properties.getGraphsCount() + ", " +
+                "nodesCount=" + properties.getNodesCount() + ", " +
+                "clustersCount=" + properties.getClustersCount() + ", " +
+                "p_in=" + properties.getP_in() + ", " +
+                "p_out=" + properties.getP_out();
+        return new GraphBundle(name, Collections.singletonList(this), properties);
     }
 
     public GraphBundle toBundle(String name) {

@@ -20,6 +20,10 @@ public class GridSearch extends AbstractGridSearch {
         super(tasks);
     }
 
+    public GridSearch(String name, List<Task> tasks) {
+        super(name, tasks);
+    }
+
     @Override
     public GridSearchResult execute() {
         Collections.shuffle(tasks);

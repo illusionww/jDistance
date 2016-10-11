@@ -14,7 +14,12 @@ public abstract class GraphGenerator {
             graph.shuffle(10 * properties.getNodesCount());
             graphs.add(graph);
         }
-        return new GraphBundle(graphs, properties);
+        String name = "graphsCount=" + properties.getGraphsCount() + ", " +
+                "nodesCount=" + properties.getNodesCount() + ", " +
+                "clustersCount=" + properties.getClustersCount() + ", " +
+                "p_in=" + properties.getP_in() + ", " +
+                "p_out=" + properties.getP_out();
+        return new GraphBundle(name, graphs, properties);
     }
 
     public GraphBundle generate(String name, GeneratorPropertiesPOJO properties) {

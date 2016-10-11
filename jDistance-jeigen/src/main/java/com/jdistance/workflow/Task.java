@@ -64,7 +64,6 @@ public class Task implements Serializable {
     }
 
     public Pair<Double, Double> execute() {
-        log.info("System.getProperty(\"user.home\") \"{}\", canWrite={}", System.getProperty("user.home"), new File(System.getProperty("user.home")).canWrite());
         try {
             List<Double> scoresByGraph = new ArrayList<>();
             for (Graph graph : graphs.getGraphs()) {

@@ -10,11 +10,6 @@ import java.util.List;
 public class BroadcastedGraphBundle extends GraphBundle {
     private Broadcast<List<Graph>> broadcastedGraphs;
 
-    public BroadcastedGraphBundle(List<Graph> graphs, GeneratorPropertiesPOJO properties) {
-        super(null, properties);
-        broadcastedGraphs = Context.getInstance().getSparkContext().broadcast(graphs);
-    }
-
     public BroadcastedGraphBundle(String name, List<Graph> graphs, GeneratorPropertiesPOJO properties) {
         super(name, null, properties);
         broadcastedGraphs = Context.getInstance().getSparkContext().broadcast(graphs);
