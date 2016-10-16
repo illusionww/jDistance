@@ -91,11 +91,11 @@ public class Main {
 
     private static void competitions() {
         Map<String, List<GraphBundle>> graphBundles = new HashMap<>();
-//        graphBundles.put("n100c4pout015",
-//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 4, 0.3, 0.15)).getGraphs().stream()
-//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
-//                        .collect(Collectors.toList())
-//        );
+        graphBundles.put("n100c4pout015",
+                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 4, 0.3, 0.15)).getGraphs().stream()
+                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+                        .collect(Collectors.toList())
+        );
         graphBundles.put("n100c2pout015",
                 new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.15)).getGraphs().stream()
                         .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
@@ -147,15 +147,15 @@ public class Main {
     }
 
     private static void sixClusters() {
-        GraphBundle graphBundle = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(300, new int[]{
+        GraphBundle graphBundle = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(200, new int[]{
                 65, 35, 25, 13, 8, 4 // sum = 150
         }, new double[][]{
-                {0.30, 0.20, 0.10, 0.13, 0.02, 0.20},
-                {0.20, 0.30, 0.10, 0.13, 0.02, 0.20},
-                {0.10, 0.10, 0.16, 0.13, 0.02, 0.20},
-                {0.13, 0.13, 0.13, 0.25, 0.02, 0.20},
-                {0.02, 0.02, 0.02, 0.02, 0.10, 0.20},
-                {0.20, 0.20, 0.20, 0.20, 0.20, 0.30}
+                {0.30, 0.20, 0.10, 0.15, 0.07, 0.25},
+                {0.20, 0.24, 0.08, 0.13, 0.05, 0.17},
+                {0.10, 0.08, 0.16, 0.09, 0.04, 0.12},
+                {0.15, 0.13, 0.09, 0.20, 0.02, 0.14},
+                {0.07, 0.05, 0.04, 0.02, 0.12, 0.04},
+                {0.25, 0.17, 0.12, 0.14, 0.04, 0.40}
         }));
         List<Task> tasks = new CartesianTaskListBuilder()
                 .setEstimators(Estimator.WARD)
