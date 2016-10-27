@@ -76,7 +76,7 @@ public class Task implements Serializable {
                     scoresByGraph.add(score);
                 }
             }
-            if (scoresByGraph.size() > 0.5 * graphs.getGraphs().size()) {
+            if (scoresByGraph.size() > 0.9 * graphs.getGraphs().size()) {
                 OptionalDouble optionalAvg = scoresByGraph.stream().mapToDouble(d -> d).average();
                 if (optionalAvg.isPresent() && optionalAvg.getAsDouble() != 0) {
                     mean = optionalAvg.getAsDouble();

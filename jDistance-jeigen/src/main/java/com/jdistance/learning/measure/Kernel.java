@@ -13,6 +13,7 @@ import static jeigen.DenseMatrix.eye;
 
 public enum Kernel {
     P_WALK_H("pWalk H", Scale.RHO, null) { // H0 = (I - tA)^{-1}
+
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return pinv(eye(A.cols).sub(A.mul(t)));
@@ -25,6 +26,7 @@ public enum Kernel {
         }
     },
     FOR_H("For H", Scale.FRACTION, null) { // H0 = (I + tL)^{-1}
+
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return pinv(eye(A.cols).add(getL(A).mul(t)));
@@ -37,6 +39,7 @@ public enum Kernel {
         }
     },
     COMM_H("Comm H", Scale.FRACTION, null) { // H0 = exp(tA)
+
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return A.mul(t).mexp();
@@ -49,6 +52,7 @@ public enum Kernel {
         }
     },
     HEAT_H("Heat H", Scale.FRACTION, null) { // H0 = exp(-tL)
+
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return getL(A).mul(-t).mexp();
@@ -61,6 +65,7 @@ public enum Kernel {
         }
     },
     SCT_H("SCT H", Scale.FRACTION, null) { // H = 1/(1 + exp(-αL+/σ))
+
         @Override
         public DenseMatrix getK(DenseMatrix A, double alpha) {
             DenseMatrix K_CT = pinv(getL(A));
@@ -110,6 +115,15 @@ public enum Kernel {
 
     public static List<KernelWrapper> getAll() {
         return Arrays.stream(Kernel.values()).map(KernelWrapper::new).collect(Collectors.toList());
+    }
+
+    public static Kernel getByName(String name) {
+        for (Kernel kernel : Kernel.values()) {
+            if (kernel.getName().equals(name)) {
+                return kernel;
+            }
+        }
+        return null;
     }
 
     public static List<KernelWrapper> getAllH_plusRSP_FE() {

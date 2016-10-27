@@ -28,7 +28,7 @@ public class Main {
         JavaSparkContext sparkContext = new JavaSparkContext(conf);
         Context.fill(sparkContext, "./ivashkin/jDistance");
 
-        sixClusters();
+        twoClusters();
 
         sparkContext.stop();
     }
@@ -55,7 +55,8 @@ public class Main {
                 .build();
         new GridSearch(tasks)
                 .execute()
-                .writeData(Axis.GRAPHS, Axis.MEASURE, Collapse.AVERAGE);
+                .writeData(Axis.GRAPHS, Axis.MEASURE, Collapse.AVERAGE)
+                .writeData(Axis.GRAPHS, Axis.MEASURE, Collapse.MAX);
     }
 
     public static void datasets() {

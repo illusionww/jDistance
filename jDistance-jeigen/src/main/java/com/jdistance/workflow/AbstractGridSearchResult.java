@@ -28,6 +28,10 @@ public abstract class AbstractGridSearchResult implements Serializable {
         return data;
     }
 
+    public Map<String, Map<String, Double>> getData(Axis xAxis, Axis lines, Collapse collapse) {
+        return prepareData(xAxis, lines, collapse);
+    }
+
     protected AbstractGridSearchResult writeData(Axis xAxis, Axis lines, Collapse collapse, Writer outputWriter) throws IOException {
         Set<String> xValues = data.keySet().stream().map(xAxis::getFromTask).collect(Collectors.toSet());
         Set<String> linesNames = data.keySet().stream().map(lines::getFromTask).collect(Collectors.toSet());

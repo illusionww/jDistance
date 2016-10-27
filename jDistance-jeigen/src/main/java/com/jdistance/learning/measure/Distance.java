@@ -60,6 +60,15 @@ public enum Distance {
         ).map(DistanceWrapper::new).collect(Collectors.toList());
     }
 
+    public static Distance getByName(String name) {
+        for (Distance distance : Distance.values()) {
+            if (distance.getName().equals(name)) {
+                return distance;
+            }
+        }
+        return null;
+    }
+
     public String getName() {
         return name;
     }
