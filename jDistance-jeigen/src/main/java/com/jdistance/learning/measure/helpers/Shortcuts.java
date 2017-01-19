@@ -150,4 +150,8 @@ public class Shortcuts {
     private static double sum(DenseMatrix x) {
         return Arrays.stream(x.getValues()).sum();
     }
+
+    public static DenseMatrix sigmoid(DenseMatrix x) {
+        return x.mul(-1).exp().add(1).pow(-1);
+    }
 }

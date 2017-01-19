@@ -41,14 +41,18 @@ public class Main {
     }
 
     public void trivial() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(10, 100, 2, 0.3, 0.1));
+        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.1));
         List<Task> tasks = new CartesianTaskListBuilder()
                 .setEstimators(Estimator.WARD)
                 .setScorers(Scorer.ARI)
                 .setGraphBundles(graphs)
                 .setMeasures(
-                        new KernelWrapper(Kernel.COMM_H),
-                        new KernelWrapper(Kernel.LOG_COMM_H)
+                    new KernelWrapper(Kernel.LOG_COMM_H),
+                    new KernelWrapper(Kernel.LOG_HEAT_H),
+                    new KernelWrapper(Kernel.SCT_H),
+                    new KernelWrapper(Kernel.SCT_H_NEW),
+                    new KernelWrapper(Kernel.SCCT_H),
+                    new KernelWrapper(Kernel.SCCT_H_NEW)
                 )
                 .linspaceMeasureParams(55)
                 .build();
@@ -135,6 +139,37 @@ public class Main {
             log.info("save 'rq " + key + ".csv'");
             rq.writeData(result, new ArrayList<>(result.keySet()), "rq " + key);
         });
+    }
+
+    public void twoClusters() {
+        List<GraphBundle> graphBundles = new ArrayList<>();
+        List<Integer> firstList = Arrays.asList(1, 2, 5, 7, 9, 12, 15, 20, 25, 30, 35, 40, 45, 50);
+        for (int first : firstList) {
+            int second = 100 - first;
+            GraphBundle oldGraphBundle = new GnPInPOutGraphGenerator().generate(Double.toString(first), new GeneratorPropertiesPOJO(50, new int[]{
+                    first, second
+            }, new double[][]{
+                    {0.3, 0.1},
+                    {0.1, 0.3}
+            }));
+            graphBundles.add(oldGraphBundle);
+        }
+        List<Task> tasks = new CartesianTaskListBuilder()
+                .setEstimators(Estimator.WARD)
+                .setScorers(Scorer.ARI)
+                .setGraphBundles(graphBundles)
+                .setMeasures(Arrays.asList(
+                        new KernelWrapper(Kernel.SCT_H),
+                        new KernelWrapper(Kernel.SCT_H_NEW),
+                        new KernelWrapper(Kernel.SCCT_H),
+                        new KernelWrapper(Kernel.SCCT_H_NEW)
+                ))
+                .linspaceMeasureParams(55)
+                .build();
+        new GridSearch(tasks)
+                .execute()
+                .writeData(Axis.GRAPHS, Axis.MEASURE, Collapse.AVERAGE)
+                .writeData(Axis.GRAPHS, Axis.MEASURE, Collapse.MAX);
     }
 }
 
