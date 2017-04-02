@@ -1006,18 +1006,18 @@ public class DenseMatrix implements Serializable {
                 stringBuilder.append("\n");
             }
         } else {
-            rMax = this.rows > 100 ? 7 : this.rows;
-            cMax = this.cols > 100 ? 7 : this.cols;
+            rMax = this.rows > 10000 ? 7 : this.rows;
+            cMax = this.cols > 10000 ? 7 : this.cols;
 
             for (int i = 0; i < rMax; ++i) {
-                int r = this.rows > 100 && i > 3 ? this.rows - i - 1 : i;
-                if (this.rows > 100 && i == 3) {
+                int r = this.rows > 10000 && i > 3 ? this.rows - i - 1 : i;
+                if (this.rows > 10000 && i == 3) {
                     stringBuilder.append("...\n");
                 }
 
                 for (int j = 0; j < cMax; ++j) {
-                    int c = this.cols > 100 && j > 3 ? this.cols - j - 1 : j;
-                    if (this.cols > 100 && j == 3) {
+                    int c = this.cols > 10000 && j > 3 ? this.cols - j - 1 : j;
+                    if (this.cols > 10000 && j == 3) {
                         stringBuilder.append("... ");
                     } else {
                         stringBuilder.append(String.format("%8.5f ", new Object[]{Double.valueOf(this.get(r, c))}));

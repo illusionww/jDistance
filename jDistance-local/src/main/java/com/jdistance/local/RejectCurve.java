@@ -47,12 +47,8 @@ public class RejectCurve {
         int sameClusterPairsSize = sameClusterPairs.size();
         int diffClusterPairsSize = diffClusterPairs.size();
 
-        double min = Arrays.stream(D.getValues()).filter(i -> i != 0).min().orElse(0);
-        double max = Arrays.stream(D.getValues()).filter(i -> !new Double(i).isInfinite()).max().getAsDouble();
-        double step = (max - min) / (pointsCount - 1);
-
         Map<Double, Double> curve = new HashMap<>();
-        for (double threshold = min; threshold <= max; threshold += step) {
+        for (double threshold : Arrays.stream(D.getValues()).filter(i -> !new Double(i).isInfinite()).sorted().toArray()) {
             int sameCount = 0;
             for (Pair<Integer, Integer> sameClusterPair : sameClusterPairs) {
                 double dist = D.get(sameClusterPair.getLeft(), sameClusterPair.getRight());

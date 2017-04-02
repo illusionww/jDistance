@@ -13,7 +13,6 @@ import static jeigen.DenseMatrix.eye;
 
 public enum Kernel {
     P_WALK_H("pWalk H", Scale.RHO, null) { // H0 = (I - tA)^{-1}
-
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return pinv(eye(A.cols).sub(A.mul(t)));
@@ -22,11 +21,11 @@ public enum Kernel {
     WALK_H("Walk H", Scale.RHO, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            return H0toH(P_WALK_H.getK(A, t));
+            DenseMatrix H0 = P_WALK_H.getK(A, t);
+            return H0toH(H0);
         }
     },
     FOR_H("For H", Scale.FRACTION, null) { // H0 = (I + tL)^{-1}
-
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return pinv(eye(A.cols).add(getL(A).mul(t)));
@@ -39,7 +38,6 @@ public enum Kernel {
         }
     },
     COMM_H("Comm H", Scale.FRACTION, null) { // H0 = exp(tA)
-
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return A.mul(t).mexp();
@@ -52,7 +50,6 @@ public enum Kernel {
         }
     },
     HEAT_H("Heat H", Scale.FRACTION, null) { // H0 = exp(-tL)
-
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
             return getL(A).mul(-t).mexp();
@@ -64,7 +61,7 @@ public enum Kernel {
             return H0toH(HEAT_H.getK(A, t));
         }
     },
-    SCT_H_NEW("SCT H NEW", Scale.FRACTION, null) { // H = 1/(1 + exp(-αL+/σ))
+    SCT_H("SCT H NEW", Scale.FRACTION, null) { // H = 1/(1 + exp(-αL+/σ))
         @Override
         public DenseMatrix getK(DenseMatrix A, double alpha) {
             DenseMatrix K_CT = pinv(getL(A));
@@ -72,28 +69,12 @@ public enum Kernel {
             return sigmoid(K_CT.mul(alpha / sigma));
         }
     },
-    SCT_H("SCT H", Scale.FRACTION, null) { // H = 1/(1 + exp(-αL+/σ))
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double alpha) {
-            DenseMatrix K_CT = pinv(getL(A));
-            double sigma = new StandardDeviation().evaluate(K_CT.getValues());
-            return K_CT.mul(alpha / sigma).mexp().add(1.0).mul(0.1);
-        }
-    },
-    SCCT_H_NEW("SCCT H NEW", Scale.FRACTION, null) {
+    SCCT_H("SCCT H NEW", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double alpha) {
             DenseMatrix K_CCT = getH_CCT(A);
             double sigma = new StandardDeviation().evaluate(K_CCT.getValues());
             return sigmoid(K_CCT.mul(alpha / sigma));
-        }
-    },
-    SCCT_H("SCCT H", Scale.FRACTION, null) {
-        @Override
-        public DenseMatrix getK(DenseMatrix A, double alpha) {
-            DenseMatrix K_CCT = getH_CCT(A);
-            double sigma = new StandardDeviation().evaluate(K_CCT.getValues());
-            return K_CCT.mul(alpha / sigma).mexp().add(1.0).mul(0.1);
         }
     },
     SP_CT_H("SP-CT H", Scale.LINEAR, null) {

@@ -102,7 +102,7 @@ public enum Dataset {
                     .setName(name)
                     .importNodesIdNameClass(pathToNodes)
                     .importEdgesList(pathToEdges)
-                    .shuffleAndBuildBundle();
+                    .buildBundle();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -113,7 +113,7 @@ public enum Dataset {
             return new CSVGraphBuilder()
                     .setName(name)
                     .importNodesAndEdges(pathToGraph)
-                    .shuffleAndBuildBundle();
+                    .buildBundle();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -125,7 +125,7 @@ public enum Dataset {
                     .setName(name)
                     .importNodesClassOnly(pathToNodes)
                     .importAdjacencyMatrix(pathToEdges)
-                    .shuffleAndBuildBundle();
+                    .buildBundle();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

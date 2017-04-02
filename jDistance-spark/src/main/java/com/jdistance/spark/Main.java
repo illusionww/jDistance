@@ -9,6 +9,7 @@ import com.jdistance.learning.Collapse;
 import com.jdistance.learning.Estimator;
 import com.jdistance.learning.Scorer;
 import com.jdistance.learning.measure.Kernel;
+import com.jdistance.learning.measure.KernelWrapper;
 import com.jdistance.spark.workflow.BroadcastedGraphBundle;
 import com.jdistance.spark.workflow.Context;
 import com.jdistance.spark.workflow.GridSearch;
@@ -28,7 +29,7 @@ public class Main {
         JavaSparkContext sparkContext = new JavaSparkContext(conf);
         Context.fill(sparkContext, "./ivashkin/jDistance");
 
-        twoClusters();
+        competitions();
 
         sparkContext.stop();
     }
@@ -61,15 +62,15 @@ public class Main {
 
     public static void datasets() {
         List<Dataset> datasets = Arrays.asList(
-                Dataset.FOOTBALL,
-                Dataset.POLBOOKS,
-                Dataset.ZACHARY,
-                Dataset.news_2cl_1,
-                Dataset.news_2cl_2,
-                Dataset.news_2cl_3,
-                Dataset.news_3cl_1,
-                Dataset.news_3cl_2,
-                Dataset.news_3cl_3,
+//                Dataset.FOOTBALL,
+//                Dataset.POLBOOKS,
+//                Dataset.ZACHARY,
+//                Dataset.news_2cl_1,
+//                Dataset.news_2cl_2,
+//                Dataset.news_2cl_3,
+//                Dataset.news_3cl_1,
+//                Dataset.news_3cl_2,
+//                Dataset.news_3cl_3,
                 Dataset.news_5cl_1,
                 Dataset.news_5cl_2,
                 Dataset.news_5cl_3
@@ -81,7 +82,10 @@ public class Main {
                     .setEstimators(Estimator.WARD)
                     .setScorers(Scorer.ARI)
                     .setGraphBundles(graphBundle)
-                    .setMeasures(Kernel.getAllH_plusRSP_FE())
+                    .setMeasures(Arrays.asList(
+                            new KernelWrapper(Kernel.SCT_H),
+                            new KernelWrapper(Kernel.SCCT_H)
+                    ))
                     .linspaceMeasureParams(55)
                     .build();
             new GridSearch(graphBundle.getName(), tasks)
@@ -92,26 +96,26 @@ public class Main {
 
     private static void competitions() {
         Map<String, List<GraphBundle>> graphBundles = new HashMap<>();
-        graphBundles.put("n100c4pout015",
-                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 4, 0.3, 0.15)).getGraphs().stream()
-                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
-                        .collect(Collectors.toList())
-        );
-        graphBundles.put("n100c2pout015",
-                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.15)).getGraphs().stream()
-                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
-                        .collect(Collectors.toList())
-        );
-        graphBundles.put("n100c2pout01",
-                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.1)).getGraphs().stream()
-                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
-                        .collect(Collectors.toList())
-        );
-        graphBundles.put("n100c4pout01",
-                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 4, 0.3, 0.1)).getGraphs().stream()
-                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
-                        .collect(Collectors.toList())
-        );
+//        graphBundles.put("n100c4pout015",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 4, 0.3, 0.15)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+//        graphBundles.put("n100c2pout015",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.15)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+//        graphBundles.put("n100c2pout01",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.1)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+//        graphBundles.put("n100c4pout01",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 4, 0.3, 0.1)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
         graphBundles.put("n200c4pout015",
                 new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 200, 4, 0.3, 0.15)).getGraphs().stream()
                         .map(graph -> graph.toBundle(UUID.randomUUID().toString()))

@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
@@ -41,94 +42,42 @@ public class Main {
     }
 
     public void trivial() {
-        GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.1));
-        List<Task> tasks = new CartesianTaskListBuilder()
-                .setEstimators(Estimator.WARD)
-                .setScorers(Scorer.ARI)
-                .setGraphBundles(graphs)
-                .setMeasures(
-                    new KernelWrapper(Kernel.LOG_COMM_H),
-                    new KernelWrapper(Kernel.LOG_HEAT_H),
-                    new KernelWrapper(Kernel.SCT_H),
-                    new KernelWrapper(Kernel.SCT_H_NEW),
-                    new KernelWrapper(Kernel.SCCT_H),
-                    new KernelWrapper(Kernel.SCCT_H_NEW)
-                )
-                .linspaceMeasureParams(55)
-                .build();
-        new GridSearch(tasks)
-                .execute()
-                .writeData(Axis.MEASURE_PARAM, Axis.MEASURE, Collapse.CHECK_ONLY_ONE)
-                .draw(Axis.MEASURE_PARAM, Axis.MEASURE, Collapse.CHECK_ONLY_ONE);
-    }
-
-    public void datasets() {
-        List<GraphBundle> datasets = Arrays.asList(
-                Dataset.FOOTBALL.get(),
-                Dataset.POLBOOKS.get(),
-                Dataset.ZACHARY.get()
-        );
-        List<Task> tasks = new CartesianTaskListBuilder()
-                .setEstimators(Estimator.WARD)
-                .setScorers(Scorer.ARI)
-                .setGraphBundles(datasets)
-                .setMeasures(
-                        new KernelWrapper(Kernel.COMM_H),
-                        new KernelWrapper(Kernel.LOG_COMM_H)
-                )
-                .linspaceMeasureParams(60)
-                .build();
-        new GridSearch(tasks)
-                .execute()
-                .writeData(Axis.MEASURE_PARAM, Axis.GRAPHSnMEASURE, Collapse.CHECK_ONLY_ONE);
-    }
-
-    public void rejectCurve() {
-        GraphBundle graphs4param = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.1));
-        GraphBundle graphs4curve = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(200, 100, 2, 0.3, 0.1));
-
-        List<Task> tasks = new CartesianTaskListBuilder()
-                .setEstimators(Estimator.WARD)
-                .setScorers(Scorer.ARI)
-                .setGraphBundles(graphs4param)
-                .setMeasures(Kernel.getAllH_plusRSP_FE())
-                .linspaceMeasureParams(55)
-                .build();
-        new GridSearch(tasks)
-                .execute()
-                .getData(Axis.MEASURE_PARAM, Axis.MEASURE, Collapse.CHECK_ONLY_ONE)
-                .forEach((key, value) -> {
-                    KernelWrapper kernel = new KernelWrapper(Kernel.getByName(key));
-                    String bestParamString = value.entrySet().stream()
-                            .filter(entry -> entry.getValue() != null)
-                            .max(Comparator.comparingDouble(Map.Entry::getValue)).get().getKey();
-                    Double bestParam = Double.valueOf(bestParamString);
-                    log.info("best param for " + key + " is " + bestParamString);
-                    log.info("calculate reject curve");
-                    RejectCurve rq = new RejectCurve();
-                    Map<String, Map<Double, Double>> result = rq.calcCurve(kernel, bestParam, graphs4curve, 200);
-                    log.info("save 'rq " + key + ".csv'");
-                    rq.writeData(result, new ArrayList<>(result.keySet()), "rq " + key);
-                });
+        for (double pOut: Arrays.asList(0.1)) {
+            GraphBundle graphs = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(100, 100, 2, 0.3, pOut));
+            List<Task> tasks = new CartesianTaskListBuilder()
+                    .setEstimators(Estimator.WARD)
+                    .setScorers(Scorer.ARI)
+                    .setGraphBundles(graphs)
+                    .setMeasures(
+                            new KernelWrapper(Kernel.HEAT_H),
+                            new KernelWrapper(Kernel.LOG_HEAT_H)
+                    )
+                    .linspaceMeasureParams(55)
+                    .build();
+            new GridSearch(tasks)
+                    .execute()
+                    .writeData(Axis.MEASURE_PARAM, Axis.MEASURE, Collapse.CHECK_ONLY_ONE)
+                    .draw(Axis.MEASURE_PARAM, Axis.MEASURE, Collapse.CHECK_ONLY_ONE);
+        }
     }
 
     public void rejectCurve2() {
-        GraphBundle graphs4curve = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(150, 100, 2, 0.3, 0.1));
+        GraphBundle graphs4curve = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(200, 100, 2, 0.3, 0.1));
 
         Map<String, Double> bestParams = new HashMap<String, Double>() {{
-            put("logHeat", 0.38);
-            put("Heat", 0.76);
-            put("logFor", 0.64);
+            put("pWalk", 0.90);
+            put("Walk", 0.74);
+            put("For", 0.98);
+            put("logFor", 0.56);
+            put("Comm", 0.32);
+            put("logComm", 0.54);
+            put("Heat", 0.78);
+            put("logHeat", 0.36);
+            put("SCT", 0.62);
+            put("SCCT", 0.26);
+            put("RSP", 0.98);
             put("FE", 0.94);
-            put("SP-CT", 0.28);
-            put("Walk", 0.72);
-            put("Comm", 0.36);
-            put("RSP", 0.99);
-            put("pWalk", 0.74);
-            put("SCCT", 0.04);
-            put("SCT", 0.99);
-            put("logComm", 0.56);
-            put("For", 0.99);
+            put("SP-CT", 0.34);
         }};
         bestParams.forEach((key, value) -> {
             DistanceWrapper kernel = new DistanceWrapper(Distance.getByName(key));
@@ -141,35 +90,94 @@ public class Main {
         });
     }
 
-    public void twoClusters() {
-        List<GraphBundle> graphBundles = new ArrayList<>();
-        List<Integer> firstList = Arrays.asList(1, 2, 5, 7, 9, 12, 15, 20, 25, 30, 35, 40, 45, 50);
-        for (int first : firstList) {
-            int second = 100 - first;
-            GraphBundle oldGraphBundle = new GnPInPOutGraphGenerator().generate(Double.toString(first), new GeneratorPropertiesPOJO(50, new int[]{
-                    first, second
-            }, new double[][]{
-                    {0.3, 0.1},
-                    {0.1, 0.3}
-            }));
-            graphBundles.add(oldGraphBundle);
+    public static void datasets() {
+        List<Dataset> datasets = Arrays.asList(
+//                Dataset.FOOTBALL,
+                Dataset.POLBOOKS
+//                Dataset.ZACHARY,
+//                Dataset.news_2cl_1,
+//                Dataset.news_2cl_2,
+//                Dataset.news_2cl_3,
+//                Dataset.news_3cl_1,
+//                Dataset.news_3cl_2,
+//                Dataset.news_3cl_3,
+//                Dataset.news_5cl_1,
+//                Dataset.news_5cl_2,
+//                Dataset.news_5cl_3
+        );
+
+        for (Dataset dataset : datasets) {
+            GraphBundle graphBundle = dataset.get();
+            List<Task> tasks = new CartesianTaskListBuilder()
+                    .setEstimators(Estimator.WARD)
+                    .setScorers(Scorer.ARI)
+                    .setGraphBundles(graphBundle)
+                    .setMeasures(Kernel.getAllH_plusRSP_FE())
+                    .linspaceMeasureParams(55)
+                    .build();
+            new GridSearch(graphBundle.getName(), tasks)
+                    .execute()
+                    .writeData(Axis.MEASURE_PARAM, Axis.MEASURE, Collapse.CHECK_ONLY_ONE);
         }
-        List<Task> tasks = new CartesianTaskListBuilder()
-                .setEstimators(Estimator.WARD)
-                .setScorers(Scorer.ARI)
-                .setGraphBundles(graphBundles)
-                .setMeasures(Arrays.asList(
-                        new KernelWrapper(Kernel.SCT_H),
-                        new KernelWrapper(Kernel.SCT_H_NEW),
-                        new KernelWrapper(Kernel.SCCT_H),
-                        new KernelWrapper(Kernel.SCCT_H_NEW)
-                ))
-                .linspaceMeasureParams(55)
-                .build();
-        new GridSearch(tasks)
-                .execute()
-                .writeData(Axis.GRAPHS, Axis.MEASURE, Collapse.AVERAGE)
-                .writeData(Axis.GRAPHS, Axis.MEASURE, Collapse.MAX);
     }
+
+    public static void competitions() {
+        Map<String, List<GraphBundle>> graphBundles = new HashMap<>();
+//        graphBundles.put("n100c4pout015",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 4, 0.3, 0.15)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+//        graphBundles.put("n100c2pout015",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.15)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+//        graphBundles.put("n100c2pout01",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 2, 0.3, 0.1)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+//        graphBundles.put("n100c4pout01",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 100, 4, 0.3, 0.1)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+//        graphBundles.put("n200c4pout015",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 200, 4, 0.3, 0.15)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+        graphBundles.put("n200c2pout01",
+                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 200, 2, 0.3, 0.1)).getGraphs().stream()
+                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+                        .collect(Collectors.toList())
+        );
+        graphBundles.put("n200c2pout015",
+                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 200, 2, 0.3, 0.15)).getGraphs().stream()
+                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+                        .collect(Collectors.toList())
+        );
+//        graphBundles.put("n200c4pout01",
+//                new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(50, 200, 4, 0.3, 0.1)).getGraphs().stream()
+//                        .map(graph -> graph.toBundle(UUID.randomUUID().toString()))
+//                        .collect(Collectors.toList())
+//        );
+
+        for (Map.Entry<String, List<GraphBundle>> graphBundle : graphBundles.entrySet()) {
+            List<Task> tasks = new CartesianTaskListBuilder()
+                    .setEstimators(Estimator.WARD)
+                    .setScorers(Scorer.ARI)
+                    .setGraphBundles(graphBundle.getValue())
+                    .setMeasures(Kernel.getAllH_plusRSP_FE())
+                    .linspaceMeasureParams(55)
+                    .build();
+            new GridSearch(graphBundle.getKey(), tasks)
+                    .execute()
+                    .writeData(Axis.MEASURE_PARAM, Axis.GRAPHSnMEASURE, Collapse.CHECK_ONLY_ONE);
+        }
+    }
+
+
 }
 

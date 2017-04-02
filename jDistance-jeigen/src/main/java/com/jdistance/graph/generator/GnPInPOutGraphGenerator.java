@@ -2,16 +2,17 @@ package com.jdistance.graph.generator;
 
 import com.jdistance.graph.Graph;
 
+import java.security.SecureRandom;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class GnPInPOutGraphGenerator extends GraphGenerator {
-    private final Random random;
+    private final SecureRandom random;
     private boolean biDirectional;
 
     public GnPInPOutGraphGenerator() {
-        random = new Random();
+        random = new SecureRandom();
         biDirectional = true;
     }
 

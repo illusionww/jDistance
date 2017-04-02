@@ -92,11 +92,12 @@ public class MetricsSamplesComparisonsTests {
     public void testChainGraphCommunicabilityDistance() {
         Distance distance = Distance.COMM;
         DenseMatrix D = distance.getD(TestHelperLib.chainGraph, 1.0);
-        double multiplier = 0.964 / D.get(0, 1);
-        assertTrue("distances not equal: 0.964 != " + multiplier * D.get(0, 1), TestHelperLib.equalDouble(multiplier * D.get(0, 1), 0.964));
-        assertTrue("distances not equal: 1.072 != " + multiplier * D.get(1, 2), TestHelperLib.equalDouble(multiplier * D.get(1, 2), 1.072));
-        assertTrue("distances not equal: 1.492 != " + multiplier * D.get(0, 2), TestHelperLib.equalDouble(multiplier * D.get(0, 2), 1.492));
-        assertTrue("distances not equal: 1.564 != " + multiplier * D.get(0, 3), TestHelperLib.equalDouble(multiplier * D.get(0, 3), 1.564));
+        D = D.sqrt();
+        D = D.mul(0.964 / D.get(0, 1));
+        assertTrue("distances not equal: 0.964 != " + D.get(0, 1), TestHelperLib.equalDouble(D.get(0, 1), 0.964));
+        assertTrue("distances not equal: 1.072 != " + D.get(1, 2), TestHelperLib.equalDouble(D.get(1, 2), 1.072));
+        assertTrue("distances not equal: 1.492 != " + D.get(0, 2), TestHelperLib.equalDouble(D.get(0, 2), 1.492));
+        assertTrue("distances not equal: 1.564 != " + D.get(0, 3), TestHelperLib.equalDouble(D.get(0, 3), 1.564));
     }
 
     @Test

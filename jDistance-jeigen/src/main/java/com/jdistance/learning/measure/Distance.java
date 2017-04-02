@@ -10,27 +10,27 @@ import java.util.stream.Stream;
 import static com.jdistance.learning.measure.helpers.Shortcuts.*;
 
 public enum Distance {
-    P_WALK("pWalk", Scale.RHO, Kernel.P_WALK_H, false),
-    WALK("Walk", Scale.RHO, Kernel.WALK_H, false),
-    FOR("For", Scale.FRACTION, Kernel.FOR_H, false),
-    LOG_FOR("logFor", Scale.FRACTION, Kernel.LOG_FOR_H, false),
-    COMM("Comm", Scale.FRACTION, Kernel.COMM_H, true),
-    LOG_COMM("logComm", Scale.FRACTION, Kernel.LOG_COMM_H, true),
-    HEAT("Heat", Scale.FRACTION, Kernel.HEAT_H, true),
-    LOG_HEAT("logHeat", Scale.FRACTION, Kernel.LOG_HEAT_H, true),
-    SCT("SCT", Scale.FRACTION, Kernel.SCT_H, false),
-    SCCT("SCCT", Scale.FRACTION, Kernel.SCCT_H, false),
-    RSP("RSP", Scale.FRACTION_REVERSED, null, false) {
+    P_WALK("pWalk", Scale.RHO, Kernel.P_WALK_H),
+    WALK("Walk", Scale.RHO, Kernel.WALK_H),
+    FOR("For", Scale.FRACTION, Kernel.FOR_H),
+    LOG_FOR("logFor", Scale.FRACTION, Kernel.LOG_FOR_H),
+    COMM("Comm", Scale.FRACTION, Kernel.COMM_H),
+    LOG_COMM("logComm", Scale.FRACTION, Kernel.LOG_COMM_H),
+    HEAT("Heat", Scale.FRACTION, Kernel.HEAT_H),
+    LOG_HEAT("logHeat", Scale.FRACTION, Kernel.LOG_HEAT_H),
+    SCT("SCT", Scale.FRACTION, Kernel.SCT_H),
+    SCCT("SCCT", Scale.FRACTION, Kernel.SCCT_H),
+    RSP("RSP", Scale.FRACTION_REVERSED, null) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return getD_RSP(A, beta);
         }
     },
-    FE("FE", Scale.FRACTION_REVERSED, null, false) {
+    FE("FE", Scale.FRACTION_REVERSED, null) {
         public DenseMatrix getD(DenseMatrix A, double beta) {
             return getD_FE(A, beta);
         }
     },
-    SP_CT("SP-CT", Scale.LINEAR, null, false) {
+    SP_CT("SP-CT", Scale.LINEAR, null) {
         public DenseMatrix getD(DenseMatrix A, double lambda) {
             DenseMatrix Ds = normalize(getD_SP(A));
             DenseMatrix Dr = normalize(HtoD(getH_R(A)));
@@ -41,13 +41,11 @@ public enum Distance {
     private String name;
     private Scale scale;
     private Kernel parentKernel;
-    private Boolean takeSqrt;
 
-    Distance(String name, Scale scale, Kernel parentKernel, Boolean takeSqrt) {
+    Distance(String name, Scale scale, Kernel parentKernel) {
         this.name = name;
         this.scale = scale;
         this.parentKernel = parentKernel;
-        this.takeSqrt = takeSqrt;
     }
 
     public static List<DistanceWrapper> getAll() {
@@ -79,8 +77,7 @@ public enum Distance {
 
     public DenseMatrix getD(DenseMatrix A, double t) {
         DenseMatrix H = parentKernel.getK(A, t);
-        DenseMatrix D = HtoD(H);
-        return takeSqrt ? D.sqrt() : D;
+        return HtoD(H);
     }
 
     public Kernel getParentKernel() {
