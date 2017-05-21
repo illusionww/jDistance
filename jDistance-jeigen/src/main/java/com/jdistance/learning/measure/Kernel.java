@@ -15,7 +15,8 @@ public enum Kernel {
     P_WALK_H("pWalk H", Scale.RHO, null) { // H0 = (I - tA)^{-1}
         @Override
         public DenseMatrix getK(DenseMatrix A, double t) {
-            return pinv(eye(A.cols).sub(A.mul(t)));
+            DenseMatrix K = pinv(eye(A.cols).sub(A.mul(t)));
+            return K;
         }
     },
     WALK_H("Walk H", Scale.RHO, null) {
@@ -61,7 +62,7 @@ public enum Kernel {
             return H0toH(HEAT_H.getK(A, t));
         }
     },
-    SCT_H("SCT H NEW", Scale.FRACTION, null) { // H = 1/(1 + exp(-αL+/σ))
+    SCT_H("SCT H", Scale.FRACTION, null) { // H = 1/(1 + exp(-αL+/σ))
         @Override
         public DenseMatrix getK(DenseMatrix A, double alpha) {
             DenseMatrix K_CT = pinv(getL(A));
@@ -69,7 +70,7 @@ public enum Kernel {
             return sigmoid(K_CT.mul(alpha / sigma));
         }
     },
-    SCCT_H("SCCT H NEW", Scale.FRACTION, null) {
+    SCCT_H("SCCT H", Scale.FRACTION, null) {
         @Override
         public DenseMatrix getK(DenseMatrix A, double alpha) {
             DenseMatrix K_CCT = getH_CCT(A);

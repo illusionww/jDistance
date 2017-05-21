@@ -1,6 +1,7 @@
 package com.jdistance.local;
 
 import com.jdistance.Dataset;
+import com.jdistance.graph.Graph;
 import com.jdistance.graph.GraphBundle;
 import com.jdistance.graph.generator.GeneratorPropertiesPOJO;
 import com.jdistance.graph.generator.GnPInPOutGraphGenerator;
@@ -16,6 +17,7 @@ import com.jdistance.local.workflow.Context;
 import com.jdistance.local.workflow.GridSearch;
 import com.jdistance.workflow.CartesianTaskListBuilder;
 import com.jdistance.workflow.Task;
+import jeigen.DenseMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,29 +64,29 @@ public class Main {
     }
 
     public void rejectCurve2() {
-        GraphBundle graphs4curve = new GnPInPOutGraphGenerator().generate(new GeneratorPropertiesPOJO(200, 100, 2, 0.3, 0.1));
+        GraphBundle graphs4curve = Dataset.POLBOOKS.get();
 
         Map<String, Double> bestParams = new HashMap<String, Double>() {{
-            put("pWalk", 0.90);
-            put("Walk", 0.74);
-            put("For", 0.98);
-            put("logFor", 0.56);
-            put("Comm", 0.32);
-            put("logComm", 0.54);
-            put("Heat", 0.78);
-            put("logHeat", 0.36);
-            put("SCT", 0.62);
-            put("SCCT", 0.26);
-            put("RSP", 0.98);
-            put("FE", 0.94);
-            put("SP-CT", 0.34);
+            put("pWalk", 0.50);
+//            put("Walk", 0.50);
+//            put("For", 0.98);
+//            put("logFor", 0.56);
+//            put("Comm", 0.32);
+//            put("logComm", 0.54);
+//            put("Heat", 0.78);
+//            put("logHeat", 0.36);
+//            put("SCT", 0.62);
+//            put("SCCT", 0.26);
+//            put("RSP", 0.98);
+//            put("FE", 0.94);
+//            put("SP-CT", 0.34);
         }};
         bestParams.forEach((key, value) -> {
             DistanceWrapper kernel = new DistanceWrapper(Distance.getByName(key));
             log.info("best param for " + key + " is " + value);
             log.info("calculate reject curve");
             RejectCurve rq = new RejectCurve();
-            Map<String, Map<Double, Double>> result = rq.calcCurve(kernel, value, graphs4curve, 200);
+            Map<String, Map<Double, Double>> result = rq.calcCurve(kernel, value, graphs4curve);
             log.info("save 'rq " + key + ".csv'");
             rq.writeData(result, new ArrayList<>(result.keySet()), "rq " + key);
         });
@@ -110,10 +112,10 @@ public class Main {
             GraphBundle graphBundle = dataset.get();
             List<Task> tasks = new CartesianTaskListBuilder()
                     .setEstimators(Estimator.WARD)
-                    .setScorers(Scorer.ARI)
+                    .setScorers(Scorer.RI)
                     .setGraphBundles(graphBundle)
                     .setMeasures(Kernel.getAllH_plusRSP_FE())
-                    .linspaceMeasureParams(55)
+                    .setMeasureParams(0.5)
                     .build();
             new GridSearch(graphBundle.getName(), tasks)
                     .execute()

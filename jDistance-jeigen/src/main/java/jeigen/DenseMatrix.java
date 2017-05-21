@@ -1000,7 +1000,7 @@ public class DenseMatrix implements Serializable {
         if (this.rows * this.cols <= 1000) {
             for (rMax = 0; rMax < this.rows; ++rMax) {
                 for (cMax = 0; cMax < this.cols; ++cMax) {
-                    stringBuilder.append(String.format("%8.5f ", new Object[]{Double.valueOf(this.get(rMax, cMax))}));
+                    stringBuilder.append(String.format("%8.30f ", new Object[]{Double.valueOf(this.get(rMax, cMax))}));
                 }
 
                 stringBuilder.append("\n");
@@ -1020,7 +1020,7 @@ public class DenseMatrix implements Serializable {
                     if (this.cols > 10000 && j == 3) {
                         stringBuilder.append("... ");
                     } else {
-                        stringBuilder.append(String.format("%8.5f ", new Object[]{Double.valueOf(this.get(r, c))}));
+                        stringBuilder.append(String.format("%8.30f ", new Object[]{Double.valueOf(this.get(r, c))}));
                     }
                 }
 

@@ -18,16 +18,16 @@ import java.util.*;
 public class RejectCurve {
     private static final Logger log = LoggerFactory.getLogger(RejectCurve.class);
 
-    public Map<String, Map<Double, Double>> calcCurve(AbstractMeasureWrapper wrapper, Double param, GraphBundle graph, Integer pointsCount) {
+    public Map<String, Map<Double, Double>> calcCurve(AbstractMeasureWrapper wrapper, Double param, GraphBundle graph) {
         Map<String, Map<Double, Double>> agg = new HashMap<>();
         for (int i = 0; i < graph.getGraphs().size(); i++) {
-            Map<Double, Double> result = calcCurve(wrapper, param, graph.getGraphs().get(i), pointsCount);
+            Map<Double, Double> result = calcCurve(wrapper, param, graph.getGraphs().get(i));
             agg.put(wrapper.getName() + " " + Integer.toString(i), result);
         }
         return agg;
     }
 
-    public Map<Double, Double> calcCurve(AbstractMeasureWrapper wrapper, Double param, Graph graph, Integer pointsCount) {
+    public Map<Double, Double> calcCurve(AbstractMeasureWrapper wrapper, Double param, Graph graph) {
         DenseMatrix D = wrapper.calc(graph.getA(), wrapper.getScale().calc(graph.getA(), param));
 //        D = D.mul(-1);
 
